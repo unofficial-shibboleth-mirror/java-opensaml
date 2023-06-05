@@ -90,8 +90,8 @@ public class EvaluableX509CertSelectorCredentialCriterion extends AbstractTriSta
             return false;
         }
 
-        if (obj instanceof EvaluableX509CertSelectorCredentialCriterion) {
-            return certSelector.equals(((EvaluableX509CertSelectorCredentialCriterion) obj).certSelector);
+        if (obj instanceof EvaluableX509CertSelectorCredentialCriterion other) {
+            return certSelector.equals(other.certSelector);
         }
 
         return false;

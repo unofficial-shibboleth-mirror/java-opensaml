@@ -36,20 +36,20 @@ public interface PKIXValidationInformation {
      * 
      * @return maximum allowable trust chain verification depth
      */
-    @Nullable public Integer getVerificationDepth();
+    @Nullable Integer getVerificationDepth();
 
     /**
      * Gets the certificate trust anchors used during PKIX validation.
      * 
      * @return trust anchors used during PKIX validation
      */
-    @Nullable @Unmodifiable @NotLive public Collection<X509Certificate> getCertificates();
+    @Nullable @Unmodifiable @NotLive Collection<X509Certificate> getCertificates();
 
     /**
      * Gets the CRLs used during PKIX validation.
      * 
      * @return CRLs used during PKIX validation
      */
-    @Nullable @Unmodifiable @NotLive public Collection<X509CRL> getCRLs();
+    @Nullable @Unmodifiable @NotLive Collection<X509CRL> getCRLs();
 
 }

@@ -106,7 +106,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      * 
      * @return current HTTP request
      */
-    @Nullable public HttpServletRequest getHttpServletRequest() {
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
         if (httpServletRequestSupplier == null) {
             return null;
         }
@@ -118,7 +118,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      *
      * @return current HTTP request
      */
-    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @NonnullAfterInit public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 

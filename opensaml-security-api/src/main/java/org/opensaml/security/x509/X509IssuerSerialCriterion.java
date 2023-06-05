@@ -112,8 +112,7 @@ public final class X509IssuerSerialCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof X509IssuerSerialCriterion) {
-            final X509IssuerSerialCriterion other = (X509IssuerSerialCriterion) obj;
+        if (obj instanceof X509IssuerSerialCriterion other) {
             return issuerName.equals(other.issuerName) && serialNumber.equals(other.serialNumber);
         }
 

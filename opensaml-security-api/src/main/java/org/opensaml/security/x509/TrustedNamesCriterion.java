@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -37,19 +36,15 @@ import net.shibboleth.shared.resolver.Criterion;
 public class TrustedNamesCriterion implements Criterion {
     
     /** The set of trusted names. */
-    @Nonnull @NonnullElements private Set<String> trustedNames;
+    @Nonnull private Set<String> trustedNames;
     
     /**
      * Constructor.
      *
      * @param names the set of trusted names
      */
-    public TrustedNamesCriterion(@Nullable @NonnullElements final Set<String> names)  {
-        if (names != null) {
-            trustedNames = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
-        } else {
-            trustedNames = CollectionSupport.emptySet();
-        }
+    public TrustedNamesCriterion(@Nullable final Set<String> names)  {
+        trustedNames = processNames(names);
     }
     
     /**
@@ -57,7 +52,7 @@ public class TrustedNamesCriterion implements Criterion {
      * 
      * @return the set of trusted names
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<String> getTrustedNames() {
+    @Nonnull @NotLive @Unmodifiable public Set<String> getTrustedNames() {
         return trustedNames;
     }
     
@@ -66,12 +61,8 @@ public class TrustedNamesCriterion implements Criterion {
      * 
      * @param names the new trusted names
      */
-    public void setTrustedNames(@Nullable @NonnullElements final Set<String> names) {
-        if (names != null) {
-            trustedNames = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
-        } else {
-            trustedNames = CollectionSupport.emptySet();
-        }
+    public void setTrustedNames(@Nullable final Set<String> names) {
+        trustedNames = processNames(names);
     }
     
     /** {@inheritDoc} */
@@ -106,6 +97,21 @@ public class TrustedNamesCriterion implements Criterion {
         }
 
         return false;
+    }
+    
+    /**
+     * Sanitize input names.
+     * 
+     * @param names input names
+     * 
+     * @return sanitized set
+     */
+    @Nonnull @NotLive @Unmodifiable private Set<String> processNames(@Nullable final Set<String> names) {
+        if (names != null) {
+            return CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
+        } else {
+            return CollectionSupport.emptySet();
+        }
     }
 
 }

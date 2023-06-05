@@ -18,4 +18,7 @@
 /**
  * Implementation classes for client TLS security.
  */
+@NonnullElements
 package org.opensaml.security.x509.tls.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -113,8 +113,8 @@ public class EvaluableUsageCredentialCriterion extends AbstractTriStatePredicate
             return false;
         }
 
-        if (obj instanceof EvaluableUsageCredentialCriterion) {
-            return usage.equals(((EvaluableUsageCredentialCriterion) obj).usage);
+        if (obj instanceof EvaluableUsageCredentialCriterion other) {
+            return usage.equals(other.usage);
         }
 
         return false;

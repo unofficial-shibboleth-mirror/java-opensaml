@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.x509.PKIXValidationOptions;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -159,7 +158,7 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * @return Returns the initialPolicies set.
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getInitialPolicies() {
+    @Nonnull @Unmodifiable @NotLive public Set<String> getInitialPolicies() {
         return initialPolicies;
     }
 
@@ -170,7 +169,7 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * @param newPolicies the initial set of policy identifiers (OID strings)
      */
-    public void setInitialPolicies(@Nullable @NonnullElements final Set<String> newPolicies) {
+    public void setInitialPolicies(@Nullable final Set<String> newPolicies) {
         initialPolicies = newPolicies != null ? CollectionSupport.copyToSet(newPolicies) : CollectionSupport.emptySet();
     }
     

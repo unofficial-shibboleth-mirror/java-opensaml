@@ -45,6 +45,8 @@ import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.logic.Constraint;
@@ -162,7 +164,7 @@ public class X509Support {
      * 
      * @return the common names that appear in the DN in the order they appear, or null if the given DN is null
      */
-    @Nonnull public static List<String> getCommonNames(@Nonnull final X500Principal dn) {
+    @Nonnull @Unmodifiable @NotLive public static List<String> getCommonNames(@Nonnull final X500Principal dn) {
 
         LOG.debug("Extracting CNs from the following DN: {}", dn.toString());
         final RDNSequence attrs = NameReader.readX500Principal(dn);
@@ -184,7 +186,7 @@ public class X509Support {
      * 
      * @return the alt names, of the given type, within the cert
      */
-    @Nonnull public static List<?> getAltNames(@Nonnull final X509Certificate certificate,
+    @Nonnull @Unmodifiable @NotLive public static List<?> getAltNames(@Nonnull final X509Certificate certificate,
             @Nonnull @NotEmpty final Integer[] nameTypes) {
 
         final List<Object> altNames = new LinkedList<>();
@@ -215,7 +217,7 @@ public class X509Support {
      * 
      * @return list of subject names in the certificate
      */
-    @Nonnull public static List<?> getSubjectNames(@Nonnull final X509Certificate certificate,
+    @Nonnull @Unmodifiable @NotLive public static List<?> getSubjectNames(@Nonnull final X509Certificate certificate,
             @Nonnull @NotEmpty final Integer[] altNameTypes) {
         final List<Object> issuerNames = new LinkedList<>();
         
@@ -287,7 +289,8 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nonnull public static Collection<X509Certificate> decodeCertificates(@Nonnull final File certs)
+    @Nonnull @Unmodifiable @NotLive
+    public static Collection<X509Certificate> decodeCertificates(@Nonnull final File certs)
             throws CertificateException {
         Constraint.isNotNull(certs, "Input file cannot be null");
         if (!certs.exists()) {
@@ -314,7 +317,8 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nonnull public static Collection<X509Certificate> decodeCertificates(@Nonnull final InputStream certs)
+    @Nonnull @Unmodifiable @NotLive
+    public static Collection<X509Certificate> decodeCertificates(@Nonnull final InputStream certs)
             throws CertificateException {
         Constraint.isNotNull(certs, "Input Stream cannot be null");
         
@@ -336,7 +340,8 @@ public class X509Support {
      * 
      * @throws CertificateException thrown if the certificates cannot be decoded
      */
-    @Nonnull public static Collection<X509Certificate> decodeCertificates(@Nonnull final byte[] certs)
+    @Nonnull @Unmodifiable @NotLive
+    public static Collection<X509Certificate> decodeCertificates(@Nonnull final byte[] certs)
             throws CertificateException {
         try {
             return Arrays.asList(CertUtil.decodeCertificateChain(certs));
@@ -416,7 +421,8 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nonnull public static Collection<X509CRL> decodeCRLs(@Nonnull final File crls) throws CRLException{
+    @Nonnull @Unmodifiable @NotLive
+    public static Collection<X509CRL> decodeCRLs(@Nonnull final File crls) throws CRLException{
         Constraint.isNotNull(crls, "Input file cannot be null");
         if (!crls.exists()) {
             throw new CRLException("CRL file " + crls.getAbsolutePath() + " does not exist");
@@ -443,7 +449,8 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nonnull public static Collection<X509CRL> decodeCRLs(@Nonnull final InputStream crls) throws CRLException{
+    @Nonnull @Unmodifiable @NotLive
+    public static Collection<X509CRL> decodeCRLs(@Nonnull final InputStream crls) throws CRLException{
         Constraint.isNotNull(crls, "Input stream cannot be null");
         
         try {
@@ -464,7 +471,8 @@ public class X509Support {
      * 
      * @throws CRLException thrown if the CRLs can not be decoded
      */
-    @Nonnull public static Collection<X509CRL> decodeCRLs(@Nonnull final byte[] crls) throws CRLException {
+    @Nonnull @Unmodifiable @NotLive
+    public static Collection<X509CRL> decodeCRLs(@Nonnull final byte[] crls) throws CRLException {
         try {
             final CertificateFactory cf = CertificateFactory.getInstance("X.509");
             return (Collection<X509CRL>) cf.generateCRLs(new ByteArrayInputStream(crls));

@@ -46,11 +46,12 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.crypto.ec.curves.BasicNamedCurve;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Cryptography support related to Elliptic Curve.
@@ -58,7 +59,7 @@ import net.shibboleth.shared.logic.Constraint;
 public final class ECSupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(ECSupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(ECSupport.class);
     
     /** Constructor. */
     private ECSupport() { }
@@ -310,7 +311,7 @@ public final class ECSupport {
      * 
      * @return the set of curves known to Bouncy Castle
      */
-    @Nonnull @NonnullElements @NotLive
+    @Nonnull @Unmodifiable @NotLive
     public static Set<NamedCurve> getCurvesFromBouncyCastle() {
         final HashSet<NamedCurve> curves = new HashSet<>();
         
@@ -341,7 +342,7 @@ public final class ECSupport {
             }
         }
         
-        return curves;
+        return CollectionSupport.copyToSet(curves);
     }
 
 } 

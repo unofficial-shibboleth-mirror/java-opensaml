@@ -114,9 +114,7 @@ public class EvaluableX509IssuerSerialCredentialCriterion extends AbstractTriSta
             return false;
         }
 
-        if (obj instanceof EvaluableX509IssuerSerialCredentialCriterion) {
-            final EvaluableX509IssuerSerialCredentialCriterion other =
-                    (EvaluableX509IssuerSerialCredentialCriterion) obj;
+        if (obj instanceof EvaluableX509IssuerSerialCredentialCriterion other) {
             return issuer.equals(other.issuer) && serialNumber.equals(other.serialNumber);
         }
 

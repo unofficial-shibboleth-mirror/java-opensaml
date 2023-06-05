@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
@@ -81,9 +82,12 @@ public class HttpClientSecurityParameters {
      * Set an instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
      * 
      * @param provider the credentials provider
+     * 
+     * @return this object
      */
-    public void setCredentialsProvider(@Nullable final CredentialsProvider provider) {
+    @Nonnull public HttpClientSecurityParameters setCredentialsProvider(@Nullable final CredentialsProvider provider) {
         credentialsProvider = provider;
+        return this;
     }
     
     /**
@@ -102,10 +106,14 @@ public class HttpClientSecurityParameters {
      * 
      * @param cache the auth cache
      * 
+     * @return this object
+     * 
      * @since 3.4.0
      */
-    public void setAuthCache(@Nullable final AuthCache cache) {
+    @Nonnull public HttpClientSecurityParameters setAuthCache(@Nullable final AuthCache cache) {
         authCache = cache;
+        
+        return this;
     }
     
     
@@ -140,8 +148,11 @@ public class HttpClientSecurityParameters {
      * 
      * @param credentials the username and password credentials
      * @param scope the HTTP client auth scope with which to scope the credentials, may be null
+     * 
+     * @return this object
      */
-    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials,
+    @Nonnull public HttpClientSecurityParameters setBasicCredentialsWithScope(
+            @Nullable final UsernamePasswordCredentials credentials,
             @Nullable final AuthScope scope) {
 
         if (credentials != null) {
@@ -156,6 +167,7 @@ public class HttpClientSecurityParameters {
             credentialsProvider = null;
         }
 
+        return this;
     }
     
     /**
@@ -171,9 +183,14 @@ public class HttpClientSecurityParameters {
      * Sets the optional trust engine used in evaluating server TLS credentials.
      * 
      * @param engine the trust engine instance to use
+     * 
+     * @return this object
      */
-    public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
+    @Nonnull public HttpClientSecurityParameters setTLSTrustEngine(
+            @Nullable final TrustEngine<? super X509Credential> engine) {
         tlsTrustEngine = engine;
+        
+        return this;
     }
 
     /**
@@ -189,9 +206,13 @@ public class HttpClientSecurityParameters {
      * Set the optional criteria set used in evaluating server TLS credentials.
      * 
      * @param criteriaSet the new criteria set instance to use
+     * 
+     * @return this object
      */
-    public void setTLSCriteriaSet(@Nullable final CriteriaSet criteriaSet) {
+    @Nonnull public HttpClientSecurityParameters setTLSCriteriaSet(@Nullable final CriteriaSet criteriaSet) {
         tlsCriteriaSet = criteriaSet;
+        
+        return this;
     }
 
     /**
@@ -207,12 +228,16 @@ public class HttpClientSecurityParameters {
      * Set the optional list of TLS protocols. 
      * 
      * @param protocols the TLS protocols or null
+     * 
+     * @return this object
      */
-    public void setTLSProtocols(@Nullable final Collection<String> protocols) {
+    @Nonnull public HttpClientSecurityParameters setTLSProtocols(@Nullable final Collection<String> protocols) {
         tlsProtocols = new ArrayList<>(StringSupport.normalizeStringCollection(protocols));
         if (tlsProtocols.isEmpty()) {
             tlsProtocols = null;
         }
+        
+        return this;
     }
 
     /**
@@ -228,12 +253,16 @@ public class HttpClientSecurityParameters {
      * Set the optional list of TLS cipher suites.
      * 
      * @param cipherSuites the TLS cipher suites, or null
+     * 
+     * @return this object
      */
-    public void setTLSCipherSuites(@Nullable final Collection<String> cipherSuites) {
+    @Nonnull public HttpClientSecurityParameters setTLSCipherSuites(@Nullable final Collection<String> cipherSuites) {
         tlsCipherSuites = new ArrayList<>(StringSupport.normalizeStringCollection(cipherSuites));
         if (tlsCipherSuites.isEmpty()) {
             tlsCipherSuites = null;
         }
+        
+        return this;
     }
 
     /**
@@ -249,9 +278,13 @@ public class HttpClientSecurityParameters {
      * Set the optional hostname verifier.
      * 
      * @param verifier the hostname verifier, or null
+     * 
+     * @return this object
      */
-    public void setHostnameVerifier(@Nullable final HostnameVerifier verifier) {
+    @Nonnull public HttpClientSecurityParameters setHostnameVerifier(@Nullable final HostnameVerifier verifier) {
         hostnameVerifier = verifier;
+        
+        return this;
     }
 
     /**
@@ -267,9 +300,13 @@ public class HttpClientSecurityParameters {
      * Set the optional client TLS credential.
      * 
      * @param credential the client TLS credential, or null
+     * 
+     * @return this object
      */
-    public void setClientTLSCredential(@Nullable final X509Credential credential) {
+    @Nonnull public HttpClientSecurityParameters setClientTLSCredential(@Nullable final X509Credential credential) {
         clientTLSCredential = credential;
+        
+        return this;
     }
 
     /**
@@ -299,9 +336,12 @@ public class HttpClientSecurityParameters {
      * 
      * @param flag true if fatal, false if non-fatal, null if not explicitly configured
      * 
+     * @return this object
      */
-    public void setServerTLSFailureFatal(@Nullable final Boolean flag) {
-        this.serverTLSFailureFatal = flag ;
+    @Nonnull public HttpClientSecurityParameters setServerTLSFailureFatal(@Nullable final Boolean flag) {
+        serverTLSFailureFatal = flag;
+        
+        return this;
     }
 
 }

@@ -16,4 +16,7 @@
  */
 
 /** {@link org.opensaml.security.trust.TrustEngine} implementation classes. */
+@NonnullElements
 package org.opensaml.security.trust.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -50,7 +49,7 @@ public interface PKIXValidationInformationResolver extends Resolver<PKIXValidati
      * @throws ResolverException thrown if there is an error resolving the trusted names
      * @throws UnsupportedOperationException thrown if this optional method is not supported by the implementation
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive Set<String> resolveTrustedNames(
+    @Nonnull @Unmodifiable @NotLive Set<String> resolveTrustedNames(
             @Nullable final CriteriaSet criteriaSet) throws ResolverException;
     
     /**

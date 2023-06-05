@@ -37,9 +37,9 @@ import org.bouncycastle.asn1.x9.DomainParameters;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Cryptography support related to Elliptic Curve.
@@ -47,7 +47,7 @@ import net.shibboleth.shared.logic.Constraint;
 public final class DHSupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(DHSupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(DHSupport.class);
     
     /** Constructor. */
     private DHSupport() { }

@@ -17,10 +17,10 @@
 
 package org.opensaml.security.httpclient.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
@@ -32,6 +32,7 @@ import org.opensaml.security.httpclient.HttpClientSecurityConfiguration;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -74,9 +75,14 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * Set an instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
      * 
      * @param provider the credentials provider
+     * 
+     * @return this object
      */
-    public void setCredentialsProvider(@Nullable final CredentialsProvider provider) {
+    @Nonnull public BasicHttpClientSecurityConfiguration setCredentialsProvider(
+            @Nullable final CredentialsProvider provider) {
         credentialsProvider = provider;
+        
+        return this;
     }
     
     /**
@@ -91,9 +97,14 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
      * 
      * @param credentials the username and password credentials
+     * 
+     * @return this object
      */
-    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
+    @Nonnull public BasicHttpClientSecurityConfiguration setBasicCredentials(
+            @Nullable final UsernamePasswordCredentials credentials) {
         setBasicCredentialsWithScope(credentials, null);
+        
+        return this;
     }
     
     /**
@@ -110,9 +121,11 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * 
      * @param credentials the username and password credentials
      * @param scope the HTTP client auth scope with which to scope the credentials, may be null
+     * 
+     * @return this object
      */
-    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials,
-            @Nullable final AuthScope scope) {
+    @Nonnull public BasicHttpClientSecurityConfiguration setBasicCredentialsWithScope(
+            @Nullable final UsernamePasswordCredentials credentials, @Nullable final AuthScope scope) {
 
         if (credentials != null) {
             AuthScope authScope = scope;
@@ -126,6 +139,7 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
             credentialsProvider = null;
         }
 
+        return this;
     }
     
     /**
@@ -141,9 +155,14 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * Sets the optional trust engine used in evaluating server TLS credentials.
      * 
      * @param engine the trust engine instance to use
+     * 
+     * @return this object
      */
-    public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
+    @Nonnull public BasicHttpClientSecurityConfiguration setTLSTrustEngine(
+            @Nullable final TrustEngine<? super X509Credential> engine) {
         tlsTrustEngine = engine;
+        
+        return this;
     }
 
     /**
@@ -159,12 +178,17 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * Set the optional list of TLS protocols. 
      * 
      * @param protocols the TLS protocols or null
+     * 
+     * @return this object
      */
-    public void setTLSProtocols(@Nullable final Collection<String> protocols) {
-        tlsProtocols = new ArrayList<>(StringSupport.normalizeStringCollection(protocols));
+    @Nonnull public BasicHttpClientSecurityConfiguration setTLSProtocols(
+            @Nullable final Collection<String> protocols) {
+        tlsProtocols = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(protocols));
         if (tlsProtocols.isEmpty()) {
             tlsProtocols = null;
         }
+        
+        return this;
     }
 
     /**
@@ -180,12 +204,17 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * Set the optional list of TLS cipher suites.
      * 
      * @param cipherSuites the TLS cipher suites, or null
+     * 
+     * @return this object
      */
-    public void setTLSCipherSuites(@Nullable final Collection<String> cipherSuites) {
-        tlsCipherSuites = new ArrayList<>(StringSupport.normalizeStringCollection(cipherSuites));
+    @Nonnull public BasicHttpClientSecurityConfiguration setTLSCipherSuites(
+            @Nullable final Collection<String> cipherSuites) {
+        tlsCipherSuites = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(cipherSuites));
         if (tlsCipherSuites.isEmpty()) {
             tlsCipherSuites = null;
         }
+        
+        return this;
     }
 
     /**
@@ -201,9 +230,14 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * Set the optional hostname verifier.
      * 
      * @param verifier the hostname verifier, or null
+     * 
+     * @return this object
      */
-    public void setHostnameVerifier(@Nullable final HostnameVerifier verifier) {
+    @Nonnull public BasicHttpClientSecurityConfiguration setHostnameVerifier(
+            @Nullable final HostnameVerifier verifier) {
         hostnameVerifier = verifier;
+        
+        return this;
     }
 
     /**
@@ -219,9 +253,14 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * Set the optional client TLS credential.
      * 
      * @param credential the client TLS credential, or null
+     * 
+     * @return this object
      */
-    public void setClientTLSCredential(@Nullable final X509Credential credential) {
+    @Nonnull public BasicHttpClientSecurityConfiguration setClientTLSCredential(
+            @Nullable final X509Credential credential) {
         clientTLSCredential = credential;
+        
+        return this;
     }
     
     /**
@@ -251,9 +290,12 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
      * 
      * @param flag true if fatal, false if non-fatal, null if not explicitly configured
      * 
+     * @return this object
      */
-    public void setServerTLSFailureFatal(@Nullable final Boolean flag) {
-        this.serverTLSFailureFatal = flag ;
+    @Nonnull public BasicHttpClientSecurityConfiguration setServerTLSFailureFatal(@Nullable final Boolean flag) {
+        serverTLSFailureFatal = flag ;
+        
+        return this;
     }
 
 }

@@ -25,8 +25,6 @@ import javax.annotation.Nullable;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.X509Credential;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
-
 /**
  * Interface for classes which evaluate an {@link X509Credential} against a 
  * supplied set of trusted names.
@@ -46,7 +44,7 @@ public interface X509CredentialNameEvaluator {
      * 
      * @throws SecurityException thrown if there is an error during name evaluation
      */
-    boolean evaluate(@Nonnull final X509Credential credential,
-            @Nullable @NonnullElements final Set<String> trustedNames) throws SecurityException;
+    boolean evaluate(@Nonnull final X509Credential credential, @Nullable final Set<String> trustedNames)
+            throws SecurityException;
     
 }

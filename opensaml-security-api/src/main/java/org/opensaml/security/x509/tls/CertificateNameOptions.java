@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -104,7 +103,7 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @return Returns the subjectAltNames.
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<Integer> getSubjectAltNames() {
+    @Nonnull @NotLive @Unmodifiable public Set<Integer> getSubjectAltNames() {
         return subjectAltNames;
     }
     
@@ -114,7 +113,7 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @param names the set of types of subject alternative names
      */
-    public void setSubjectAltNames(@Nullable @NonnullElements final Set<Integer> names) {
+    public void setSubjectAltNames(@Nullable final Set<Integer> names) {
         if (names == null) {
             subjectAltNames = CollectionSupport.emptySet();
         } else {

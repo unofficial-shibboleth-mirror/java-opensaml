@@ -25,9 +25,9 @@ import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.httpclient.HttpClientContextHandler;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link HttpClientContextHandler} which clears the thread local client TLS credential
@@ -36,7 +36,7 @@ import net.shibboleth.shared.httpclient.HttpClientContextHandler;
 public class ThreadLocalClientTLSCredentialHandler implements HttpClientContextHandler {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(ThreadLocalClientTLSCredentialHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ThreadLocalClientTLSCredentialHandler.class);
 
     /** {@inheritDoc} */
     public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)

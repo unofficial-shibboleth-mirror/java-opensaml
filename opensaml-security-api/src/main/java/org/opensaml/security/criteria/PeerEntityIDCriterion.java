@@ -19,6 +19,7 @@ package org.opensaml.security.criteria;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
@@ -35,15 +36,15 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class PeerEntityIDCriterion implements Criterion {
     
     /** Peer entity ID criteria. */
-    private String peerID;
+    @Nonnull @NotEmpty private String peerID;
     
     /**
     * Constructor.
      *
      * @param peer the entity ID which is the peer relative to a primary entity ID
      */
-    public PeerEntityIDCriterion(@Nonnull final String peer) {
-        setPeerID(peer);
+    public PeerEntityIDCriterion(@Nonnull @NotEmpty final String peer) {
+        peerID = validatePeerID(peer);
     }
 
     /**
@@ -51,7 +52,7 @@ public final class PeerEntityIDCriterion implements Criterion {
      * 
      * @return the peer entity ID.
      */
-    @Nonnull public String getPeerID() {
+    @Nonnull @NotEmpty public String getPeerID() {
         return peerID;
     }
 
@@ -60,11 +61,8 @@ public final class PeerEntityIDCriterion implements Criterion {
      * 
      * @param peer The peerID to set.
      */
-    public void setPeerID(@Nonnull final String peer) {
-        final String trimmed = StringSupport.trimOrNull(peer);
-        Constraint.isNotNull(trimmed, "Peer entity ID criteria cannot be null");
-        
-        peerID = trimmed;
+    public void setPeerID(@Nonnull @NotEmpty final String peer) {
+        peerID = validatePeerID(peer);
     }
     
     /** {@inheritDoc} */
@@ -91,11 +89,24 @@ public final class PeerEntityIDCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof PeerEntityIDCriterion) {
-            return peerID.equals(((PeerEntityIDCriterion) obj).peerID);
+        if (obj instanceof PeerEntityIDCriterion peercrit) {
+            return peerID.equals(peercrit.peerID);
         }
 
         return false;
     }
     
+    /**
+     * Validate peer ID criterion.
+     * 
+     * @param peer ID to check
+     * 
+     * @return the input if non-null/empty
+     */
+    @Nonnull @NotEmpty public String validatePeerID(@Nonnull @NotEmpty final String peer) {
+        final String trimmed = StringSupport.trimOrNull(peer);
+
+        return Constraint.isNotNull(trimmed, "Peer entityID criterion value cannot be null or empty");
+    }
+
 }

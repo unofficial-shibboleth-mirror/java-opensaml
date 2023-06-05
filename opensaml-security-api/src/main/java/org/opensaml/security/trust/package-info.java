@@ -19,4 +19,7 @@
  * Interfaces and classes used to evaluate the trustworthiness and validity of
  * {@link org.opensaml.security.credential.Credential}s.
  */
+@NonnullElements
 package org.opensaml.security.trust;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

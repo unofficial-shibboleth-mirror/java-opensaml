@@ -32,11 +32,11 @@ import org.opensaml.security.crypto.ec.ECSupport;
 import org.opensaml.security.crypto.ec.NamedCurve;
 import org.opensaml.security.crypto.ec.NamedCurveRegistry;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * OpenSAML {@link Initializer} implementation for {@link NamedCurveRegistry}.
@@ -48,7 +48,7 @@ public class GlobalNamedCurveRegistryInitializer implements Initializer {
             "opensaml.config.ec.registerBouncyCastleCurves";
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(GlobalNamedCurveRegistryInitializer.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(GlobalNamedCurveRegistryInitializer.class);
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {

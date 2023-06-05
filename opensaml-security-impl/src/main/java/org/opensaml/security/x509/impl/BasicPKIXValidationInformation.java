@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import org.opensaml.security.x509.PKIXValidationInformation;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -37,10 +36,10 @@ import net.shibboleth.shared.collection.CollectionSupport;
 public class BasicPKIXValidationInformation implements PKIXValidationInformation {
 
     /** Certs used as the trust anchors. */
-    @Nullable @NonnullElements private final Collection<X509Certificate> trustAnchors;
+    @Nullable private final Collection<X509Certificate> trustAnchors;
 
     /** CRLs used during validation. */
-    @Nullable @NonnullElements private final Collection<X509CRL> trustedCRLs;
+    @Nullable private final Collection<X509CRL> trustedCRLs;
 
     /** Max verification depth during PKIX validation. */
     @Nullable private final Integer verificationDepth;
@@ -53,9 +52,9 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
      * @param depth max verification path depth
      */
     public BasicPKIXValidationInformation(
-            @Nullable @NonnullElements @ParameterName(name="anchors") final Collection<X509Certificate> anchors,
-            @Nullable @NonnullElements @ParameterName(name="crls") final Collection<X509CRL> crls,
-            @Nullable @NonnullElements @ParameterName(name="depth") final Integer depth) {
+            @Nullable @ParameterName(name="anchors") final Collection<X509Certificate> anchors,
+            @Nullable @ParameterName(name="crls") final Collection<X509CRL> crls,
+            @Nullable @ParameterName(name="depth") final Integer depth) {
 
         verificationDepth = depth;
         trustAnchors = anchors != null ? CollectionSupport.copyToList(anchors) : null;
@@ -63,12 +62,12 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
+    @Nullable @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
         return trustedCRLs;
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getCertificates() {
+    @Nullable @Unmodifiable @NotLive public Collection<X509Certificate> getCertificates() {
         return trustAnchors;
     }
 

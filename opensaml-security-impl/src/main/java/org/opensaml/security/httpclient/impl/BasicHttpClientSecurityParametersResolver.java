@@ -32,10 +32,10 @@ import org.opensaml.security.httpclient.TLSCriteriaSetCriterion;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.ObjectSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -53,7 +53,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class BasicHttpClientSecurityParametersResolver implements HttpClientSecurityParametersResolver {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(BasicHttpClientSecurityParametersResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(BasicHttpClientSecurityParametersResolver.class);
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<HttpClientSecurityParameters> resolve(@Nullable final CriteriaSet criteria) 

@@ -117,8 +117,7 @@ public final class X509DigestCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof X509DigestCriterion) {
-            final X509DigestCriterion other = (X509DigestCriterion) obj;
+        if (obj instanceof X509DigestCriterion other) {
             return algorithm.equals(other.algorithm) && Arrays.equals(x509digest, other.x509digest);
         }
 

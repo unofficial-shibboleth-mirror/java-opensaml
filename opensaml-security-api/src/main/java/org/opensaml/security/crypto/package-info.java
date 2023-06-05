@@ -16,4 +16,7 @@
  */
 
 /** General cryptographic functionality. */
+@NonnullElements
 package org.opensaml.security.crypto;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

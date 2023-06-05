@@ -17,10 +17,6 @@
 
 package org.opensaml.security.x509;
 
-import javax.annotation.Nonnull;
-
-import net.shibboleth.shared.logic.Constraint;
-
 /**
  * Options which may be supplied to influence the processing behavior of a {@link PKIXTrustEvaluator}.
  */
@@ -36,7 +32,7 @@ public class PKIXValidationOptions {
     private boolean processCredentialCRLs;
     
     /** Default verification depth. */
-    @Nonnull private Integer defaultVerificationDepth;
+    private int defaultVerificationDepth;
 
     /** Constructor. */
     public PKIXValidationOptions() {
@@ -121,7 +117,7 @@ public class PKIXValidationOptions {
      * 
      * @return Returns the defaultVerificationDepth.
      */
-    @Nonnull public Integer getDefaultVerificationDepth() {
+    public int getDefaultVerificationDepth() {
         return defaultVerificationDepth;
     }
 
@@ -133,8 +129,8 @@ public class PKIXValidationOptions {
      * 
      * @param depth default verification depth to set
      */
-    public void setDefaultVerificationDepth(@Nonnull final Integer depth) {
-        defaultVerificationDepth = Constraint.isNotNull(depth, "Default verification depth cannot be null");
+    public void setDefaultVerificationDepth(final int depth) {
+        defaultVerificationDepth = depth;
     }
 
 }

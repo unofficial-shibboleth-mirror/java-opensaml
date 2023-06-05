@@ -32,7 +32,7 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class UsageCriterion implements Criterion {
    
     /** Key usage type of resolved credentials. */
-    private UsageType credUsage;
+    @Nonnull private UsageType credUsage;
     
     /**
     * Constructor.
@@ -40,7 +40,11 @@ public final class UsageCriterion implements Criterion {
      * @param usage the usage for which a credential is intended
      */
     public UsageCriterion(@Nullable final UsageType usage) {
-        setUsage(usage);
+        if (usage != null) {
+            credUsage = usage;
+        } else {
+            credUsage = UsageType.UNSPECIFIED;
+        }
     }
 
     /**
@@ -89,8 +93,8 @@ public final class UsageCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof UsageCriterion) {
-            return credUsage.equals(((UsageCriterion) obj).credUsage);
+        if (obj instanceof UsageCriterion usagecrit) {
+            return credUsage.equals(usagecrit.credUsage);
         }
 
         return false;

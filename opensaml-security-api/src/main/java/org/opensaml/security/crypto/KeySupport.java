@@ -65,12 +65,12 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.bouncycastle.jcajce.provider.asymmetric.util.EC5Util;
 import org.cryptacular.util.KeyPairUtil;
 import org.opensaml.security.SecurityException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
@@ -84,7 +84,7 @@ public final class KeySupport {
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(KeySupport.class);
 
     /** Maps key algorithms to the signing algorithm used in the key matching function. */
-    private static Map<String, String> keyMatchAlgorithms;
+    @Nonnull private static final Map<String, String> keyMatchAlgorithms;
 
     /** Constructor. */
     private KeySupport() {

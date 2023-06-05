@@ -36,42 +36,42 @@ public interface HttpClientSecurityConfiguration {
      * 
      * @return the credentials provider, or null
      */
-    @Nullable public CredentialsProvider getCredentialsProvider();
+    @Nullable CredentialsProvider getCredentialsProvider();
     
     /**
      * Sets the optional trust engine used in evaluating server TLS credentials.
      * 
      * @return the trust engine instance to use, or null
      */
-    @Nullable public TrustEngine<? super X509Credential> getTLSTrustEngine();
+    @Nullable TrustEngine<? super X509Credential> getTLSTrustEngine();
     
     /**
      * Get the optional list of TLS protocols. 
      * 
      * @return the TLS protocols, or null
      */
-    @Nullable public List<String> getTLSProtocols();
+    @Nullable List<String> getTLSProtocols();
     
     /**
      * Get the optional list of TLS cipher suites.
      * 
      * @return the list of TLS cipher suites, or null
      */
-    @Nullable public List<String> getTLSCipherSuites();
+    @Nullable List<String> getTLSCipherSuites();
     
     /**
      * Get the optional hostname verifier.
      * 
      * @return the hostname verifier, or null
      */
-    @Nullable public HostnameVerifier getHostnameVerifier();
+    @Nullable HostnameVerifier getHostnameVerifier();
     
     /**
      * Get the optional client TLS credential.
      * 
      * @return the client TLS credential, or null
      */
-    @Nullable public X509Credential getClientTLSCredential();
+    @Nullable X509Credential getClientTLSCredential();
     
     /**
      * Get the flag indicating whether failure of server TLS trust engine evaluation should be treated as 
@@ -85,6 +85,6 @@ public interface HttpClientSecurityConfiguration {
      * @return true if fatal, false if non-fatal, null if not explicitly configured
      * 
      */
-    @Nullable public Boolean isServerTLSFailureFatal();
+    @Nullable Boolean isServerTLSFailureFatal();
 
 }

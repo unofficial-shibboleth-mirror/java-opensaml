@@ -16,4 +16,7 @@
  */
 
 /** Support for Elliptic-Curve cryptography. */
+@NonnullElements
 package org.opensaml.security.crypto.ec;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

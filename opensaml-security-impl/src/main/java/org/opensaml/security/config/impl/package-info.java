@@ -18,4 +18,7 @@
 /**
  * Security configuration implementation classes.
  */
+@NonnullElements
 package org.opensaml.security.config.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

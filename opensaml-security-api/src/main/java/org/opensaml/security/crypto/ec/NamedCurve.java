@@ -61,7 +61,7 @@ public interface NamedCurve {
      * 
      * @return the key length, in bits
      */
-    @Nonnull default Integer getKeyLength() {
+    default int getKeyLength() {
         return getParameterSpec().getCurve().getField().getFieldSize();
     }
 

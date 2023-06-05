@@ -33,6 +33,6 @@ public interface PKIXTrustEngine<TokenType> extends TrustEngine<TokenType> {
      * 
      * @return the currently configured resolver instance
      */
-    @Nonnull public PKIXValidationInformationResolver getPKIXResolver();
+    @Nonnull PKIXValidationInformationResolver getPKIXResolver();
     
 }

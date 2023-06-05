@@ -17,9 +17,6 @@
 
 package org.opensaml.security.criteria;
 
-import javax.annotation.Nonnull;
-
-import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
 
 /**
@@ -28,14 +25,14 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class KeyLengthCriterion implements Criterion {
     
     /** Key length of resolved credentials. */
-    private Integer keyLength;
+    private int keyLength;
     
     /**
      * Constructor.
      *
      * @param length key length 
      */
-    public KeyLengthCriterion(@Nonnull final Integer length) {
+    public KeyLengthCriterion(final int length) {
         setKeyLength(length);
     }
 
@@ -44,7 +41,7 @@ public final class KeyLengthCriterion implements Criterion {
      * 
      * @return Returns the keyLength.
      */
-    @Nonnull public Integer getKeyLength() {
+    public int getKeyLength() {
         return keyLength;
     }
 
@@ -53,9 +50,7 @@ public final class KeyLengthCriterion implements Criterion {
      * 
      * @param length The keyLength to set.
      */
-    public void setKeyLength(@Nonnull final Integer length) {
-        Constraint.isNotNull(length, "Key length criteria value cannot be null");
-
+    public void setKeyLength(final int length) {
         keyLength = length;
     }
     
@@ -70,7 +65,7 @@ public final class KeyLengthCriterion implements Criterion {
 
     /** {@inheritDoc} */
     public int hashCode() {
-        return keyLength.hashCode();
+        return Integer.valueOf(keyLength).hashCode();
     }
 
     /** {@inheritDoc} */
@@ -83,8 +78,8 @@ public final class KeyLengthCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof KeyLengthCriterion) {
-            return keyLength.equals(((KeyLengthCriterion) obj).keyLength);
+        if (obj instanceof KeyLengthCriterion lencrit) {
+            return keyLength == lencrit.keyLength;
         }
 
         return false;

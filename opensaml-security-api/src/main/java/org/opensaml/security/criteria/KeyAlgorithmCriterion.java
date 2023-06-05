@@ -19,6 +19,7 @@ package org.opensaml.security.criteria;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
@@ -30,15 +31,15 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class KeyAlgorithmCriterion implements Criterion {
     
     /** Key algorithm type of resolved credentials. */
-    private String keyAlgorithm;
+    @Nonnull private String keyAlgorithm;
     
     /**
      * Constructor.
      *
      * @param algorithm key algorithm
      */
-    public KeyAlgorithmCriterion(@Nonnull final String algorithm) {
-        setKeyAlgorithm(algorithm);
+    public KeyAlgorithmCriterion(@Nonnull @NotEmpty final String algorithm) {
+        keyAlgorithm = validateAlgorithm(algorithm);
     }
  
     /**
@@ -46,7 +47,7 @@ public final class KeyAlgorithmCriterion implements Criterion {
      * 
      * @return returns the keyAlgorithm.
      */
-    @Nonnull public String getKeyAlgorithm() {
+    @Nonnull @NotEmpty public String getKeyAlgorithm() {
         return keyAlgorithm;
     }
 
@@ -56,10 +57,8 @@ public final class KeyAlgorithmCriterion implements Criterion {
      * @param algorithm The keyAlgorithm to set.
      */
     public void setKeyAlgorithm(@Nonnull final String algorithm) {
-        final String trimmed = StringSupport.trimOrNull(algorithm);
-        Constraint.isNotNull(trimmed, "Key algorithm criteria cannot be null or empty");
 
-        keyAlgorithm = trimmed;
+        keyAlgorithm = validateAlgorithm(algorithm);
     }
     
     /** {@inheritDoc} */
@@ -86,11 +85,24 @@ public final class KeyAlgorithmCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof KeyAlgorithmCriterion) {
-            return keyAlgorithm.equals(((KeyAlgorithmCriterion) obj).keyAlgorithm);
+        if (obj instanceof KeyAlgorithmCriterion algcrit) {
+            return keyAlgorithm.equals(algcrit.keyAlgorithm);
         }
 
         return false;
     }
 
+    /**
+     * Static method to validate and return null algorithm.
+     * 
+     * @param algorithm candidate
+     * 
+     * @return the input parameter if not null/empty after trimming
+     */
+    @Nonnull @NotEmpty private static String validateAlgorithm(@Nonnull final String algorithm) {
+        final String trimmed = StringSupport.trimOrNull(algorithm);
+
+        return Constraint.isNotNull(trimmed, "Key algorithm criterion cannot be null or empty");
+    }
+    
 }

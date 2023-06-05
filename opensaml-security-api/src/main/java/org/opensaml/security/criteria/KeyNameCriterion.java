@@ -19,6 +19,7 @@ package org.opensaml.security.criteria;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
@@ -30,15 +31,15 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class KeyNameCriterion implements Criterion {
 
     /** Key name of resolved credentials.  */
-    private String keyName;
+    @Nonnull @NotEmpty private String keyName;
     
     /**
      * Constructor.
      *
      * @param name key name
      */
-    public KeyNameCriterion(@Nonnull final String name) {
-        setKeyName(name);
+    public KeyNameCriterion(@Nonnull @NotEmpty final String name) {
+        keyName = validateKeyName(name);
     }
 
     /**
@@ -46,7 +47,7 @@ public final class KeyNameCriterion implements Criterion {
      * 
      * @return Returns the keyName.
      */
-    @Nonnull public String getKeyName() {
+    @Nonnull @NotEmpty public String getKeyName() {
         return keyName;
     }
 
@@ -55,11 +56,8 @@ public final class KeyNameCriterion implements Criterion {
      * 
      * @param name The keyName to set.
      */
-    public void setKeyName(@Nonnull final String name) {
-        final String trimmed = StringSupport.trimOrNull(name);
-        Constraint.isNotNull(trimmed, "Key name criteria value cannot be null or empty");
-
-        keyName = trimmed;
+    public void setKeyName(@Nonnull @NotEmpty final String name) {
+        keyName = validateKeyName(name);
     }
     
     /** {@inheritDoc} */
@@ -86,11 +84,24 @@ public final class KeyNameCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof KeyNameCriterion) {
-            return keyName.equals(((KeyNameCriterion) obj).keyName);
+        if (obj instanceof KeyNameCriterion namecrit) {
+            return keyName.equals(namecrit.keyName);
         }
 
         return false;
     }
 
+    /**
+     * Validate key name criterion.
+     * 
+     * @param name name to check
+     * 
+     * @return the input if non-null/empty
+     */
+    @Nonnull @NotEmpty public String validateKeyName(@Nonnull @NotEmpty final String name) {
+        final String trimmed = StringSupport.trimOrNull(name);
+
+        return Constraint.isNotNull(trimmed, "Key name criterion value cannot be null or empty");
+    }
+    
 }

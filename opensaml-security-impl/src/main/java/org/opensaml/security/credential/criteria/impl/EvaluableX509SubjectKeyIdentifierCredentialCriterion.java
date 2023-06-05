@@ -42,7 +42,8 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion extends Abstra
         implements EvaluableCredentialCriterion {
     
     /** Logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
+    @Nonnull private final Logger log =
+            LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
     
     /** Base criteria. */
     @Nonnull private final byte[] ski;
@@ -111,8 +112,8 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion extends Abstra
             return false;
         }
 
-        if (obj instanceof EvaluableX509SubjectKeyIdentifierCredentialCriterion) {
-            return ski.equals(((EvaluableX509SubjectKeyIdentifierCredentialCriterion) obj).ski);
+        if (obj instanceof EvaluableX509SubjectKeyIdentifierCredentialCriterion other) {
+            return ski.equals(other.ski);
         }
 
         return false;

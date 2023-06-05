@@ -16,4 +16,7 @@
  */
 
 /** X.509-based credential and trust classes. */
+@NonnullElements
 package org.opensaml.security.x509;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

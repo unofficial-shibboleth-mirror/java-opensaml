@@ -22,12 +22,12 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -38,10 +38,10 @@ public class EvaluableEntityIDCredentialCriterion extends AbstractTriStatePredic
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriterion.class);
 
     /** Base criteria. */
-    private final String entityID;
+    @Nonnull private final String entityID;
 
     /**
      * Constructor.
@@ -59,9 +59,7 @@ public class EvaluableEntityIDCredentialCriterion extends AbstractTriStatePredic
      */
     public EvaluableEntityIDCredentialCriterion(@Nonnull final String entity) {
         final String trimmed = StringSupport.trimOrNull(entity);
-        Constraint.isNotNull(trimmed, "EntityID criteria cannot be null or empty");
-
-        entityID = trimmed;
+        entityID = Constraint.isNotNull(trimmed, "EntityID criteria cannot be null or empty");
     }
 
     /** {@inheritDoc} */
@@ -100,8 +98,8 @@ public class EvaluableEntityIDCredentialCriterion extends AbstractTriStatePredic
             return false;
         }
 
-        if (obj instanceof EvaluableEntityIDCredentialCriterion) {
-            return entityID.equals(((EvaluableEntityIDCredentialCriterion) obj).entityID);
+        if (obj instanceof EvaluableEntityIDCredentialCriterion other) {
+            return entityID.equals(other.entityID);
         }
 
         return false;

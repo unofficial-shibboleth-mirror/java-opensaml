@@ -25,4 +25,7 @@
  * which may have general applicability throughout the library. Criterion implementations which are more
  * specialized in nature may be found in other packages, such as {@link org.opensaml.security.x509}.</p>
  */
+@NonnullElements
 package org.opensaml.security.criteria;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

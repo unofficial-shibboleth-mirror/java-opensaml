@@ -17,21 +17,22 @@
 
 package org.opensaml.security.credential.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
- * Simple implementation of {@link org.opensaml.security.credential.CredentialResolver} which just stores
+ * Simple implementation of {@link CredentialResolver} which just stores
  * and returns a static set of credentials.
  * 
  * <p>
@@ -53,7 +54,7 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
     public StaticCredentialResolver(@Nonnull @ParameterName(name="credentials") final List<Credential> credentials) {
         Constraint.isNotNull(credentials, "Input credentials list cannot be null");
         
-        creds = new ArrayList<>(credentials);
+        creds = CollectionSupport.copyToList(credentials);
     }
     
     /**
@@ -64,8 +65,7 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
     public StaticCredentialResolver(@Nonnull @ParameterName(name="credential") final Credential credential) {
         Constraint.isNotNull(credential, "Input credential cannot be null");
         
-        creds = new ArrayList<>();
-        creds.add(credential);
+        creds = CollectionSupport.singletonList(credential);
     }
 
     /** {@inheritDoc} */

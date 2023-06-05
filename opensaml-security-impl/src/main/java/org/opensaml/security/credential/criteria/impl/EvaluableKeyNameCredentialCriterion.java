@@ -22,12 +22,12 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyNameCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -37,10 +37,10 @@ public class EvaluableKeyNameCredentialCriterion extends AbstractTriStatePredica
         implements EvaluableCredentialCriterion {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableKeyNameCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableKeyNameCredentialCriterion.class);
     
     /** Base criteria. */
-    private final String keyName;
+    @Nonnull private final String keyName;
     
     /**
      * Constructor.
@@ -58,9 +58,7 @@ public class EvaluableKeyNameCredentialCriterion extends AbstractTriStatePredica
      */
     public EvaluableKeyNameCredentialCriterion(@Nonnull final String newKeyName) {
         final String trimmed = StringSupport.trimOrNull(newKeyName);
-        Constraint.isNotNull(trimmed, "Key name cannot be null or empty");
-
-        keyName = trimmed;
+        keyName = Constraint.isNotNull(trimmed, "Key name cannot be null or empty");
     }
 
     /** {@inheritDoc} */
@@ -100,8 +98,8 @@ public class EvaluableKeyNameCredentialCriterion extends AbstractTriStatePredica
             return false;
         }
 
-        if (obj instanceof EvaluableKeyNameCredentialCriterion) {
-            return keyName.equals(((EvaluableKeyNameCredentialCriterion) obj).keyName);
+        if (obj instanceof EvaluableKeyNameCredentialCriterion other) {
+            return keyName.equals(other.keyName);
         }
 
         return false;

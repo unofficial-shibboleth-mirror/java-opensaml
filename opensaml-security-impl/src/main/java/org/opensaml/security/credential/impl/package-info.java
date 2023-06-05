@@ -16,4 +16,7 @@
  */
 
 /** {@link org.opensaml.security.credential.CredentialResolver} implementation classes. */
+@NonnullElements
 package org.opensaml.security.credential.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

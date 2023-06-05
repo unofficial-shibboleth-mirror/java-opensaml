@@ -89,8 +89,8 @@ public final class X509SubjectKeyIdentifierCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof X509SubjectKeyIdentifierCriterion) {
-            return subjectKeyIdentifier.equals(((X509SubjectKeyIdentifierCriterion) obj).subjectKeyIdentifier);
+        if (obj instanceof X509SubjectKeyIdentifierCriterion other) {
+            return subjectKeyIdentifier.equals(other.subjectKeyIdentifier);
         }
 
         return false;

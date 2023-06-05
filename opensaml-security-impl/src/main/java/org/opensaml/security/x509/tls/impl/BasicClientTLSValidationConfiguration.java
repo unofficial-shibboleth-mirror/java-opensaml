@@ -17,6 +17,7 @@
 
 package org.opensaml.security.x509.tls.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.trust.TrustEngine;
@@ -44,9 +45,14 @@ public class BasicClientTLSValidationConfiguration implements ClientTLSValidatio
      * Set a {@link TrustEngine} instance used to validate a client TLS {@link X509Credential}.
      * 
      * @param engine a trust engine instance, may be null
+     * 
+     * @return this object
      */
-    public void setX509TrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
+    @Nonnull public BasicClientTLSValidationConfiguration setX509TrustEngine(
+            @Nullable final TrustEngine<? super X509Credential> engine) {
         x509TrustEngine = engine;
+        
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -58,9 +64,14 @@ public class BasicClientTLSValidationConfiguration implements ClientTLSValidatio
      * Set a {@link CertificateNameOptions} instance to use when evaluating a client TLS {@link X509Credential}.
      * 
      * @param options an options instance, may be null
+     * 
+     * @return this object
      */
-    public void setCertificateNameOptions(@Nullable final CertificateNameOptions options) {
+    @Nonnull public BasicClientTLSValidationConfiguration setCertificateNameOptions(
+            @Nullable final CertificateNameOptions options) {
         certificateNameOptions = options;
+        
+        return this;
     }
 
 }

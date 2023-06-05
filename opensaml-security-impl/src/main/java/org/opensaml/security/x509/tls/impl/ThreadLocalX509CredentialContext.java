@@ -31,7 +31,7 @@ import net.shibboleth.shared.logic.Constraint;
 public final class ThreadLocalX509CredentialContext {
 
     /** ThreadLocal storage for credential. */
-    private static ThreadLocal<X509Credential> currentCredential = new ThreadLocal<>();
+    @Nonnull private static ThreadLocal<X509Credential> currentCredential = new ThreadLocal<>();
 
     /** Constructor. */
     private ThreadLocalX509CredentialContext() {

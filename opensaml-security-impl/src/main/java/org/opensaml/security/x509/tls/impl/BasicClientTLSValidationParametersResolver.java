@@ -58,6 +58,8 @@ public class BasicClientTLSValidationParametersResolver implements ClientTLSVali
     /** {@inheritDoc} */
     @Nullable public ClientTLSValidationParameters resolveSingle(@Nullable final CriteriaSet criteria)
             throws ResolverException {
+        
+        // TODO: log and return null?
         final CriteriaSet localCriteria = Constraint.isNotNull(criteria, "CriteriaSet was null");
         
         final ClientTLSValidationParameters params = new ClientTLSValidationParameters();

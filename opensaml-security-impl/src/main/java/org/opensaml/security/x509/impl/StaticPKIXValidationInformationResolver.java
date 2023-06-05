@@ -17,7 +17,6 @@
 
 package org.opensaml.security.x509.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,13 +76,13 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
             @Nullable @ParameterName(name="names") final Set<String> names,
             @ParameterName(name="supportDynamicNames") final boolean supportDynamicNames) {
         if (info != null) {
-            pkixInfo = new ArrayList<>(info);
+            pkixInfo = CollectionSupport.copyToList(info);
         } else {
             pkixInfo = CollectionSupport.emptyList();
         }
 
         if (names != null) {
-            trustedNames = new HashSet<>(names);
+            trustedNames = CollectionSupport.copyToSet(names);
         } else {
             trustedNames = CollectionSupport.emptySet();
         }

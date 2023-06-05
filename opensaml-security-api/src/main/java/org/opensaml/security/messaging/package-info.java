@@ -16,4 +16,7 @@
  */
 
 /** Messaging-related security classes. */
+@NonnullElements
 package org.opensaml.security.messaging;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

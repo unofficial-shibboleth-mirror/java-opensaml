@@ -140,7 +140,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
 
 // CheckStyle: ParameterNumber OFF
     /** {@inheritDoc} */
-    public Socket connectSocket(TimeValue connectTimeout, final Socket sock, final HttpHost host,
+    public Socket connectSocket(final TimeValue connectTimeout, final Socket sock, final HttpHost host,
             final InetSocketAddress remoteAddress, final InetSocketAddress localAddress,
             final HttpContext context) throws IOException {
         

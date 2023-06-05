@@ -17,6 +17,7 @@
 
 package org.opensaml.security.messaging;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
@@ -51,9 +52,13 @@ public final class ClientTLSSecurityParametersContext extends BaseContext {
      * <p>Defaults to: <code>true</code></p>
      * 
      * @param flag true if should evaluate, false otherwise
+     * 
+     * @return this context
      */
-    public void setEvaluateClientCertificate(final boolean flag) {
+    @Nonnull public ClientTLSSecurityParametersContext setEvaluateClientCertificate(final boolean flag) {
         evaluateClientCertificate = flag;
+        
+        return this;
     }
 
     /**
@@ -69,9 +74,14 @@ public final class ClientTLSSecurityParametersContext extends BaseContext {
      * Set an instance of {@link ClientTLSValidationParameters}.
      * 
      * @param params the parameters instance to set, may be null
+     * 
+     * @return this context
      */
-    public void setValidationParameters(@Nullable final ClientTLSValidationParameters params) {
-        this.validationParameters = params;
+    @Nonnull public ClientTLSSecurityParametersContext setValidationParameters(
+            @Nullable final ClientTLSValidationParameters params) {
+        validationParameters = params;
+        
+        return this;
     }
 
 }

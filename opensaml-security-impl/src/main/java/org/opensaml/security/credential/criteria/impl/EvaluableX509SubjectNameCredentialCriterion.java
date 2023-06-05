@@ -102,8 +102,8 @@ public class EvaluableX509SubjectNameCredentialCriterion extends AbstractTriStat
             return false;
         }
 
-        if (obj instanceof EvaluableX509SubjectNameCredentialCriterion) {
-            return subjectName.equals(((EvaluableX509SubjectNameCredentialCriterion) obj).subjectName);
+        if (obj instanceof EvaluableX509SubjectNameCredentialCriterion other) {
+            return subjectName.equals(other.subjectName);
         }
 
         return false;

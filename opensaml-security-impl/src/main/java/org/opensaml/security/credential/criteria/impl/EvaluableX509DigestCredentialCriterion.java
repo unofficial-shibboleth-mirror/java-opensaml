@@ -131,8 +131,7 @@ public final class EvaluableX509DigestCredentialCriterion extends AbstractTriSta
             return false;
         }
 
-        if (obj instanceof EvaluableX509DigestCredentialCriterion) {
-            final EvaluableX509DigestCredentialCriterion other = (EvaluableX509DigestCredentialCriterion) obj;
+        if (obj instanceof EvaluableX509DigestCredentialCriterion other) {
             return algorithm.equals(other.algorithm) && Arrays.equals(x509digest, other.x509digest);
         }
 

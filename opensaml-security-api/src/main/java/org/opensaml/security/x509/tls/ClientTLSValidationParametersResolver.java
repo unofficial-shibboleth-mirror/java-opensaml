@@ -23,7 +23,6 @@ import net.shibboleth.shared.resolver.Resolver;
 /**
  * An interface for components which resolve {@link ClientTLSValidationParameters} based on a {@link CriteriaSet}.
  */
-public interface ClientTLSValidationParametersResolver 
-    extends Resolver<ClientTLSValidationParameters, CriteriaSet> {
+public interface ClientTLSValidationParametersResolver extends Resolver<ClientTLSValidationParameters, CriteriaSet> {
 
 }

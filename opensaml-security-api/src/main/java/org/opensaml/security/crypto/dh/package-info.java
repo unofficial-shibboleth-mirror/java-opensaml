@@ -16,4 +16,7 @@
  */
 
 /** Support for Diffie-Hellman cryptography. */
+@NonnullElements
 package org.opensaml.security.crypto.dh;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

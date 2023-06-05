@@ -30,7 +30,7 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class PublicKeyCriterion implements Criterion {
 
     /** Specifier of public key associated with resolved credentials. */
-    private PublicKey publicKey;
+    @Nonnull private PublicKey publicKey;
     
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public final class PublicKeyCriterion implements Criterion {
      * @param pubKey public key
      */
     public PublicKeyCriterion(@Nonnull final PublicKey pubKey) {
-        setPublicKey(pubKey);
+        publicKey = Constraint.isNotNull(pubKey, "Public key criterion value cannot be null");
     }
     
     /**
@@ -56,9 +56,7 @@ public final class PublicKeyCriterion implements Criterion {
      * @param key The publicKey to set.
      */
     public void setPublicKey(@Nonnull final PublicKey key) {
-        Constraint.isNotNull(key, "Public key criteria value cannot be null");
-
-        publicKey = key;
+        publicKey = Constraint.isNotNull(key, "Public key criterion value cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -85,8 +83,8 @@ public final class PublicKeyCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof PublicKeyCriterion) {
-            return publicKey.equals(((PublicKeyCriterion) obj).publicKey);
+        if (obj instanceof PublicKeyCriterion keycrit) {
+            return publicKey.equals(keycrit.publicKey);
         }
 
         return false;

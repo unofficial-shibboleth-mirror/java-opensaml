@@ -33,7 +33,6 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -57,7 +56,7 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
     @Nonnull private X509Certificate cert;
     
     /** The certificate chain. */
-    @Nonnull @NonnullElements private List<X509Certificate> certChain;
+    @Nonnull private List<X509Certificate> certChain;
 
     /**
      * Constructor.
@@ -67,7 +66,7 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
      * @throws SecurityException if request does not contain an X.509 client certificate in 
      *  request attribute 'javax.servlet.request.X509Certificate'
      */
-    public ServletRequestX509CredentialAdapter(final ServletRequest request) throws SecurityException {
+    public ServletRequestX509CredentialAdapter(@Nonnull final ServletRequest request) throws SecurityException {
         X509Certificate[] chain = (X509Certificate[]) request.getAttribute(JAKARTA_X509_CERT_REQUEST_ATTRIBUTE);
         
         if (chain == null || chain.length == 0) {
@@ -94,12 +93,12 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
     }
 
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain() {
+    @Nonnull @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain() {
         return certChain;
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
+    @Nullable @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
         return null;
     }
 

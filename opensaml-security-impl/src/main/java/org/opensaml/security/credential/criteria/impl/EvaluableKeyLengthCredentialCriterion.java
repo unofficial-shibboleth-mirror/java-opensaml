@@ -24,12 +24,12 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key length.
@@ -38,10 +38,10 @@ public class EvaluableKeyLengthCredentialCriterion extends AbstractTriStatePredi
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriterion.class);
 
     /** Base criteria. */
-    private final Integer keyLength;
+    private final int keyLength;
 
     /**
      * Constructor.
@@ -57,8 +57,8 @@ public class EvaluableKeyLengthCredentialCriterion extends AbstractTriStatePredi
      * 
      * @param newKeyLength the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyLengthCredentialCriterion(@Nonnull final Integer newKeyLength) {
-        keyLength = Constraint.isNotNull(newKeyLength, "Key length cannot be null");
+    public EvaluableKeyLengthCredentialCriterion(final int newKeyLength) {
+        keyLength = newKeyLength;
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class EvaluableKeyLengthCredentialCriterion extends AbstractTriStatePredi
             return isUnevaluableSatisfies();
         }
 
-        return keyLength.equals(length);
+        return keyLength == length;
     }
 
     /**
@@ -113,7 +113,7 @@ public class EvaluableKeyLengthCredentialCriterion extends AbstractTriStatePredi
 
     /** {@inheritDoc} */
     public int hashCode() {
-        return keyLength.hashCode();
+        return Integer.valueOf(keyLength).hashCode();
     }
 
     /** {@inheritDoc} */
@@ -126,8 +126,8 @@ public class EvaluableKeyLengthCredentialCriterion extends AbstractTriStatePredi
             return false;
         }
 
-        if (obj instanceof EvaluableKeyLengthCredentialCriterion) {
-            return keyLength.equals(((EvaluableKeyLengthCredentialCriterion) obj).keyLength);
+        if (obj instanceof EvaluableKeyLengthCredentialCriterion other) {
+            return keyLength == other.keyLength;
         }
 
         return false;

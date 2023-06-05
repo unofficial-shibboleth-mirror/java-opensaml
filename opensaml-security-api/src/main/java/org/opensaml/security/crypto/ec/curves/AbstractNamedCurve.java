@@ -30,13 +30,13 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.crypto.ec.ECSupport;
 import org.opensaml.security.crypto.ec.NamedCurve;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Abstract base class for implementations of {@link NamedCurve}.
@@ -44,7 +44,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 public abstract class AbstractNamedCurve extends AbstractInitializableComponent implements NamedCurve {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    @Nonnull private final Logger log = LoggerFactory.getLogger(this.getClass());
     
     /** Instance of {@link ECParameterSpec} corresponding to the curve. */
     @NonnullAfterInit private ECParameterSpec paramSpec;
@@ -52,6 +52,7 @@ public abstract class AbstractNamedCurve extends AbstractInitializableComponent 
     /** {@inheritDoc} */
     @Nonnull public ECParameterSpec getParameterSpec() {
         checkComponentActive();
+        assert paramSpec != null;
         return paramSpec;
     }
 

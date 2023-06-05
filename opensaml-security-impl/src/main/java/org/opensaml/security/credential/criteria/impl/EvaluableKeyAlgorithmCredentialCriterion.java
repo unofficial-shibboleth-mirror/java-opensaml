@@ -24,12 +24,12 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key algorithm.
@@ -38,10 +38,10 @@ public class EvaluableKeyAlgorithmCredentialCriterion extends AbstractTriStatePr
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriterion.class);
 
     /** Base criteria. */
-    private final String keyAlgorithm;
+    @Nonnull private final String keyAlgorithm;
 
     /**
      * Constructor.
@@ -59,9 +59,7 @@ public class EvaluableKeyAlgorithmCredentialCriterion extends AbstractTriStatePr
      */
     public EvaluableKeyAlgorithmCredentialCriterion(@Nonnull final String newKeyAlgorithm) {
         final String trimmed = StringSupport.trimOrNull(newKeyAlgorithm);
-        Constraint.isNotNull(trimmed, "Key algorithm cannot be null or empty");
-
-        keyAlgorithm = trimmed;
+        keyAlgorithm = Constraint.isNotNull(trimmed, "Key algorithm cannot be null or empty");
     }
 
     /** {@inheritDoc} */
@@ -129,8 +127,8 @@ public class EvaluableKeyAlgorithmCredentialCriterion extends AbstractTriStatePr
             return false;
         }
 
-        if (obj instanceof EvaluableKeyAlgorithmCredentialCriterion) {
-            return keyAlgorithm.equals(((EvaluableKeyAlgorithmCredentialCriterion) obj).keyAlgorithm);
+        if (obj instanceof EvaluableKeyAlgorithmCredentialCriterion other) {
+            return keyAlgorithm.equals(other.keyAlgorithm);
         }
 
         return false;

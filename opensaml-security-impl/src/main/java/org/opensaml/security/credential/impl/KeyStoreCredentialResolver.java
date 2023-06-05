@@ -110,8 +110,6 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
     @Nonnull protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
             throws ResolverException {
 
-        ;
-
         final String entityID = checkCriteriaRequirements(criteriaSet).getEntityId();
         
         final UsageCriterion usageCriteria = criteriaSet != null ? criteriaSet.get(UsageCriterion.class) : null;

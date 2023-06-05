@@ -19,6 +19,7 @@ package org.opensaml.security.messaging;
 
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
@@ -52,9 +53,14 @@ public final class HttpClientSecurityContext extends BaseContext {
      * Set the {@link HttpClientSecurityParameters} instance.
      * 
      * @param parameters the parameters instance, or null
+     * 
+     * @return this context
      */
-    public void setSecurityParameters(@Nullable final HttpClientSecurityParameters parameters) {
+    @Nonnull public HttpClientSecurityContext setSecurityParameters(
+            @Nullable final HttpClientSecurityParameters parameters) {
         securityParameters = parameters;
+        
+        return this;
     }
 
     /**
@@ -70,9 +76,14 @@ public final class HttpClientSecurityContext extends BaseContext {
      * Set the TLS criteria strategy function.
      * 
      * @param strategy the strategy function instance, or null
+     * 
+     * @return this context
      */
-    public void setTLSCriteriaSetStrategy(@Nullable final Function<MessageContext,CriteriaSet> strategy) {
+    @Nonnull public HttpClientSecurityContext setTLSCriteriaSetStrategy(
+            @Nullable final Function<MessageContext,CriteriaSet> strategy) {
         tlsCriteriaSetStrategy = strategy;
+        
+        return this;
     }
 
 }

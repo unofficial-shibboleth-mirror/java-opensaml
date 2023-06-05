@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -51,15 +50,16 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
     @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingCredentialResolver.class);
 
     /** List of credential resolvers in the chain. */
-    @Nonnull @NonnullElements private List<ResolverType> resolvers;
+    @Nonnull private List<ResolverType> resolvers;
 
     /**
      * Constructor.
      * 
      * @param credResolvers the list of chained credential resolvers
      */
-    public AbstractChainingCredentialResolver(@Nonnull @NonnullElements final List<ResolverType> credResolvers) {
-        resolvers = CollectionSupport.copyToList(Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null"));
+    public AbstractChainingCredentialResolver(@Nonnull final List<ResolverType> credResolvers) {
+        resolvers = CollectionSupport.copyToList(
+                Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null"));
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
      * 
      * @return the list of credential resolvers in the chain
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<ResolverType> getResolverChain() {
+    @Nonnull @Unmodifiable @NotLive public List<ResolverType> getResolverChain() {
         return resolvers;
     }
 
@@ -120,13 +120,13 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         @Nonnull private final Logger log = LoggerFactory.getLogger(CredentialIterator.class);
 
         /** The chaining credential resolver which owns this instance. */
-        private AbstractChainingCredentialResolver<ResolverType> parent;
+        @Nonnull private AbstractChainingCredentialResolver<ResolverType> parent;
 
         /** The criteria set on which to base resolution. */
-        private CriteriaSet critSet;
+        @Nullable private CriteriaSet critSet;
 
         /** The iterator over resolvers in the chain. */
-        private Iterator<ResolverType> resolverIterator;
+        @Nonnull private final Iterator<ResolverType> resolverIterator;
 
         /** The iterator over Credential instances from the current resolver. */
         private Iterator<Credential> credentialIterator;
@@ -135,7 +135,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         private CredentialResolver currentResolver;
 
         /** The next credential that is safe to return. */
-        private Credential nextCredential;
+        @Nullable private Credential nextCredential;
 
         /**
          * Constructor.

@@ -16,4 +16,7 @@
  */
 
 /** {@link org.opensaml.security.trust.TrustEngine} implementation classes related to PKIX. */
+@NonnullElements
 package org.opensaml.security.x509.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

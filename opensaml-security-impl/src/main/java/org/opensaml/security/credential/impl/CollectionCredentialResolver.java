@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -68,12 +69,12 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      * 
      * @return the credential collection backing store
      */
-    @Nonnull public Collection<Credential> getCollection() {
+    @Nonnull @Live public Collection<Credential> getCollection() {
         return collection;
     }
 
     /** {@inheritDoc} */
-    @Nonnull protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
+    @Nonnull @Live protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
             throws ResolverException {
         return collection;
     }

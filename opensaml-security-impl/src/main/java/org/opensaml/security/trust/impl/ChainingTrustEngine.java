@@ -27,7 +27,6 @@ import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -54,8 +53,7 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * 
      * @param chain the list of trust engines in the chain
      */
-    public ChainingTrustEngine(
-            @Nonnull @NonnullElements @ParameterName(name="chain") final List<TrustEngine<? super TokenType>> chain) {
+    public ChainingTrustEngine(@Nonnull @ParameterName(name="chain") final List<TrustEngine<? super TokenType>> chain) {
         engines = CollectionSupport.copyToList(Constraint.isNotNull(chain, "TrustEngine list cannot be null"));
     }
 
@@ -64,7 +62,7 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    @Nonnull  @NonnullElements @Unmodifiable @NotLive public List<TrustEngine<? super TokenType>> getChain() {
+    @Nonnull @Unmodifiable @NotLive public List<TrustEngine<? super TokenType>> getChain() {
         return engines;
     }
 

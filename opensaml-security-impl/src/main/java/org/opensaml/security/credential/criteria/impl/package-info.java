@@ -24,4 +24,7 @@
  * particular implementation of EvaluableCredentialCriterion which should be used to evaluate a given
  * (non-evaluable) {@link net.shibboleth.shared.resolver.Criterion} against a Credential.</p>
  */
+@NonnullElements
 package org.opensaml.security.credential.criteria.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

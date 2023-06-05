@@ -29,7 +29,6 @@ import javax.crypto.SecretKey;
  */
 public class BasicCredential extends AbstractCredential implements MutableCredential {
 
-
     /**
      * Default constructor.
      */

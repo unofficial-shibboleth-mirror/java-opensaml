@@ -40,4 +40,7 @@
  *     </li>
  * </ul>
  */
+@NonnullElements
 package org.opensaml.security.credential;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

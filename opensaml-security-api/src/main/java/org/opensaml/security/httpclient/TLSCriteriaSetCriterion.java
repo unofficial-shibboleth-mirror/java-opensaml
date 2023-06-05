@@ -31,7 +31,7 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class TLSCriteriaSetCriterion implements Criterion {
    
     /** TLS CriteriaSet data. */
-    private CriteriaSet criteriaSet;
+    @Nonnull private CriteriaSet criteriaSet;
     
     /**
     * Constructor.
@@ -75,8 +75,8 @@ public final class TLSCriteriaSetCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof TLSCriteriaSetCriterion) {
-            return criteriaSet.equals(((TLSCriteriaSetCriterion) obj).criteriaSet);
+        if (obj instanceof TLSCriteriaSetCriterion tlscrit) {
+            return criteriaSet.equals(tlscrit.criteriaSet);
         }
 
         return false;

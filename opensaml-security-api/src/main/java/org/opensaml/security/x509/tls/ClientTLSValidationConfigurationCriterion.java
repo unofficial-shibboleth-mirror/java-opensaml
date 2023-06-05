@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -35,14 +34,14 @@ import net.shibboleth.shared.resolver.Criterion;
 public class ClientTLSValidationConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    @Nonnull @NonnullElements private List<ClientTLSValidationConfiguration> configs;
+    @Nonnull private List<ClientTLSValidationConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public ClientTLSValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
+    public ClientTLSValidationConfigurationCriterion(@Nonnull @NotEmpty final
             List<ClientTLSValidationConfiguration> configurations) {
         configs = CollectionSupport.copyToList(Constraint.isNotNull(configurations,
                 "List of configurations cannot be null"));
@@ -54,7 +53,7 @@ public class ClientTLSValidationConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public ClientTLSValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
+    public ClientTLSValidationConfigurationCriterion(@Nonnull @NotEmpty final
             ClientTLSValidationConfiguration... configurations) {
         configs = CollectionSupport.listOf(Constraint.isNotNull(configurations,
                 "List of configurations cannot be null"));
@@ -65,8 +64,7 @@ public class ClientTLSValidationConfigurationCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<ClientTLSValidationConfiguration> getConfigurations() {
+    @Nonnull @NotEmpty @NotLive @Unmodifiable public List<ClientTLSValidationConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -97,8 +95,8 @@ public class ClientTLSValidationConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof ClientTLSValidationConfigurationCriterion) {
-            return configs.equals(((ClientTLSValidationConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof ClientTLSValidationConfigurationCriterion other) {
+            return configs.equals(other.getConfigurations());
         }
 
         return false;

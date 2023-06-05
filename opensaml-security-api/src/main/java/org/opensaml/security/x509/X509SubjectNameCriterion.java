@@ -83,8 +83,8 @@ public final class X509SubjectNameCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof X509SubjectNameCriterion) {
-            return subjectName.equals(((X509SubjectNameCriterion) obj).subjectName);
+        if (obj instanceof X509SubjectNameCriterion other) {
+            return subjectName.equals(other.subjectName);
         }
 
         return false;

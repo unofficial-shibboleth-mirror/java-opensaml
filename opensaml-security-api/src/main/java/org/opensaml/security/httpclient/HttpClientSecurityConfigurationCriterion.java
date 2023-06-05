@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -35,15 +34,15 @@ import net.shibboleth.shared.resolver.Criterion;
 public class HttpClientSecurityConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    @Nonnull @NonnullElements private List<HttpClientSecurityConfiguration> configs;
+    @Nonnull private List<HttpClientSecurityConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public HttpClientSecurityConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
-            List<HttpClientSecurityConfiguration> configurations) {
+    public HttpClientSecurityConfigurationCriterion(
+            @Nonnull @NotEmpty final List<HttpClientSecurityConfiguration> configurations) {
         Constraint.isNotNull(configurations, "List of configurations cannot be null");
         configs = CollectionSupport.copyToList(configurations);
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -55,8 +54,8 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public HttpClientSecurityConfigurationCriterion(@Nonnull @NonnullElements  @NotEmpty final
-            HttpClientSecurityConfiguration... configurations) {
+    public HttpClientSecurityConfigurationCriterion(
+            @Nonnull @NotEmpty final HttpClientSecurityConfiguration... configurations) {
         Constraint.isNotNull(configurations, "List of configurations cannot be null");
         configs = CollectionSupport.listOf(configurations);
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -66,8 +65,7 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<HttpClientSecurityConfiguration> getConfigurations() {
+    @Nonnull @NotEmpty @NotLive @Unmodifiable public List<HttpClientSecurityConfiguration> getConfigurations() {
         return configs;
     }
     

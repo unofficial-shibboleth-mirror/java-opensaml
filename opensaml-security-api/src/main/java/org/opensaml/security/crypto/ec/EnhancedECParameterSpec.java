@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 public class EnhancedECParameterSpec extends ECParameterSpec {
     
     /** The original instance. */
-    private final ECParameterSpec original;
+    @Nonnull private final ECParameterSpec original;
     
     /**
      * Constructor.
@@ -63,8 +63,7 @@ public class EnhancedECParameterSpec extends ECParameterSpec {
             return true;
         }
         
-        if (obj instanceof ECParameterSpec) {
-            final ECParameterSpec other = (ECParameterSpec) obj;
+        if (obj instanceof ECParameterSpec other) {
             // Copying Santuario's logic here.  It seems curve's ECField is an interface and the impls
             // don't obviously take into account the field size equality.  This field size compare is maybe
             // redundant with ECField.equals(), but eval it explicitly to be safe.

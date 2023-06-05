@@ -16,4 +16,7 @@
  */
 
 /** Security implementation support for Apache HttpClient. */
+@NonnullElements
 package org.opensaml.security.httpclient.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

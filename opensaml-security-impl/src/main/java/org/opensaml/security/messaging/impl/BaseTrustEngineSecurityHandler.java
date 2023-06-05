@@ -27,6 +27,7 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -41,14 +42,14 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseTrustEngineSecurityHandler.class);
 
     /** Trust engine used to verify the particular token type. */
-    @Nullable private TrustEngine<? super TokenType> trustEngine;
+    @NonnullBeforeExec private TrustEngine<? super TokenType> trustEngine;
 
     /**
      * Gets the trust engine used to validate the untrusted token.
      * 
      * @return trust engine used to validate the untrusted token
      */
-    @Nullable protected TrustEngine<? super TokenType> getTrustEngine() {
+    @NonnullBeforeExec protected TrustEngine<? super TokenType> getTrustEngine() {
         return trustEngine;
     }
 
@@ -124,7 +125,6 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
     protected boolean evaluate(@Nonnull final TokenType token, @Nullable final CriteriaSet criteriaSet)
             throws MessageHandlerException {
         try {
-            assert trustEngine != null;
             return trustEngine.validate(token, criteriaSet);
         } catch (final SecurityException e) {
             log.error("{} There was an error evaluating the request's token using the trust engine: {}", getLogPrefix(),

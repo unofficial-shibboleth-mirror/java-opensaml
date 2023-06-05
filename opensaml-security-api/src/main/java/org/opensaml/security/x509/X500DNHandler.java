@@ -29,10 +29,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface X500DNHandler {
     
     /** Specifies the string format specified in RFC 1779. */
-    @Nonnull @NotEmpty public static final String FORMAT_RFC1779 = X500Principal.RFC1779;
+    @Nonnull @NotEmpty static final String FORMAT_RFC1779 = X500Principal.RFC1779;
     
     /** Specifies the string format specified in RFC 2253. */
-    @Nonnull @NotEmpty public static final String FORMAT_RFC2253 = X500Principal.RFC2253;
+    @Nonnull @NotEmpty static final String FORMAT_RFC2253 = X500Principal.RFC2253;
     
     /**
      * Parse the string representation of a name and build a new principal instance.
@@ -42,7 +42,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the name value can not be parsed by the implementation
      */
-    @Nonnull public X500Principal parse(@Nonnull final String name);
+    @Nonnull X500Principal parse(@Nonnull final String name);
     
     /**
      * Parse the ASN.1 DER encoding representation of a name and build a new principal instance.
@@ -52,7 +52,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the name value can not be parsed by the implementation
      */
-    @Nonnull public X500Principal parse(@Nonnull final byte[] name);
+    @Nonnull X500Principal parse(@Nonnull final byte[] name);
     
     /**
      * Returns a string representation of the X.500 distinguished name using the default format
@@ -61,7 +61,7 @@ public interface X500DNHandler {
      * @param principal the principal name instance to serialize
      * @return the serialized string name
      */
-    @Nonnull public String getName(@Nonnull final X500Principal principal);
+    @Nonnull String getName(@Nonnull final X500Principal principal);
     
     /**
      * Returns a string representation of the X.500 distinguished name using the specified format.
@@ -75,7 +75,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the specified format is not understood by the implementation
      */
-    @Nonnull public String getName(@Nonnull final X500Principal principal, @Nonnull final String format);
+    @Nonnull String getName(@Nonnull final X500Principal principal, @Nonnull final String format);
     
     /**
      * Returns the distinguished name in ASN.1 DER encoded form.
@@ -83,7 +83,7 @@ public interface X500DNHandler {
      * @param principal the principal name instance to serialize
      * @return the serialized name in ASN.1 DER encoded form
      */
-    @Nonnull public byte[] getEncoded(@Nonnull final X500Principal principal);
+    @Nonnull byte[] getEncoded(@Nonnull final X500Principal principal);
     
     /**
      * Clone the handler. Implementations which maintain instance-specific configuration data, etc,
@@ -91,6 +91,6 @@ public interface X500DNHandler {
      * 
      * @return the cloned handler
      */
-    @Nonnull public X500DNHandler clone();
+    @Nonnull X500DNHandler clone();
 
 }

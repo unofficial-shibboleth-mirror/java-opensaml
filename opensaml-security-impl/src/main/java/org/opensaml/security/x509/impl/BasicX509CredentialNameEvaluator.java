@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -129,7 +128,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      * 
      * @param nameTypes the new set of alt name identifiers
      */
-    public void setSubjectAltNameTypes(@Nullable @NonnullElements final Set<Integer> nameTypes) {
+    public void setSubjectAltNameTypes(@Nullable final Set<Integer> nameTypes) {
         if (nameTypes == null) {
             subjectAltNameTypes = CollectionSupport.emptySet();
         } else {

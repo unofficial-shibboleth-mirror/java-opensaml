@@ -24,11 +24,11 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.PublicKeyCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential contains a particular
@@ -38,10 +38,10 @@ public class EvaluablePublicKeyCredentialCriterion extends AbstractTriStatePredi
         implements EvaluableCredentialCriterion {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluablePublicKeyCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluablePublicKeyCredentialCriterion.class);
     
     /** Base criteria. */
-    private final PublicKey publicKey;
+    @Nonnull private final PublicKey publicKey;
     
     /**
      * Constructor.
@@ -101,8 +101,8 @@ public class EvaluablePublicKeyCredentialCriterion extends AbstractTriStatePredi
             return false;
         }
 
-        if (obj instanceof EvaluablePublicKeyCredentialCriterion) {
-            return publicKey.equals(((EvaluablePublicKeyCredentialCriterion) obj).publicKey);
+        if (obj instanceof EvaluablePublicKeyCredentialCriterion other) {
+            return publicKey.equals(other.publicKey);
         }
 
         return false;

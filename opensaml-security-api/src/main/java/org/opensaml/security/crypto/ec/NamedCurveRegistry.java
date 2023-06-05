@@ -26,12 +26,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -40,19 +40,19 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class NamedCurveRegistry {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(NamedCurveRegistry.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(NamedCurveRegistry.class);
     
     /** Index by OID. */
-    private Map<String, NamedCurve> byOID;
+    @Nonnull private final Map<String, NamedCurve> byOID;
     
     /** Index by URI. */
-    private Map<String, NamedCurve> byURI;
+    @Nonnull private final Map<String, NamedCurve> byURI;
     
     /** Index by name. */
-    private Map<String, NamedCurve> byName;
+    @Nonnull private final Map<String, NamedCurve> byName;
     
     /** Index by {@link EnhancedECParameterSpec}. */
-    private Map<EnhancedECParameterSpec, NamedCurve> byParamSpec;
+    @Nonnull private final Map<EnhancedECParameterSpec, NamedCurve> byParamSpec;
     
     
     /**
@@ -166,9 +166,10 @@ public class NamedCurveRegistry {
      * 
      * @return the set of registered curves
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive
+    @SuppressWarnings("null")
+    @Nonnull @Unmodifiable @NotLive
     public Set<NamedCurve> getRegisteredCurves() {
-        return Set.copyOf(byOID.values());
+        return CollectionSupport.copyToSet(byOID.values());
     }
     
     /**

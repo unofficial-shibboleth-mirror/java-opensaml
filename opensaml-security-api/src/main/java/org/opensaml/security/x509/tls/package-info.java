@@ -16,4 +16,7 @@
  */
 
 /** TLS security functionality. */
+@NonnullElements
 package org.opensaml.security.x509.tls;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

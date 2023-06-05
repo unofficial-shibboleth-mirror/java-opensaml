@@ -26,9 +26,9 @@ import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.httpclient.HttpClientContextHandler;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link HttpClientContextHandler} which handles cleanup and transfer of
@@ -37,7 +37,7 @@ import net.shibboleth.shared.httpclient.HttpClientContextHandler;
 public class ThreadLocalServerTLSHandler implements HttpClientContextHandler {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(ThreadLocalServerTLSHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ThreadLocalServerTLSHandler.class);
 
     /** {@inheritDoc} */
     public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)

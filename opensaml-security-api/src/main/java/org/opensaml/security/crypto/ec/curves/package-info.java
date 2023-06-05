@@ -16,4 +16,7 @@
  */
 
 /** Implementations of {@link org.opensaml.security.crypto.ec.NamedCurve} used with Elliptic-Curve cryptography. */
+@NonnullElements
 package org.opensaml.security.crypto.ec.curves;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

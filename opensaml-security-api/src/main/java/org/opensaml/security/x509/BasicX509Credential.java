@@ -31,7 +31,6 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -47,10 +46,10 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     @Nonnull private X509Certificate entityCert;
 
     /** Entity certificate chain, must include entity certificate. */
-    @Nullable @NonnullElements private Collection<X509Certificate> entityCertChain;
+    @Nullable private Collection<X509Certificate> entityCertChain;
 
     /** CRLs for this credential. */
-    @Nullable @NonnullElements private Collection<X509CRL> crls;
+    @Nullable private Collection<X509CRL> crls;
     
     /**
      * Constructor.
@@ -82,7 +81,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
+    @Nullable @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
         return crls;
     }
 
@@ -91,7 +90,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * 
      * @param newCRLs CRLs for this credential
      */
-    public void setCRLs(@Nullable @NonnullElements final Collection<X509CRL> newCRLs) {
+    public void setCRLs(@Nullable final Collection<X509CRL> newCRLs) {
         if (newCRLs != null) {
             crls = CollectionSupport.copyToList(newCRLs);
         } else {
@@ -132,13 +131,12 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     }
 
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain() {
+    @Nonnull @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain() {
         synchronized(this) {
-            if (entityCertChain == null) {
-                return CollectionSupport.singletonList(entityCert);
+            if (entityCertChain != null) {
+                return entityCertChain;
             }
-            assert entityCertChain != null;
-            return entityCertChain;
+            return CollectionSupport.singletonList(entityCert);
         }
     }
 
@@ -149,7 +147,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * @param newCertificateChain entity certificate chain for this credential
      */
     public void setEntityCertificateChain(
-            @Nonnull @NotEmpty @NonnullElements final Collection<X509Certificate> newCertificateChain) {
+            @Nonnull @NotEmpty final Collection<X509Certificate> newCertificateChain) {
         Constraint.isNotNull(newCertificateChain, "Certificate chain collection cannot be null");
         Constraint.isNotEmpty(newCertificateChain, "Certificate chain collection cannot be empty");
         

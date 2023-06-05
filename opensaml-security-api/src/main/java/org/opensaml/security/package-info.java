@@ -19,4 +19,7 @@
  * Interfaces and classes used in representing cryptographic credentials,
  * evaluating the trustworthiness of security of tokens, etc.
  */
+@NonnullElements
 package org.opensaml.security;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
