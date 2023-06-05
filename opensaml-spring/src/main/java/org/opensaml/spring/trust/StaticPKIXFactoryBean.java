@@ -79,11 +79,11 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
     private boolean checkNames;
 
     /** Custom instance of {@link PKIXTrustEvaluator} to use. */
-    private PKIXTrustEvaluator trustEvaluator;
+    @Nullable private PKIXTrustEvaluator trustEvaluator;
 
     /** Custom instance of {@link X509CredentialNameEvaluator} to use.
      * A non-null value overrides {@link #checkNames}. */
-    private X509CredentialNameEvaluator credentialNameEvaluator;
+    @Nullable private X509CredentialNameEvaluator credentialNameEvaluator;
 
     /** Constructor. */
     public StaticPKIXFactoryBean() {
@@ -162,7 +162,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
     /**
      * Set the custom instance of {@link PKIXTrustEvaluator} to use.
      *
-     * @param evaluator The trustEvaluator to set.
+     * @param evaluator {@link PKIXTrustEvaluator} to set
      */
     public void setTrustEvaluator(@Nullable final PKIXTrustEvaluator evaluator) {
         trustEvaluator = evaluator;
@@ -175,7 +175,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * A non-null value overrides {@link #setCheckNames(boolean)}.
      * </p>
      *
-     * @param evaluator The credentialNameEvaluator to set.
+     * @param evaluator {@link X509CredentialNameEvaluator} to set
      */
     public void setCredentialNameEvaluator(@Nullable final X509CredentialNameEvaluator evaluator) {
         credentialNameEvaluator = evaluator;
@@ -186,7 +186,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * 
      * @return the certificates
      */
-    @Nonnull @NonnullElements protected List<X509Certificate> getCertificates() {
+    @Nonnull protected List<X509Certificate> getCertificates() {
         if (certificateResources == null) {
             return CollectionSupport.emptyList();
         }
@@ -210,7 +210,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * 
      * @return the crls
      */
-    @Nonnull @NonnullElements protected List<X509CRL> getCRLs() {
+    @Nonnull protected List<X509CRL> getCRLs() {
         if (crlResources == null) {
             return CollectionSupport.emptyList();
         }

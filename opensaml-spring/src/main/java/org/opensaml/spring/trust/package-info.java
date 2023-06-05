@@ -18,5 +18,7 @@
 /**
  * Factory beans for trust engines.
  */
-
+@NonnullElements
 package org.opensaml.spring.trust;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

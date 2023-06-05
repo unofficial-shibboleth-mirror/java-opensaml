@@ -18,5 +18,7 @@
 /**
  * Factory beans for various credential classes.
  */
-
+@NonnullElements
 package org.opensaml.spring.credential;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

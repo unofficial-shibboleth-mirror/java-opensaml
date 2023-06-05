@@ -50,7 +50,7 @@ public class TLSSocketFactoryFactoryBean extends AbstractFactoryBean<LayeredConn
      * @deprecated use setHttpClientSecurityParameters instead
      * @param engine the trust engine instance to use, or null
      */
-    @Deprecated
+    @Deprecated(since="5.0.0", forRemoval=true)
     public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
         tlsTrustEngine = engine;
     }

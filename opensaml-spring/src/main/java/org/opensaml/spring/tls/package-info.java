@@ -18,5 +18,7 @@
 /**
  * Spring support for TLS configuration.
  */
-
+@NonnullElements
 package org.opensaml.spring.tls;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

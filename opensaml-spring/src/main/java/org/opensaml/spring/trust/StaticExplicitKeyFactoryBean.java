@@ -42,7 +42,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
@@ -92,7 +91,7 @@ public class StaticExplicitKeyFactoryBean extends AbstractComponentAwareFactoryB
      * 
      * @return the certificates null
      */
-    @Nonnull @NonnullElements protected List<Credential> getCredentials() {
+    @Nonnull protected List<Credential> getCredentials() {
         
         final List<Credential> credentials = new ArrayList<>(keyResources.size() + certificateResources.size());
 
