@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for decoding messages that come from an {@link jakarta.servlet.http.HttpServletRequest}. */
+@NonnullElements
 package org.opensaml.messaging.decoder.servlet;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

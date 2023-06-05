@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -66,7 +65,7 @@ public class MessageHandlerErrorStrategyAdapter extends AbstractMessageHandler {
     @Nonnull private MessageHandler wrappedHandler;
     
     /** The list of typed error handlers. */
-    @Nonnull @NonnullElements private List<TypedMessageErrorHandler> errorHandlers;
+    @Nonnull private List<TypedMessageErrorHandler> errorHandlers;
     
     /** Flag indicating whether the wrapped handler's exception should be rethrown after being handled successfully. */
     private boolean rethrowIfHandled;
@@ -82,7 +81,7 @@ public class MessageHandlerErrorStrategyAdapter extends AbstractMessageHandler {
      * @param typedErrorHandlers the list of typed error handlers to apply
      */
     public MessageHandlerErrorStrategyAdapter(@Nonnull final MessageHandler messageHandler, 
-            @Nonnull @NonnullElements final List<TypedMessageErrorHandler> typedErrorHandlers) {
+            @Nonnull final List<TypedMessageErrorHandler> typedErrorHandlers) {
         wrappedHandler = Constraint.isNotNull(messageHandler, "Wrapped MessageHandler cannot be null");
         errorHandlers = CollectionSupport.copyToList(typedErrorHandlers);
         

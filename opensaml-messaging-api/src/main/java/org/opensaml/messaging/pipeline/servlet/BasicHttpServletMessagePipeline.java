@@ -66,7 +66,5 @@ public class BasicHttpServletMessagePipeline extends BasicMessagePipeline implem
         }
         super.setDecoder(decoder);
     }
-    
-    
 
 }

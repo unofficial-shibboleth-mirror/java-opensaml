@@ -29,23 +29,22 @@ import net.shibboleth.shared.logic.Constraint;
 /**
  * Basic implementation of {@link MessagePipeline}.
  */
-public class BasicMessagePipeline 
-        implements MessagePipeline {
+public class BasicMessagePipeline implements MessagePipeline {
     
     /** Message encoder. */
     @Nonnull private MessageEncoder encoder;
     
     /** Message decoder. */
-    @Nonnull  private MessageDecoder decoder;
+    @Nonnull private MessageDecoder decoder;
     
     /** Outbound payload message handler. */
-    private MessageHandler outboundPayloadHandler;
+    @Nullable private MessageHandler outboundPayloadHandler;
     
     /** Outbound transport message handler. */
-    private MessageHandler outboundTransportHandler;
+    @Nullable private MessageHandler outboundTransportHandler;
     
     /** Inbound message handler. */
-    private MessageHandler inboundHandler;
+    @Nullable private MessageHandler inboundHandler;
     
     /**
      * Constructor.
@@ -55,8 +54,8 @@ public class BasicMessagePipeline
      */
     public BasicMessagePipeline(@Nonnull final MessageEncoder newEncoder, 
             @Nonnull final MessageDecoder newDecoder) {
-        encoder = Constraint.isNotNull(newEncoder, "MessageEncoder can not be null");
-        decoder = Constraint.isNotNull(newDecoder, "MessageDecoder can not be null");
+        encoder = Constraint.isNotNull(newEncoder, "MessageEncoder cannot be null");
+        decoder = Constraint.isNotNull(newDecoder, "MessageDecoder cannot be null");
     }
 
     /** {@inheritDoc} */
@@ -70,7 +69,7 @@ public class BasicMessagePipeline
      * @param newEncoder the new message encoder
      */
     protected void setEncoder(@Nonnull final MessageEncoder newEncoder) {
-       encoder = Constraint.isNotNull(newEncoder, "MessageEncoder can not be null");
+       encoder = Constraint.isNotNull(newEncoder, "MessageEncoder cannot be null");
     }
 
     /** {@inheritDoc} */
@@ -84,12 +83,12 @@ public class BasicMessagePipeline
      * @param newDecoder the new message decoder
      */
     protected void setDecoder(@Nonnull final MessageDecoder newDecoder) {
-       decoder = Constraint.isNotNull(newDecoder, "MessageDecoder can not be null");
+       decoder = Constraint.isNotNull(newDecoder, "MessageDecoder cannot be null");
     }
 
 
     /** {@inheritDoc} */
-    public MessageHandler getOutboundPayloadMessageHandler() {
+    @Nullable public MessageHandler getOutboundPayloadMessageHandler() {
         return outboundPayloadHandler;
     }
 
@@ -103,7 +102,7 @@ public class BasicMessagePipeline
     }
 
     /** {@inheritDoc} */
-    public MessageHandler getOutboundTransportMessageHandler() {
+    @Nullable public MessageHandler getOutboundTransportMessageHandler() {
         return outboundTransportHandler;
     }
 
@@ -112,12 +111,12 @@ public class BasicMessagePipeline
      * 
      * @param handler the new handler
      */
-    public void setOutboundTransportHandler(final MessageHandler handler) {
+    public void setOutboundTransportHandler(@Nullable final MessageHandler handler) {
         outboundTransportHandler = handler;
     }
 
     /** {@inheritDoc} */
-    public MessageHandler getInboundMessageHandler() {
+    @Nullable public MessageHandler getInboundMessageHandler() {
         return inboundHandler;
     }
     
@@ -126,7 +125,7 @@ public class BasicMessagePipeline
      * 
      * @param handler the new handler
      */
-    public void setInboundHandler(final MessageHandler handler) {
+    public void setInboundHandler(@Nullable final MessageHandler handler) {
         inboundHandler = handler;
     }
 

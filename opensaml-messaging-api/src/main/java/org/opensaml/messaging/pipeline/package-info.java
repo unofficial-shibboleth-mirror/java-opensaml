@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for message processing pipelines. */
+@NonnullElements
 package org.opensaml.messaging.pipeline;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

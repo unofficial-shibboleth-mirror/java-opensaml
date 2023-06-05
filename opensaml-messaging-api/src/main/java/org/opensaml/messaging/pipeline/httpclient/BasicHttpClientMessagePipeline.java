@@ -67,6 +67,4 @@ public class BasicHttpClientMessagePipeline extends BasicMessagePipeline impleme
         super.setDecoder(decoder);
     }
     
-    
-
 }

@@ -16,4 +16,7 @@
  */
 
 /** General interfaces and classes related to message processing and bindings to transport protocols. */
+@NonnullElements
 package org.opensaml.messaging;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

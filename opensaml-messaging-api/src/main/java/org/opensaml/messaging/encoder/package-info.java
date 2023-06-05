@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for encoding messages. */
+@NonnullElements
 package org.opensaml.messaging.encoder;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -44,4 +44,3 @@ public interface HttpServletResponseMessageEncoder extends MessageEncoder {
     void setHttpServletResponseSupplier(@Nullable final NonnullSupplier<HttpServletResponse> responseSupplier);
 
 }
-

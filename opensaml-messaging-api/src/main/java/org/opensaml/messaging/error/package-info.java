@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for message-related error handling. */
+@NonnullElements
 package org.opensaml.messaging.error;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

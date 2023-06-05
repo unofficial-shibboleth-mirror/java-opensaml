@@ -19,5 +19,7 @@
  * A set of functions used to navigate and lookup data
  * from a tree of {@link org.opensaml.messaging.context.BaseContext}s.
  */
-
+@NonnullElements
 package org.opensaml.messaging.context.navigate;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

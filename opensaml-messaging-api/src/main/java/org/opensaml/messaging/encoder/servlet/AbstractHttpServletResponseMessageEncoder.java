@@ -48,7 +48,8 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
     /**
      * {@inheritDoc}
      */
-    public synchronized void setHttpServletResponseSupplier(@Nullable final NonnullSupplier<HttpServletResponse> supplier) {
+    public synchronized void setHttpServletResponseSupplier(
+            @Nullable final NonnullSupplier<HttpServletResponse> supplier) {
         checkSetterPreconditions();
         httpServletResponseSupplier = supplier;
     }

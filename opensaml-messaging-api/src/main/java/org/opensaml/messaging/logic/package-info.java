@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for messaging logic. */
+@NonnullElements
 package org.opensaml.messaging.logic;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

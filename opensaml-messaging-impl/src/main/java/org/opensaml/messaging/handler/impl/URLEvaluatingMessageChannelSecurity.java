@@ -120,7 +120,7 @@ public class URLEvaluatingMessageChannelSecurity extends AbstractMessageChannelS
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) {
         final MessageChannelSecurityContext channelContext =
-                getParentContext().ensureSubcontext(MessageChannelSecurityContext.class);
+                ensureParentContext().ensureSubcontext(MessageChannelSecurityContext.class);
      
         assert urlBuilder != null;
         final String scheme = urlBuilder.getScheme();

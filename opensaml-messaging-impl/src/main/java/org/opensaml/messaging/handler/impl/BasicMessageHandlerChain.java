@@ -29,7 +29,8 @@ import org.opensaml.messaging.handler.MessageHandlerChain;
 import org.opensaml.messaging.handler.MessageHandlerException;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
@@ -39,7 +40,7 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
     implements MessageHandlerChain {
 
     /** The list of members of the handler chain. */
-    @NonnullAfterInit @NonnullElements private List<MessageHandler> members;
+    @NonnullAfterInit private List<MessageHandler> members;
     
     /** 
      * {@inheritDoc}
@@ -50,7 +51,7 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
      * </p>
      * 
      * */
-    @NonnullAfterInit @NonnullElements public List<MessageHandler> getHandlers() {
+    @NonnullAfterInit @Unmodifiable @NotLive public List<MessageHandler> getHandlers() {
         return members;
     }
     
@@ -64,7 +65,7 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
      * 
      * @param handlers the list of message handler members
      */
-    public void setHandlers(@Nullable @NonnullElements final List<MessageHandler> handlers) {
+    public void setHandlers(@Nullable final List<MessageHandler> handlers) {
         if (handlers != null) {
             members = CollectionSupport.copyToList(handlers);
         } else {
@@ -80,4 +81,5 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
             }
         }
     }
+
 }

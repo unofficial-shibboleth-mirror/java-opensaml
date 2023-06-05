@@ -20,7 +20,8 @@ package org.opensaml.messaging.handler;
 import java.util.List;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 
 /**
@@ -35,6 +36,6 @@ public interface MessageHandlerChain extends MessageHandler {
      * 
      * @return the list of members of the handler chain
      */
-    @NonnullAfterInit @NonnullElements List<MessageHandler> getHandlers();
+    @NonnullAfterInit @Unmodifiable @NotLive List<MessageHandler> getHandlers();
     
 }

@@ -73,10 +73,7 @@ public class SchemaValidateXMLMessage extends AbstractMessageHandler {
             return false;
         }
         
-        if (messageContext.getMessage() == null) {
-            log.debug("{} Message context did not contain a message, unable to proceed", getLogPrefix());
-            throw new MessageHandlerException("Message context did not contain a message, unable to proceed.");
-        } else if (!(messageContext.getMessage() instanceof XMLObject)) {
+        if (!(messageContext.getMessage() instanceof XMLObject)) {
             log.debug("{} Message context did not contain an XMLObject, unable to proceed", getLogPrefix());
             throw new MessageHandlerException("Message context did not contain an XMLObject, unable to proceed.");
         }
@@ -90,8 +87,7 @@ public class SchemaValidateXMLMessage extends AbstractMessageHandler {
 
         log.debug("{} Attempting to schema validate incoming message", getLogPrefix());
         
-        final XMLObject message = (XMLObject) messageContext.getMessage();
-        assert message != null;
+        final XMLObject message = (XMLObject) messageContext.ensureMessage();
         if (message.getDOM() == null) {
             log.debug("{} Message doesn't contain a DOM, unable to proceed", getLogPrefix());
             throw new MessageHandlerException("Message doesn't contain a DOM, unable to proceed.");

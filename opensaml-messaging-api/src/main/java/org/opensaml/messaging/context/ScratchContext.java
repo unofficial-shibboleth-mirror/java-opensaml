@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NullableElements;
 
 /**
  * A context subclass for holding arbitrary data in a map.
@@ -32,7 +33,7 @@ import net.shibboleth.shared.annotation.constraint.Live;
 public final class ScratchContext extends BaseContext {
 
     /** Map of scratch data. */
-    @Nonnull private Map<Object,Object> map;
+    @Nonnull @NullableElements private Map<Object,Object> map;
 
     /** Constructor. */
     public ScratchContext() {
@@ -44,7 +45,7 @@ public final class ScratchContext extends BaseContext {
      * 
      * @return the map
      */
-    @Nonnull @Live public Map<Object,Object> getMap() {
+    @Nonnull @NullableElements @Live public Map<Object,Object> getMap() {
         return map;
     }
 

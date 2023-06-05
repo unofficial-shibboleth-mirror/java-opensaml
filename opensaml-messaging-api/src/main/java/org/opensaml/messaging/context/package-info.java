@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for tracking message processing state. */
+@NonnullElements
 package org.opensaml.messaging.context;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

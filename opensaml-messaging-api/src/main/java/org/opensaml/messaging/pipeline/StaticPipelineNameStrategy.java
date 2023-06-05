@@ -31,7 +31,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class StaticPipelineNameStrategy implements Function<InOutOperationContext, String> {
     
     /** The static pipeline name. */
-    private String pipelineName;
+    @Nullable private String pipelineName;
 
     /**
      * Constructor.

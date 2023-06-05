@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes for encoding HTTP messages. */
+@NonnullElements
 package org.opensaml.messaging.encoder.httpclient;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

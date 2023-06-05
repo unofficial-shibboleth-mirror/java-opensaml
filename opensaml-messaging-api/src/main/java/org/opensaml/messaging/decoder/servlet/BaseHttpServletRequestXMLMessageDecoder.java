@@ -97,6 +97,8 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
      * @param pool parser pool used to deserialize incoming messages
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
+        checkSetterPreconditions();
+        
         parserPool = Constraint.isNotNull(pool, "ParserPool cannot be null");
     }
     

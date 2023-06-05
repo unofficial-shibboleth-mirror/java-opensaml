@@ -34,14 +34,14 @@ public interface MessagePipeline {
      * 
      * @return the message encoder
      */
-    @Nonnull public MessageEncoder getEncoder();
+    @Nonnull MessageEncoder getEncoder();
     
     /**
      * Get the message decoder instance.
      * 
      * @return the message decoder
      */
-    @Nonnull public MessageDecoder getDecoder();
+    @Nonnull MessageDecoder getDecoder();
     
     /**
      * Get the (optional) outbound payload message handler instance.  
@@ -52,7 +52,7 @@ public interface MessagePipeline {
      * 
      * @return the outbound message handler, may be null
      */
-    @Nullable public MessageHandler getOutboundPayloadMessageHandler();
+    @Nullable MessageHandler getOutboundPayloadMessageHandler();
     
     /**
      * Get the (optional) outbound transport message handler instance.  
@@ -64,13 +64,13 @@ public interface MessagePipeline {
      * 
      * @return the outbound message handler, may be null
      */
-    @Nullable public MessageHandler getOutboundTransportMessageHandler();
+    @Nullable MessageHandler getOutboundTransportMessageHandler();
     
     /**
      * Get the (optional) inbound message handler instance.  
      * 
      * @return the inbound message handler, may be null
      */
-    public MessageHandler getInboundMessageHandler();
+    @Nullable MessageHandler getInboundMessageHandler();
 
 }

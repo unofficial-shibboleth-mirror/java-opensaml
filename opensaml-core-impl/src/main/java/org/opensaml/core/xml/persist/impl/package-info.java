@@ -15,31 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.pipeline.httpclient;
+/** Implementations of XML persistence interfaces. */
+@NonnullElements
+package org.opensaml.core.xml.persist.impl;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-
-/**
- * Factory for instances of {@link HttpClientMessagePipeline}.
- */
-public interface HttpClientMessagePipelineFactory {
-    
-    /**
-     * Return a new instance of {@link HttpClientMessagePipeline}.
-     * 
-     * @return a new pipeline instance
-     */
-    @Nonnull HttpClientMessagePipeline newInstance();
-    
-    /**
-     * Return a new instance of {@link HttpClientMessagePipeline}.
-     * 
-     * @param pipelineName the name of the pipeline to return
-     * 
-     * @return a new pipeline instance
-     */
-    @Nonnull HttpClientMessagePipeline newInstance(@Nullable final String pipelineName);
-
-}
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

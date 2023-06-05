@@ -16,4 +16,7 @@
  */
 
 /** Implementations of message context handlers. */
+@NonnullElements
 package org.opensaml.messaging.handler.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

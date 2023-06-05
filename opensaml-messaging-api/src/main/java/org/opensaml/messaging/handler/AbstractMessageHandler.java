@@ -207,6 +207,8 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
      * returned it is correct, if false is returned is is not safe to make any assumptions (even if
      * there was an call in flight.
      *
+     * @return true iff the {@link #doPreInvoke(MessageContext)} method was called
+     *
      * @since 5.0.0
      */
     protected boolean isPreInvokeCalled() {

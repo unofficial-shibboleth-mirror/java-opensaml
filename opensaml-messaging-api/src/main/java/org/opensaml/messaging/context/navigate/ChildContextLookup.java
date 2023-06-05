@@ -73,7 +73,11 @@ public class ChildContextLookup<ParentContext extends BaseContext, ChildContext 
             return null;
         }
 
-        return input.getSubcontext(childType, autocreate);
+        if (autocreate) {
+            return input.ensureSubcontext(childType);
+        } else {
+            return input.getSubcontext(childType);
+        }
     }
     
 }

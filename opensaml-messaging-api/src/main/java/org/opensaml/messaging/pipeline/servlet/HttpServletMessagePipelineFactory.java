@@ -40,7 +40,6 @@ public interface HttpServletMessagePipelineFactory {
      * 
      * @return a new pipeline instance
      */
-    @Nonnull HttpServletMessagePipeline newInstance(
-            @Nullable final String pipelineName);
+    @Nonnull HttpServletMessagePipeline newInstance(@Nullable final String pipelineName);
 
 }

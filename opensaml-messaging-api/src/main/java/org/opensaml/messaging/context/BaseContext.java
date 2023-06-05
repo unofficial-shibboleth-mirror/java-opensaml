@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.ClassIndexedSet;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -73,7 +72,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     @Nullable private BaseContext parent;
 
     /** The subcontexts being managed. */
-    @Nonnull @NonnullElements private ClassIndexedSet<BaseContext> subcontexts;
+    @Nonnull private ClassIndexedSet<BaseContext> subcontexts;
     
     /** Constructor. Generates a random context id. */
     public BaseContext() {

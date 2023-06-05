@@ -31,6 +31,6 @@ public interface TypedMessageErrorHandler extends MessageErrorHandler {
      * @param t the type of error about which to query
      * @return true iff the handle can handle the specified error type
      */
-    boolean handlesError(@Nonnull Throwable t);
+    boolean handlesError(@Nonnull final Throwable t);
 
 }

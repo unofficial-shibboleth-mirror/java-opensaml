@@ -42,7 +42,7 @@ public interface PipelineMessageErrorHandler extends MessageErrorHandler {
      * 
      * @param handler the outbound error handler
      */
-    void setHandler(MessageHandler handler);
+    void setHandler(final MessageHandler handler);
 
     /**
      * Get the message encoder used to encode the outbound error message.
@@ -56,6 +56,6 @@ public interface PipelineMessageErrorHandler extends MessageErrorHandler {
      * 
      * @param messageEncoder the outbound error message encoder
      */
-    void setMessageEncoder(MessageEncoder messageEncoder);
+    void setMessageEncoder(final MessageEncoder messageEncoder);
     
 }

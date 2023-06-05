@@ -20,7 +20,6 @@ package org.opensaml.messaging.decoder.servlet;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
-import org.opensaml.messaging.decoder.MessageDecodingException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -61,12 +60,6 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
 
         httpServletRequestSupplier = requestSupplier;
     }
-
-    /** {@inheritDoc} */
-    public void decode() throws MessageDecodingException {
-        super.decode();
-    }
-
 
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
