@@ -173,7 +173,7 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
 
             if (empty) {
                 log.trace("{} Data is empty", storageService.getLogPrefix());
-                return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
+                return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(), null,
                         source);
             }
             
@@ -187,7 +187,7 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
                         exp > 0 ? Instant.ofEpochMilli(exp) : Instant.now().plus(Duration.ofDays(1)));
                 log.trace("{} Size of data after encryption is {}", storageService.getLogPrefix(), wrapped.length());
                 setDirty(false);
-                return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(),
+                return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(),
                         wrapped, source);
             } catch (final DataSealerException e) {
                 throw new IOException(e);

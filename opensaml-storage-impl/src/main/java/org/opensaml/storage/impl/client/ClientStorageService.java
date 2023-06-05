@@ -47,7 +47,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
@@ -140,7 +139,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @param map capability map
      */
-    public void setCapabilityMap(@Nonnull @NonnullElements final Map<ClientStorageSource,Integer> map) {
+    public void setCapabilityMap(@Nonnull final Map<ClientStorageSource,Integer> map) {
         checkSetterPreconditions();
         Constraint.isNotNull(map, "Capability map cannot be null");
         
@@ -342,7 +341,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord<?>>> getContextMap()
+    @Nonnull @Live protected Map<String, Map<String, MutableStorageRecord<?>>> getContextMap()
             throws IOException {
         
         try {

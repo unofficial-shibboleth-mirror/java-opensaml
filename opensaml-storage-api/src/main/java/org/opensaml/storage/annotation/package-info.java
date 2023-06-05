@@ -16,4 +16,7 @@
  */
 
 /** Annotations in support of {@link org.opensaml.storage.StorageService} use by custom objects. */
+@NonnullElements
 package org.opensaml.storage.annotation;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

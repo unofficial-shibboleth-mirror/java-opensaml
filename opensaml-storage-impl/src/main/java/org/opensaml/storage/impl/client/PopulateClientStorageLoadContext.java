@@ -22,16 +22,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -53,7 +52,7 @@ public class PopulateClientStorageLoadContext extends AbstractProfileAction {
     @Nonnull private final Logger log = LoggerFactory.getLogger(PopulateClientStorageLoadContext.class);
 
     /** The storage service instances to check for a loading requirement. */
-    @Nonnull @NonnullElements private Collection<ClientStorageService> storageServices;
+    @Nonnull private Collection<ClientStorageService> storageServices;
     
     /** Constructor. */
     public PopulateClientStorageLoadContext() {
@@ -65,11 +64,14 @@ public class PopulateClientStorageLoadContext extends AbstractProfileAction {
      * 
      * @param services instances to check for loading
      */
-    public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
+    public void setStorageServices(@Nullable final Collection<ClientStorageService> services) {
         checkSetterPreconditions();
         
-        storageServices = CollectionSupport.copyToList(
-                Constraint.isNotNull(services, "StorageService collection cannot be null"));
+        if (services != null) {
+            storageServices = CollectionSupport.copyToList(services);
+        } else {
+            storageServices = CollectionSupport.emptyList();
+        }
     }
     
     /** {@inheritDoc} */

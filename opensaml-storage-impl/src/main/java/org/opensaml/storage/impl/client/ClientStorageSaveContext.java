@@ -28,7 +28,6 @@ import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 /**
  * A subcontext for driving the saving of data to a client from one or more
@@ -37,7 +36,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 public class ClientStorageSaveContext extends BaseContext {
 
     /** Storage operations to perform. */
-    @Nonnull @NonnullElements private Collection<ClientStorageServiceOperation> storageOperations;
+    @Nonnull private Collection<ClientStorageServiceOperation> storageOperations;
     
     /** Constructor. */
     public ClientStorageSaveContext() {
@@ -49,7 +48,7 @@ public class ClientStorageSaveContext extends BaseContext {
      * 
      * @return modifiable collection of storage operations
      */
-    @Nonnull @NonnullElements @Live public Collection<ClientStorageServiceOperation> getStorageOperations() {
+    @Nonnull @Live public Collection<ClientStorageServiceOperation> getStorageOperations() {
         return storageOperations;
     }
     

@@ -19,4 +19,7 @@
  * Interfaces and classes for storing state data of the type used in replay caches, conversation identifiers, etc.
  * Through these interfaces such data may be stored in memory, to a database, or replicated across cluster nodes.
  */
+@NonnullElements
 package org.opensaml.storage;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

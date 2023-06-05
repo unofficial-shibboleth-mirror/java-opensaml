@@ -18,4 +18,7 @@
 /**
  * Implementation of memcached {@link org.opensaml.storage.StorageService}.
  */
+@NonnullElements
 package org.opensaml.storage.impl.memcached;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

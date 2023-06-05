@@ -18,8 +18,8 @@
 package org.opensaml.storage.impl.client;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,9 +34,7 @@ import org.slf4j.Logger;
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -56,7 +54,7 @@ public class SaveCookieBackedClientStorageServices
     @Nonnull private final Logger log = LoggerFactory.getLogger(SaveCookieBackedClientStorageServices.class);
     
     /** The storage service instances to load, keyed by their bean ID. */
-    @Nonnull @NonnullElements private Map<String,ClientStorageService> storageServices;
+    @Nonnull private Map<String,ClientStorageService> storageServices;
     
     /** Context to drive storage save. */
     @Nullable private ClientStorageSaveContext clientStorageSaveCtx;
@@ -65,6 +63,7 @@ public class SaveCookieBackedClientStorageServices
     @Nonnull private Escaper escaper;
     
     /** Constructor. */
+    @SuppressWarnings("null")
     public SaveCookieBackedClientStorageServices() {
         storageServices = CollectionSupport.emptyMap();
         escaper = UrlEscapers.urlFormParameterEscaper();
@@ -75,15 +74,16 @@ public class SaveCookieBackedClientStorageServices
      * 
      * @param services instances to check for loading
      */
-    public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
+    public void setStorageServices(@Nullable final Collection<ClientStorageService> services) {
         checkSetterPreconditions();
         
-        Constraint.isNotNull(services, "StorageService collection cannot be null");
-        storageServices = new HashMap<>(services.size());
-        for (final ClientStorageService ss : services) {
-            if (ss != null) {
-                storageServices.put(ss.ensureId(), ss);
-            }
+        if (services != null) {
+            storageServices = services.stream()
+                    .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableMap(
+                            ClientStorageService::ensureId, ss -> ss)))
+                    .get();
+        } else {
+            storageServices = CollectionSupport.emptyMap();
         }
     }
     

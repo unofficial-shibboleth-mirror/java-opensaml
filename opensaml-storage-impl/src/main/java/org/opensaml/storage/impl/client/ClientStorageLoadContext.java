@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 import org.opensaml.messaging.context.BaseContext;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 /**
  * A subcontext for driving the loading of data from a client into one or more
@@ -34,7 +33,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 public class ClientStorageLoadContext extends BaseContext {
 
     /** The collection of storage keys to load from the client. */
-    @Nonnull @NonnullElements private Collection<String> storageKeys;
+    @Nonnull private Collection<String> storageKeys;
     
     /** Constructor. */
     public ClientStorageLoadContext() {
@@ -46,7 +45,7 @@ public class ClientStorageLoadContext extends BaseContext {
      * 
      * @return modifiable collection of storage keys to load from the client
      */
-    @Nonnull @NonnullElements @Live public Collection<String> getStorageKeys() {
+    @Nonnull @Live public Collection<String> getStorageKeys() {
         return storageKeys;
     }
 

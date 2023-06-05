@@ -28,7 +28,6 @@ import org.opensaml.storage.MutableStorageRecord;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -40,7 +39,7 @@ import net.shibboleth.shared.logic.Constraint;
 public abstract class AbstractClientStorageServiceStore implements ClientStorageServiceStore {
 
     /** The underlying map of data records. */
-    @Nonnull @NonnullElements private final Map<String, Map<String, MutableStorageRecord<?>>> contextMap;
+    @Nonnull private final Map<String, Map<String, MutableStorageRecord<?>>> contextMap;
     
     /** Data source. */
     @Nullable private ClientStorageSource source;
@@ -75,7 +74,7 @@ public abstract class AbstractClientStorageServiceStore implements ClientStorage
     }
 
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements @Live public Map<String,Map<String,MutableStorageRecord<?>>> getContextMap() {
+    @Nonnull @Live public Map<String,Map<String,MutableStorageRecord<?>>> getContextMap() {
         return contextMap;
     }
     

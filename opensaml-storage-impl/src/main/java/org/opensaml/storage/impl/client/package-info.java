@@ -19,4 +19,7 @@
  * Implementation of {@link org.opensaml.storage.StorageService} that unifies cookie and
  * HTML Local Storage.
  */
+@NonnullElements
 package org.opensaml.storage.impl.client;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

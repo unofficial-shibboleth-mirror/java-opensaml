@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -50,7 +49,7 @@ public class MemoryStorageService extends AbstractMapBackedStorageService implem
     @Nonnull private final Logger log = LoggerFactory.getLogger(MemoryStorageService.class);
 
     /** Map of contexts. */
-    @NonnullAfterInit @NonnullElements private Map<String, Map<String, MutableStorageRecord<?>>> contextMap;
+    @NonnullAfterInit private Map<String, Map<String, MutableStorageRecord<?>>> contextMap;
     
     /** A shared lock to synchronize access. */
     @NonnullAfterInit private ReadWriteLock lock;
@@ -84,13 +83,17 @@ public class MemoryStorageService extends AbstractMapBackedStorageService implem
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord<?>>> getContextMap() {
+    @Nonnull @Live protected Map<String, Map<String, MutableStorageRecord<?>>> getContextMap() {
+        checkComponentActive();
+        assert contextMap != null;
         return contextMap;
     }
 
     /** {@inheritDoc} */
     @Override
     @Nonnull protected ReadWriteLock getLock() {
+        checkComponentActive();
+        assert lock != null;
         return lock;
     }
     
@@ -115,7 +118,8 @@ public class MemoryStorageService extends AbstractMapBackedStorageService implem
                     final Collection<Map<String, MutableStorageRecord<?>>> contexts = getContextMap().values();
                     final Iterator<Map<String, MutableStorageRecord<?>>> i = contexts.iterator();
                     while (i.hasNext()) {
-                        final Map<String, MutableStorageRecord<?>> context = i.next(); 
+                        final Map<String, MutableStorageRecord<?>> context = i.next();
+                        assert context != null;
                         if (reapWithLock(context, now)) {
                             purged = true;
                             if (context.isEmpty()) {

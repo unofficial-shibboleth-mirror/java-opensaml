@@ -18,4 +18,7 @@
 /**
  * Storage-related implementation classes.
  */
+@NonnullElements
 package org.opensaml.storage.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

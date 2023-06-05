@@ -29,7 +29,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.collection.Pair;
@@ -267,8 +266,8 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * 
      * @throws IOException to signal errors
      */
-    @Nonnull @NonnullElements @Live
-    protected abstract Map<String, Map<String, MutableStorageRecord<?>>> getContextMap() throws IOException;
+    @Nonnull @Live protected abstract Map<String, Map<String, MutableStorageRecord<?>>> getContextMap()
+            throws IOException;
 
     /**
      * A callback to indicate that data has been modified.
@@ -471,14 +470,14 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * 
      * @return  true iff anything was purged
      */
-    protected boolean reapWithLock(@Nonnull @NonnullElements final Map<String, MutableStorageRecord<?>> dataMap,
-            final long expiration) {
-        
+    protected boolean reapWithLock(@Nonnull final Map<String, MutableStorageRecord<?>> dataMap, final long expiration) {
         return dataMap.entrySet().removeIf(new Predicate<Entry<String, MutableStorageRecord<?>>>() {
                 public boolean test(@Nullable final Entry<String, MutableStorageRecord<?>> entry) {
-                    assert entry != null;
-                    final Long exp = entry.getValue().getExpiration();
-                    return exp != null && exp <= expiration;
+                    if (entry != null) {
+                        final Long exp = entry.getValue().getExpiration();
+                        return exp != null && exp <= expiration;
+                    }
+                    return false;
                 }
             }
         );

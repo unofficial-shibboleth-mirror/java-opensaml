@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -30,7 +31,6 @@ import org.slf4j.Logger;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -64,11 +64,14 @@ public class PopulateClientStorageSaveContext extends AbstractProfileAction {
      * 
      * @param services instances to check for saving
      */
-    public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
+    public void setStorageServices(@Nullable final Collection<ClientStorageService> services) {
         checkSetterPreconditions();
         
-        storageServices = CollectionSupport.copyToList(
-                Constraint.isNotNull(services, "StorageService collection cannot be null"));
+        if (services != null) {
+            storageServices = CollectionSupport.copyToList(services);
+        } else {
+            storageServices = CollectionSupport.emptyList();
+        }
     }
     
     /** {@inheritDoc} */
