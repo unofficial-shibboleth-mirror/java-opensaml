@@ -22,10 +22,10 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Base class for conditional profile actions.

@@ -19,4 +19,7 @@
  * Interfaces and classes for profile actions, discrete units of behavior that
  * make up a profile.
  */
+@NonnullElements
 package org.opensaml.profile.action;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

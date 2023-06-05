@@ -31,7 +31,6 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -52,7 +51,7 @@ public class LogEvent extends AbstractProfileAction {
     @Nonnull private Function<ProfileRequestContext,EventContext> eventContextLookupStrategy;
 
     /** Set of events to ignore for logging purposes. */
-    @Nonnull @NotEmpty private Set<String> suppressedEvents;
+    @Nonnull private Set<String> suppressedEvents;
     
     /** Constructor. */
     public LogEvent() {
@@ -76,7 +75,7 @@ public class LogEvent extends AbstractProfileAction {
      * 
      * @param events events to ignore
      */
-    public void setSuppressedEvents(@Nullable @NotEmpty final Collection<String> events) {
+    public void setSuppressedEvents(@Nullable final Collection<String> events) {
         checkSetterPreconditions();
         
         if (events != null) {

@@ -18,4 +18,7 @@
 /**
  * Implementations of general profile actions.
  */
+@NonnullElements
 package org.opensaml.profile.action.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

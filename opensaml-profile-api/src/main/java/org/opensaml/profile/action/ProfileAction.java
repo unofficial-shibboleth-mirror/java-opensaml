@@ -40,5 +40,5 @@ public interface ProfileAction extends InitializableComponent {
      * 
      * @param profileRequestContext the current IdP profile request context
      */
-    public void execute(@Nonnull final ProfileRequestContext profileRequestContext);
+    void execute(@Nonnull final ProfileRequestContext profileRequestContext);
 }

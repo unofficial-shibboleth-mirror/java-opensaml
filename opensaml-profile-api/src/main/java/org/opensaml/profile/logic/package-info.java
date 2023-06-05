@@ -18,4 +18,7 @@
 /**
  * First order logic predicates and functions used for working with profile request data.
  */
+@NonnullElements
 package org.opensaml.profile.logic;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

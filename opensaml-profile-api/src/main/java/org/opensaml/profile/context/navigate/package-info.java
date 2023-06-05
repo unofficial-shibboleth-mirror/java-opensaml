@@ -18,5 +18,7 @@
 /**
  * Functions for navigating profile context information.
  */
-
+@NonnullElements
 package org.opensaml.profile.context.navigate;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

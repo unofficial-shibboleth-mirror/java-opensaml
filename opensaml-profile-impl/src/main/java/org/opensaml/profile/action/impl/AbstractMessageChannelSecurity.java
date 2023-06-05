@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
+import org.opensaml.messaging.context.MessageChannelSecurityContext;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -77,13 +78,27 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
     }
     
     /**
-     * Get the parent context on which the {@link org.opensaml.messaging.context.MessageChannelSecurityContext}
+     * Get the parent context on which the {@link MessageChannelSecurityContext}
      * will be populated.
      * 
      * @return the parent context
      */
     @Nullable protected BaseContext getParentContext() {
         return parentContext;
+    }
+
+    /**
+     * Get the parent context on which the {@link MessageChannelSecurityContext}
+     * will be populated, raising an {@link IllegalStateException} if absent.
+     * 
+     * @return the parent context
+     */
+    @Nonnull protected BaseContext ensureParentContext() {
+        if (parentContext != null) {
+            return parentContext;
+        }
+        
+        throw new IllegalStateException("Parent context was null");
     }
 
 }

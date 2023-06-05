@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 import org.opensaml.messaging.context.BaseContext;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 
 /**
@@ -38,7 +37,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 public final class ProxiedRequesterContext extends BaseContext {
 
     /** The resource. */
-    @Nonnull @NonnullElements private Collection<String> requesters;
+    @Nonnull private Collection<String> requesters;
 
     /** Constructor. */
     public ProxiedRequesterContext() {
@@ -50,7 +49,7 @@ public final class ProxiedRequesterContext extends BaseContext {
      * 
      * @return the proxied requesters
      */
-    @Nonnull @NonnullElements @Live public Collection<String> getRequesters() {
+    @Nonnull @Live public Collection<String> getRequesters() {
         return requesters;
     }
 

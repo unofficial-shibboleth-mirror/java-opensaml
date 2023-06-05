@@ -130,7 +130,6 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
         }
     }
 
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
@@ -164,6 +163,5 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
         }
     }
-// Checkstyle: ReturnCount ON
     
 }

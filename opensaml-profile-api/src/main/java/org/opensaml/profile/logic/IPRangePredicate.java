@@ -29,7 +29,6 @@ import org.opensaml.messaging.context.BaseContext;
 import com.google.common.net.InetAddresses;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.IPRange;
@@ -44,7 +43,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     @Nullable private Supplier<HttpServletRequest> httpRequestSupplier;
     
     /** IP ranges to match against. */
-    @Nonnull @NonnullElements private Collection<IPRange> addressRanges;
+    @Nonnull private Collection<IPRange> addressRanges;
 
     /** Constructor. */
     IPRangePredicate() {
@@ -58,7 +57,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
      *
      * @since 3.3.0
      */
-    public void setRanges(@Nonnull @NonnullElements final Collection<IPRange> ranges) {
+    public void setRanges(@Nonnull final Collection<IPRange> ranges) {
         Constraint.isNotNull(ranges, "Address range collection cannot be null");
         
         addressRanges = CollectionSupport.copyToList(ranges);

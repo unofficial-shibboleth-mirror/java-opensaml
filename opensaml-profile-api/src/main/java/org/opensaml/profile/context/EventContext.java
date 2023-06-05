@@ -34,7 +34,7 @@ import org.opensaml.messaging.context.BaseContext;
 public class EventContext extends BaseContext {
 
     /** The event represented. */
-    private Object event;
+    @Nullable private Object event;
 
     /**
      * Get the event represented by the context.

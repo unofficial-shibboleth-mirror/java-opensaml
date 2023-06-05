@@ -18,4 +18,7 @@
 /**
  * Context classes in support of profile behavior.
  */
+@NonnullElements
 package org.opensaml.profile.context;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

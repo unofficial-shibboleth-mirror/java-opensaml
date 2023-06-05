@@ -18,5 +18,7 @@
 /**
  * Profile {@link net.shibboleth.shared.resolver.Criterion} implementations.
  */
-
+@NonnullElements
 package org.opensaml.profile.criterion;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

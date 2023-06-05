@@ -65,6 +65,7 @@ public class PredicateAccessControl extends AbstractIdentifiableInitializableCom
     @Override
     public boolean checkAccess(@Nonnull final ServletRequest request, @Nullable final String operation,
             @Nullable final String resource) {
+        checkComponentActive();
         
         Constraint.isNotNull(request, "ServletRequest cannot be null");
         

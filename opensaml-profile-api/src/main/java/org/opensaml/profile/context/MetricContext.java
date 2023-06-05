@@ -33,7 +33,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
@@ -50,13 +49,13 @@ public final class MetricContext extends BaseContext {
      * 
      * <p>The first member is the timer name, the second the object to associate with the timer.</p>
      */
-    @Nonnull @NonnullElements private final Multimap<String,Pair<String,String>> timerMap;
+    @Nonnull private final Multimap<String,Pair<String,String>> timerMap;
     
     /** Map of objects to contexts to perform a stop signal. */
-    @Nonnull @NonnullElements private final Multimap<String,Timer.Context> timerContextMap;
+    @Nonnull private final Multimap<String,Timer.Context> timerContextMap;
     
     /** Map of objects to counter names. */
-    @Nonnull @NonnullElements private final Map<String,String> counterMap;
+    @Nonnull private final Map<String,String> counterMap;
     
     /** Constructor. */
     @SuppressWarnings("null")
@@ -97,7 +96,7 @@ public final class MetricContext extends BaseContext {
      * 
      * @return the collection of associated mappings
      */
-    @Nonnull @NonnullElements @Live public Collection<Pair<String,String>> getTimerMappings(
+    @Nonnull @Live public Collection<Pair<String,String>> getTimerMappings(
             @Nonnull @NotEmpty final String objectId) {
         return timerMap.get(objectId);
     }
@@ -126,7 +125,7 @@ public final class MetricContext extends BaseContext {
      * 
      * @return map of counters
      */
-    @Nonnull @NonnullElements @Live public Map<String,String> getCounterMappings() {
+    @Nonnull @Live public Map<String,String> getCounterMappings() {
         return counterMap;
     }
     
