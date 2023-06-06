@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -59,7 +58,7 @@ public final class Signer {
      * @param signatures an ordered list of XMLObject to be signed
      * @throws SignatureException  thrown if there is an error computing the signature
      */
-    public static void signObjects(@Nonnull @NonnullElements final List<Signature> signatures)
+    public static void signObjects(@Nonnull final List<Signature> signatures)
             throws SignatureException {
         final SignerProvider signer = getSignerProvider();
         LOG.debug("Using a signer of implementation: {}", signer.getClass().getName());

@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -35,7 +34,6 @@ import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
  * Criterion which holds one or more instances of {@link AlgorithmPolicyConfiguration},
  * used exclusively for testing the {@link AbstractSecurityParametersResolver}.
  */
-@SuppressWarnings({"javadoc", "null"})
 public class AlgorithmPolicyConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
@@ -46,8 +44,7 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
      *
      * @param configurations list of configuration instances
      */
-    public AlgorithmPolicyConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
-            final List<AlgorithmPolicyConfiguration> configurations) {
+    public AlgorithmPolicyConfigurationCriterion(@Nonnull @NotEmpty final List<AlgorithmPolicyConfiguration> configurations) {
         configs = CollectionSupport.copyToList(Constraint.isNotNull(configurations, "List of configurations may not be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
         
@@ -58,8 +55,7 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public AlgorithmPolicyConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
-            final AlgorithmPolicyConfiguration... configurations) {
+    public AlgorithmPolicyConfigurationCriterion(@Nonnull @NotEmpty final AlgorithmPolicyConfiguration... configurations) {
         configs = CollectionSupport.listOf(Constraint.isNotNull(configurations, "List of configurations may not be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
@@ -68,8 +64,7 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<AlgorithmPolicyConfiguration> getConfigurations() {
+    @Nonnull @NotLive @Unmodifiable @NotEmpty public List<AlgorithmPolicyConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -77,7 +72,7 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("WhitelistBlacklistConfigurationCriterion [configs=");
+        builder.append("AlgorithmPolicyConfigurationCriterion [configs=");
         builder.append(configs);
         builder.append("]");
         return builder.toString();
@@ -100,8 +95,8 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof AlgorithmPolicyConfigurationCriterion) {
-            return configs.equals(((AlgorithmPolicyConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof AlgorithmPolicyConfigurationCriterion other) {
+            return configs.equals(other.getConfigurations());
         }
 
         return false;
