@@ -81,7 +81,6 @@ public class SOAP11FaultContextDecoratingErrorHandler implements TypedMessageErr
     public SOAP11FaultContextDecoratingErrorHandler(@Nonnull final Class<? extends Throwable> throwable, 
             @Nonnull final QName code, @Nonnull final String message, @Nullable final String actor, 
             @Nullable final String addressingActionURI) {
-        super();
         handledThrowable = Constraint.isNotNull(throwable, "Handled Throwable type cannot be null");
         faultCode = Constraint.isNotNull(code, "Fault code cannot be null");
         faultString = Constraint.isNotNull(StringSupport.trim(message), "Fault string cannot be null or empty");

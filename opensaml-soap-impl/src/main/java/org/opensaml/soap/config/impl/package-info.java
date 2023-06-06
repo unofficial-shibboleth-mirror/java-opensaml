@@ -16,4 +16,7 @@
  */
 
 /** Configuration and initialization of SOAP XMLObject providers. */
+@NonnullElements
 package org.opensaml.soap.config.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

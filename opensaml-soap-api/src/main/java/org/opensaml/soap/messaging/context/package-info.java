@@ -16,4 +16,7 @@
  */
 
 /** Context classes in support of SOAP messaging. */
+@NonnullElements
 package org.opensaml.soap.messaging.context;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -16,4 +16,7 @@
  */
 
 /** Common classes shared across SOAP versions, clients, and transports. */
+@NonnullElements
 package org.opensaml.soap.common;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

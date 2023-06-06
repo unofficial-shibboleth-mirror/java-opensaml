@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.messaging.context;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
@@ -29,13 +30,13 @@ import org.opensaml.soap.soap11.Fault;
 public final class SOAP11Context extends BaseContext {
     
     /** The SAML protocol in use. */
-    private Envelope envelope;
+    @Nullable private Envelope envelope;
     
     /** SOAP 1.1 Fault related to the current message processing context. */
-    private Fault fault;
+    @Nullable private Fault fault;
     
     /** The HTTP response status code to return. */
-    private Integer httpResponseStatus;
+    @Nullable private Integer httpResponseStatus;
 
     /**
      * Gets the current SOAP 1.1 Envelope.
@@ -50,9 +51,12 @@ public final class SOAP11Context extends BaseContext {
      * Sets the current SOAP 1.1 Envelope.
      * 
      * @param newEnvelope the current SOAP 1.1 Envelope
+     * 
+     * @return this context
      */
-    public void setEnvelope(@Nullable final Envelope newEnvelope) {
+    @Nonnull public SOAP11Context setEnvelope(@Nullable final Envelope newEnvelope) {
         envelope = newEnvelope;
+        return this;
     }
     
     /**
@@ -68,9 +72,12 @@ public final class SOAP11Context extends BaseContext {
      * Set the current SOAP 1.1 Fault related to the current message processing context.
      * 
      * @param newFault the new Fault
+     * 
+     * @return this context
      */
-    public void setFault(@Nullable final Fault newFault) {
+    @Nonnull public SOAP11Context setFault(@Nullable final Fault newFault) {
         fault = newFault;
+        return this;
     }
 
     /**
@@ -86,9 +93,12 @@ public final class SOAP11Context extends BaseContext {
      * Set the optional HTTP response status code to return.
      * 
      * @param status the HTTP response status code, may be null
+     * 
+     * @return this context
      */
-    public void setHTTPResponseStatus(@Nullable final Integer status) {
+    @Nonnull public SOAP11Context setHTTPResponseStatus(@Nullable final Integer status) {
         httpResponseStatus = status;
+        return this;
     }
     
 }

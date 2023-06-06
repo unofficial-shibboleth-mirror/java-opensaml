@@ -19,6 +19,8 @@ package org.opensaml.soap.wsaddressing.util;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -43,7 +45,8 @@ public final class WSAddressingSupport {
      * @param soapObject the SOAP object to add the attribute to
      * @param isReferenceParameter whether IsReferenceParameter is true or false
      */
-    public static void addWSAIsReferenceParameter(final XMLObject soapObject, final boolean isReferenceParameter) {
+    public static void addWSAIsReferenceParameter(@Nonnull final XMLObject soapObject,
+            final boolean isReferenceParameter) {
         if (soapObject instanceof IsReferenceParameterBearing) {
             ((IsReferenceParameterBearing)soapObject).setWSAIsReferenceParameter(
                     new XSBooleanValue(isReferenceParameter, false));
@@ -64,7 +67,7 @@ public final class WSAddressingSupport {
      * 
      * @return value of the IsReferenceParameter attribute, or false if not present
      */
-    public static boolean getWSAIsReferenceParameter(final XMLObject soapObject) {
+    public static boolean getWSAIsReferenceParameter(@Nonnull final XMLObject soapObject) {
         if (soapObject instanceof IsReferenceParameterBearing) {
             final XSBooleanValue value = ((IsReferenceParameterBearing)soapObject).isWSAIsReferenceParameterXSBoolean();
             if (value != null) {

@@ -16,4 +16,7 @@
  */
 
 /** SOAP client functionality. */
+@NonnullElements
 package org.opensaml.soap.client;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

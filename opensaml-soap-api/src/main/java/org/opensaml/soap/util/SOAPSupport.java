@@ -26,7 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -413,7 +412,7 @@ public final class SOAPSupport {
      * @return the new Fault element object
      */
     public static Fault buildSOAP11Fault(@Nonnull final QName faultCode, @Nonnull final String faultString,
-            @Nullable final String faultActor, @Nullable @NonnullElements final List<XMLObject> detailChildren,
+            @Nullable final String faultActor, @Nullable final List<XMLObject> detailChildren,
             @Nullable final Map<QName, String> detailAttributes) {
         Constraint.isNotNull(faultCode, "faultcode cannot be null");
         Constraint.isNotNull(faultString, "faultstring cannot be null");

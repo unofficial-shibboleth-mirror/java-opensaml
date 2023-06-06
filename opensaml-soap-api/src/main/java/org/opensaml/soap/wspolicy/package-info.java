@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces for WS-Policy 1.2 elements. */
+@NonnullElements
 package org.opensaml.soap.wspolicy;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

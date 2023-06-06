@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces for WS-Security 1.1 elements. */
+@NonnullElements
 package org.opensaml.soap.wssecurity;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

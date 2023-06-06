@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces for SOAP 1.2 elements. */
+@NonnullElements
 package org.opensaml.soap.soap12;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

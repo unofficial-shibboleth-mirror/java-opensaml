@@ -16,4 +16,7 @@
  */
 
 /** XML Object provider implementations for WS-Security. */
+@NonnullElements
 package org.opensaml.soap.wssecurity.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

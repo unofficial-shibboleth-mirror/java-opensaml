@@ -51,7 +51,7 @@ public class ValidateActionHandler extends AbstractMessageHandler {
     @Nonnull private Logger log = LoggerFactory.getLogger(ValidateActionHandler.class);
     
     /** The expected Action URI value. */
-    private String expectedActionURI;
+    @Nullable private String expectedActionURI;
 
     /**
      * Get the expected Action URI.

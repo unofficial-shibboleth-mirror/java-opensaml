@@ -36,7 +36,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class SOAPClientSecurityProfileIdLookupFunction implements ContextDataLookupFunction<MessageContext, String> {
     
     /** Lookup function for {@link SOAPClientSecurityContext}. */
-    private Function<MessageContext, SOAPClientSecurityContext> soapContextLookup;
+    @Nonnull private Function<MessageContext, SOAPClientSecurityContext> soapContextLookup;
     
     /**
      * Constructor.
@@ -58,7 +58,7 @@ public class SOAPClientSecurityProfileIdLookupFunction implements ContextDataLoo
     }
 
     /** {@inheritDoc} */
-    public String apply(@Nullable final MessageContext messageContext) {
+    @Nullable public String apply(@Nullable final MessageContext messageContext) {
         if (messageContext == null) {
             return null;
         }

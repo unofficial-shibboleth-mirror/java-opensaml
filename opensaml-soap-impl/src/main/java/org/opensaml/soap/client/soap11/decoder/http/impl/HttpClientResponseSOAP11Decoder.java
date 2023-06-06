@@ -159,7 +159,8 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @throws MessageDecodingException  if message can not be unmarshalled
      * @throws IOException if there is a problem with the response entity input stream
      */
-    protected void processSuccessResponse(final ClassicHttpResponse httpResponse, final SOAP11Context soapContext) 
+    protected void processSuccessResponse(@Nonnull final ClassicHttpResponse httpResponse,
+            @Nonnull final SOAP11Context soapContext) 
             throws MessageDecodingException, IOException {
         
         if (httpResponse.getEntity() == null) {
@@ -186,7 +187,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @throws MessageDecodingException if message can not be unmarshalled
      * @throws IOException if there is a problem with the response entity input stream
      */
-    @Nonnull protected MessageDecodingException buildFaultException(final ClassicHttpResponse response) 
+    @Nonnull protected MessageDecodingException buildFaultException(@Nonnull final ClassicHttpResponse response) 
             throws MessageDecodingException, IOException {
         
         if (response.getEntity() == null) {
@@ -215,7 +216,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @param soapMessage the SOAP 1.1. Envelope being processed
      * @return the first Fault element found, or null
      */
-    @Nullable protected Fault getFault(final Envelope soapMessage) {
+    @Nullable protected Fault getFault(@Nonnull final Envelope soapMessage) {
         final Body body = soapMessage.getBody();
         if (body != null) {
             final List<XMLObject> faults = body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);

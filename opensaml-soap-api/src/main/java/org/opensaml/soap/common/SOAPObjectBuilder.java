@@ -34,4 +34,5 @@ public interface SOAPObjectBuilder<SOAPObjectType extends SOAPObject> extends XM
      * @return built SAMLObject
      */
     @Nonnull public SOAPObjectType buildObject();
+
 }

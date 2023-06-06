@@ -16,4 +16,7 @@
  */
 
 /** WS-Security message handling components. */
+@NonnullElements
 package org.opensaml.soap.wssecurity.messaging.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

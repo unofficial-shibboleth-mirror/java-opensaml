@@ -16,4 +16,7 @@
  */
 
 /** WS-Addressing message handling components. */
+@NonnullElements
 package org.opensaml.soap.wsaddressing.messaging.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

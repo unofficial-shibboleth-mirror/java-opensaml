@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces for WS-Addressing 1.0 elements. */
+@NonnullElements
 package org.opensaml.soap.wsaddressing;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

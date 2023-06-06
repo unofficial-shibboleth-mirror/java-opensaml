@@ -51,7 +51,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
     @Nullable private Function<MessageContext,String> targetNodeStrategy;
     
     /** The effective target node value to use. */
-    private String effectiveTargetNode;
+    @Nullable private String effectiveTargetNode;
     
     /**
      * Set the statically configured value for mustUnderstand.

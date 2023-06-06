@@ -18,6 +18,7 @@
 package org.opensaml.soap.wsaddressing.messaging.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
@@ -41,20 +42,20 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
     @Nonnull private Logger log = LoggerFactory.getLogger(AddRelatesToHandler.class);
     
     /** Optional lookup function for obtaining the RelatesTo URI value. */
-    private ContextDataLookupFunction<MessageContext, String> relatesToURILookup;
+    @Nullable private ContextDataLookupFunction<MessageContext, String> relatesToURILookup;
     
     /** The effective RelatesTo URI value to use. */
-    private String relatesToURI;
+    @Nullable private String relatesToURI;
     
     /** The effective RelatesTo RelationshipType attribute value to use. */
-    private String relationshipType;
+    @Nullable private String relationshipType;
     
     /**
      * Get the function for looking up the RelatesTo URI value.
      * 
      * @return the lookup function
      */
-    public ContextDataLookupFunction<MessageContext, String> getRelatesToURILookup() {
+    @Nullable public ContextDataLookupFunction<MessageContext, String> getRelatesToURILookup() {
         return relatesToURILookup;
     }
 
@@ -63,7 +64,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * 
      * @param lookup the lookup function
      */
-    public void setRelatesToURILookup(final ContextDataLookupFunction<MessageContext, String> lookup) {
+    public void setRelatesToURILookup(@Nullable final ContextDataLookupFunction<MessageContext, String> lookup) {
         checkSetterPreconditions();
         relatesToURILookup = lookup;
     }
@@ -73,7 +74,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * 
      * @return the relationship type
      */
-    public String getRelationshipType() {
+    @Nullable public String getRelationshipType() {
         return relationshipType;
     }
 
@@ -82,7 +83,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * 
      * @param value the relationship type
      */
-    public void setRelationshipType(final String value) {
+    public void setRelationshipType(@Nullable final String value) {
         checkSetterPreconditions();
         relationshipType = StringSupport.trimOrNull(value);
     }
@@ -101,8 +102,8 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
             }
         }
         
-        if (relatesToURI == null && getRelatesToURILookup() != null) {
-            relatesToURI = getRelatesToURILookup().apply(messageContext);
+        if (relatesToURI == null && relatesToURILookup != null) {
+            relatesToURI = relatesToURILookup.apply(messageContext);
         }
         
         if (relatesToURI == null) {

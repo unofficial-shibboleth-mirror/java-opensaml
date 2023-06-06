@@ -16,4 +16,7 @@
  */
 
 /** Classes related to SOAP client security. */
+@NonnullElements
 package org.opensaml.soap.client.security;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

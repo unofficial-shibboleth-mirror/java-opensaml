@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces for WS-Trust 1.3 elements. */
+@NonnullElements
 package org.opensaml.soap.wstrust;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

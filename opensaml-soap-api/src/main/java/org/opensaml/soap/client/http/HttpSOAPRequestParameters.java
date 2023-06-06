@@ -34,7 +34,7 @@ public class HttpSOAPRequestParameters implements SOAPRequestParameters {
     @Nonnull @NotEmpty public static final String SOAP_ACTION_HEADER = "SOAPAction";
 
     /** HTTP SOAPAction header. */
-    private String soapAction;
+    @Nullable private String soapAction;
 
     /**
      * Constructor.
@@ -53,4 +53,5 @@ public class HttpSOAPRequestParameters implements SOAPRequestParameters {
     @Nullable public String getSOAPAction() {
         return soapAction;
     }
+
 }

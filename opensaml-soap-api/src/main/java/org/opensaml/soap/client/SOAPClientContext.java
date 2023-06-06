@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.client;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
@@ -50,9 +51,12 @@ public final class SOAPClientContext extends BaseContext {
      * Sets a set of binding/transport-specific request parameters.
      *
      * @param parameters a set of binding/transport-specific request parameters
+     * 
+     * @return this context
      */
-    public void setSOAPRequestParameters(@Nullable final SOAPRequestParameters parameters) {
+    @Nonnull public SOAPClientContext setSOAPRequestParameters(@Nullable final SOAPRequestParameters parameters) {
         requestParameters = parameters;
+        return this;
     }
 
     /**
@@ -70,9 +74,12 @@ public final class SOAPClientContext extends BaseContext {
      * for example with {@link PipelineFactoryHttpSOAPClient}. 
      * 
      * @param name the pipeline name, or null
+     * 
+     * @return this context
      */
-    public void setPipelineName(@Nullable final String name) {
+    @Nonnull public SOAPClientContext setPipelineName(@Nullable final String name) {
         pipelineName = StringSupport.trimOrNull(name);
+        return this;
     }
     
     /**
@@ -88,9 +95,12 @@ public final class SOAPClientContext extends BaseContext {
      * Set the destination URI for the SOAP message being sent.
      * 
      * @param uri the destination URI, or null
+     * 
+     * @return this context
      */
-    public void setDestinationURI(@Nullable final String uri) {
+    @Nonnull public SOAPClientContext setDestinationURI(@Nullable final String uri) {
         destinationURI = StringSupport.trimOrNull(uri);
+        return this;
     }
 
 }

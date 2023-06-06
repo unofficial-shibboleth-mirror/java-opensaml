@@ -18,4 +18,7 @@
 /**
  * SOAP 1.1 client message encoding support implementations.
  */
+@NonnullElements
 package org.opensaml.soap.client.soap11.encoder.http.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

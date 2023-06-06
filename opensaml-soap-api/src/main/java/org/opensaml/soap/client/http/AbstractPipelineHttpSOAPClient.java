@@ -356,7 +356,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      * @param operationContext the current operation context
      * @return the client security parameters resolved from the current operation context, or null
      */
-    protected HttpClientSecurityParameters resolveContextSecurityParameters(
+    @Nullable protected HttpClientSecurityParameters resolveContextSecurityParameters(
             @Nonnull final InOutOperationContext operationContext) {
         final HttpClientSecurityContext securityContext = 
                 operationContext.ensureOutboundMessageContext().getSubcontext(HttpClientSecurityContext.class);

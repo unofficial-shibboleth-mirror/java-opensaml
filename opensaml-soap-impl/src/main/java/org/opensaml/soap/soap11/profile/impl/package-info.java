@@ -18,5 +18,7 @@
 /**
  * Profile actions related to SOAP 1.1.
  */
-
+@NonnullElements
 package org.opensaml.soap.soap11.profile.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

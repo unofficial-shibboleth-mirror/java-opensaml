@@ -284,7 +284,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * 
      * @throws SOAPClientException thrown if the message could not be marshalled
      */
-    protected HttpEntity createRequestEntity(@Nonnull final Envelope message, @Nullable final Charset charset)
+    @Nonnull protected HttpEntity createRequestEntity(@Nonnull final Envelope message, @Nullable final Charset charset)
             throws SOAPClientException {
         try {
             final Marshaller marshaller =
@@ -389,7 +389,8 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * 
      * @throws SOAPClientException thrown if the incoming response can not be unmarshalled into an {@link Envelope}
      */
-    protected Envelope unmarshallResponse(@Nonnull final InputStream responseStream) throws SOAPClientException {
+    @Nonnull protected Envelope unmarshallResponse(@Nonnull final InputStream responseStream)
+            throws SOAPClientException {
         try {
             final Element responseElem = parserPool.parse(responseStream).getDocumentElement();
             assert responseElem != null;
@@ -405,42 +406,6 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
         } catch (final UnmarshallingException e) {
             throw new SOAPClientException("Unable to unmarshall the response DOM", e);
         }
-    }
-
-    /**
-     * Evaluates the security policy associated with the given message context. If no policy resolver is registered or
-     * no policy is located during the resolution process then no policy is evaluated. Note that neither the inbound or
-     * outbound message transport is available.
-     * 
-     * @param messageContext current message context
-     * 
-     * @throws SOAPClientException thrown if there is a problem resolving or evaluating a security policy
-     */
-    protected void evaluateSecurityPolicy(final SOAPClientContext messageContext) throws SOAPClientException {
-        //TODO: I think this goes away, with the policy layer living outside the client?
-        /*
-        SecurityPolicyResolver policyResolver = messageContext.getSecurityPolicyResolver();
-        if (policyResolver == null) {
-            return;
-        }
-
-        SecurityPolicy policy = null;
-        try {
-            policy = policyResolver.resolveSingle(messageContext);
-            if (policy == null) {
-                return;
-            }
-        } catch (ResolverException e) {
-            throw new SOAPClientException("Unable to resolve security policy for inbound SOAP response", e);
-        }
-
-        try {
-            log.debug("Evaluating security policy for inbound SOAP response");
-            policy.evaluate(messageContext);
-        } catch (SecurityException e) {
-            throw new SOAPClientException("Inbound SOAP response does not meet security policy", e);
-        }
-        */
     }
     
 }

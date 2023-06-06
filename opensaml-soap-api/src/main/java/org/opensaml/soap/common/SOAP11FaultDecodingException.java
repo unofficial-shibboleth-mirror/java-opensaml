@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.common;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.soap.soap11.Fault;
 
@@ -29,14 +31,14 @@ public class SOAP11FaultDecodingException extends MessageDecodingException {
     private static final long serialVersionUID = 7013840493662326895L;
     
     /** The SOAP 1.1. Fault element being carried. */
-    private final Fault fault;
+    @Nullable private final Fault fault;
     
     /**
      * Constructor.
      *
      * @param soapFault the SOAP 1.1 fault being represented
      */
-    public SOAP11FaultDecodingException(final Fault soapFault) {
+    public SOAP11FaultDecodingException(@Nullable final Fault soapFault) {
         super();
         fault = soapFault; 
     }
@@ -47,7 +49,7 @@ public class SOAP11FaultDecodingException extends MessageDecodingException {
      * @param soapFault the SOAP 1.1 fault being represented
      * @param message a textual exception message
      */
-    public SOAP11FaultDecodingException(final Fault soapFault, final String message) {
+    public SOAP11FaultDecodingException(@Nullable final Fault soapFault, @Nullable final String message) {
         super(message);
         fault = soapFault; 
     }
@@ -57,7 +59,7 @@ public class SOAP11FaultDecodingException extends MessageDecodingException {
      * 
      * @return the SOAP 1.1 Fault element
      */
-    public Fault getFault() {
+    @Nullable public Fault getFault() {
         return fault;
     }
 

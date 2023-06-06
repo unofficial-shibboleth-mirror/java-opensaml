@@ -18,4 +18,7 @@
 /**
  * SOAP messaging support implementations.
  */
+@NonnullElements
 package org.opensaml.soap.soap11.messaging.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

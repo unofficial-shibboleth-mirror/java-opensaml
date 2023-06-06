@@ -16,4 +16,7 @@
  */
 
 /** SOAP over HTTP 1.1 message encoder and handlers. */
+@NonnullElements
 package org.opensaml.soap.soap11.encoder.http.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

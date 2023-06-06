@@ -39,7 +39,6 @@ import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.PredicateSupport;
@@ -81,7 +80,7 @@ public class AddSOAPFault extends AbstractProfileAction {
     @Nullable private Function<ProfileRequestContext,String> faultStringLookupStrategy;
     
     /** Default fault codes to insert. */
-    @Nonnull @NonnullElements private QName defaultFaultCode;
+    @Nonnull private QName defaultFaultCode;
     
     /** A default fault string to include. */
     @Nullable private String faultString;
@@ -330,7 +329,7 @@ public class AddSOAPFault extends AbstractProfileAction {
     public static class FaultCodeMappingFunction implements Function<ProfileRequestContext,QName> {
 
         /** Code mappings. */
-        @Nonnull @NonnullElements private Map<String,QName> codeMappings;
+        @Nonnull private Map<String,QName> codeMappings;
         
         /** Strategy function for access to {@link EventContext} to check. */
         @Nonnull private Function<ProfileRequestContext,EventContext> eventContextLookupStrategy;
@@ -340,7 +339,7 @@ public class AddSOAPFault extends AbstractProfileAction {
          *
          * @param mappings the status code mappings to use
          */
-        public FaultCodeMappingFunction(@Nonnull @NonnullElements final Map<String,QName> mappings) {
+        public FaultCodeMappingFunction(@Nonnull final Map<String,QName> mappings) {
             Constraint.isNotNull(mappings, "Faultcode mappings cannot be null");
             
             codeMappings = new HashMap<>(mappings.size());

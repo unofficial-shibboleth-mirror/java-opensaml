@@ -16,4 +16,7 @@
  */
 
 /** Support classes for WS-Security. */
+@NonnullElements
 package org.opensaml.soap.wssecurity.util;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

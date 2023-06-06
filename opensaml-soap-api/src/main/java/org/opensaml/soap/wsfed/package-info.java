@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces for WS-Federation elements. */
+@NonnullElements
 package org.opensaml.soap.wsfed;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
