@@ -88,7 +88,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      */
     public LocalKeyInfoCredentialResolver(
             @Nonnull @ParameterName(name="keyInfoProviders") final List<KeyInfoProvider> keyInfoProviders,
-            @Nonnull  @ParameterName(name="localCredentialResolver") final CredentialResolver localCredentialResolver) {
+            @Nonnull @ParameterName(name="localCredentialResolver") final CredentialResolver localCredentialResolver) {
         super(keyInfoProviders);
         
         localCredResolver = Constraint.isNotNull(localCredentialResolver, "Local credential resolver cannot be null");

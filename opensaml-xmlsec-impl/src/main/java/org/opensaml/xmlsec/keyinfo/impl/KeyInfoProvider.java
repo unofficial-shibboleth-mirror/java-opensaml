@@ -27,6 +27,8 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -48,7 +50,7 @@ public interface KeyInfoProvider {
      * @throws SecurityException if there is an error during credential resolution.  
      *          Note: failure to resolve a credential is not an error.
      */
-    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
+    @Nullable @Unmodifiable @NotLive Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
             @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
             @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException;
     
@@ -63,6 +65,6 @@ public interface KeyInfoProvider {
      * 
      * @return true if the provider should attempt to resolve credentials, false otherwise
      */
-    public boolean handles(@Nonnull final XMLObject keyInfoChild);
+    boolean handles(@Nonnull final XMLObject keyInfoChild);
 
 }

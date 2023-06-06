@@ -51,7 +51,7 @@ public final class BlockEncryptionDESede implements BlockEncryptionAlgorithm {
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Integer getKeyLength() {
+    public int getKeyLength() {
         return 192;
     }
 

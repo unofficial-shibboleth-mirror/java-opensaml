@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -37,14 +36,14 @@ import org.opensaml.xmlsec.SignatureValidationConfiguration;
 public class SignatureValidationConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    @Nonnull @NonnullElements private List<SignatureValidationConfiguration> configs;
+    @Nonnull private List<SignatureValidationConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public SignatureValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
+    public SignatureValidationConfigurationCriterion(@Nonnull @NotEmpty final
             List<SignatureValidationConfiguration> configurations) {
         configs = CollectionSupport.copyToList(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
@@ -57,7 +56,7 @@ public class SignatureValidationConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public SignatureValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
+    public SignatureValidationConfigurationCriterion(@Nonnull @NotEmpty final
             SignatureValidationConfiguration... configurations) {
         configs = CollectionSupport.listOf(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
@@ -68,8 +67,7 @@ public class SignatureValidationConfigurationCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<SignatureValidationConfiguration> getConfigurations() {
+    @Nonnull @NotEmpty @NotLive @Unmodifiable public List<SignatureValidationConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -100,8 +98,8 @@ public class SignatureValidationConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof SignatureValidationConfigurationCriterion) {
-            return configs.equals(((SignatureValidationConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof SignatureValidationConfigurationCriterion other) {
+            return configs.equals(other.getConfigurations());
         }
 
         return false;

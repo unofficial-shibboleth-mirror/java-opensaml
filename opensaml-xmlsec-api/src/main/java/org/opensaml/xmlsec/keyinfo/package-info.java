@@ -16,4 +16,7 @@
  */
 
 /** Classes in support of processing XML Signature KeyInfo material. */
+@NonnullElements
 package org.opensaml.xmlsec.keyinfo;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

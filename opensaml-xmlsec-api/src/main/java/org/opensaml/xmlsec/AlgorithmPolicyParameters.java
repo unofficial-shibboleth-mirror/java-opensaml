@@ -22,7 +22,6 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -34,10 +33,10 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class AlgorithmPolicyParameters {
     
     /** Included algorithm URIs. */
-    @Nonnull @NonnullElements private Collection<String> includedAlgorithmURIs;
+    @Nonnull private Collection<String> includedAlgorithmURIs;
     
     /** Excluded algorithm URIs. */
-    @Nonnull @NonnullElements private Collection<String> excludedAlgorithmURIs;
+    @Nonnull private Collection<String> excludedAlgorithmURIs;
         
     /** Constructor. */
     public AlgorithmPolicyParameters() {
@@ -50,7 +49,7 @@ public class AlgorithmPolicyParameters {
      * 
      * @return the included algorithms
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getIncludedAlgorithms() {
+    @Nonnull @NotLive @Unmodifiable public Collection<String> getIncludedAlgorithms() {
         return includedAlgorithmURIs;
     }
     
@@ -59,7 +58,7 @@ public class AlgorithmPolicyParameters {
      * 
      * @param uris the included algorithms
      */
-    public void setIncludedAlgorithms(@Nullable @NonnullElements final Collection<String> uris) {
+    public void setIncludedAlgorithms(@Nullable final Collection<String> uris) {
         if (uris == null) {
             includedAlgorithmURIs = CollectionSupport.emptySet();
             return;
@@ -72,7 +71,7 @@ public class AlgorithmPolicyParameters {
      * 
      * @return the excluded algorithms
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getExcludedAlgorithms() {
+    @Nonnull @NotLive @Unmodifiable public Collection<String> getExcludedAlgorithms() {
         return excludedAlgorithmURIs;
     }
     
@@ -81,7 +80,7 @@ public class AlgorithmPolicyParameters {
      * 
      * @param uris the excluded algorithms
      */
-    public void setExcludedAlgorithms(@Nullable @NonnullElements final Collection<String> uris) {
+    public void setExcludedAlgorithms(@Nullable final Collection<String> uris) {
         if (uris == null) {
             excludedAlgorithmURIs = CollectionSupport.emptySet();
             return;

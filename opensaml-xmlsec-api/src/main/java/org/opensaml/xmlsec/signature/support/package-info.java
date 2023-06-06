@@ -16,4 +16,7 @@
  */
 
 /** Functional support for XML Signature. */
+@NonnullElements
 package org.opensaml.xmlsec.signature.support;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

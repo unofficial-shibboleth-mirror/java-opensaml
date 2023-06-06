@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public final class Signer {
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(Signer.class);
     
     /** The cached signer provider instance to use. */
-    private static SignerProvider signerInstance;
+    @Nullable private static SignerProvider signerInstance;
 
     /** Constructor. */
     protected Signer() { }

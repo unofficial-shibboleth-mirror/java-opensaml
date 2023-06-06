@@ -91,8 +91,9 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
@@ -113,7 +114,7 @@ public final class KeyInfoSupport {
     /**
      * Factory for {@link java.security.cert.X509Certificate} and {@link java.security.cert.X509CRL} creation.
      */
-    private static CertificateFactory x509CertFactory;
+    @Nullable private static CertificateFactory x509CertFactory;
 
     /** Constructor. */
     private KeyInfoSupport() {
@@ -127,7 +128,7 @@ public final class KeyInfoSupport {
      * 
      * @return a list of key name strings
      */
-    @Nonnull public static List<String> getKeyNames(@Nullable final KeyInfo keyInfo) {
+    @Nonnull @Unmodifiable @NotLive public static List<String> getKeyNames(@Nullable final KeyInfo keyInfo) {
         final List<String> keynameList = new LinkedList<>();
 
         if (keyInfo == null) {
@@ -170,7 +171,7 @@ public final class KeyInfoSupport {
      * @throws CertificateException thrown if there is a problem converting the X509 data into
      *             {@link java.security.cert.X509Certificate}s.
      */
-    @Nonnull @Live public static List<X509Certificate> getCertificates(@Nullable final KeyInfo keyInfo)
+    @Nonnull @Unmodifiable @NotLive public static List<X509Certificate> getCertificates(@Nullable final KeyInfo keyInfo)
             throws CertificateException {
         final List<X509Certificate> certList = new LinkedList<>();
 
@@ -196,8 +197,8 @@ public final class KeyInfoSupport {
      * @throws CertificateException thrown if there is a problem converting the X509 data into
      *             {@link java.security.cert.X509Certificate}s.
      */
-    @Nonnull @Live public static List<X509Certificate> getCertificates(@Nullable final X509Data x509Data)
-            throws CertificateException {
+    @Nonnull @Unmodifiable @NotLive public static List<X509Certificate> getCertificates(
+            @Nullable final X509Data x509Data) throws CertificateException {
         final List<X509Certificate> certList = new LinkedList<>();
 
         if (x509Data == null) {
@@ -245,7 +246,8 @@ public final class KeyInfoSupport {
      * @throws CRLException thrown if there is a problem converting the CRL data into {@link java.security.cert.X509CRL}
      *             s
      */
-    @Nonnull public static List<X509CRL> getCRLs(@Nullable final KeyInfo keyInfo) throws CRLException {
+    @Nonnull @Unmodifiable @NotLive public static List<X509CRL> getCRLs(
+            @Nullable final KeyInfo keyInfo) throws CRLException {
         final List<X509CRL> crlList = new LinkedList<>();
 
         if (keyInfo == null) {
@@ -270,7 +272,8 @@ public final class KeyInfoSupport {
      * @throws CRLException thrown if there is a problem converting the CRL data into {@link java.security.cert.X509CRL}
      *             s
      */
-    @Nonnull public static List<X509CRL> getCRLs(@Nullable final X509Data x509Data) throws CRLException {
+    @Nonnull @Unmodifiable @NotLive public static List<X509CRL> getCRLs(
+            @Nullable final X509Data x509Data) throws CRLException {
         final List<X509CRL> crlList = new LinkedList<>();
 
         if (x509Data == null) {
@@ -372,8 +375,7 @@ public final class KeyInfoSupport {
      *             to the XMLObject representation
      */
     @Nonnull public static org.opensaml.xmlsec.signature.X509Certificate
-            buildX509Certificate(final X509Certificate cert)
-            throws CertificateEncodingException {
+            buildX509Certificate(final X509Certificate cert) throws CertificateEncodingException {
         Constraint.isNotNull(cert, "X.509 certificate cannot be null");
         
        

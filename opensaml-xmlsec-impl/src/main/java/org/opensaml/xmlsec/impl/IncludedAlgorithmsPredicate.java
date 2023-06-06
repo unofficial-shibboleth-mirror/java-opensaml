@@ -23,7 +23,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -34,7 +33,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class IncludedAlgorithmsPredicate implements Predicate<String> {
     
     /** Included algorithms. */
-    @Nonnull @NonnullElements private Collection<String> includes;
+    @Nonnull private Collection<String> includes;
     
     /**
      * Constructor.

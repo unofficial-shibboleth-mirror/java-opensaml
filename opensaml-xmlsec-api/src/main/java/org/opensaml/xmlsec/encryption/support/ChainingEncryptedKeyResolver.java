@@ -30,7 +30,6 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -44,7 +43,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
 public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** The list of resolvers which form the resolution chain. */
-    @Nonnull @NonnullElements private final List<EncryptedKeyResolver> resolvers;
+    @Nonnull private final List<EncryptedKeyResolver> resolvers;
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.class);
@@ -54,8 +53,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * 
      * @param encKeyResolvers the chain of encrypted key resolvers
      */
-    public ChainingEncryptedKeyResolver(
-            @Nonnull @NonnullElements @ParameterName(name="encKeyResolvers")
+    public ChainingEncryptedKeyResolver(@Nonnull @ParameterName(name="encKeyResolvers")
             final List<EncryptedKeyResolver> encKeyResolvers) {
         resolvers = CollectionSupport.copyToList(
                 Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null"));
@@ -68,8 +66,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param recipients the set of recipients
      */
     public ChainingEncryptedKeyResolver(
-            @Nonnull @NonnullElements @ParameterName(name="encKeyResolvers")
-            final List<EncryptedKeyResolver> encKeyResolvers,
+            @Nonnull @ParameterName(name="encKeyResolvers") final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable @ParameterName(name="recipients") final Set<String> recipients) {
         super(recipients);
         resolvers = CollectionSupport.copyToList(
@@ -83,8 +80,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param recipient the recipient
      */
     public ChainingEncryptedKeyResolver(
-            @Nonnull @NonnullElements @ParameterName(name="encKeyResolvers")
-            final List<EncryptedKeyResolver> encKeyResolvers,
+            @Nonnull @ParameterName(name="encKeyResolvers") final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable @ParameterName(name="recipient") final String recipient) {
         this(encKeyResolvers, recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
@@ -94,7 +90,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * 
      * @return a list of EncryptedKeyResolver instances
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<EncryptedKeyResolver> getResolverChain() {
+    @Nonnull @Unmodifiable @NotLive public List<EncryptedKeyResolver> getResolverChain() {
         return resolvers;
     }
 

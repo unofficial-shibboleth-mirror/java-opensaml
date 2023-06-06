@@ -25,7 +25,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
@@ -96,8 +95,8 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
      * @param configs the effective list of {@link AlgorithmPolicyConfiguration} instances to consider
      */
     protected void resolveAndPopulateIncludesExcludes(@Nonnull final AlgorithmPolicyParameters params, 
-            @Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
+            @Nonnull final CriteriaSet criteria,
+            @Nonnull @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         final Collection<String> includes = resolveEffectiveIncludes(criteria, configs);
         log.trace("Resolved effective includes: {}", includes);
@@ -150,7 +149,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
      * @return a predicate instance which operates accordingly to the effective include and exclude policy
      */
     @Nonnull protected Predicate<String> resolveIncludeExcludePredicate(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
+            @Nonnull @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         final Collection<String> includes = resolveEffectiveIncludes(criteria, configs);
         log.trace("Resolved effective includes: {}", includes);
@@ -199,7 +198,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
      * @return the effective algorithm excludes
      */
     @Nonnull protected Collection<String> resolveEffectiveExcludes(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
+            @Nonnull @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         final LazySet<String> accumulator = new LazySet<>();
         for (final AlgorithmPolicyConfiguration config : configs) {
@@ -220,7 +219,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
      * @return the effective algorithm includes
      */
     @Nonnull protected Collection<String> resolveEffectiveIncludes(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
+            @Nonnull @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         final LazySet<String> accumulator = new LazySet<>();
         for (final AlgorithmPolicyConfiguration config : configs) {
@@ -242,7 +241,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
      * @return the effective algorithm include/exclude precedence
      */
     @Nonnull protected Precedence resolveIncludeExcludePrecedence(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
+            @Nonnull @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         return configs.get(0).getIncludeExcludePrecedence();
     }

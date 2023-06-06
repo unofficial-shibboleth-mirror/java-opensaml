@@ -37,7 +37,6 @@ import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -52,7 +51,7 @@ public final class SignatureSupport {
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SignatureSupport.class);
     
     /** Set of known canonicalization algorithm URIs. */
-    @Nonnull @NonnullElements private static final Set<String> C14N_ALGORITHMS = CollectionSupport.setOf(
+    @Nonnull private static final Set<String> C14N_ALGORITHMS = CollectionSupport.setOf(
             SignatureConstants.ALGO_ID_C14N11_OMIT_COMMENTS,
             SignatureConstants.ALGO_ID_C14N11_WITH_COMMENTS,
             SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS,
@@ -154,7 +153,7 @@ public final class SignatureSupport {
      * @throws SecurityException thrown if a required parameter is not supplied in the parameters instance
      *          or available on the Signature instance
      */
-    private static void processKeyInfo(final Signature signature, 
+    private static void processKeyInfo(@Nonnull final Signature signature, 
             final SignatureSigningParameters parameters) throws SecurityException {
         
         if (signature.getKeyInfo() == null) {

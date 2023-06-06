@@ -16,4 +16,7 @@
  */
 
 /** XMLObject interfaces and helper classes for representing digitally signed content and signing/validating content. */
+@NonnullElements
 package org.opensaml.xmlsec.signature;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

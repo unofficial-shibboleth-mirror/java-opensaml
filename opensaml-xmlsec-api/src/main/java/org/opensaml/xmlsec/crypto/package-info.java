@@ -16,4 +16,7 @@
  */
 
 /** Support classes for XML Security operations. */
+@NonnullElements
 package org.opensaml.xmlsec.crypto;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

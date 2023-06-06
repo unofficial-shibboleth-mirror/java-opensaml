@@ -92,9 +92,14 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * Set the configuration used when validating client TLS X509Credentials.
      * 
      * @param config configuration used when validating client TLS X509Credentials, or null
+     * 
+     * @return this object
      */
-    public void setClientTLSValidationConfiguration(@Nullable final ClientTLSValidationConfiguration config) {
+    @Nonnull public BasicSecurityConfiguration setClientTLSValidationConfiguration(
+            @Nullable final ClientTLSValidationConfiguration config) {
         clientTLSConfig = config;
+        
+        return this;
     }
     
     /** {@inheritDoc} */
@@ -106,9 +111,14 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * Set the configuration used when executing HttpClient requests.
      * 
      * @param config configuration used when executing HttpClient requests, or null
+     * 
+     * @return this object
      */
-    public void setHttpClientSecurityConfiguration(@Nullable final HttpClientSecurityConfiguration config) {
+    @Nonnull public BasicSecurityConfiguration setHttpClientSecurityConfiguration(
+            @Nullable final HttpClientSecurityConfiguration config) {
         httpClientConfig = config;
+        
+        return this;
     }
     
 }

@@ -16,4 +16,7 @@
  */
 
 /** Implementation of configuration and parameter resolver classes. */
+@NonnullElements
 package org.opensaml.xmlsec.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

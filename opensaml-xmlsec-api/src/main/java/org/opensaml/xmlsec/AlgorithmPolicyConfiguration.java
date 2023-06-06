@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
@@ -44,7 +43,7 @@ public interface AlgorithmPolicyConfiguration {
      * 
      * @return the collection of algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive Collection<String> getIncludedAlgorithms();
+    @Nonnull @Unmodifiable @NotLive Collection<String> getIncludedAlgorithms();
     
     /**
      * Flag indicating whether to merge this configuration's includes with one of a lower order of precedence,
@@ -59,7 +58,7 @@ public interface AlgorithmPolicyConfiguration {
      * 
      * @return the collection of algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive Collection<String> getExcludedAlgorithms();
+    @Nonnull @Unmodifiable @NotLive Collection<String> getExcludedAlgorithms();
     
     /**
      * Flag indicating whether to merge this configuration's excludes with one of a lower order of precedence,

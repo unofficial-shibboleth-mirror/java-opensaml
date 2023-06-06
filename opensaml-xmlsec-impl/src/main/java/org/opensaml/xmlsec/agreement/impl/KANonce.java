@@ -215,7 +215,7 @@ public class KANonce extends AbstractInitializableComponent
         }
 
         /** {@inheritDoc} */
-        public KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException {
+        @Nonnull public KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException {
             // Sanity check
             if (!handles(xmlObject)) {
                 throw new KeyAgreementException("This implementation does not handle: "

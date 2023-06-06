@@ -16,4 +16,7 @@
  */
 
 /** Configuration and support classes for security. */
+@NonnullElements
 package org.opensaml.xmlsec;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

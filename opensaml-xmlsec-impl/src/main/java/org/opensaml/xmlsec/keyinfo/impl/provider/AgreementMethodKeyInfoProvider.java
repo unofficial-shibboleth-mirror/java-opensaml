@@ -47,6 +47,8 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -92,9 +94,10 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
-            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
-            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable @Unmodifiable @NotLive public Collection<Credential> process(
+            @Nonnull final KeyInfoCredentialResolver resolver, @Nonnull final XMLObject keyInfoChild,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final KeyInfoResolutionContext kiContext)
+                    throws SecurityException {
         
         // Sanity check
         if (!handles(keyInfoChild)) {

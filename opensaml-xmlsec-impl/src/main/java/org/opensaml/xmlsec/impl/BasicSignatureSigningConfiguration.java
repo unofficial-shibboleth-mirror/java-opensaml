@@ -22,7 +22,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -39,13 +38,13 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
         implements SignatureSigningConfiguration {
     
     /** Signing credentials. */
-    @Nonnull @NonnullElements private List<Credential> signingCredentials;
+    @Nonnull private List<Credential> signingCredentials;
     
     /** Signature method algorithm URIs. */
-    @Nonnull @NonnullElements private List<String> signatureAlgorithms;
+    @Nonnull private List<String> signatureAlgorithms;
     
     /** Digest method algorithm URIs. */
-    @Nonnull @NonnullElements private List<String> signatureReferenceDigestMethods;
+    @Nonnull private List<String> signatureReferenceDigestMethods;
     
     /** The signature reference canonicalization transform algorithm. */
     @Nullable private String signatureReferenceCanonicalizationAlgorithm;
@@ -72,7 +71,7 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getSigningCredentials() {
+    @Nonnull @Unmodifiable @NotLive public List<Credential> getSigningCredentials() {
         return signingCredentials;
     }
     
@@ -80,18 +79,23 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * Set the signing credentials to use when signing.
      * 
      * @param credentials the list of signing credentials
+     * 
+     * @return this object
      */
-    public void setSigningCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
+    @Nonnull public BasicSignatureSigningConfiguration setSigningCredentials(
+            @Nullable final List<Credential> credentials) {
         if (credentials == null) {
             signingCredentials = CollectionSupport.emptyList();
         } else {
             signingCredentials = CollectionSupport.copyToList(credentials);
         }
+        
+        return this;
     }
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithms() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getSignatureAlgorithms() {
         return signatureAlgorithms;
     }
     
@@ -99,18 +103,22 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * Set the signature algorithms to use when signing.
      * 
      * @param algorithms the list of signature algorithms
+     * 
+     * @return this object
      */
-    public void setSignatureAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
+    @Nonnull public BasicSignatureSigningConfiguration setSignatureAlgorithms(@Nullable final List<String> algorithms) {
         if (algorithms == null) {
             signatureAlgorithms = CollectionSupport.emptyList();
         } else {
             signatureAlgorithms = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
+        
+        return this;
     }
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods() {
         return signatureReferenceDigestMethods;
     }
     
@@ -118,14 +126,19 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * Set a digest method algorithm URI suitable for use as a Signature Reference DigestMethod value.
      * 
      * @param algorithms a list of digest method algorithm URIs
+     * 
+     * @return this object
      */
-    public void setSignatureReferenceDigestMethods(@Nullable @NonnullElements final List<String> algorithms) {
+    @Nonnull public BasicSignatureSigningConfiguration setSignatureReferenceDigestMethods(
+            @Nullable final List<String> algorithms) {
         if (algorithms == null) {
             signatureReferenceDigestMethods = CollectionSupport.emptyList();
         } else {
             signatureReferenceDigestMethods =
                     CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
+        
+        return this;
     }
     
     /**
@@ -142,9 +155,13 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * Get a canonicalization algorithm URI suitable for use as a Signature Reference Transform value.
      * 
      * @param uri a canonicalization algorithm URI
+     * 
+     * @return this object
      */
-    public void setSignatureReferenceCanonicalizationAlgorithm(@Nullable final String uri) {
+    @Nonnull public BasicSignatureSigningConfiguration setSignatureReferenceCanonicalizationAlgorithm(
+            @Nullable final String uri) {
         signatureReferenceCanonicalizationAlgorithm = StringSupport.trimOrNull(uri);
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -157,9 +174,13 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * Set a canonicalization algorithm URI suitable for use as a Signature CanonicalizationMethod value.
      * 
      * @param algorithmURI a canonicalization algorithm URI
+     * 
+     * @return this object
      */
-    public void setSignatureCanonicalizationAlgorithm(@Nullable final String algorithmURI) {
+    @Nonnull public BasicSignatureSigningConfiguration setSignatureCanonicalizationAlgorithm(
+            @Nullable final String algorithmURI) {
         signatureCanonicalization = StringSupport.trimOrNull(algorithmURI);
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -173,9 +194,13 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * only when signing with an HMAC algorithm.  This value is optional when using HMAC.
      * 
      * @param length the HMAC output length value to use when performing HMAC signing (may be null)
+     * 
+     * @return this object
      */
-    public void setSignatureHMACOutputLength(@Nullable final Integer length) {
+    @Nonnull public BasicSignatureSigningConfiguration setSignatureHMACOutputLength(
+            @Nullable final Integer length) {
         signatureHMACOutputLength = length;
+        return this;
     }
     
     /** {@inheritDoc} */
@@ -188,9 +213,13 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      * Set the manager for named KeyInfoGenerator instances.
      * 
      * @param keyInfoManager the KeyInfoGenerator manager to use
+     * 
+     * @return this object
      */
-    public void setKeyInfoGeneratorManager(@Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
+    @Nonnull public BasicSignatureSigningConfiguration setKeyInfoGeneratorManager(
+            @Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
         keyInfoGeneratorManager = keyInfoManager;
+        return this;
     }
 
 }

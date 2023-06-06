@@ -19,8 +19,6 @@ package org.opensaml.xmlsec.criterion;
 
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-
 import com.google.common.base.MoreObjects;
 
 import net.shibboleth.shared.resolver.Criterion;
@@ -33,13 +31,14 @@ import net.shibboleth.shared.resolver.Criterion;
 public class EncryptionOptionalCriterion implements Criterion {
     
     /** The encryptionOptional criterion value. */
-    @Nonnull private Boolean encryptionOptional;
+    private boolean encryptionOptional;
     
     /**
      * Constructor.
      */
+    @SuppressWarnings("null")
     public EncryptionOptionalCriterion() {
-        encryptionOptional = Boolean.FALSE;
+        encryptionOptional = false;
     }
     
     /**
@@ -62,7 +61,7 @@ public class EncryptionOptionalCriterion implements Criterion {
 
     /** {@inheritDoc} */
     public int hashCode() {
-        return encryptionOptional.hashCode();
+        return Boolean.valueOf(encryptionOptional).hashCode();
     }
 
     /** {@inheritDoc} */

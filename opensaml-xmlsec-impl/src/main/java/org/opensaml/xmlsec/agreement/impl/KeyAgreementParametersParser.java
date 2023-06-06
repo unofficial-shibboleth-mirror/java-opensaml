@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 
 import com.google.common.collect.Lists;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -105,7 +107,7 @@ public class KeyAgreementParametersParser {
      * 
      * @return the list of parser instances
      */
-    @Nonnull protected List<KeyAgreementParameterParser> getParsers() {
+    @Nonnull @Unmodifiable @NotLive protected List<KeyAgreementParameterParser> getParsers() {
         final ServiceLoader<KeyAgreementParameterParser> loader = ServiceLoader.load(KeyAgreementParameterParser.class);
         return Lists.newArrayList(loader);
     }

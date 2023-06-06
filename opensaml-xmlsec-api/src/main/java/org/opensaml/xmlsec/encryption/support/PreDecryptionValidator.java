@@ -34,7 +34,7 @@ public interface PreDecryptionValidator {
      * 
      * @throws PreDecryptionValidationException if the target fails validation
      */
-    public void validate(@Nonnull final EncryptedData encryptedData) throws PreDecryptionValidationException;
+    void validate(@Nonnull final EncryptedData encryptedData) throws PreDecryptionValidationException;
 
     /**
      * Validate an instance of {@link EncryptedKey}.
@@ -43,6 +43,6 @@ public interface PreDecryptionValidator {
      * 
      * @throws PreDecryptionValidationException if the target fails validation
      */
-    public void validate(@Nonnull final EncryptedKey encryptedKey) throws PreDecryptionValidationException;
+    void validate(@Nonnull final EncryptedKey encryptedKey) throws PreDecryptionValidationException;
 
 }

@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
@@ -40,14 +39,14 @@ public interface SignatureSigningConfiguration extends AlgorithmPolicyConfigurat
      * 
      * @return the list of signing credentials, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<Credential> getSigningCredentials();
+    @Nonnull @Unmodifiable @NotLive List<Credential> getSigningCredentials();
     
     /**
      * Get the list of preferred signature algorithm URIs, in preference order.
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getSignatureAlgorithms();
+    @Nonnull @Unmodifiable @NotLive List<String> getSignatureAlgorithms();
     
     /**
      * Get the list of digest method algorithm URIs suitable for use as a Signature Reference DigestMethod value,
@@ -55,7 +54,7 @@ public interface SignatureSigningConfiguration extends AlgorithmPolicyConfigurat
      * 
      * @return a digest method algorithm URI
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getSignatureReferenceDigestMethods();
+    @Nonnull @Unmodifiable @NotLive List<String> getSignatureReferenceDigestMethods();
     
     /**
      * Get a canonicalization algorithm URI suitable for use as a Signature Reference Transform value.

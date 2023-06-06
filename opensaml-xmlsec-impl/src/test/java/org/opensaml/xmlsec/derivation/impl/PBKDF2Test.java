@@ -573,7 +573,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        @Nonnull public Integer getKeyLength() {
+        public int getKeyLength() {
             // 16 bytes
             return 128;
         }
@@ -613,7 +613,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        @Nonnull public Integer getKeyLength() {
+        public int getKeyLength() {
             // 20 bytes
             return 160;
         }
@@ -653,7 +653,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        @Nonnull public Integer getKeyLength() {
+        public int getKeyLength() {
             // 25 bytes
             return 200;
         }
@@ -693,7 +693,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        @Nonnull public Integer getKeyLength() {
+        public int getKeyLength() {
             // 32 bytes
             return 256;
         }
@@ -733,7 +733,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        @Nonnull public Integer getKeyLength() {
+        public int getKeyLength() {
             // 40 bytes
             return 320;
         }

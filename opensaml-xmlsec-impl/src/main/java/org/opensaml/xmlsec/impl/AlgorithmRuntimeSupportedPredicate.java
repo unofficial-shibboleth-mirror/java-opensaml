@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.impl;
 
 import java.util.function.Predicate;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
@@ -32,14 +33,14 @@ import net.shibboleth.shared.logic.Constraint;
 public class AlgorithmRuntimeSupportedPredicate implements Predicate<String> {
     
     /** The algorithm registry instance. */
-    private AlgorithmRegistry registry;
+    @Nonnull private AlgorithmRegistry registry;
     
     /**
      * Constructor.
      *
      * @param algorithmRegistry the algorithm registry instance to use
      */
-    public AlgorithmRuntimeSupportedPredicate(final AlgorithmRegistry algorithmRegistry) {
+    public AlgorithmRuntimeSupportedPredicate(@Nonnull final AlgorithmRegistry algorithmRegistry) {
         registry = Constraint.isNotNull(algorithmRegistry, "AlgorithmRegistry may not be null");
     }
 

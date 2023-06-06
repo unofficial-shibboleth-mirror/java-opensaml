@@ -16,4 +16,7 @@
  */
 
 /** Functional support for XML Encryption. */
+@NonnullElements
 package org.opensaml.xmlsec.encryption.support;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

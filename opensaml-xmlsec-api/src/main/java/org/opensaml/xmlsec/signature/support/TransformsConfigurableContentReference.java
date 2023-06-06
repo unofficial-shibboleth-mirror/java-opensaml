@@ -19,6 +19,10 @@ package org.opensaml.xmlsec.signature.support;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+
 /**
  * A specialization of {@link ContentReference} which allows signature transforms to be specified.
  * 
@@ -33,6 +37,6 @@ public interface TransformsConfigurableContentReference extends ContentReference
      * 
      * @return the transforms applied to the content prior to digest generation
      */
-    public List<String> getTransforms();
+    @Nonnull @Live List<String> getTransforms();
  
 }

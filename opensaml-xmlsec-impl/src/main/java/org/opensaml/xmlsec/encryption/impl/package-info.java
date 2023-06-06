@@ -16,4 +16,7 @@
  */
 
 /** Implementations of the interfaces for XMLObjects that represent XML encryption types. */
+@NonnullElements
 package org.opensaml.xmlsec.encryption.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

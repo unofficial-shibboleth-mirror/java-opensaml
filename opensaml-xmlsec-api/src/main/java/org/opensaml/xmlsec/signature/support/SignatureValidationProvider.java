@@ -47,7 +47,7 @@ public interface SignatureValidationProvider {
      * @throws SignatureException if the signature does not validate using the candiate Credential,
      *                              or if there is otherwise an error during the validation operation
      */
-    public void validate(@Nonnull final Signature signature, @Nonnull final Credential validationCredential) 
+    void validate(@Nonnull final Signature signature, @Nonnull final Credential validationCredential) 
             throws SignatureException;
 
 }

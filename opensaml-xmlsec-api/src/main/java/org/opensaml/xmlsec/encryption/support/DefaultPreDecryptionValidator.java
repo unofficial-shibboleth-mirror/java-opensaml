@@ -30,13 +30,11 @@ import org.opensaml.xmlsec.encryption.EncryptedType;
 public class DefaultPreDecryptionValidator implements PreDecryptionValidator {
 
     /** {@inheritDoc} */
-    @Override
     public void validate(@Nonnull final EncryptedData encryptedData) throws PreDecryptionValidationException {
         performCommonValidation(encryptedData);
     }
 
     /** {@inheritDoc} */
-    @Override
     public void validate(@Nonnull final EncryptedKey encryptedKey) throws PreDecryptionValidationException {
         performCommonValidation(encryptedKey);
     }

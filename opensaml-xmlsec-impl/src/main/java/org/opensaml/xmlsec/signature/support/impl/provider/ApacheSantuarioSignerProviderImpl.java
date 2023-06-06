@@ -29,9 +29,9 @@ import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignerProvider;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link SignerProvider} which is based on the Apache Santuario library
@@ -40,7 +40,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class ApacheSantuarioSignerProviderImpl implements SignerProvider {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ApacheSantuarioSignerProviderImpl.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ApacheSantuarioSignerProviderImpl.class);
 
     /** {@inheritDoc} */
     public void signObject(@Nonnull final Signature signature) throws SignatureException {

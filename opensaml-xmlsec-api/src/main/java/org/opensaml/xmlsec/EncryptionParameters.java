@@ -30,27 +30,26 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 public class EncryptionParameters {
     
     /** The EncryptedData encryption credential. */
-    private Credential dataEncryptionCredential;
+    @Nullable private Credential dataEncryptionCredential;
     
     /** The EncryptedKey encryption credential. */
-    private Credential keyTransportEncryptionCredential;
+    @Nullable private Credential keyTransportEncryptionCredential;
     
     /** The EncryptedData encryption algorithm URI. */
-    private String dataEncryptionAlgorithmURI;
+    @Nullable private String dataEncryptionAlgorithmURI;
     
     /** The EncryptedKey encryption algorithm URI. */
-    private String keyTransportEncryptionAlgorithmURI;
+    @Nullable private String keyTransportEncryptionAlgorithmURI;
     
     /** The EncryptedData KeyInfoGenerator. */
-    private KeyInfoGenerator dataKeyInfoGenerator;
+    @Nullable private KeyInfoGenerator dataKeyInfoGenerator;
     
     /** The EncryptedKey KeyInfoGenerator. */
-    private KeyInfoGenerator keyTransportKeyInfoGenerator;
+    @Nullable private KeyInfoGenerator keyTransportKeyInfoGenerator;
     
     /** RSA OAEP parameters. */
-    private RSAOAEPParameters rsaOAEPParameters;
+    @Nullable private RSAOAEPParameters rsaOAEPParameters;
 
-    
     /**
      * Get the encryption credential to use when encrypting the EncryptedData.
      * 

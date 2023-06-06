@@ -30,10 +30,10 @@ import net.shibboleth.shared.logic.Constraint;
 public class KeyEncryptionParameters extends DataEncryptionParameters {
 
     /** Recipient of the key. */
-    private String recipient;
+    @Nullable private String recipient;
     
     /** RSA OAEP parameters. */
-    private RSAOAEPParameters rsaOAEPParameters;
+    @Nullable private RSAOAEPParameters rsaOAEPParameters;
 
     /**
      * Constructor.

@@ -49,7 +49,7 @@ public final class BlockEncryptionAES128GCM implements BlockEncryptionAlgorithm 
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Integer getKeyLength() {
+    public int getKeyLength() {
         return 128;
     }
 

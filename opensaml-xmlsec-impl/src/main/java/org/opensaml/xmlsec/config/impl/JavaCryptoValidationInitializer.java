@@ -28,9 +28,9 @@ import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An initializer which validates the Java Cryptographic Architecture environment is usable.
@@ -51,10 +51,11 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public class JavaCryptoValidationInitializer implements Initializer {
     
     /** Configuration property determining whether invalid result is fatal or not. */
-    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_FAIL_IS_FATAL = "opensaml.config.xmlsec.cryptoValidationIsFatal";
+    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_FAIL_IS_FATAL =
+            "opensaml.config.xmlsec.cryptoValidationIsFatal";
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(JavaCryptoValidationInitializer.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(JavaCryptoValidationInitializer.class);
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {

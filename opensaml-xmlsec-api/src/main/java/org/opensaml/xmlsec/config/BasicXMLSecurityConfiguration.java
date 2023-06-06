@@ -76,9 +76,14 @@ public class BasicXMLSecurityConfiguration extends BasicSecurityConfiguration im
      * Set the configuration used when validating protocol message signatures.
      * 
      * @param config configuration used when validating protocol message signatures, or null
+     * 
+     * @return this object
      */
-    public void setSignatureValidationConfiguration(@Nullable final SignatureValidationConfiguration config) {
+    @Nonnull public BasicXMLSecurityConfiguration setSignatureValidationConfiguration(
+            @Nullable final SignatureValidationConfiguration config) {
         sigValidateConfig = config;
+        
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -90,9 +95,14 @@ public class BasicXMLSecurityConfiguration extends BasicSecurityConfiguration im
      * Set the configuration used when generating protocol message signatures.
      * 
      * @param config configuration used when generating protocol message signatures, or null
+     * 
+     * @return this object
      */
-    public void setSignatureSigningConfiguration(@Nullable final SignatureSigningConfiguration config) {
+    @Nonnull public BasicXMLSecurityConfiguration setSignatureSigningConfiguration(
+            @Nullable final SignatureSigningConfiguration config) {
         sigSigningConfig = config;
+        
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -104,9 +114,14 @@ public class BasicXMLSecurityConfiguration extends BasicSecurityConfiguration im
      * Set the configuration used when decrypting protocol message information.
      * 
      * @param config configuration used when decrypting protocol message information, or null
+     * 
+     * @return this object
      */
-    public void setDecryptionConfiguration(@Nullable final DecryptionConfiguration config) {
+    @Nonnull public BasicXMLSecurityConfiguration setDecryptionConfiguration(
+            @Nullable final DecryptionConfiguration config) {
         decryptConfig = config;
+        
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -118,9 +133,14 @@ public class BasicXMLSecurityConfiguration extends BasicSecurityConfiguration im
      * Set the configuration used when encrypting protocol message information.
      * 
      * @param config configuration used when encrypting protocol message information, or null
+     * 
+     * @return this object
      */
-    public void setEncryptionConfiguration(@Nullable final EncryptionConfiguration config) {
+    @Nonnull public BasicXMLSecurityConfiguration setEncryptionConfiguration(@
+            Nullable final EncryptionConfiguration config) {
         encryptConfig = config;
+        
+        return this;
     }
 
 }

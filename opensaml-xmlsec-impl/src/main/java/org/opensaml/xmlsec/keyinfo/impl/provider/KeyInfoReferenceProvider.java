@@ -33,6 +33,8 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Criterion;
@@ -56,9 +58,10 @@ public class KeyInfoReferenceProvider extends AbstractKeyInfoProvider {
 
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
-            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
-            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable @Unmodifiable @NotLive public Collection<Credential> process(
+            @Nonnull final KeyInfoCredentialResolver resolver, @Nonnull final XMLObject keyInfoChild,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final KeyInfoResolutionContext kiContext)
+                    throws SecurityException {
 
         final KeyInfoReference ref = getKeyInfoReference(keyInfoChild);
         final String refURI = ref != null ? ref.getURI() : null;

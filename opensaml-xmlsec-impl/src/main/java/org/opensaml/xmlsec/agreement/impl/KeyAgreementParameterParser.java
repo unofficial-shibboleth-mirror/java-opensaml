@@ -46,6 +46,6 @@ public interface KeyAgreementParameterParser {
      * 
      * @throws KeyAgreementException if parameter parsing of the supplied object fails
      */
-    KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException;
+    @Nonnull KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException;
 
 }

@@ -33,7 +33,6 @@ import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
@@ -42,7 +41,7 @@ import net.shibboleth.shared.collection.CollectionSupport;
 public final class KeyAgreementSupport {
     
     /** JCA key algorithms that support key agreement. */
-    @Nonnull @NonnullElements public static final Set<String> KEY_ALGORITHMS =
+    @Nonnull public static final Set<String> KEY_ALGORITHMS =
             CollectionSupport.setOf(JCAConstants.KEY_ALGO_EC, JCAConstants.KEY_ALGO_DH);
     
     /** Constructor. */
@@ -167,4 +166,5 @@ public final class KeyAgreementSupport {
         final PublicKey pk = credential.getPublicKey();
         return pk != null && KEY_ALGORITHMS.contains(pk.getAlgorithm());
     }
+    
 }

@@ -16,4 +16,7 @@
  */
 
 /** OpenSAML configuration classes. */
+@NonnullElements
 package org.opensaml.xmlsec.config;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

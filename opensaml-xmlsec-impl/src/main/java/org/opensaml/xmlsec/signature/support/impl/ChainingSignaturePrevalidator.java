@@ -22,7 +22,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -41,7 +40,7 @@ public class ChainingSignaturePrevalidator implements SignaturePrevalidator {
     @Nonnull private Logger log = LoggerFactory.getLogger(ChainingSignaturePrevalidator.class);
     
     /** The chain of SignaturePrevalidator instances to execute. */
-    @Nonnull @NonnullElements private List<SignaturePrevalidator> validators;
+    @Nonnull private List<SignaturePrevalidator> validators;
     
     /**
      * Constructor.

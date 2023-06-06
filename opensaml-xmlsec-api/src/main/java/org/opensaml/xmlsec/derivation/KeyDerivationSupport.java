@@ -68,7 +68,7 @@ public final class KeyDerivationSupport {
      * 
      * @throws KeyDerivationException if algorithm and specified key lengths are not consistent
      */
-    @Nonnull public static Integer getEffectiveKeyLength(@Nonnull final String algorithmURI,
+    public static int getEffectiveKeyLength(@Nonnull final String algorithmURI,
             @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {
         Constraint.isNotNull(algorithmURI, "Algorithm URI was null");
         

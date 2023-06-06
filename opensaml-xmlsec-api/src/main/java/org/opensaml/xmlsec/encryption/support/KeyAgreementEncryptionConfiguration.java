@@ -63,7 +63,7 @@ public class KeyAgreementEncryptionConfiguration {
      * 
      * <p>Note that null is a very significant return value here as the calling code
      * will skip nulls but pick the first non-null result, so an empty collection will
-     * circumvent key agreement.</p>
+     * circumvent key agreement. This does not imply nullable elements.</p>
      * 
      * @return the collection of parameters or null if none exist
      */

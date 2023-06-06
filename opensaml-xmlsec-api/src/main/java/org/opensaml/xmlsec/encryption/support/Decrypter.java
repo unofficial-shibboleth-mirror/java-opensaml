@@ -187,14 +187,14 @@ import com.google.common.base.Strings;
  */
 public class Decrypter {
 
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(Decrypter.class);
+    
     /** ParserPool used in parsing decrypted data. */
     @Nonnull private final ParserPool parserPool;
 
     /** Unmarshaller factory, used in decryption of EncryptedData objects. */
     @Nonnull private final UnmarshallerFactory unmarshallerFactory;
-
-    /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(Decrypter.class);
 
     /** Resolver for data encryption keys. */
     @Nullable private KeyInfoCredentialResolver resolver;

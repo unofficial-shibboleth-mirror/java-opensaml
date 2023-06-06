@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
@@ -52,6 +51,6 @@ public interface EncryptedKeyResolver {
      * 
      * @return the collection of  recipient criteria
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive Set<String> getRecipients();
+    @Nonnull @Unmodifiable @NotLive Set<String> getRecipients();
 
 }

@@ -29,6 +29,7 @@ import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -71,7 +72,7 @@ public class URIContentReference implements ConfigurableContentReference, Transf
      * 
      * @return the transforms applied to the content prior to digest generation
      */
-    @Nonnull public List<String> getTransforms() {
+    @Nonnull @Live public List<String> getTransforms() {
         return transforms;
     }
 

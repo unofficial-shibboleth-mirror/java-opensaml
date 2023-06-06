@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -82,7 +81,8 @@ public class KeyAgreementProcessorRegistry {
      * 
      * @return the set of registered algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getRegisteredAlgorithms() {
+    @SuppressWarnings("null")
+    @Nonnull @Unmodifiable @NotLive public Set<String> getRegisteredAlgorithms() {
         return CollectionSupport.copyToSet(processors.keySet());
     }
     

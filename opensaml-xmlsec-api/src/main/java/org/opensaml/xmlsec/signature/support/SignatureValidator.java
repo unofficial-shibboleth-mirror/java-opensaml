@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.signature.Signature;
@@ -38,7 +39,7 @@ public final class SignatureValidator {
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SignatureValidationProvider.class);
     
     /** The cached signature validation provider instance to use. */
-    private static SignatureValidationProvider validatorInstance;
+    @Nullable private static SignatureValidationProvider validatorInstance;
 
     /** Constructor. */
     protected SignatureValidator() { }

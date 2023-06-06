@@ -54,7 +54,8 @@ import net.shibboleth.shared.codec.EncodingException;
 public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     
     /** Mappings from KeyInfo Class to QNames.*/
-    private static final Map<Class<? extends KeyInfo>, QName> CLASS_TO_NAME;
+    @Nonnull private static final Map<Class<? extends KeyInfo>, QName> CLASS_TO_NAME;
+    
     static {
         CLASS_TO_NAME = new HashMap<>();
         CLASS_TO_NAME.put(KeyInfo.class, KeyInfo.DEFAULT_ELEMENT_NAME);

@@ -38,6 +38,6 @@ public interface SignaturePrevalidator {
      * @param signature the signature to evaluate
      * @throws SignatureException if the signature does not meet the validator's requirements
      */
-    public void validate(@Nonnull final Signature signature) throws SignatureException;
+    void validate(@Nonnull final Signature signature) throws SignatureException;
 
 }

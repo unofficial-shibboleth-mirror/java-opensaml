@@ -34,5 +34,5 @@ public interface ContentReference {
      *
      * @param signature the signature object
      */
-    public void createReference(@Nonnull final XMLSignature signature);
+    void createReference(@Nonnull final XMLSignature signature);
 }

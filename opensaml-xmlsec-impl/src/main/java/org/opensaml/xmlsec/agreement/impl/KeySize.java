@@ -17,11 +17,7 @@
 
 package org.opensaml.xmlsec.agreement.impl;
 
-import javax.annotation.Nonnull;
-
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
-
-import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Key agreement parameter used to explicitly represent the size of the derived key.
@@ -29,15 +25,15 @@ import net.shibboleth.shared.logic.Constraint;
 public class KeySize implements KeyAgreementParameter {
     
     /** Key size. */
-    @Nonnull private Integer size;
+    private final int size;
     
     /**
      * Constructor.
      *
      * @param keySize the key size, in bits
      */
-    public KeySize(@Nonnull final Integer keySize) {
-        size = Constraint.isNotNull(keySize, "Specified key size was null");
+    public KeySize(final int keySize) {
+        size = keySize;
     }
     
     /**
@@ -45,7 +41,7 @@ public class KeySize implements KeyAgreementParameter {
      * 
      * @return the key size in bits
      */
-    @Nonnull public Integer getSize() {
+    public int getSize() {
        return size; 
     }
 

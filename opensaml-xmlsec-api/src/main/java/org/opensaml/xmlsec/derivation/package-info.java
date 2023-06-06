@@ -16,4 +16,7 @@
  */
 
 /** API components related to key derivation operations. */
+@NonnullElements
 package org.opensaml.xmlsec.derivation;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.config.impl;
 
+import javax.annotation.Nonnull;
+
 import org.apache.xml.security.Init;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Initializer which initializes the Apache XML Security library (Santuario).
@@ -29,7 +32,7 @@ import org.slf4j.LoggerFactory;
 public class ApacheXMLSecurityInitializer implements Initializer {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ApacheXMLSecurityInitializer.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ApacheXMLSecurityInitializer.class);
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {

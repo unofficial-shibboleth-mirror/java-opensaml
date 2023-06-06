@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.keyinfo;
 import java.security.PrivateKey;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.encryption.AgreementMethod;
@@ -80,7 +79,7 @@ public final class KeyInfoCredentialResolutionMode implements Criterion {
     }
     
     /** Resolution mode. */
-    private Mode mode;
+    @Nonnull private Mode mode;
     
     
     /**
@@ -97,7 +96,7 @@ public final class KeyInfoCredentialResolutionMode implements Criterion {
      * 
      * @return the resolution mode
      */
-    @Nullable public Mode getMode() {
+    @Nonnull public Mode getMode() {
         return mode;
     }
     
@@ -123,8 +122,8 @@ public final class KeyInfoCredentialResolutionMode implements Criterion {
             return false;
         }
 
-        if (obj instanceof KeyInfoCredentialResolutionMode) {
-            return mode.equals(((KeyInfoCredentialResolutionMode) obj).mode);
+        if (obj instanceof KeyInfoCredentialResolutionMode other) {
+            return mode.equals(other.mode);
         }
 
         return false;

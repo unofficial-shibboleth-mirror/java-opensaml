@@ -16,10 +16,9 @@
  */
 
 /**
- * Interfaces and classes for working with XML KeyInfo elements.  These classes are generally used to
- * extract or resolve credential information.
+ * Message handlers for XML Security functionality.
  */
 @NonnullElements
-package org.opensaml.xmlsec.keyinfo.impl;
+package org.opensaml.xmlsec.messaging.impl;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;

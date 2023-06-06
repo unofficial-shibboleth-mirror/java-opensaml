@@ -16,4 +16,7 @@
  */
 
 /** Implementations of the interfaces for XMLObjects that represent XML signature types. */
+@NonnullElements
 package org.opensaml.xmlsec.signature.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -759,7 +759,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        private boolean emitX509Digest;
        
        /** X509Digest digest algorithm URI. */
-       private String x509DigestAlgorithmURI;
+       @Nonnull private String x509DigestAlgorithmURI;
        
        /** Emit the entity certificate subject DN as a KeyName element. */
        private boolean emitSubjectDNAsKeyName;
@@ -771,13 +771,13 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        private boolean emitSubjectAltNamesAsKeyNames;
        
        /** The set of types of subject alternative names to process. */
-       private Set<Integer> subjectAltNames;
+       @Nonnull private Set<Integer> subjectAltNames;
        
        /**
         * Responsible for parsing and serializing X.500 names to/from
         * {@link javax.security.auth.x500.X500Principal} instances.
         */
-       private X500DNHandler x500DNHandler;
+       @Nonnull private X500DNHandler x500DNHandler;
        
        /** The format specifier for outputting X.500 subject names. */
        private String x500SubjectDNFormat;

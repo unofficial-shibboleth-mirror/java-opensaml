@@ -16,4 +16,7 @@
  */
 
 /** Implementation components related to key agreement operations. */
+@NonnullElements
 package org.opensaml.xmlsec.agreement.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

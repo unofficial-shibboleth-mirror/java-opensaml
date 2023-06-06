@@ -47,6 +47,10 @@ import org.opensaml.xmlsec.signature.KeyValue;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -121,8 +125,9 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      */
     public BasicProviderKeyInfoCredentialResolver(
             @Nonnull @ParameterName(name="keyInfoProviders") final List<KeyInfoProvider> keyInfoProviders) {
-        providers = new ArrayList<>();
-        providers.addAll(keyInfoProviders);
+        Constraint.isNotNull(keyInfoProviders, "KeyInfoProviders cannot be null");
+        
+        providers = CollectionSupport.copyToList(keyInfoProviders);
     }
 
     /**
@@ -130,7 +135,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * 
      * @return the list of providers configured for this resolver instance
      */
-    @Nonnull protected List<KeyInfoProvider> getProviders() {
+    @Nonnull @Unmodifiable @NotLive protected List<KeyInfoProvider> getProviders() {
         return providers;
     }
 

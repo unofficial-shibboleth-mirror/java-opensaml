@@ -16,4 +16,7 @@
  */
 
 /** Criterion classes for XML Security. */
+@NonnullElements
 package org.opensaml.xmlsec.criterion;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

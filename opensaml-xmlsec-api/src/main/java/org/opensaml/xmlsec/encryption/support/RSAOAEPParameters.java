@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -25,13 +27,13 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class RSAOAEPParameters {
     
     /** Digest method algorithm URI. */
-    private String digestMethod;
+    @Nullable private String digestMethod;
     
     /** Mask generation function (MGF) algorithm URI. */
-    private String maskGenerationFunction;
+    @Nullable private String maskGenerationFunction;
     
     /** Base64-encoded OAEPParams value. */
-    private String oaepParams;
+    @Nullable private String oaepParams;
 
     /** Constructor. */
     public RSAOAEPParameters() { }
@@ -43,7 +45,7 @@ public class RSAOAEPParameters {
      * @param  mgf the mask generation function (MGF)
      * @param params the OAEPParms (base64-encoded)
      */
-    public RSAOAEPParameters(final String digest, final String mgf, final String params) {
+    public RSAOAEPParameters(@Nullable final String digest, @Nullable final String mgf, @Nullable final String params) {
         setDigestMethod(digest);
         setMaskGenerationFunction(mgf);
         setOAEPparams(params);
@@ -72,7 +74,7 @@ public class RSAOAEPParameters {
      * 
      * @return the digest method URI
      */
-    public String getDigestMethod() {
+    @Nullable public String getDigestMethod() {
         return digestMethod;
     }
 
@@ -81,7 +83,7 @@ public class RSAOAEPParameters {
      * 
      * @param value the new digest method URI
      */
-    public void setDigestMethod(final String value) {
+    public void setDigestMethod(@Nullable final String value) {
         digestMethod = StringSupport.trimOrNull(value);
     }
 
@@ -90,7 +92,7 @@ public class RSAOAEPParameters {
      * 
      * @return the MGF URI
      */
-    public String getMaskGenerationFunction() {
+    @Nullable public String getMaskGenerationFunction() {
         return maskGenerationFunction;
     }
 
@@ -99,7 +101,7 @@ public class RSAOAEPParameters {
      * 
      * @param value the new MGF algorithm URI
      */
-    public void setMaskGenerationFunction(final String value) {
+    public void setMaskGenerationFunction(@Nullable final String value) {
         maskGenerationFunction = StringSupport.trimOrNull(value);
     }
 
@@ -108,7 +110,7 @@ public class RSAOAEPParameters {
      * 
      * @return the base64-encoded OAEPParams
      */
-    public String getOAEPParams() {
+    @Nullable public String getOAEPParams() {
         return oaepParams;
     }
 
@@ -117,7 +119,7 @@ public class RSAOAEPParameters {
      * 
      * @param value the new base64-encoded OAEPParams value
      */
-    public void setOAEPparams(final String value) {
+    public void setOAEPparams(@Nullable final String value) {
         oaepParams = StringSupport.trimOrNull(value);
     }
 

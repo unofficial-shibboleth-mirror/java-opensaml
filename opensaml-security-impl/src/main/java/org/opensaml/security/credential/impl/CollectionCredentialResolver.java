@@ -60,7 +60,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      *
      * @param credentials the credential collection which is the backing store for the resolver
      */
-    public CollectionCredentialResolver(@Nonnull final Collection<Credential> credentials) {
+    public CollectionCredentialResolver(@Nonnull @Live final Collection<Credential> credentials) {
         collection = credentials;
     }
     

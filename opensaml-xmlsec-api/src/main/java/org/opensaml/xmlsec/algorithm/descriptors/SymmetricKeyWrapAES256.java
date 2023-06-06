@@ -49,7 +49,7 @@ public final class SymmetricKeyWrapAES256 implements SymmetricKeyWrapAlgorithm {
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Integer getKeyLength() {
+    public int getKeyLength() {
         return 256;
     }
 

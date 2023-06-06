@@ -32,14 +32,14 @@ import net.shibboleth.shared.logic.Constraint;
 public class DataEncryptionParameters {
 
     /** Credential used to encrypt. */
-    private Credential encryptionCredential;
+    @Nullable private Credential encryptionCredential;
 
     /** XML Encryption algorithm URI used to encrypt. */
-    private String algorithm;
+    @Nullable private String algorithm;
 
     /** Generator for dynamically generating a KeyInfo instance containing information
      * from the encryption credential. */
-    private KeyInfoGenerator keyInfoGenerator;
+    @Nullable private KeyInfoGenerator keyInfoGenerator;
 
     /**
      * Constructor.
@@ -118,4 +118,5 @@ public class DataEncryptionParameters {
     public void setKeyInfoGenerator(@Nullable final KeyInfoGenerator newKeyInfoGenerator) {
         keyInfoGenerator = newKeyInfoGenerator;
     }
+
 }

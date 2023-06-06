@@ -18,4 +18,7 @@
 /**
  * Implementations of signature evaluation functions.
  */
+@NonnullElements
 package org.opensaml.xmlsec.signature.support.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

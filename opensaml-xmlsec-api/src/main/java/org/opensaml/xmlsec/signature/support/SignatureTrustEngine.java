@@ -42,7 +42,7 @@ public interface SignatureTrustEngine extends TrustEngine<Signature> {
      * 
      * @return a KeyInfoCredentialResolver instance
      */
-    @Nullable public KeyInfoCredentialResolver getKeyInfoResolver();
+    @Nullable KeyInfoCredentialResolver getKeyInfoResolver();
 
     /**
      * Determines whether a raw signature over specified content is valid and signed by a trusted credential.
@@ -71,7 +71,7 @@ public interface SignatureTrustEngine extends TrustEngine<Signature> {
      * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
      *             algorithm not being supported
      */
-    public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+    boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
             @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
             @Nullable final Credential candidateCredential) throws SecurityException;
 }

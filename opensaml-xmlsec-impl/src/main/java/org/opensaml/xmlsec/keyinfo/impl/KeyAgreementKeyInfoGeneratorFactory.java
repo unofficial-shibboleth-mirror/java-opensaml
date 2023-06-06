@@ -167,10 +167,10 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
         @Nonnull private final Logger log = LoggerFactory.getLogger(KeyAgreementKeyInfoGenerator.class);
         
         /** The set of options to be used by the generator.*/
-        private KeyAgreementOptions options;
+        @Nonnull private final KeyAgreementOptions options;
        
         /** Builder for AgreementMethod objects. */
-        private final XMLObjectBuilder<AgreementMethod> agreementMethodBuilder;
+        @Nonnull private final XMLObjectBuilder<AgreementMethod> agreementMethodBuilder;
        
         /**
          * Constructor.

@@ -79,8 +79,8 @@ public final class KeyInfoGenerationProfileCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof KeyInfoGenerationProfileCriterion) {
-            return name.equals(((KeyInfoGenerationProfileCriterion) obj).getName());
+        if (obj instanceof KeyInfoGenerationProfileCriterion other) {
+            return name.equals(other.getName());
         }
 
         return false;

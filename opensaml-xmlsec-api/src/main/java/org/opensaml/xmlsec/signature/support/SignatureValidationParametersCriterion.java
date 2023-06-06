@@ -81,8 +81,8 @@ public class SignatureValidationParametersCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof SignatureValidationParametersCriterion) {
-            return params.equals(((SignatureValidationParametersCriterion) obj).getSignatureValidationParameters());
+        if (obj instanceof SignatureValidationParametersCriterion other) {
+            return params.equals(other.getSignatureValidationParameters());
         }
 
         return false;

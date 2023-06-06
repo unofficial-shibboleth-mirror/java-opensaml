@@ -28,10 +28,8 @@ import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguratio
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
-
 
 /**
  * The configuration information to use when generating encrypted XML.
@@ -43,28 +41,28 @@ public interface EncryptionConfiguration extends AlgorithmPolicyConfiguration {
      * 
      * @return the list of encryption credentials, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<Credential> getDataEncryptionCredentials();
+    @Nonnull @Unmodifiable @NotLive List<Credential> getDataEncryptionCredentials();
     
     /**
      * Get the list of preferred data encryption algorithm URIs, in preference order.
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getDataEncryptionAlgorithms();
+    @Nonnull @Unmodifiable @NotLive List<String> getDataEncryptionAlgorithms();
     
     /**
      * Get the list of key transport encryption credentials to use, in preference order.
      * 
      * @return the list of encryption credentials, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<Credential> getKeyTransportEncryptionCredentials();
+    @Nonnull @Unmodifiable @NotLive List<Credential> getKeyTransportEncryptionCredentials();
     
     /**
      * Get the list of preferred key transport encryption algorithm URIs, in preference order.
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getKeyTransportEncryptionAlgorithms();
+    @Nonnull @Unmodifiable @NotLive List<String> getKeyTransportEncryptionAlgorithms();
 
     /**
      * Get the KeyInfoGenerator manager to use when generating the EncryptedData/KeyInfo.
@@ -107,7 +105,6 @@ public interface EncryptionConfiguration extends AlgorithmPolicyConfiguration {
      * 
      * @return the 
      */
-    @Nonnull @Unmodifiable @NotLive
-    Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations();
+    @Nonnull @Unmodifiable @NotLive Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations();
     
 }

@@ -23,7 +23,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -33,14 +32,14 @@ import net.shibboleth.shared.logic.Constraint;
 public class ExcludedAlgorithmsPredicate implements Predicate<String> {
     
     /** Excluded algorithms. */
-    @Nonnull @NonnullElements private Collection<String> excludes;
+    @Nonnull private Collection<String> excludes;
     
     /**
      * Constructor.
      *
      * @param algorithms collection of excluded algorithms
      */
-    public ExcludedAlgorithmsPredicate(@Nonnull @NonnullElements final Collection<String> algorithms) {
+    public ExcludedAlgorithmsPredicate(@Nonnull final Collection<String> algorithms) {
         excludes = CollectionSupport.copyToSet(Constraint.isNotNull(algorithms, "Exclusions may not be null"));
     }
 

@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.keyinfo;
 
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -30,7 +32,7 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class KeyInfoCriterion implements Criterion {
     
     /** The KeyInfo which serves as the source for credential criteria. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
     
     /**
      * Constructor.
@@ -89,8 +91,8 @@ public final class KeyInfoCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof KeyInfoCriterion) {
-            return keyInfo.equals(((KeyInfoCriterion) obj).keyInfo);
+        if (obj instanceof KeyInfoCriterion other) {
+            return Objects.equals(keyInfo, other.keyInfo);
         }
 
         return false;

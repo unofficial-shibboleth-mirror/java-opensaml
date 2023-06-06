@@ -80,7 +80,7 @@ public class CollectionKeyInfoCredentialResolver extends CollectionCredentialRes
      *
      */
     public CollectionKeyInfoCredentialResolver() {
-        this(new ArrayList<Credential>());
+        this(new ArrayList<>());
     }
     
     /**

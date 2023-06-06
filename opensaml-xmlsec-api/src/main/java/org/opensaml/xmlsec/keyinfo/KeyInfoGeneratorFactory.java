@@ -35,7 +35,7 @@ public interface KeyInfoGeneratorFactory {
      * 
      * @return a new KeyInfoGenerator instance
      */
-    @Nonnull public KeyInfoGenerator newInstance();
+    @Nonnull KeyInfoGenerator newInstance();
     
     /**
      * Get a new instance of the generator type produced by the factory, and which generates
@@ -46,7 +46,7 @@ public interface KeyInfoGeneratorFactory {
      * 
      * @return a new KeyInfoGenerator instance
      */
-    @Nonnull public default KeyInfoGenerator newInstance(@Nullable final Class<? extends KeyInfo> type) {
+    @Nonnull default KeyInfoGenerator newInstance(@Nullable final Class<? extends KeyInfo> type) {
         throw new UnsupportedOperationException("Method not implemented");
     }
     
@@ -57,7 +57,7 @@ public interface KeyInfoGeneratorFactory {
      * @return true if the generators produced by this factory can handle the type of the specified credential,
      *          false otherwise
      */
-    public boolean handles(@Nonnull final Credential credential);
+    boolean handles(@Nonnull final Credential credential);
     
     /**
      * Get the type (interface) of the specific type of credential handled by generators produced by
@@ -65,6 +65,6 @@ public interface KeyInfoGeneratorFactory {
      * 
      * @return the specifc type of credential handled by the generators produced by this factory
      */
-    @Nonnull public Class<? extends Credential> getCredentialType();
+    @Nonnull Class<? extends Credential> getCredentialType();
     
 }

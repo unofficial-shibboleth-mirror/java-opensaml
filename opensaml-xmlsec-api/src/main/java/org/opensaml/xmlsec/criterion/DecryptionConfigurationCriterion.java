@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -37,15 +36,14 @@ import org.opensaml.xmlsec.DecryptionConfiguration;
 public class DecryptionConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    @Nonnull @NonnullElements private List<DecryptionConfiguration> configs;
+    @Nonnull private List<DecryptionConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public DecryptionConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
-            List<DecryptionConfiguration> configurations) {
+    public DecryptionConfigurationCriterion(@Nonnull @NotEmpty final List<DecryptionConfiguration> configurations) {
         configs = CollectionSupport.copyToList(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -57,8 +55,7 @@ public class DecryptionConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public DecryptionConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
-            DecryptionConfiguration... configurations) {
+    public DecryptionConfigurationCriterion(@Nonnull @NotEmpty final DecryptionConfiguration... configurations) {
         configs = CollectionSupport.listOf(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -69,8 +66,7 @@ public class DecryptionConfigurationCriterion implements Criterion {
      * 
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<DecryptionConfiguration> getConfigurations() {
+    @Nonnull @NotEmpty @NotLive @Unmodifiable public List<DecryptionConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -101,8 +97,8 @@ public class DecryptionConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof DecryptionConfigurationCriterion) {
-            return configs.equals(((DecryptionConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof DecryptionConfigurationCriterion other) {
+            return configs.equals(other.getConfigurations());
         }
 
         return false;

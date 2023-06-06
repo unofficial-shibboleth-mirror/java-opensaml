@@ -16,4 +16,7 @@
  */
 
 /** Message context classes for XML Security. */
+@NonnullElements
 package org.opensaml.xmlsec.context;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

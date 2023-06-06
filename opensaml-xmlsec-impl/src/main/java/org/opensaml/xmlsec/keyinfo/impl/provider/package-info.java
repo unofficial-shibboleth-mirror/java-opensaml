@@ -22,4 +22,7 @@
  * {@link org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver}, extract typed credential
  * information from a KeyInfo object.</p>
  */
+@NonnullElements
 package org.opensaml.xmlsec.keyinfo.impl.provider;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

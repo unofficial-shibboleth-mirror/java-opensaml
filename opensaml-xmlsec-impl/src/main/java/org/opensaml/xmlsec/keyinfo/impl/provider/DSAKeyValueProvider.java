@@ -24,6 +24,8 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -55,9 +57,10 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
-            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
-            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable @Unmodifiable @NotLive public Collection<Credential> process(
+            @Nonnull final KeyInfoCredentialResolver resolver, @Nonnull final XMLObject keyInfoChild,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final KeyInfoResolutionContext kiContext)
+                    throws SecurityException {
         
         final DSAKeyValue keyValue = getDSAKeyValue(keyInfoChild);
         if (keyValue == null) {

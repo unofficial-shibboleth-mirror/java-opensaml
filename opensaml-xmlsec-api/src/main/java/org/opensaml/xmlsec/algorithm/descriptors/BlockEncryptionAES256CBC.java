@@ -49,7 +49,7 @@ public final class BlockEncryptionAES256CBC implements BlockEncryptionAlgorithm 
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Integer getKeyLength() {
+    public int getKeyLength() {
         return 256;
     }
 

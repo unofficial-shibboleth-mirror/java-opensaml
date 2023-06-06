@@ -43,6 +43,6 @@ public interface SignerProvider {
      * @param signature the signature to computer the signature on
      * @throws SignatureException thrown if there is an error computing the signature
      */
-    public void signObject(@Nonnull final Signature signature) throws SignatureException;
+    void signObject(@Nonnull final Signature signature) throws SignatureException;
 
 }

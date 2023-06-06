@@ -67,6 +67,7 @@ public class KeyInfoGeneratorManager {
      * 
      * @return the collection of managed factories
      */
+    @SuppressWarnings("null")
     @Nonnull public Collection<KeyInfoGeneratorFactory> getFactories() {
         return CollectionSupport.copyToList(factories.values());
     }

@@ -34,7 +34,6 @@ import javax.crypto.KeyAgreement;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -211,8 +210,7 @@ public class AlgorithmRegistry {
      *
      * @return the set of URIs for the given type, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive
-    public Set<String> getRegisteredURIsByType(@Nonnull final AlgorithmType type) {
+    @Nonnull @Unmodifiable @NotLive public Set<String> getRegisteredURIsByType(@Nonnull final AlgorithmType type) {
         Constraint.isNotNull(type, "AlgorithmType was null");
         final Set<String> byType = types.get(type);
         if (byType != null) {
@@ -228,7 +226,7 @@ public class AlgorithmRegistry {
      *
      * @return the set of descriptors for the given type, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive
+    @Nonnull @Unmodifiable @NotLive
     public Set<AlgorithmDescriptor> getRegisteredByType(@Nonnull final AlgorithmType type) {
         return getRegisteredURIsByType(type).stream()
                 .map(this::get)

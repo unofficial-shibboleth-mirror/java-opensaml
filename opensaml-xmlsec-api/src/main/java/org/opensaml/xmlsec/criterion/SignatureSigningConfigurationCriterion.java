@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -37,15 +36,15 @@ import org.opensaml.xmlsec.SignatureSigningConfiguration;
 public class SignatureSigningConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    @Nonnull @NonnullElements private List<SignatureSigningConfiguration> configs;
+    @Nonnull private List<SignatureSigningConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public SignatureSigningConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
-            List<SignatureSigningConfiguration> configurations) {
+    public SignatureSigningConfigurationCriterion(
+            @Nonnull @NotEmpty final List<SignatureSigningConfiguration> configurations) {
         configs = CollectionSupport.copyToList(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -57,8 +56,8 @@ public class SignatureSigningConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public SignatureSigningConfigurationCriterion(@Nonnull @NonnullElements  @NotEmpty final
-            SignatureSigningConfiguration... configurations) {
+    public SignatureSigningConfigurationCriterion(
+            @Nonnull @NotEmpty final SignatureSigningConfiguration... configurations) {
         configs = CollectionSupport.listOf(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -68,8 +67,7 @@ public class SignatureSigningConfigurationCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<SignatureSigningConfiguration> getConfigurations() {
+    @Nonnull @NotEmpty @NotLive @Unmodifiable public List<SignatureSigningConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -100,8 +98,8 @@ public class SignatureSigningConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof SignatureSigningConfigurationCriterion) {
-            return configs.equals(((SignatureSigningConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof SignatureSigningConfigurationCriterion other) {
+            return configs.equals(other.getConfigurations());
         }
 
         return false;

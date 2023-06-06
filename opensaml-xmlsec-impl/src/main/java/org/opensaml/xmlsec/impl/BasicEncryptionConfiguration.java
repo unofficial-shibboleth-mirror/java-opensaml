@@ -23,7 +23,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -43,16 +42,16 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
         implements EncryptionConfiguration {
     
     /** Data encryption credentials. */
-    @Nonnull @NonnullElements private List<Credential> dataEncryptionCredentials;
+    @Nonnull private List<Credential> dataEncryptionCredentials;
     
     /** Data encryption algorithm URIs. */
-    @Nonnull @NonnullElements private List<String> dataEncryptionAlgorithms;
+    @Nonnull private List<String> dataEncryptionAlgorithms;
 
     /** Key transport encryption credentials. */
-    @Nonnull @NonnullElements private List<Credential> keyTransportEncryptionCredentials;
+    @Nonnull private List<Credential> keyTransportEncryptionCredentials;
     
     /** Key transport encryption algorithm URIs. */
-    @Nonnull @NonnullElements private List<String> keyTransportEncryptionAlgorithms;
+    @Nonnull private List<String> keyTransportEncryptionAlgorithms;
     
     /** Manager for named KeyInfoGenerator instances for encrypting data. */
     @Nullable private NamedKeyInfoGeneratorManager dataKeyInfoGeneratorManager;
@@ -70,7 +69,7 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
     @Nullable private KeyTransportAlgorithmPredicate keyTransportPredicate;
     
     /** Key agreement configurations. */
-    @Nonnull @NonnullElements private Map<String, KeyAgreementEncryptionConfiguration> keyAgreementConfigurations;
+    @Nonnull private Map<String, KeyAgreementEncryptionConfiguration> keyAgreementConfigurations;
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
@@ -89,7 +88,7 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getDataEncryptionCredentials() {
+    @Nonnull @Unmodifiable @NotLive public List<Credential> getDataEncryptionCredentials() {
         return dataEncryptionCredentials;
     }
     
@@ -97,18 +96,23 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the data encryption credentials to use.
      * 
      * @param credentials the list of data encryption credentials
+     * 
+     * @return this object
      */
-    public void setDataEncryptionCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
+    @Nonnull public BasicEncryptionConfiguration setDataEncryptionCredentials(
+            @Nullable final List<Credential> credentials) {
         if (credentials == null) {
             dataEncryptionCredentials  = CollectionSupport.emptyList();
         } else {
             dataEncryptionCredentials = CollectionSupport.copyToList(credentials);
         }
+        
+        return this;
     }
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithms() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithms() {
         return dataEncryptionAlgorithms;
     }
     
@@ -116,19 +120,24 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the data encryption algorithms to use.
      * 
      * @param algorithms the list of algorithms
+     * 
+     * @return this object
      */
-    public void setDataEncryptionAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
+    @Nonnull public BasicEncryptionConfiguration setDataEncryptionAlgorithms(
+            @Nullable final List<String> algorithms) {
         if (algorithms == null) {
             dataEncryptionAlgorithms = CollectionSupport.emptyList();
         } else {
             dataEncryptionAlgorithms =
                     CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
+        
+        return this;
     }
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getKeyTransportEncryptionCredentials() {
+    @Nonnull @Unmodifiable @NotLive public List<Credential> getKeyTransportEncryptionCredentials() {
         return keyTransportEncryptionCredentials;
     }
     
@@ -136,18 +145,23 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the key transport encryption credentials to use.
      * 
      * @param credentials the list of key transport encryption credentials
+     * 
+     * @return this object
      */
-    public void setKeyTransportEncryptionCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
+    @Nonnull public BasicEncryptionConfiguration setKeyTransportEncryptionCredentials(
+            @Nullable final List<Credential> credentials) {
         if (credentials == null) {
             keyTransportEncryptionCredentials  = CollectionSupport.emptyList();
         } else {
             keyTransportEncryptionCredentials = CollectionSupport.copyToList(credentials);
         }
+        
+        return this;
     }
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithms() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithms() {
         return keyTransportEncryptionAlgorithms;
     }
     
@@ -155,14 +169,19 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the key transport encryption algorithms to use.
      * 
      * @param algorithms the list of algorithms
+     * 
+     * @return this object
      */
-    public void setKeyTransportEncryptionAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
+    @Nonnull public BasicEncryptionConfiguration setKeyTransportEncryptionAlgorithms(
+            @Nullable final List<String> algorithms) {
         if (algorithms == null) {
             keyTransportEncryptionAlgorithms = CollectionSupport.emptyList();
         } else {
             keyTransportEncryptionAlgorithms =
                     CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
+        
+        return this;
     }
     
     /** {@inheritDoc} */
@@ -175,9 +194,13 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the manager for named KeyInfoGenerator instances encrypting data.
      * 
      * @param keyInfoManager the KeyInfoGenerator manager to use
+     * 
+     * @return this object
      */
-    public void setDataKeyInfoGeneratorManager(@Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
+    @Nonnull public BasicEncryptionConfiguration setDataKeyInfoGeneratorManager(
+            @Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
         dataKeyInfoGeneratorManager = keyInfoManager;
+        return this;
     }
     
     /** {@inheritDoc} */
@@ -190,9 +213,13 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the manager for named KeyInfoGenerator instances for encrypting keys.
      * 
      * @param keyInfoManager the KeyInfoGenerator manager to use
+     * 
+     * @return this object
      */
-    public void setKeyTransportKeyInfoGeneratorManager(@Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
+    @Nonnull public BasicEncryptionConfiguration setKeyTransportKeyInfoGeneratorManager(
+            @Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
         keyTransportKeyInfoGeneratorManager = keyInfoManager;
+        return this;
     }
     
     /** {@inheritDoc} */
@@ -205,9 +232,12 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the instance of {@link RSAOAEPParameters}.
      * 
      * @param params the new parameters instance
+     * 
+     * @return this object
      */
-    public void setRSAOAEPParameters(@Nullable final RSAOAEPParameters params) {
+    @Nonnull public BasicEncryptionConfiguration setRSAOAEPParameters(@Nullable final RSAOAEPParameters params) {
         rsaOAEPParameters = params;
+        return this;
     }
     
     /** {@inheritDoc}.
@@ -226,9 +256,12 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * <p>Defaults to: <code>true</code>
      * 
      * @param flag true if should merge, false otherwise
+     * 
+     * @return this object
      */
-    public void setRSAOAEPParametersMerge(final boolean flag) {
+    @Nonnull public BasicEncryptionConfiguration setRSAOAEPParametersMerge(final boolean flag) {
         rsaOAEPParametersMerge = flag;
+        return this;
     }
     
     /** {@inheritDoc} */
@@ -241,13 +274,18 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the instance of {@link KeyTransportAlgorithmPredicate}.
      * 
      * @param predicate the new predicate instance
+     * 
+     * @return this object
      */
-    public void setKeyTransportAlgorithmPredicate(final KeyTransportAlgorithmPredicate predicate) {
+    @Nonnull public BasicEncryptionConfiguration setKeyTransportAlgorithmPredicate(
+            @Nullable final KeyTransportAlgorithmPredicate predicate) {
         keyTransportPredicate = predicate;
+        return this;
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations() {
+    @Nonnull @Unmodifiable @NotLive
+    public Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations() {
         return keyAgreementConfigurations;
     }
     
@@ -255,13 +293,18 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the map of {@link KeyAgreementEncryptionConfiguration} instances.
      * 
      * @param configs the new map of instances
+     * 
+     * @return this object
      */
-    public void setKeyAgreementConfigurations(@Nullable final Map<String,KeyAgreementEncryptionConfiguration> configs) {
+    @Nonnull public BasicEncryptionConfiguration setKeyAgreementConfigurations(
+            @Nullable final Map<String,KeyAgreementEncryptionConfiguration> configs) {
         if (configs == null) {
             keyAgreementConfigurations = CollectionSupport.emptyMap();
         } else {
             keyAgreementConfigurations = CollectionSupport.copyToMap(configs);
         }
+        
+        return this;
     }
     
 }

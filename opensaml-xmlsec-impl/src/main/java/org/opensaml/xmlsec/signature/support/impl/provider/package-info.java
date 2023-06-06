@@ -16,4 +16,7 @@
  */
 
 /** Provides Santuario-specific implementation of signing and validation. */
+@NonnullElements
 package org.opensaml.xmlsec.signature.support.impl.provider;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

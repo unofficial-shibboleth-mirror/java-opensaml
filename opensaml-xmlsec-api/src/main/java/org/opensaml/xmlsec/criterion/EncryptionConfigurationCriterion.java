@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -37,15 +36,14 @@ import org.opensaml.xmlsec.EncryptionConfiguration;
 public class EncryptionConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    @Nonnull @NonnullElements private List<EncryptionConfiguration> configs;
+    @Nonnull private List<EncryptionConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public EncryptionConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
-            List<EncryptionConfiguration> configurations) {
+    public EncryptionConfigurationCriterion(@Nonnull @NotEmpty final List<EncryptionConfiguration> configurations) {
         configs = CollectionSupport.copyToList(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -57,8 +55,7 @@ public class EncryptionConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public EncryptionConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
-            EncryptionConfiguration... configurations) {
+    public EncryptionConfigurationCriterion(@Nonnull @NotEmpty final EncryptionConfiguration... configurations) {
         configs = CollectionSupport.listOf(
                 Constraint.isNotNull(configurations, "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
@@ -68,8 +65,7 @@ public class EncryptionConfigurationCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<EncryptionConfiguration> getConfigurations() {
+    @Nonnull @NotEmpty @NotLive @Unmodifiable public List<EncryptionConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -100,8 +96,8 @@ public class EncryptionConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof EncryptionConfigurationCriterion) {
-            return configs.equals(((EncryptionConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof EncryptionConfigurationCriterion other) {
+            return configs.equals(other.getConfigurations());
         }
 
         return false;

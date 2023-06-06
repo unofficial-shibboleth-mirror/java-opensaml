@@ -73,6 +73,7 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @return the set of all manager names currently configured
      */
+    @SuppressWarnings("null")
     @Nonnull @Unmodifiable @NotLive public Set<String> getManagerNames() {
         return CollectionSupport.copyToSet(managers.keySet());
     }

@@ -109,7 +109,7 @@ public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementPr
     }
 
     /** {@inheritDoc} */
-    @Nonnull protected SecretKey deriveSecretKey(final byte[] secret, @Nonnull final String keyAlgorithm,
+    @Nonnull protected SecretKey deriveSecretKey(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
         final KeySize keySizeParam = parameters.get(KeySize.class);

@@ -29,6 +29,9 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.collection.LazySet;
@@ -55,7 +58,7 @@ public class KeyInfoResolutionContext {
      * These may have for example been extracted from KeyName elements present,
      * or may have been inferred from the context in which the KeyInfo exists or
      * is being used. */
-    @Nonnull private final Set<String> keyNames;
+    @Nonnull @Live private final Set<String> keyNames;
     
     /** Get the key currently known to be represented by the KeyInfo. */
     @Nullable private Key key;
@@ -65,7 +68,7 @@ public class KeyInfoResolutionContext {
     @Nonnull private final Collection<Credential> resolvedCredentials;
     
     /** Extensible map of properties used to share state amongst providers and/or resolver logic. */
-    @Nonnull private final Map<String, Object> properties;
+    @Nonnull @Live private final Map<String, Object> properties;
     
     /**
      * Constructor.
@@ -109,7 +112,7 @@ public class KeyInfoResolutionContext {
      * @return the set of key names
      * 
      * */
-    @Nonnull public Set<String> getKeyNames() {
+    @Nonnull @Live public Set<String> getKeyNames() {
         return keyNames;
     }
     
@@ -137,7 +140,7 @@ public class KeyInfoResolutionContext {
      * 
      * @return Returns the keyValueCredential.
      */
-    @Nonnull public Collection<Credential> getResolvedCredentials() {
+    @Nonnull @Unmodifiable @NotLive public Collection<Credential> getResolvedCredentials() {
         return resolvedCredentials;
     }
     
@@ -146,7 +149,7 @@ public class KeyInfoResolutionContext {
      * 
      * @return Returns the properties.
      */
-    @Nonnull public Map<String, Object> getProperties() {
+    @Nonnull @Live public Map<String, Object> getProperties() {
         return properties;
     }
 }

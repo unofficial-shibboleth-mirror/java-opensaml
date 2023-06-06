@@ -16,4 +16,7 @@
  */
 
 /** Algorithm descriptor classes. */
+@NonnullElements
 package org.opensaml.xmlsec.algorithm.descriptors;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

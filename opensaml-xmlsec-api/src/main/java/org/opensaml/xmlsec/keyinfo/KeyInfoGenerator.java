@@ -36,6 +36,6 @@ public interface KeyInfoGenerator {
      * @return a new KeyInfo object or null if nothing was generated
      * @throws SecurityException thrown if there is any error generating the new KeyInfo from the credential
      */
-    @Nullable public KeyInfo generate(@Nullable final Credential credential) throws SecurityException;
+    @Nullable KeyInfo generate(@Nullable final Credential credential) throws SecurityException;
 
 }

@@ -38,6 +38,8 @@ import org.opensaml.xmlsec.signature.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -55,9 +57,10 @@ public class ECKeyValueProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
-            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
-            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable @Unmodifiable @NotLive public Collection<Credential> process(
+            @Nonnull final KeyInfoCredentialResolver resolver, @Nonnull final XMLObject keyInfoChild,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final KeyInfoResolutionContext kiContext)
+                    throws SecurityException {
 
         final ECKeyValue keyValue = getECKeyValue(keyInfoChild);
         if (keyValue == null) {

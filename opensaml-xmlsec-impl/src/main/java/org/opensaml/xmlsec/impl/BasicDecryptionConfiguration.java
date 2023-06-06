@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.DecryptionConfiguration;
@@ -53,9 +54,13 @@ public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Set the KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
      * 
      * @param resolver the KeyInfoCredentialResolver instance
+     * 
+     * @return this object
      */
-    public void setDataKeyInfoCredentialResolver(@Nullable final KeyInfoCredentialResolver resolver) {
+    @Nonnull public BasicDecryptionConfiguration setDataKeyInfoCredentialResolver(
+            @Nullable final KeyInfoCredentialResolver resolver) {
         dataKeyInfoCredentialResolver = resolver;
+        return this;
     }
     
     /**
@@ -73,9 +78,13 @@ public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Key Encryption Key or KEK).
      * 
      * @param resolver the KeyInfoCredentialResolver instance
+     * 
+     * @return this object
      */
-    public void setKEKKeyInfoCredentialResolver(@Nullable final KeyInfoCredentialResolver resolver) {
-       kekKeyInfoCredentialResolver = resolver; 
+    @Nonnull public BasicDecryptionConfiguration setKEKKeyInfoCredentialResolver(
+            @Nullable final KeyInfoCredentialResolver resolver) {
+       kekKeyInfoCredentialResolver = resolver;
+       return this;
     }
     
     /**
@@ -91,9 +100,13 @@ public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * Get the EncryptedKeyResolver to use when resolving the EncryptedKey(s) to process.
      * 
      * @param resolver the EncryptedKeyResolver instance
+     * 
+     * @return this object
      */
-    public void setEncryptedKeyResolver(@Nullable final EncryptedKeyResolver resolver) {
-       encryptedKeyResolver = resolver; 
+    @Nonnull public BasicDecryptionConfiguration setEncryptedKeyResolver(
+            @Nullable final EncryptedKeyResolver resolver) {
+       encryptedKeyResolver = resolver;
+       return this;
     }
     
 }

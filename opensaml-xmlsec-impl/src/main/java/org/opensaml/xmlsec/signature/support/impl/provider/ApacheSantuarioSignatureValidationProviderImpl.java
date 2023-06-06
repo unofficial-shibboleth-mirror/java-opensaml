@@ -31,9 +31,9 @@ import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureValidationProvider;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link SignatureValidationProvider} which is based on the Apache Santuario library
@@ -42,7 +42,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class ApacheSantuarioSignatureValidationProviderImpl implements SignatureValidationProvider {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ApacheSantuarioSignatureValidationProviderImpl.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ApacheSantuarioSignatureValidationProviderImpl.class);
 
     /** {@inheritDoc} */
     public void validate(@Nonnull final Signature signature, @Nonnull final Credential validationCredential) 

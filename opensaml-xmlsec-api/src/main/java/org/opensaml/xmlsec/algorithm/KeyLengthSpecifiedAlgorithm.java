@@ -17,8 +17,6 @@
 
 package org.opensaml.xmlsec.algorithm;
 
-import javax.annotation.Nonnull;
-
 /**
  * Interface for algorithm descriptors which specify a key length.
  */
@@ -29,6 +27,6 @@ public interface KeyLengthSpecifiedAlgorithm extends AlgorithmDescriptor {
      * 
      * @return the specified key length
      */
-    @Nonnull Integer getKeyLength();
+    int getKeyLength();
 
 }

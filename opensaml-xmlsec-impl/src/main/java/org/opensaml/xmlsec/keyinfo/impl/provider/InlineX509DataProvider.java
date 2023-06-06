@@ -31,6 +31,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.LazySet;
@@ -113,9 +115,10 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
-            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
-            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable @Unmodifiable @NotLive public Collection<Credential> process(
+            @Nonnull final KeyInfoCredentialResolver resolver, @Nonnull final XMLObject keyInfoChild,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final KeyInfoResolutionContext kiContext)
+                    throws SecurityException {
 
         if (!handles(keyInfoChild)) {
             return null;

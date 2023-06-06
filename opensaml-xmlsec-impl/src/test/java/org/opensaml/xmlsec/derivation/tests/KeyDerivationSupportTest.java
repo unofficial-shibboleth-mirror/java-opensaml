@@ -50,22 +50,22 @@ public class KeyDerivationSupportTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void getEffectiveKeyLength() throws Exception {
         Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength(
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, null).intValue(), 128);
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, null), 128);
         Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength(
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, 128).intValue(), 128);
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, 128), 128);
         
         Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength(
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES, null).intValue(), 192);
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES, null), 192);
         Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength(
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES, 192).intValue(), 192);
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES, 192), 192);
         
         Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength(
-                EncryptionConstants.ALGO_ID_KEYWRAP_AES128, null).intValue(), 128);
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES128, null), 128);
         Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength(
-                EncryptionConstants.ALGO_ID_KEYWRAP_AES128, 128).intValue(), 128);
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES128, 128), 128);
         
         // Non-length algorithm with non-null specified length should succeed as specified length
-        Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength("SomeAlgo", 128).intValue(), 128);
+        Assert.assertEquals(KeyDerivationSupport.getEffectiveKeyLength("SomeAlgo", 128), 128);
         
         try {
             KeyDerivationSupport.getEffectiveKeyLength(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, 256);

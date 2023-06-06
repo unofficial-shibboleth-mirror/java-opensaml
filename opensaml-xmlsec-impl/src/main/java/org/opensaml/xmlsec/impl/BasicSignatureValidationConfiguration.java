@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.SignatureValidationConfiguration;
@@ -46,9 +47,14 @@ public class BasicSignatureValidationConfiguration extends BasicAlgorithmPolicyC
      * Set the signature trust engine to use.
      * 
      * @param engine the signature trust engine
+     * 
+     * @return this object
      */
-    public void setSignatureTrustEngine(@Nullable final SignatureTrustEngine engine) {
+    @Nonnull public BasicSignatureValidationConfiguration setSignatureTrustEngine(
+            @Nullable final SignatureTrustEngine engine) {
         signatureTrustEngine = engine;
+        
+        return this;
     }
 
 }

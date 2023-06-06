@@ -52,8 +52,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
     
     @BeforeMethod
     public void setUp() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
+        final AlgorithmRegistry registry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         predicate = new AlgorithmRuntimeSupportedPredicate(registry);
     }
     
@@ -64,7 +63,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
         if (loadBC) {
             providerSupport.loadBC();
             new GlobalAlgorithmRegistryInitializer().init();
-            predicate = new AlgorithmRuntimeSupportedPredicate(AlgorithmSupport.getGlobalAlgorithmRegistry());
+            predicate = new AlgorithmRuntimeSupportedPredicate(AlgorithmSupport.ensureGlobalAlgorithmRegistry());
         }
         
         try {
@@ -99,7 +98,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
         if (loadBC) {
             providerSupport.loadBC();
             new GlobalAlgorithmRegistryInitializer().init();
-            predicate = new AlgorithmRuntimeSupportedPredicate(AlgorithmSupport.getGlobalAlgorithmRegistry());
+            predicate = new AlgorithmRuntimeSupportedPredicate(AlgorithmSupport.ensureGlobalAlgorithmRegistry());
         }
         
         try {
