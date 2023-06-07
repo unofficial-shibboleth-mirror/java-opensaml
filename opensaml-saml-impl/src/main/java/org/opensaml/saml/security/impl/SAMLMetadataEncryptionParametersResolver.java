@@ -29,6 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NullableElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
@@ -393,7 +394,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         return Stream.of(lists)
                 .filter(Objects::nonNull)
                 .flatMap(x -> x.stream())
-                .collect(Collectors.toList());
+                .collect(CollectionSupport.nonnullCollector(Collectors.toList())).get();
     }
     
     /**
@@ -522,7 +523,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * @param metadataCredContext the credential context extracted from metadata
      * @return the selected algorithm URI and the associated encryption method from metadata, if any. 
      */
-    @Nonnull protected Pair<String, EncryptionMethod> resolveKeyTransportAlgorithm(
+    @Nonnull @NullableElements protected Pair<String, EncryptionMethod> resolveKeyTransportAlgorithm(
             @Nonnull final Credential keyTransportCredential, 
             @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate,
             @Nullable final String dataEncryptionAlgorithm,
@@ -585,7 +586,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * @param metadataCredContext the credential context extracted from metadata
      * @return the selected algorithm URI and the associated encryption method from metadata, if any
      */
-    @Nonnull protected Pair<String, EncryptionMethod> resolveDataEncryptionAlgorithm(
+    @Nonnull @NullableElements protected Pair<String, EncryptionMethod> resolveDataEncryptionAlgorithm(
             @Nonnull final CriteriaSet criteria, 
             @Nonnull final Predicate<String> includeExcludePredicate,
             @Nullable final SAMLMDCredentialContext metadataCredContext) {

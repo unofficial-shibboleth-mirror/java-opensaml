@@ -76,10 +76,11 @@ public final class ProtocolCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof ProtocolCriterion) {
-            return protocol.equals(((ProtocolCriterion) obj).protocol);
+        if (obj instanceof ProtocolCriterion other) {
+            return protocol.equals(other.protocol);
         }
 
         return false;
     }
+
 }

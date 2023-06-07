@@ -42,7 +42,8 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -171,8 +172,9 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements protected List<Credential> getRequestCredentials(
-            @Nonnull final MessageContext samlContext) throws MessageHandlerException {
+    @Nonnull @Unmodifiable @NotLive protected List<Credential> getRequestCredentials(
+            @Nonnull final MessageContext samlContext)
+            throws MessageHandlerException {
 
         final String kiBase64 = getHttpServletRequest().getParameter("KeyInfo");
         if (Strings.isNullOrEmpty(kiBase64)) {

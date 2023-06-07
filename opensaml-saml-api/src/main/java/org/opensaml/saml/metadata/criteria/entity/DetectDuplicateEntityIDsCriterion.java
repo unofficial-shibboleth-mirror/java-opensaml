@@ -60,13 +60,13 @@ public class DetectDuplicateEntityIDsCriterion implements Criterion {
     }
 
     /** {@inheritDoc} */
-    public boolean equals(final Object other) {
-        if (this == other) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
         
-        if (other instanceof DetectDuplicateEntityIDsCriterion) {
-            return Objects.equals(this.value, ((DetectDuplicateEntityIDsCriterion)other).value);
+        if (obj instanceof DetectDuplicateEntityIDsCriterion other) {
+            return Objects.equals(this.value, other.value);
         }
         
         return false;

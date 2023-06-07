@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -39,7 +38,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPredicate {
 
     /** Authorities to match on. */
-    @Nonnull @NonnullElements private final Set<String> authorities;
+    @Nonnull private final Set<String> authorities;
     
     /**
      * Constructor.
@@ -55,7 +54,7 @@ public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPre
      * 
      * @return  the authority name criteria
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getAuthorities() {
+    @Nonnull @Unmodifiable @NotLive public Set<String> getAuthorities() {
         return authorities;
     }
     

@@ -40,7 +40,6 @@ import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -149,7 +148,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
         @Nonnull private final Logger log = LoggerFactory.getLogger(AddInResponseToToResponse.class);
         
         /** Set of bindings to ignore request ID for. */
-        @Nonnull @NonnullElements private Set<String> suppressForBindings;
+        @Nonnull private Set<String> suppressForBindings;
         
         /** Constructor. */
         public DefaultRequestIdLookupStrategy() {
@@ -161,7 +160,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
          * 
          * @param bindings collection of bindings
          */
-        public void setSuppressForBindings(@Nonnull @NonnullElements final Collection<String> bindings) {
+        public void setSuppressForBindings(@Nonnull final Collection<String> bindings) {
             Constraint.isNotNull(bindings, "Bindings collection cannot be null");
             
             suppressForBindings = new HashSet<>();

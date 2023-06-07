@@ -34,7 +34,6 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -53,13 +52,13 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityGroupNamePredicate.class);
     
     /** Groups to match on. */
-    @Nonnull @NonnullElements private final Set<String> groupNames;
+    @Nonnull private final Set<String> groupNames;
     
     /** A supplemental resolver to allow for {@link AffiliationDescriptor} lookup. */
     @Nullable private MetadataResolver metadataResolver;
     
     /** Pre-created criteria sets for metadata lookup. */
-    @Nullable @NonnullElements private Collection<CriteriaSet> criteriaSets;
+    @Nullable private Collection<CriteriaSet> criteriaSets;
     
     /**
      * Constructor.
@@ -99,7 +98,7 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
      * 
      * @return  the group name criteria
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getGroupNames() {
+    @Nonnull @Unmodifiable @NotLive public Set<String> getGroupNames() {
         return groupNames;
     }
     

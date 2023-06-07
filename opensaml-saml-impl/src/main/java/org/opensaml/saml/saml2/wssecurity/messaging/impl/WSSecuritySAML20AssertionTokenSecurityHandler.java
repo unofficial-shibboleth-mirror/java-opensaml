@@ -45,6 +45,8 @@ import org.slf4j.Logger;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.Pair;
@@ -373,7 +375,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * 
      * @return the list of resolved Assertions, or an empty list
      */
-    @Nonnull protected List<Assertion> resolveAssertions(@Nonnull final MessageContext messageContext) {
+    @Nonnull @Unmodifiable @NotLive protected List<Assertion> resolveAssertions(
+            @Nonnull final MessageContext messageContext) {
         final List<XMLObject> securityHeaders = SOAPMessagingSupport.getInboundHeaderBlock(messageContext,
                 Security.ELEMENT_NAME);
         if (securityHeaders == null || securityHeaders.isEmpty()) {
@@ -387,7 +390,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         for (final XMLObject header : securityHeaders) {
             final Security securityHeader = (Security) header;
             final List<XMLObject> xmlObjects = securityHeader.getUnknownXMLObjects(Assertion.DEFAULT_ELEMENT_NAME);
-            if (xmlObjects != null && !xmlObjects.isEmpty()) {
+            if (!xmlObjects.isEmpty()) {
                 for (final XMLObject xmlObject : xmlObjects) {
                     assertions.add((Assertion) xmlObject);
                 }

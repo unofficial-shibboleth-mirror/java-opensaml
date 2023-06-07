@@ -596,7 +596,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         releaseMetadataDOM(newBackingStore.getCachedFilteredMetadata());
 
         log.debug("{} Post-processing metadata from '{}'", getLogPrefix(), metadataIdentifier);
-        postProcessMetadata(metadataBytes, metadataDom, newBackingStore.getCachedOriginalMetadata(), 
+        postProcessMetadata(metadataBytes, metadataDom, newBackingStore.ensureCachedOriginalMetadata(), 
                 newBackingStore.getCachedFilteredMetadata());
 
         log.debug("{} Computing expiration time for metadata from '{}'", getLogPrefix(), metadataIdentifier);

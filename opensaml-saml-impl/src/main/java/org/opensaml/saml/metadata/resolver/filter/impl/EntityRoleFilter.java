@@ -36,7 +36,6 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -61,7 +60,7 @@ public class EntityRoleFilter extends AbstractMetadataFilter {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityRoleFilter.class);
 
     /** List of roles that are NOT removed by this filter. */
-    @Nonnull @NonnullElements private List<QName> retainedRoles;
+    @Nonnull private List<QName> retainedRoles;
 
     /** Whether to keep entity descriptors that contain no roles; default value: true. */
     private boolean removeRolelessEntityDescriptors;
@@ -95,7 +94,7 @@ public class EntityRoleFilter extends AbstractMetadataFilter {
      * 
      * @return unmodifiable list of roles that are NOT removed by this filter
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<QName> getRetainedRoles() {
+    @Nonnull @Unmodifiable @NotLive public List<QName> getRetainedRoles() {
         return retainedRoles;
     }
 
@@ -250,7 +249,7 @@ public class EntityRoleFilter extends AbstractMetadataFilter {
      * 
      * @throws FilterException thrown if the effective role name can not be determined
      */
-    protected QName getRoleName(@Nonnull final RoleDescriptor role) throws FilterException {
+    @Nonnull protected QName getRoleName(@Nonnull final RoleDescriptor role) throws FilterException {
         QName roleName = role.getElementQName();
 
         if (extRoleDescriptor.equals(roleName)) {

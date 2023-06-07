@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML v2.0 Identity Provider Discovery Profile.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.idpdisco.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

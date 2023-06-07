@@ -18,5 +18,7 @@
 /**
  * Functions and predicates supporting common SAML profile behavior.
  */
-
+@NonnullElements
 package org.opensaml.saml.common.profile.logic;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

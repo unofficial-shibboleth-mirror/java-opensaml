@@ -18,5 +18,7 @@
 /**
  * Classes for encrypting and decrypting SAML.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.encryption;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

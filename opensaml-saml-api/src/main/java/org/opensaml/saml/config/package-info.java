@@ -18,4 +18,7 @@
 /**
  * SAML library configuration.
  */
+@NonnullElements
 package org.opensaml.saml.config;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

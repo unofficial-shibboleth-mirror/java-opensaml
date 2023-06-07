@@ -47,6 +47,8 @@ import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
@@ -276,8 +278,9 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @throws ResolverException thrown if the key, certificate, or CRL information is represented in an unsupported
      *             format
      */
-    @Nonnull protected Collection<Credential> resolveFromRoleDescriptor(@Nullable final CriteriaSet criteriaSet, 
-            @Nonnull final RoleDescriptor roleDescriptor, @Nonnull final UsageType usage) throws ResolverException {
+    @Nonnull @Unmodifiable @NotLive protected Collection<Credential> resolveFromRoleDescriptor(
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final RoleDescriptor roleDescriptor,
+            @Nonnull final UsageType usage) throws ResolverException {
         
         // EntityID here is optional. Not used in resolution, just info stored on the resolved credential(s).
         String entityID = null;
@@ -308,9 +311,10 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @throws ResolverException thrown if the key, certificate, or CRL information is represented in an unsupported
      *             format
      */
-    @Nonnull protected Collection<Credential> resolveFromMetadata(@Nullable final CriteriaSet criteriaSet, 
-            @Nonnull @NotEmpty final String entityID, @Nonnull final QName role, 
-            @Nullable final String protocol, @Nonnull final UsageType usage) throws ResolverException {
+    @Nonnull @Unmodifiable @NotLive protected Collection<Credential> resolveFromMetadata(
+            @Nullable final CriteriaSet criteriaSet, @Nonnull @NotEmpty final String entityID,
+            @Nonnull final QName role, @Nullable final String protocol, @Nonnull final UsageType usage)
+                    throws ResolverException {
 
         log.debug("Resolving credentials from metadata using entityID: {}, role: {}, protocol: {}, usage: {}", 
                 entityID, role, protocol, usage);

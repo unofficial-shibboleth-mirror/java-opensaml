@@ -18,5 +18,7 @@
 /**
  * Predicates related to SAML message contexts.
  */
-
+@NonnullElements
 package org.opensaml.saml.common.messaging.logic;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

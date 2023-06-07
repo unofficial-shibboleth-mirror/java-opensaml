@@ -40,6 +40,8 @@ import org.slf4j.Logger;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
@@ -309,11 +311,12 @@ public class ValidateAssertions extends AbstractProfileAction {
     public class DefaultAssertionResolver implements Function<ProfileRequestContext, List<Assertion>> {
 
         /** {@inheritDoc} */
-        public List<Assertion> apply(@Nullable final ProfileRequestContext profileContext) {
+        @Nullable @Unmodifiable @NotLive public List<Assertion> apply(
+                @Nullable final ProfileRequestContext profileContext) {
             final SAMLObject message = profileContext != null
                     ? (SAMLObject) profileContext.ensureInboundMessageContext().getMessage() : null;
-            if (message instanceof Response) {
-                return ((Response) message).getAssertions();
+            if (message instanceof Response r) {
+                return r.getAssertions();
             }
             
             return null;

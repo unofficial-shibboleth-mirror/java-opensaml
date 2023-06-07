@@ -18,5 +18,7 @@
 /**
  * Functions to navigate SAML message contexts.
  */
-
+@NonnullElements
 package org.opensaml.saml.common.messaging.context.navigate;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

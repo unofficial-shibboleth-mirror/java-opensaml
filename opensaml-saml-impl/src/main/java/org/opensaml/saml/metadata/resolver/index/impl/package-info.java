@@ -16,5 +16,7 @@
  */
 
 /** Implementation of the metadata resolver indexes. */
-
+@NonnullElements
 package org.opensaml.saml.metadata.resolver.index.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -115,7 +115,7 @@ public class LocalDynamicMetadataResolver extends AbstractDynamicMetadataResolve
 
     /** {@inheritDoc} */
     @Override
-    protected XMLObject fetchFromOriginSource(@Nullable final CriteriaSet criteria) throws IOException {
+    @Nullable protected XMLObject fetchFromOriginSource(@Nullable final CriteriaSet criteria) throws IOException {
         final String key = sourceKeyGenerator.apply(criteria);
         if (key != null) {
             log.trace("{} Attempting to load from local source manager with generated key '{}'", getLogPrefix(), key);

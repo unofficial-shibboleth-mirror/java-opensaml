@@ -16,5 +16,7 @@
  */
 
 /** Interfaces for SAML 1.0 and 1.1 types and elements. */
-
+@NonnullElements
 package org.opensaml.saml.saml1.core;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

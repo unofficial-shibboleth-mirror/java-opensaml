@@ -28,6 +28,8 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -180,7 +182,7 @@ public class AttributeConsumingServiceSelector {
      * 
      * @return the list of candidate AttributeConsumingServices, or null if none could be resolved
      */
-    @Nullable protected List<AttributeConsumingService> getCandidates() {
+    @Nullable @Unmodifiable @NotLive protected List<AttributeConsumingService> getCandidates() {
         if (roleDescriptor == null) {
             log.debug("RoleDescriptor was not supplied, unable to select AttributeConsumingService");
             return null;

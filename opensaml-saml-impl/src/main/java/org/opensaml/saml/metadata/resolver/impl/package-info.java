@@ -17,15 +17,8 @@
 
 /**
  * Classes for retrieving, filtering, and querying metadata.
- *
- * <p>
- * Information on using this library can be found in the
- * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoUserManual">User's Manual</a>
- * and information on extending its functionality can be found in the
- * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoDeveloperManual">Developer's Manual</a>.
- * </p>
- *
- * @see <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OpenSAML">OpenSAML Wiki</a>
  */
-
+@NonnullElements
 package org.opensaml.saml.metadata.resolver.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

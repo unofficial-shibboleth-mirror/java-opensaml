@@ -46,7 +46,6 @@ import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -78,7 +77,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     private final boolean matchAll;
     
     /** Candidates to check for. */
-    @Nonnull @NonnullElements private final Collection<Candidate> candidateSet;
+    @Nonnull private final Collection<Candidate> candidateSet;
 
     /**
      * Constructor.
@@ -86,7 +85,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
      * @param candidates the {@link Candidate} criteria to check for
      */
     public EntityAttributesPredicate(
-            @Nonnull @NonnullElements @ParameterName(name="candidates") final Collection<Candidate> candidates) {
+            @Nonnull @ParameterName(name="candidates") final Collection<Candidate> candidates) {
         this(candidates, true, false);
     }
 
@@ -97,7 +96,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
      * @param trim true iff the values found in the metadata should be trimmed before comparison
      */
     public EntityAttributesPredicate(
-            @Nonnull @NonnullElements @ParameterName(name="candidates") final Collection<Candidate> candidates,
+            @Nonnull @ParameterName(name="candidates") final Collection<Candidate> candidates,
             @ParameterName(name="trim") final boolean trim) {
         this(candidates, trim, false);
     }
@@ -110,9 +109,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
      * @param all true iff all the criteria must match to be a successful test
      */
     public EntityAttributesPredicate(
-            @Nonnull @NonnullElements @ParameterName(name="candidates") final Collection<Candidate> candidates,
-            @ParameterName(name="trim") final boolean trim,
-            @ParameterName(name="all") final boolean all) {
+            @Nonnull @ParameterName(name="candidates") final Collection<Candidate> candidates,
+            @ParameterName(name="trim") final boolean trim, @ParameterName(name="all") final boolean all) {
         
         candidateSet = CollectionSupport.copyToList(
                 Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
@@ -144,7 +142,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
      * 
      * @return  the candidate criteria
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<Candidate> getCandidates() {
+    @Nonnull @Unmodifiable @NotLive public Collection<Candidate> getCandidates() {
         return candidateSet;
     }
 
@@ -222,10 +220,10 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         @Nullable private final String nameFormat;
         
         /** Values that must match exactly. */
-        @Nonnull @NonnullElements private List<String> values;
+        @Nonnull private List<String> values;
         
         /** Regular expressions that must be satisfied. */
-        @Nonnull @NonnullElements private List<Pattern> regexps;
+        @Nonnull private List<Pattern> regexps;
 
         /**
          * Constructor.
@@ -282,7 +280,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * 
          * @return the exact values to match
          */
-        @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getValues() {
+        @Nonnull @Unmodifiable @NotLive public List<String> getValues() {
             return values;
         }
 
@@ -291,7 +289,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * 
          * @param vals the exact values to match
          */
-        public void setValues(@Nonnull @NonnullElements final Collection<String> vals) {
+        public void setValues(@Nonnull final Collection<String> vals) {
             values = CollectionSupport.copyToList(Constraint.isNotNull(vals, "Values collection cannot be null"));
         }
 
@@ -300,7 +298,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * 
          * @return the regular expressions to match.
          */
-        @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Pattern> getRegexps() {
+        @Nonnull @Unmodifiable @NotLive public List<Pattern> getRegexps() {
             return regexps;
         }
 
@@ -309,7 +307,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * 
          * @param exps the regular expressions to match
          */
-        public void setRegexps(@Nonnull @NonnullElements final Collection<Pattern> exps) {
+        public void setRegexps(@Nonnull final Collection<Pattern> exps) {
             regexps = CollectionSupport.copyToList(
                     Constraint.isNotNull(exps, "Regular expressions collection cannot be null"));
         }
@@ -329,7 +327,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          *
          * @param attrs population to evaluate for a match
          */
-        public EntityAttributesMatcher(@Nonnull @NonnullElements final Collection<Attribute> attrs) {
+        public EntityAttributesMatcher(@Nonnull final Collection<Attribute> attrs) {
             attributes = Constraint.isNotNull(attrs, "Extension attributes cannot be null");
         }
 

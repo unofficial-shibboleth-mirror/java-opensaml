@@ -20,4 +20,7 @@
  * and transforms it into a representation that may be transported over a
  * particular wire protocol (e.g. HTTP).
  */
+@NonnullElements
 package org.opensaml.saml.common.binding.encoding;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

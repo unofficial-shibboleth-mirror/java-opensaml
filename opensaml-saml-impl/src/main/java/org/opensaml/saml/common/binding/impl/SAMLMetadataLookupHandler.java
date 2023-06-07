@@ -216,7 +216,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * 
      * @return the new lookup criteria
      */
-    protected CriteriaSet buildLookupCriteria(@Nonnull final MessageContext messageContext,
+    @Nonnull protected CriteriaSet buildLookupCriteria(@Nonnull final MessageContext messageContext,
             @Nonnull final String entityID, @Nonnull final QName role) {
         
         final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(entityID);

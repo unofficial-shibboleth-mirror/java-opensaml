@@ -22,9 +22,11 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
-import net.shibboleth.shared.collection.LazyMap;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Factory used to construct SAML 2 artifact builders.
@@ -32,12 +34,12 @@ import net.shibboleth.shared.collection.LazyMap;
 public class SAML2ArtifactBuilderFactory {
 
     /** Registered artifact builders. */
-    private Map<String, SAML2ArtifactBuilder<?>> artifactBuilders;
+    @Nonnull private Map<String, SAML2ArtifactBuilder<?>> artifactBuilders;
 
     /** Constructor. */
     public SAML2ArtifactBuilderFactory() {
-        artifactBuilders = new LazyMap<>();
-        artifactBuilders.put(new String(SAML2ArtifactType0004.TYPE_CODE), new SAML2ArtifactType0004Builder());
+        artifactBuilders = CollectionSupport.singletonMap(
+                new String(SAML2ArtifactType0004.TYPE_CODE), new SAML2ArtifactType0004Builder());
     }
 
     /**
@@ -45,7 +47,7 @@ public class SAML2ArtifactBuilderFactory {
      * 
      * @return currently registered artifact builders
      */
-    public Map<String, SAML2ArtifactBuilder<?>> getArtifactBuilders() {
+    @Nonnull @NotLive @Unmodifiable public Map<String, SAML2ArtifactBuilder<?>> getArtifactBuilders() {
         return artifactBuilders;
     }
 
@@ -56,7 +58,7 @@ public class SAML2ArtifactBuilderFactory {
      * 
      * @return artifact builder for the given type
      */
-    public SAML2ArtifactBuilder<?> getArtifactBuilder(final byte[] type) {
+    @Nullable public SAML2ArtifactBuilder<?> getArtifactBuilder(@Nonnull final byte[] type) {
         return artifactBuilders.get(new String(type));
     }
     
@@ -69,7 +71,7 @@ public class SAML2ArtifactBuilderFactory {
      * 
      * @throws DecodingException if the <code>base64Artifact</code> could not be base64-decoded.
      */
-    public SAML2Artifact buildArtifact(@Nonnull final String base64Artifact) throws DecodingException{
+    @Nullable public SAML2Artifact buildArtifact(@Nonnull final String base64Artifact) throws DecodingException{
         return buildArtifact(Base64Support.decode(base64Artifact));
     }
 
@@ -95,4 +97,5 @@ public class SAML2ArtifactBuilderFactory {
         }
         return artifactBuilder.buildArtifact(artifact);
     }
+
 }

@@ -29,13 +29,13 @@ public interface SAMLArtifact {
      * 
      * @return the bytes for the artifact
      */
-    @Nonnull public byte[] getArtifactBytes();
+    @Nonnull byte[] getArtifactBytes();
 
     /**
      * Gets the 2 byte type code for this artifact.
      * 
      * @return the type code for this artifact
      */
-    @Nonnull public byte[] getTypeCode();
+    @Nonnull byte[] getTypeCode();
 
 }

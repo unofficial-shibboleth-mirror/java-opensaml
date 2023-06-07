@@ -16,5 +16,7 @@
  */
 
 /** Classes for SAML WS-Security. */
-
+@NonnullElements
 package org.opensaml.saml.saml2.wssecurity;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

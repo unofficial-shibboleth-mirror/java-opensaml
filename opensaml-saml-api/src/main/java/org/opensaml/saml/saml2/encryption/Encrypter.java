@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -64,7 +65,6 @@ import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -107,6 +107,9 @@ import com.google.common.base.Strings;
  */
 public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter {
 
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(Encrypter.class);
+    
     /**
      * Options for where to place the resulting EncryptedKey elements with respect to the associated EncryptedData
      * element.
@@ -150,10 +153,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     private List<KeyEncryptionParameters> kekParamsList;
 
     /** The option for where to place the generated EncryptedKey elements. */
-    private KeyPlacement keyPlacement;
-
-    /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(Encrypter.class);
+    @Nonnull private KeyPlacement keyPlacement = KeyPlacement.PEER;
 
     /**
      * Constructor.
@@ -221,8 +221,6 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
                         CarriedKeyName.DEFAULT_ELEMENT_NAME);
 
         idGenerator = IdentifierGenerationStrategy.getInstance(ProviderType.RANDOM);
-
-        keyPlacement = KeyPlacement.PEER;
     }
 
     /**
@@ -239,7 +237,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * 
      * @return returns the key placement option.
      */
-    public KeyPlacement getKeyPlacement() {
+    @Nonnull public KeyPlacement getKeyPlacement() {
         return keyPlacement;
     }
 
@@ -248,8 +246,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * 
      * @param newKeyPlacement The new key placement option to set
      */
-    public void setKeyPlacement(final KeyPlacement newKeyPlacement) {
-        keyPlacement = newKeyPlacement;
+    public void setKeyPlacement(@Nonnull final KeyPlacement newKeyPlacement) {
+        keyPlacement = Constraint.isNotNull(newKeyPlacement, "KeyPlacement cannot be null");
     }
 
     /**
@@ -259,7 +257,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return an EncryptedAssertion
      * @throws EncryptionException thrown when encryption generates an error
      */
-    public EncryptedAssertion encrypt(@Nonnull final Assertion assertion) throws EncryptionException {
+    @Nonnull public EncryptedAssertion encrypt(@Nonnull final Assertion assertion) throws EncryptionException {
         logPreEncryption(assertion, "Assertion");
         return (EncryptedAssertion) encrypt(assertion, EncryptedAssertion.DEFAULT_ELEMENT_NAME);
     }
@@ -271,7 +269,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return an EncryptedID
      * @throws EncryptionException thrown when encryption generates an error
      */
-    public EncryptedID encryptAsID(@Nonnull final Assertion assertion) throws EncryptionException {
+    @Nonnull public EncryptedID encryptAsID(@Nonnull final Assertion assertion) throws EncryptionException {
         logPreEncryption(assertion, "Assertion (as EncryptedID)");
         return (EncryptedID) encrypt(assertion, EncryptedID.DEFAULT_ELEMENT_NAME);
     }
@@ -283,7 +281,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return an EncryptedAttribute
      * @throws EncryptionException thrown when encryption generates an error
      */
-    public EncryptedAttribute encrypt(@Nonnull final Attribute attribute) throws EncryptionException {
+    @Nonnull public EncryptedAttribute encrypt(@Nonnull final Attribute attribute) throws EncryptionException {
         logPreEncryption(attribute, "Attribute");
         return (EncryptedAttribute) encrypt(attribute, EncryptedAttribute.DEFAULT_ELEMENT_NAME);
     }
@@ -295,7 +293,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return an EncryptedID
      * @throws EncryptionException thrown when encryption generates an error
      */
-    public EncryptedID encrypt(@Nonnull final NameID nameID) throws EncryptionException {
+    @Nonnull public EncryptedID encrypt(@Nonnull final NameID nameID) throws EncryptionException {
         logPreEncryption(nameID, "NameID");
         return (EncryptedID) encrypt(nameID, EncryptedID.DEFAULT_ELEMENT_NAME);
     }
@@ -307,7 +305,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return an EncryptedID
      * @throws EncryptionException thrown when encryption generates an error
      */
-    public EncryptedID encrypt(@Nonnull final BaseID baseID) throws EncryptionException {
+    @Nonnull public EncryptedID encrypt(@Nonnull final BaseID baseID) throws EncryptionException {
         logPreEncryption(baseID, "BaseID");
         return (EncryptedID) encrypt(baseID, EncryptedID.DEFAULT_ELEMENT_NAME);
     }
@@ -319,7 +317,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return a NewEncryptedID
      * @throws EncryptionException thrown when encryption generates an error
      */
-    public NewEncryptedID encrypt(@Nonnull final NewID newID) throws EncryptionException {
+    @Nonnull public NewEncryptedID encrypt(@Nonnull final NewID newID) throws EncryptionException {
         logPreEncryption(newID, "NewID");
         return (NewEncryptedID) encrypt(newID, NewEncryptedID.DEFAULT_ELEMENT_NAME);
     }
@@ -350,8 +348,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @return a specialization of {@link org.opensaml.saml.saml2.core.EncryptedElementType}
      * @throws EncryptionException thrown when encryption generates an error
      */
-    private EncryptedElementType encrypt(@Nonnull final XMLObject xmlObject, @Nonnull final QName encElementName)
-            throws EncryptionException {
+    @Nonnull private EncryptedElementType encrypt(@Nonnull final XMLObject xmlObject,
+            @Nonnull final QName encElementName) throws EncryptionException {
 
         checkParams(encParams, kekParamsList);
 
@@ -406,8 +404,9 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * 
      * @throws EncryptionException thrown when processing encounters an error
      */
-    protected EncryptedElementType processElements(final EncryptedElementType encElement, final EncryptedData encData,
-            final List<EncryptedKey> encKeys) throws EncryptionException {
+    @Nonnull protected EncryptedElementType processElements(@Nonnull final EncryptedElementType encElement,
+            @Nonnull final EncryptedData encData, @Nonnull final List<EncryptedKey> encKeys)
+                    throws EncryptionException {
         // First ensure certain elements/attributes are non-null, common to all cases.
         if (encData.getID() == null) {
             encData.setID(idGenerator.generateIdentifier());
@@ -450,8 +449,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param encKeys the list of EncryptedKey objects
      * @return the processed EncryptedElementType instance
      */
-    protected EncryptedElementType placeKeysInline(final EncryptedElementType encElement, final EncryptedData encData,
-            final List<EncryptedKey> encKeys) {
+    @Nonnull protected EncryptedElementType placeKeysInline(@Nonnull final EncryptedElementType encElement,
+            @Nonnull final EncryptedData encData, @Nonnull final List<EncryptedKey> encKeys) {
 
         log.debug("Placing EncryptedKey elements inline inside EncryptedData");
 
@@ -473,8 +472,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param encKeys the EncryptedKey(s) to store
      * @return the resulting specialization of EncryptedElementType
      */
-    protected EncryptedElementType placeKeysAsPeers(final EncryptedElementType encElement, final EncryptedData encData,
-            final List<EncryptedKey> encKeys) {
+    @Nonnull protected EncryptedElementType placeKeysAsPeers(@Nonnull final EncryptedElementType encElement,
+            @Nonnull final EncryptedData encData, @Nonnull final List<EncryptedKey> encKeys) {
 
         log.debug("Placing EncryptedKey elements as peers of EncryptedData in EncryptedElementType");
 
@@ -505,7 +504,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param encData the EncryptedData
      * @param encKey the EncryptedKey
      */
-    protected void linkSinglePeerKey(final EncryptedData encData, final EncryptedKey encKey) {
+    protected void linkSinglePeerKey(@Nonnull final EncryptedData encData, @Nonnull final EncryptedKey encKey) {
         log.debug("Linking single peer EncryptedKey with RetrievalMethod and DataReference");
         
         final KeyInfo keyInfo = encData.getKeyInfo();
@@ -532,7 +531,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param encData the EncryptedData
      * @param encKeys the list of EncryptedKeys
      */
-    protected void linkMultiplePeerKeys(final EncryptedData encData, final List<EncryptedKey> encKeys) {
+    protected void linkMultiplePeerKeys(@Nonnull final EncryptedData encData,
+            @Nonnull final List<EncryptedKey> encKeys) {
         log.debug("Linking multiple peer EncryptedKeys with CarriedKeyName and DataReference");
         // Get the name of the data encryption key
         final List<KeyName> dataEncKeyNames;

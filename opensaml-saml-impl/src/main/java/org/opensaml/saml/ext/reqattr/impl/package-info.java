@@ -14,8 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Implementations for SAML V2.0 Protocol Extension For Requesting Attributes Per Request.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.reqattr.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

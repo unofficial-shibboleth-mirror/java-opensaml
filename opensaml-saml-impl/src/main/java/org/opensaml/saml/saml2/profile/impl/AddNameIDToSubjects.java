@@ -54,6 +54,8 @@ import com.google.common.base.Strings;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
@@ -450,7 +452,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
 
         /** {@inheritDoc} */
         @Override
-        @Nullable public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
+        @Nullable @Unmodifiable @NotLive public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
             final MessageContext outboundContext = input != null ? input.getOutboundMessageContext() : null;
             if (outboundContext != null) {
                 final Object outboundMessage = outboundContext.getMessage();

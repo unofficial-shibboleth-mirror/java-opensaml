@@ -27,7 +27,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -136,13 +135,13 @@ public class SAML20AssertionValidator {
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML20AssertionValidator.class);
 
     /** Registered {@link Condition} validators. */
-    @Nonnull @NonnullElements private LazyMap<QName, ConditionValidator> conditionValidators;
+    @Nonnull private LazyMap<QName, ConditionValidator> conditionValidators;
 
     /** Registered {@link SubjectConfirmation} validators. */
-    @Nonnull @NonnullElements private LazyMap<String, SubjectConfirmationValidator> subjectConfirmationValidators;
+    @Nonnull private LazyMap<String, SubjectConfirmationValidator> subjectConfirmationValidators;
 
     /** Registered {@link Statement} validators. */
-    @Nonnull @NonnullElements private LazyMap<QName, StatementValidator> statementValidators;
+    @Nonnull private LazyMap<QName, StatementValidator> statementValidators;
     
     /** Generic validator. */
     @Nullable private AssertionValidator assertionValidator;

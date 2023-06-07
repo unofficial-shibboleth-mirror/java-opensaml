@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Metadata Profile for SAML 1.x.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml1md;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

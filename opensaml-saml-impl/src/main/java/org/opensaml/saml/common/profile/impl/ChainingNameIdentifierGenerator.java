@@ -23,7 +23,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.annotation.constraint.NullableElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -69,8 +68,7 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
      * 
      * @param generators generators to use
      */
-    public void setGenerators(
-            @Nonnull @NullableElements final List<NameIdentifierGenerator<NameIdType>> generators) {
+    public void setGenerators(@Nonnull final List<NameIdentifierGenerator<NameIdType>> generators) {
         Constraint.isNotNull(generators, "NameIdentifierGenerator list cannot be null");
         
         nameIdGeneratorMap.clear();

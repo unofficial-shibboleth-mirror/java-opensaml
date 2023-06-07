@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Metadata Profile for Standalone Query Requesters.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2mdquery;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

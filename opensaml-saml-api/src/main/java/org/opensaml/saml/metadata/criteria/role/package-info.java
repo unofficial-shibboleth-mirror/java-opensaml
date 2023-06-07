@@ -16,5 +16,7 @@
  */
 
 /** Classes for SAML metadata role criteria. */
-
+@NonnullElements
 package org.opensaml.saml.metadata.criteria.role;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

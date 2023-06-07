@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Channel Binding Extensions.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2cb;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

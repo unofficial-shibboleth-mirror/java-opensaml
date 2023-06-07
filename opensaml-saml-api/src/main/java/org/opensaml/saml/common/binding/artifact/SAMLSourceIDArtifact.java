@@ -29,6 +29,6 @@ public interface SAMLSourceIDArtifact extends SAMLArtifact {
      * 
      * @return the source ID component of the artifact
      */
-    @Nonnull public byte[] getSourceID() ;
+    @Nonnull byte[] getSourceID() ;
 
 }

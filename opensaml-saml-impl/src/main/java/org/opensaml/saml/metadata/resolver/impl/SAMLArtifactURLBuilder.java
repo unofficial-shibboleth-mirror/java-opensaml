@@ -37,7 +37,7 @@ public class SAMLArtifactURLBuilder implements MetadataQueryProtocolURLBuilder {
     @Nonnull private static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
 
     /** {@inheritDoc} */
-    public String buildURL(@Nonnull final String baseURL, @Nullable final CriteriaSet criteria) {
+    @Nullable public String buildURL(@Nonnull final String baseURL, @Nullable final CriteriaSet criteria) {
         
         final ArtifactCriterion artifactCriterion = criteria != null ? criteria.get(ArtifactCriterion.class) : null;
         if (artifactCriterion == null) {
@@ -59,7 +59,7 @@ public class SAMLArtifactURLBuilder implements MetadataQueryProtocolURLBuilder {
      * @return the request URL
      * 
      */
-    private String buildFromSourceID(@Nonnull final String baseURL, 
+    @Nullable private String buildFromSourceID(@Nonnull final String baseURL, 
             @Nonnull final SAMLSourceIDArtifact sourceIDArtifact) {
         
         // We just statically escape "{sha1}" here

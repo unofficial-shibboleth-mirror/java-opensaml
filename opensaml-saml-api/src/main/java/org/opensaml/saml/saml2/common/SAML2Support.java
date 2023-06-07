@@ -42,7 +42,7 @@ public final class SAML2Support {
      * 
      * @return true of the tree is valid, false if not
      */
-    public static boolean isValid(final XMLObject xmlObject) {
+    public static boolean isValid(@Nonnull final XMLObject xmlObject) {
         if (xmlObject instanceof TimeBoundSAMLObject) {
             final TimeBoundSAMLObject timeBoundObject = (TimeBoundSAMLObject) xmlObject;
             if (!timeBoundObject.isValid()) {

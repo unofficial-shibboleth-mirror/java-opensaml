@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML V2 Metadata Extensions for UI and Discovery.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2mdui.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

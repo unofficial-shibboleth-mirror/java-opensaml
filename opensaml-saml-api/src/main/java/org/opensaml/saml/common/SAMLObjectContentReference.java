@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -85,7 +84,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference,
     @Nullable private String digestAlgorithm;
 
     /** Transforms applied to the content. */
-    @Nonnull @NonnullElements private List<String> transforms;
+    @Nonnull private List<String> transforms;
 
     /**
      * Constructor.
@@ -108,7 +107,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference,
      * 
      * @return the transforms applied to the content prior to digest generation
      */
-    @Nonnull @NonnullElements @Live public List<String> getTransforms() {
+    @Nonnull @Live public List<String> getTransforms() {
         return transforms;
     }
 
@@ -180,9 +179,9 @@ public class SAMLObjectContentReference implements ConfigurableContentReference,
      * @param namespacePrefixes the namespace prefix set to be populated
      * @param signatureContent the XMLObject whose namespace prefixes will be used to populate the set
      */
-    private void populateNamespacePrefixes(@Nonnull @NonnullElements final Set<String> namespacePrefixes,
+    private void populateNamespacePrefixes(@Nonnull @Live final Set<String> namespacePrefixes,
             @Nonnull final XMLObject signatureContent) {
-        for (final String prefix: signatureContent.getNamespaceManager().getNonVisibleNamespacePrefixes()) {
+        for (final String prefix : signatureContent.getNamespaceManager().getNonVisibleNamespacePrefixes()) {
             if (prefix != null) {
                 // For the default namespace prefix, exclusive c14n uses the special token "#default".
                 // Apache xmlsec requires this to be represented in the set with the

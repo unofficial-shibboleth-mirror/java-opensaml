@@ -16,5 +16,7 @@
  */
 
 /** Classes for fetching and querying SAML metadata. */
-
+@NonnullElements
 package org.opensaml.saml.metadata;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

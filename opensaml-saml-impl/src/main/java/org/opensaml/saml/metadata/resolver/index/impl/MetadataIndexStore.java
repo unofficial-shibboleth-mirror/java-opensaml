@@ -55,6 +55,7 @@ public class MetadataIndexStore<T> {
      * 
      * @return the set of all currently indexed keys
      */
+    @SuppressWarnings("null")
     @Nonnull @Unmodifiable @NotLive public Set<MetadataIndexKey> getKeys() {
         return CollectionSupport.copyToSet(index.keySet());
     }

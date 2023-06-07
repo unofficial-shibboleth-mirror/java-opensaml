@@ -20,4 +20,7 @@
  * extracts the SAML message from it, and then evaluates that message
  * against a security policy.
  */
+@NonnullElements
 package org.opensaml.saml.common.binding.decoding;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

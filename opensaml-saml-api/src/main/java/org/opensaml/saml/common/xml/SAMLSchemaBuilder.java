@@ -28,7 +28,6 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.validation.Schema;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -51,7 +50,7 @@ import com.google.common.io.ByteStreams;
 public class SAMLSchemaBuilder {
     
     /** Classpath relative location of basic XML schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] baseXMLSchemas = {
+    @Nonnull @NotEmpty private static String[] baseXMLSchemas = {
         SAMLConstants.XML_SCHEMA_LOCATION,
         SAMLConstants.XSD_SCHEMA_LOCATION,
         SAMLConstants.XMLSIG_SCHEMA_LOCATION,
@@ -61,24 +60,24 @@ public class SAMLSchemaBuilder {
         };
 
     /** Classpath relative location of SOAP 1_1 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] soapSchemas = {
+    @Nonnull @NotEmpty private static String[] soapSchemas = {
         SAMLConstants.SOAP11ENV_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SAML 1_0 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml10Schemas = {
+    @Nonnull @NotEmpty private static String[] saml10Schemas = {
         SAMLConstants.SAML10_SCHEMA_LOCATION,
         SAMLConstants.SAML10P_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SAML 1_1 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml11Schemas = {
+    @Nonnull @NotEmpty private static String[] saml11Schemas = {
         SAMLConstants.SAML11_SCHEMA_LOCATION,
         SAMLConstants.SAML11P_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of the invariant SAML 2.0 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml20CommonSchemas = {
+    @Nonnull @NotEmpty private static String[] saml20CommonSchemas = {
         SAMLConstants.SAML20AC_SCHEMA_LOCATION,
         "/schema/saml-schema-authn-context-auth-telephony-2.0.xsd",
         "/schema/saml-schema-authn-context-ip-2.0.xsd",
@@ -107,7 +106,7 @@ public class SAMLSchemaBuilder {
         };
 
     /** Classpath relative location of SAML 2_0 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = {
+    @Nonnull @NotEmpty private static String[] saml20Schemas = {
         SAMLConstants.SAML20_SCHEMA_LOCATION,
         SAMLConstants.SAML20P_SCHEMA_LOCATION,
         SAMLConstants.SAML20MD_SCHEMA_LOCATION,
@@ -123,7 +122,7 @@ public class SAMLSchemaBuilder {
         };
 
     /** Classpath relative location of SAML 2_0 schemas with strict string/anyURI types. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml20StrictSchemas = {
+    @Nonnull @NotEmpty private static String[] saml20StrictSchemas = {
         SAMLConstants.STRICT_SAML20_SCHEMA_LOCATION,
         SAMLConstants.STRICT_SAML20P_SCHEMA_LOCATION,
         SAMLConstants.STRICT_SAML20MD_SCHEMA_LOCATION,
@@ -139,7 +138,7 @@ public class SAMLSchemaBuilder {
         };
     
     /** Classpath relative location of SAML extension schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] baseExtSchemas = {
+    @Nonnull @NotEmpty private static String[] baseExtSchemas = {
         SAMLConstants.SAML1MD_SCHEMA_LOCATION,
         SAMLConstants.SAML_IDP_DISCO_SCHEMA_LOCATION,
         SAMLConstants.SAML20PTHRPTY_SCHEMA_LOCATION,
@@ -161,10 +160,10 @@ public class SAMLSchemaBuilder {
     @Nullable private Schema cachedSchema;
 
     /** Reference to SAML 1.x schemas to apply. */
-    @Nonnull @NonnullElements @NotEmpty private String[] saml1xSchemas;
+    @Nonnull private String[] saml1xSchemas;
 
     /** Reference to SAML 2.0 schemas to apply. */
-    @Nonnull @NonnullElements @NotEmpty private String[] saml2Schemas;
+    @Nonnull private String[] saml2Schemas;
 
     /** The builder to use. */
     private SchemaBuilder schemaBuilder;

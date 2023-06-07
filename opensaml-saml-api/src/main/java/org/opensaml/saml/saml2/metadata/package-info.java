@@ -26,5 +26,7 @@
  *  Developer's Manual.</a> see <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OpenSAML">
  *  OpenSAML</a> Wiki. 
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.metadata;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

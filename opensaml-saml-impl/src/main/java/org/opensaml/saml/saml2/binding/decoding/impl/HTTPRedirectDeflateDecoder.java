@@ -165,7 +165,7 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXMLMessage
          *
          * @param is the input stream
          */
-        public NoWrapAutoEndInflaterInputStream(final InputStream is) {
+        public NoWrapAutoEndInflaterInputStream(@Nonnull final InputStream is) {
             super(is, new Inflater(true));
         }
 

@@ -43,11 +43,11 @@ import org.opensaml.saml.saml1.core.SubjectStatement;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Action that builds {@link SubjectConfirmation} and adds it to the {@link Subject} of all the statements
@@ -81,7 +81,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
     
     /** Methods to add. */
-    @Nonnull @NonnullElements private Collection<String> confirmationMethods;
+    @Nonnull private Collection<String> confirmationMethods;
     
     /** Response to modify. */
     @NonnullBeforeExec private Response response;
@@ -132,11 +132,11 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param methods   confirmation methods to use
      */
-    public void setMethods(@Nonnull @NonnullElements final Collection<String> methods) {
+    public void setMethods(@Nonnull final Collection<String> methods) {
         checkSetterPreconditions();
         Constraint.isNotEmpty(methods, "Confirmation method collection cannot be null or empty");
         
-        confirmationMethods = CollectionSupport.copyToList(methods);
+        confirmationMethods = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(methods));
     }
     
     /** {@inheritDoc} */

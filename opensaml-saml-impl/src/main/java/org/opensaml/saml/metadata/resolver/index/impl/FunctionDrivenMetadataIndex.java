@@ -23,7 +23,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.logic.Constraint;
@@ -57,15 +56,15 @@ public class FunctionDrivenMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nullable final CriteriaSet criteriaSet) {
         Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
         return criteriaStrategy.apply(criteriaSet);
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nonnull final EntityDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "EntityDescriptor was null");
         return descriptorStrategy.apply(descriptor);
     }

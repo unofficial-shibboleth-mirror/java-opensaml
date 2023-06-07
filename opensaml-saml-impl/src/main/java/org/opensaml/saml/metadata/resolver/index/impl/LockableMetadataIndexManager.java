@@ -28,10 +28,6 @@ import javax.annotation.Nullable;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.shared.annotation.constraint.NotLive;
-import net.shibboleth.shared.annotation.constraint.Unmodifiable;
-
 /**
  * A specialization of {@link MetadataIndexManager} capable of read/write locking.
  * 
@@ -48,10 +44,8 @@ public class LockableMetadataIndexManager<T> extends MetadataIndexManager<T> {
      * @param initIndexes indexes for which to initialize storage
      * @param extractionFunction function to extract the indexed data item from an EntityDescriptor
      */
-    public LockableMetadataIndexManager(
-            @Nullable @NonnullElements @Unmodifiable @NotLive final Set<MetadataIndex> initIndexes,
-            @Nonnull final Function<EntityDescriptor, T> extractionFunction
-            ) {
+    public LockableMetadataIndexManager(@Nullable final Set<MetadataIndex> initIndexes,
+            @Nonnull final Function<EntityDescriptor, T> extractionFunction) {
         super(initIndexes, extractionFunction);
         readWriteLock = new ReentrantReadWriteLock(true);
     }
@@ -69,6 +63,5 @@ public class LockableMetadataIndexManager<T> extends MetadataIndexManager<T> {
     @Nonnull public ReadWriteLock getReadWriteLock() {
         return readWriteLock;
     }
-
-
+    
 }

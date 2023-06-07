@@ -29,6 +29,6 @@ public interface SAMLSourceLocationArtifact extends SAMLArtifact {
      * 
      * @return source location component of this artifact
      */
-    @Nonnull public String getSourceLocation(); 
+    @Nonnull String getSourceLocation(); 
 
 }

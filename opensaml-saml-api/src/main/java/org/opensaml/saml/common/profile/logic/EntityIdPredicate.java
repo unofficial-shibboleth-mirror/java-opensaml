@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -39,7 +38,7 @@ import java.util.function.Predicate;
 public class EntityIdPredicate implements Predicate<EntityDescriptor> {
     
     /** Set of entityIDs to check for. */
-    @Nonnull @NonnullElements private final Set<String> entityIds;
+    @Nonnull private final Set<String> entityIds;
     
     /**
      * Constructor.
@@ -55,7 +54,7 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
      * 
      * @return  the entityID criteria
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getEntityIds() {
+    @Nonnull @Unmodifiable @NotLive public Set<String> getEntityIds() {
         return entityIds;
     }
     

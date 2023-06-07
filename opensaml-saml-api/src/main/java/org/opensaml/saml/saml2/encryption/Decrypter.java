@@ -40,9 +40,9 @@ import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -56,7 +56,7 @@ import net.shibboleth.shared.xml.SerializeSupport;
 public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter {
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(Decrypter.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(Decrypter.class);
     
     /**
      * Constructor.

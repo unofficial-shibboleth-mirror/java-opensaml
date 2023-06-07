@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.criteria.entity.impl;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.criterion.EntityRoleCriterion;
@@ -44,7 +45,7 @@ public class EvaluableEntityRoleEntityDescriptorCriterion implements EvaluableEn
      *
      * @param criterion the entity role criterion
      */
-    public EvaluableEntityRoleEntityDescriptorCriterion(final EntityRoleCriterion criterion) {
+    public EvaluableEntityRoleEntityDescriptorCriterion(@Nonnull final EntityRoleCriterion criterion) {
         Constraint.isNotNull(criterion, "EntityRoleCriterion was null");
         role = Constraint.isNotNull(criterion.getRole(), "Criterion role QName was null");
     }
@@ -54,12 +55,12 @@ public class EvaluableEntityRoleEntityDescriptorCriterion implements EvaluableEn
      *
      * @param entityRole the entity
      */
-    public EvaluableEntityRoleEntityDescriptorCriterion(final QName entityRole) {
+    public EvaluableEntityRoleEntityDescriptorCriterion(@Nonnull final QName entityRole) {
         role = Constraint.isNotNull(entityRole, "Entity Role QName was null");
     }
 
     /** {@inheritDoc} */
-    public boolean test(final EntityDescriptor entityDescriptor) {
+    public boolean test(@Nullable final EntityDescriptor entityDescriptor) {
         if (entityDescriptor == null) {
             return false;
         }
@@ -73,13 +74,13 @@ public class EvaluableEntityRoleEntityDescriptorCriterion implements EvaluableEn
     }
 
     /** {@inheritDoc} */
-    public boolean equals(final Object other) {
-        if (this == other) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
         
-        if (other instanceof EvaluableEntityRoleEntityDescriptorCriterion) {
-            return Objects.equals(this.role, ((EvaluableEntityRoleEntityDescriptorCriterion)other).role);
+        if (obj instanceof EvaluableEntityRoleEntityDescriptorCriterion other) {
+            return Objects.equals(role, other.role);
         }
         
         return false;

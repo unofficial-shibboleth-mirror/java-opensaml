@@ -19,5 +19,7 @@
  * Concrete implementations of the interfaces for the 
  * <em>SAML V2.0 Metadata Extensions for Registration and Publication Information Version 1.0</em>.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2mdrpi.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

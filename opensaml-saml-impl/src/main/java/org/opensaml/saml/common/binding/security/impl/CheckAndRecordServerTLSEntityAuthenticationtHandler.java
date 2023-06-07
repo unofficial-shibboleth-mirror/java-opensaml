@@ -68,8 +68,6 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
         entityIDLookup = new OperationContextEntityIDLookup(entityContextClass);
     }
     
-    
-    
     /**
      * Set the strategy function for resolving the {@link HttpClientContext to evaluate}.
      * 

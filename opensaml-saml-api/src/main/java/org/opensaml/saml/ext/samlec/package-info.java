@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML-EC GSS-API Mechanism.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.samlec;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

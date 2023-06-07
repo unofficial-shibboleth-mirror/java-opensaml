@@ -18,5 +18,7 @@
 /**
  * Classes related to verifying various credentials within a SAML system.
  */
-
+@NonnullElements
 package org.opensaml.saml.security.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

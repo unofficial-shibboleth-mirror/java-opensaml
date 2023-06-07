@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -41,7 +40,7 @@ public class MetadataFilterChain extends AbstractMetadataFilter {
     @Nonnull private Logger log = LoggerFactory.getLogger(MetadataFilterChain.class);
     
     /** Registered filters. */
-    @Nonnull @NonnullElements private List<MetadataFilter> filters;
+    @Nonnull private List<MetadataFilter> filters;
 
     /**
      * Constructor.
@@ -82,7 +81,7 @@ public class MetadataFilterChain extends AbstractMetadataFilter {
      * 
      * @return the filters that make up this chain
      */
-    @Nonnull @NonnullElements @Live public List<MetadataFilter> getFilters() {
+    @Nonnull @Live public List<MetadataFilter> getFilters() {
         return filters;
     }
 
@@ -91,10 +90,10 @@ public class MetadataFilterChain extends AbstractMetadataFilter {
      * 
      * @param newFilters list of {@link MetadataFilter}s that make up this chain
      */
-    public void setFilters(@Nonnull @NonnullElements final List<MetadataFilter> newFilters) {
+    public void setFilters(@Nonnull final List<MetadataFilter> newFilters) {
         Constraint.isNotNull(newFilters, "Filter collection cannot be null");
         
-        filters = new ArrayList<>(List.copyOf(newFilters));
+        filters = new ArrayList<>(newFilters);
     }
 
 }

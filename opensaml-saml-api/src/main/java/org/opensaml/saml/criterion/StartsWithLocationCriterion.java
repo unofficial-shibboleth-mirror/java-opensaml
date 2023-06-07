@@ -30,13 +30,13 @@ import net.shibboleth.shared.resolver.Criterion;
 public class StartsWithLocationCriterion implements Criterion {
     
     /** The matchStartsWith criterion value. */
-    private Boolean matchStartsWith;
+    private boolean matchStartsWith;
     
     /**
      * Constructor.
      */
     public StartsWithLocationCriterion() {
-        matchStartsWith = Boolean.TRUE;
+        matchStartsWith = true;
     }
     
     /**
@@ -59,17 +59,17 @@ public class StartsWithLocationCriterion implements Criterion {
 
     /** {@inheritDoc} */
     public int hashCode() {
-        return matchStartsWith.hashCode();
+        return Boolean.valueOf(matchStartsWith).hashCode();
     }
 
     /** {@inheritDoc} */
-    public boolean equals(final Object other) {
-        if (this == other) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
         
-        if (other instanceof StartsWithLocationCriterion) {
-            return Objects.equals(matchStartsWith, ((StartsWithLocationCriterion)other).matchStartsWith);
+        if (obj instanceof StartsWithLocationCriterion other) {
+            return Objects.equals(matchStartsWith, other.matchStartsWith);
         }
         
         return false;

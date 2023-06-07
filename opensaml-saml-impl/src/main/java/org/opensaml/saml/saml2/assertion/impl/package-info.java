@@ -18,5 +18,7 @@
 /**
  * Implementation classes for validating SAML 2 Assertions.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.assertion.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

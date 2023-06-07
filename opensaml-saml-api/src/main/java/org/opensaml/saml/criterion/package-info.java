@@ -16,5 +16,7 @@
  */
 
 /** {@link net.shibboleth.shared.resolver.Criterion} based on SAML message/protocol information. */
-
+@NonnullElements
 package org.opensaml.saml.criterion;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

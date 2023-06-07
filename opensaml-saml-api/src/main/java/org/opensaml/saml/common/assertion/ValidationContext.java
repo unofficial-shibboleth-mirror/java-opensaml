@@ -29,6 +29,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.NullableElements;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
@@ -40,10 +41,10 @@ import net.shibboleth.shared.collection.LazyMap;
 public class ValidationContext {
 
     /** Static parameters used as input to the validation process. */
-    @Nonnull private Map<String, Object> staticParameters;
+    @Nonnull @NullableElements private Map<String, Object> staticParameters;
 
     /** Dynamic parameters used as input to, and output from, the validation process. */
-    @Nonnull private Map<String, Object> dynamicParameters;
+    @Nonnull @NullableElements private Map<String, Object> dynamicParameters;
 
     /** Error messaging describing what validation check an assertion failed. */
     @Nonnull private final List<String> validationFailureMessages;
@@ -58,7 +59,7 @@ public class ValidationContext {
      * 
      * @param newStaticParameters static parameters for the validation evaluation
      */
-    public ValidationContext(@Nullable final Map<String, Object> newStaticParameters) {
+    public ValidationContext(@Nullable @NullableElements final Map<String, Object> newStaticParameters) {
         if (newStaticParameters == null) {
             staticParameters = CollectionSupport.emptyMap();
         } else {
@@ -74,7 +75,7 @@ public class ValidationContext {
      * 
      * @return static parameters used as input to the validation process
      */
-    @Nonnull @Unmodifiable @NotLive public Map<String, Object> getStaticParameters() {
+    @Nonnull@NullableElements @Unmodifiable @NotLive public Map<String, Object> getStaticParameters() {
         return staticParameters;
     }
 
@@ -83,7 +84,7 @@ public class ValidationContext {
      * 
      * @return dynamic parameters used input to, and output from, the validation process
      */
-    @Nonnull @Live public Map<String, Object> getDynamicParameters() {
+    @Nonnull @NullableElements @Live public Map<String, Object> getDynamicParameters() {
         return dynamicParameters;
     }
 

@@ -31,7 +31,6 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -67,7 +66,7 @@ public class NodeProcessingMetadataFilter extends AbstractMetadataFilter {
         checkSetterPreconditions();
         Constraint.isNotNull(newProcessors, "MetadataNodeProcessor list cannot be null");
 
-        processors = new ArrayList<>(CollectionSupport.copyToList(newProcessors));
+        processors = new ArrayList<>(newProcessors);
     }
 
     /** {@inheritDoc} */

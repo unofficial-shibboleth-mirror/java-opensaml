@@ -40,13 +40,11 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML2ArtifactType0004Builder.class);
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public SAML2ArtifactType0004 buildArtifact(@Nonnull @NotEmpty final byte[] artifact) {
         return SAML2ArtifactType0004.parseArtifact(artifact);
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public SAML2ArtifactType0004 buildArtifact(@Nonnull final MessageContext requestContext) {
         try {
             final String sourceId = getSourceEntityId(requestContext);
@@ -66,6 +64,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
 
             final MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
             final byte[] source = sha1Digester.digest(sourceId.getBytes());
+            assert source != null;
 
             final SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
             final byte[] assertionHandle = new byte[20];

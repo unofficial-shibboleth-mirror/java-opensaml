@@ -16,5 +16,7 @@
  */
 
 /** Classes for SAML metadata filtering. */
-
+@NonnullElements
 package org.opensaml.saml.metadata.resolver.filter;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

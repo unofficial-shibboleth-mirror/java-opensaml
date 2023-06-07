@@ -69,8 +69,8 @@ public class SimpleStringMetadataIndexKey implements MetadataIndexKey {
             return true;
         }
 
-        if (obj instanceof SimpleStringMetadataIndexKey) {
-            return value.equals(((SimpleStringMetadataIndexKey) obj).value);
+        if (obj instanceof SimpleStringMetadataIndexKey other) {
+            return value.equals(other.value);
         }
 
         return false;

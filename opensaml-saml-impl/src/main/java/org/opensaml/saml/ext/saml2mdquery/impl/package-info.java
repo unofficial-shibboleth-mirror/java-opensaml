@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML v2.0 Metadata Extension for Stand-Alone Query Requesters.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2mdquery.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

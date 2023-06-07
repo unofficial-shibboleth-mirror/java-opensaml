@@ -53,7 +53,6 @@ import org.slf4j.Logger;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
@@ -75,7 +74,7 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
     @Nullable private AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
     
     /** Rules for adding algorithms. */
-    @Nonnull @NonnullElements private Multimap<Predicate<EntityDescriptor>,XMLObject> applyMap;
+    @Nonnull private Multimap<Predicate<EntityDescriptor>,XMLObject> applyMap;
     
     /** Builder for {@link Extensions}. */
     @Nonnull private final SAMLObjectBuilder<Extensions> extBuilder;

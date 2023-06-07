@@ -40,7 +40,6 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML1ArtifactType0001Builder.class);
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public SAML1ArtifactType0001 buildArtifact(@Nonnull final byte[] artifact) {
         try {
             return SAML1ArtifactType0001.parseArtifact(artifact);
@@ -51,7 +50,6 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public SAML1ArtifactType0001 buildArtifact(@Nonnull final MessageContext requestContext,
             @Nonnull final Assertion assertion) {
         final String sourceId = getSourceEntityId(requestContext);
@@ -70,7 +68,7 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
             assert source != null;
             return new SAML1ArtifactType0001(source, assertionHandle);
         } catch (final NoSuchAlgorithmException e) {
-            log.warn("JVM does not support required cryptography algorithms.", e);
+            log.warn("JVM does not support required cryptography algorithms", e);
             return null;
         }
     }

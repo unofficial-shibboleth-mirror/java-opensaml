@@ -26,6 +26,8 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -214,8 +216,8 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
      * @param extensionName the extension name for which to search
      * @return the list of extension XMLObjects found, or null
      */
-    @Nullable protected List<XMLObject> getExtensions(@Nonnull final RoleDescriptor roleDescriptor, 
-            @Nonnull final QName extensionName) {
+    @Nullable @Unmodifiable @NotLive protected List<XMLObject> getExtensions(
+            @Nonnull final RoleDescriptor roleDescriptor, @Nonnull final QName extensionName) {
         List<XMLObject> result;
         Extensions extensions = roleDescriptor.getExtensions();
         if (extensions != null) {

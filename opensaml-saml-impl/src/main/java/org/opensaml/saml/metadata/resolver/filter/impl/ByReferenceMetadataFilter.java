@@ -32,7 +32,6 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -53,7 +52,7 @@ public class ByReferenceMetadataFilter extends AbstractMetadataFilter {
     @Nonnull private Logger log = LoggerFactory.getLogger(ByReferenceMetadataFilter.class);
     
     /** Map of resolver names to filters. */
-    @Nonnull @NonnullElements private Map<String,MetadataFilter> filterMap;
+    @Nonnull private Map<String,MetadataFilter> filterMap;
     
     /** Constructor. */
     public ByReferenceMetadataFilter() {
@@ -65,7 +64,7 @@ public class ByReferenceMetadataFilter extends AbstractMetadataFilter {
      * 
      * @param map filter mappings
      */
-    public void setFilterMappings(@Nonnull @NonnullElements final Map<Object,MetadataFilter> map) {
+    public void setFilterMappings(@Nonnull final Map<Object,MetadataFilter> map) {
         checkSetterPreconditions();
         Constraint.isNotNull(map, "Filter mappings cannot be null");
         

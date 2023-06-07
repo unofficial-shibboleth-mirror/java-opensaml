@@ -16,5 +16,7 @@
  */
 
 /** Classes that may be used to create and manipulate SAML 2 artifacts. */
-
+@NonnullElements
 package org.opensaml.saml.saml2.binding.artifact;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

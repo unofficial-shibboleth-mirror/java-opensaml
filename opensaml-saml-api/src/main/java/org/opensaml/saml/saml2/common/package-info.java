@@ -16,5 +16,7 @@
  */
 
 /** Interfaces for elements and attributes used in multiple SAML 2.0 specification. */
-
+@NonnullElements
 package org.opensaml.saml.saml2.common;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

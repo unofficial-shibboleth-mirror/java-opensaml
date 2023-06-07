@@ -36,7 +36,6 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -63,7 +62,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     @Nullable @NotEmpty private String resolverType;
     
     /** Registered resolvers. */
-    @Nonnull @NonnullElements private List<MetadataResolver> resolvers;
+    @Nonnull private List<MetadataResolver> resolvers;
     
     /** Strategy for detecting duplicate entityIDs across resolvers. */
     @Nonnull private DetectDuplicateEntityIDs detectDuplicateEntityIDs;
@@ -98,7 +97,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * 
      * @return list of currently registered resolvers
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<MetadataResolver> getResolvers() {
+    @Nonnull @Unmodifiable @NotLive public List<MetadataResolver> getResolvers() {
         return resolvers;
     }
 
@@ -109,8 +108,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * 
      * @throws ResolverException thrown if there is a problem adding the metadata resolvers
      */
-    public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers)
-            throws ResolverException {
+    public void setResolvers(@Nonnull final List<? extends MetadataResolver> newResolvers) throws ResolverException {
         checkSetterPreconditions();
 
         if (newResolvers == null || newResolvers.isEmpty()) {
@@ -263,10 +261,9 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * @param detectDuplicates the effective strategy for duplicate detection
      */
 // Checkstyle: CyclomaticComplexity OFF
-    private void detectDuplicateEntityIDs(final @Nonnull MetadataResolver resolver,
-            final @Nullable CriteriaSet criteria,
-            final @Nullable Set<String> resultEntityIDs,
-            final @Nonnull DetectDuplicateEntityIDs detectDuplicates) {
+    private void detectDuplicateEntityIDs(@Nonnull final MetadataResolver resolver,
+            @Nullable final CriteriaSet criteria, @Nullable final Set<String> resultEntityIDs,
+            @Nonnull final DetectDuplicateEntityIDs detectDuplicates) {
         
         if (resultEntityIDs == null || resultEntityIDs.isEmpty()) {
             return;
@@ -323,7 +320,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * @param descriptors
      * @return the unique entityIDs from the supplied descriptors
      */
-    private Set<String> collectEntityIDs(final @Nonnull Iterable<EntityDescriptor> descriptors) {
+    private Set<String> collectEntityIDs(@Nonnull final Iterable<EntityDescriptor> descriptors) {
         return StreamSupport.stream(descriptors.spliterator(), false)
                 .map(EntityDescriptor::getEntityID)
                 .filter(Objects::nonNull)
@@ -398,7 +395,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** {@inheritDoc}
     * We iterate over all the children and return the earliest instant or null if one of them
     * hasn't ever refreshed successfully. */
-    public Instant getLastSuccessfulRefresh() {
+    @Nullable public Instant getLastSuccessfulRefresh() {
         Instant ret = null;
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
@@ -417,7 +414,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
 
     /** {@inheritDoc}
      * We iterate over all children - a failure of any is a failure. */
-    public Boolean wasLastRefreshSuccess() {
+    @Nullable public Boolean wasLastRefreshSuccess() {
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver downcast) {
                 final Boolean flag = downcast.wasLastRefreshSuccess();
@@ -432,7 +429,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     
     /** {@inheritDoc}
      * We iterate over all children and return the first failure we find. */
-    public Throwable getLastFailureCause() {
+    @Nullable public Throwable getLastFailureCause() {
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final RefreshableMetadataResolver refreshable = (RefreshableMetadataResolver) resolver;

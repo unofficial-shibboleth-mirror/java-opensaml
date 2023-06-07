@@ -80,8 +80,8 @@ public final class BestMatchLocationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof BestMatchLocationCriterion) {
-            return location.equals(((BestMatchLocationCriterion) obj).location);
+        if (obj instanceof BestMatchLocationCriterion other) {
+            return location.equals(other.location);
         }
 
         return false;

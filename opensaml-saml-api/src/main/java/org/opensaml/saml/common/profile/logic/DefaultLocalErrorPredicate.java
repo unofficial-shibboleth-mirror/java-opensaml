@@ -36,7 +36,6 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -71,7 +70,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
     @Nonnull private Function<ProfileRequestContext,EventContext> eventContextLookupStrategy;
     
     /** Error events to handle locally, even if possible to do so with a response. */
-    @Nonnull @NonnullElements private Set<String> localEvents;
+    @Nonnull private Set<String> localEvents;
     
     /** Constructor. */
     public DefaultLocalErrorPredicate() {

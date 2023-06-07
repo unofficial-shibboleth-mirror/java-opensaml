@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Metadata Extension for SSO Service Provider Request Initiation.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2mdreqinit;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

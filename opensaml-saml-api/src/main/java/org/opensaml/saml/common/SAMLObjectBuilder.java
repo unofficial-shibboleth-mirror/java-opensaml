@@ -33,5 +33,5 @@ public interface SAMLObjectBuilder<SAMLObjectType extends SAMLObject> extends XM
      * 
      * @return built SAMLObject
      */
-    @Nonnull public abstract SAMLObjectType buildObject();
+    @Nonnull abstract SAMLObjectType buildObject();
 }

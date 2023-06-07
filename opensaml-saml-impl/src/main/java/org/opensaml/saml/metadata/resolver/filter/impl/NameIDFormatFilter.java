@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,6 @@ import org.slf4j.Logger;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -149,8 +147,7 @@ public class NameIDFormatFilter extends AbstractMetadataFilter {
      * @param role role to modify
      * @param formats formats to attach
      */
-    protected void filterRoleDescriptor(@Nonnull final RoleDescriptor role,
-            @Nonnull @NonnullElements final Collection<String> formats) {
+    protected void filterRoleDescriptor(@Nonnull final RoleDescriptor role, @Nonnull final Collection<String> formats) {
         
         final Collection<NameIDFormat> roleFormats;
         

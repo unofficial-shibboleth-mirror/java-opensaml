@@ -16,5 +16,7 @@
  */
 
 /** Classes for SAML metadata indexing. */
-
+@NonnullElements
 package org.opensaml.saml.metadata.resolver.index;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -45,8 +45,9 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -283,7 +284,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     protected boolean validateSignature(@Nonnull @NotEmpty final byte[] signature,
             @Nonnull @NotEmpty final byte[] signedContent, @Nonnull @NotEmpty final String algorithmURI,
             @Nonnull final CriteriaSet criteriaSet,
-            @Nonnull @NonnullElements final List<Credential> candidateCredentials) throws MessageHandlerException {
+            @Nonnull final List<Credential> candidateCredentials) throws MessageHandlerException {
 
         final SignatureTrustEngine engine = getTrustEngine();
         assert engine != null;
@@ -326,8 +327,9 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @return a list of candidate validation credentials in the request, or null if none were present
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    @Nonnull @NonnullElements protected List<Credential> getRequestCredentials(
-            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
+    @Nonnull @Unmodifiable @NotLive protected List<Credential> getRequestCredentials(
+            @Nonnull final MessageContext messageContext)
+            throws MessageHandlerException {
         // This will be specific to the binding and message types, so no default.
         return CollectionSupport.emptyList();
     }

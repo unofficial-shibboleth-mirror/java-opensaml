@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML 1.x Metadata Profile.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml1md.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

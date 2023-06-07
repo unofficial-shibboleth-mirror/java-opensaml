@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Condition for Delegation Restriction.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2delrestrict;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

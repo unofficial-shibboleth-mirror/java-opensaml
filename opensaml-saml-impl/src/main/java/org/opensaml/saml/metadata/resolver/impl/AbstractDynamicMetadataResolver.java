@@ -66,7 +66,6 @@ import com.codahale.metrics.Timer.Context;
 import com.google.common.base.MoreObjects;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Positive;
@@ -573,7 +572,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * 
      * @return the set of configured indexes
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
+    @Nonnull @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
         return indexes;
     }
 
@@ -771,8 +770,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the resolved metadata
      * @throws ResolverException  if there is a fatal error attempting to resolve the metadata
      */
-    @Nonnull @NonnullElements protected Iterable<EntityDescriptor> resolveFromOriginSource(
-            @Nullable final CriteriaSet criteria, @Nullable final String entityID) throws ResolverException {
+    @Nonnull protected Iterable<EntityDescriptor> resolveFromOriginSource(@Nullable final CriteriaSet criteria,
+            @Nullable final String entityID) throws ResolverException {
         
         if (entityID != null) {
             log.debug("{} Resolving from origin source based on entityID: {}", getLogPrefix(), entityID);
@@ -792,8 +791,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the resolved metadata
      * @throws ResolverException  if there is a fatal error attempting to resolve the metadata
      */
-    @Nonnull @NonnullElements
-    protected Iterable<EntityDescriptor> resolveFromOriginSourceWithEntityID(
+    @Nonnull protected Iterable<EntityDescriptor> resolveFromOriginSourceWithEntityID(
             @Nullable final CriteriaSet criteria, @Nonnull final String entityID) throws ResolverException {
         
         final EntityManagementData mgmtData = ensureBackingStore().getManagementData(entityID);
@@ -859,8 +857,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the resolved metadata
      * @throws ResolverException if there is a fatal error attempting to resolve the metadata
      */
-    @Nonnull @NonnullElements 
-    protected Iterable<EntityDescriptor> resolveFromOriginSourceWithoutEntityID(@Nullable final CriteriaSet criteria) 
+    @Nonnull protected Iterable<EntityDescriptor> resolveFromOriginSourceWithoutEntityID(@Nullable final CriteriaSet criteria) 
             throws ResolverException {
         
         XMLObject root = null;
@@ -897,8 +894,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the resolved metadata
      * @throws ResolverException if there is a fatal error attempting to resolve the metadata
      */
-    @Nonnull @NonnullElements 
-    protected Iterable<EntityDescriptor> lookupCriteria(@Nullable final CriteriaSet criteria) throws ResolverException {
+    @Nonnull protected Iterable<EntityDescriptor> lookupCriteria(@Nullable final CriteriaSet criteria) throws ResolverException {
         final List<EntityDescriptor> entities = new ArrayList<>();
         final Set<String> entityIDs = resolveEntityIDs(criteria);
         for (final String entityID : entityIDs) {
@@ -983,8 +979,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements protected List<EntityDescriptor> lookupEntityID(@Nonnull final String entityID) 
-            throws ResolverException {
+    @Nonnull protected List<EntityDescriptor> lookupEntityID(@Nonnull final String entityID) throws ResolverException {
         ensureBackingStore().getManagementData(entityID).recordEntityAccess();
         return super.lookupEntityID(entityID);
     }
@@ -1002,7 +997,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * 
      * @throws FilterException if there is a problem filtering the metadata
      */
-    protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID) 
+    protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID)
             throws FilterException {
         try {
             processNewMetadata(root, expectedEntityID, false);
@@ -1553,19 +1548,17 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     protected class DynamicEntityBackingStore extends EntityBackingStore {
         
         /** Map holding management data for each entityID. */
-        private Map<String, EntityManagementData> mgmtDataMap;
+        @Nonnull private Map<String, EntityManagementData> mgmtDataMap;
         
         /** Manager for secondary indexes. */
-        private LockableMetadataIndexManager<String> secondaryIndexManager;
+        @Nonnull private LockableMetadataIndexManager<String> secondaryIndexManager;
         
         /** 
          * Constructor.
          * 
          *  @param initIndexes secondary indexes for which to initialize storage
          */
-        protected DynamicEntityBackingStore(
-                @Nullable @NonnullElements @Unmodifiable @NotLive final Set<MetadataIndex> initIndexes) {
-            super();
+        protected DynamicEntityBackingStore(@Nullable final Set<MetadataIndex> initIndexes) {
             mgmtDataMap = new ConcurrentHashMap<>();
             secondaryIndexManager = new LockableMetadataIndexManager<>(initIndexes, 
                     new LockableMetadataIndexManager.EntityIDExtractionFunction()); 
@@ -1577,7 +1570,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          * 
          * @return the manager for secondary indexes
          */
-        public LockableMetadataIndexManager<String> getSecondaryIndexManager() {
+        @Nonnull public LockableMetadataIndexManager<String> getSecondaryIndexManager() {
             return secondaryIndexManager;
         }
         
@@ -1586,10 +1579,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          *
          * @return set of entityIDs, may be empty
          */
-        @Nonnull @NonnullElements @Unmodifiable @NotLive
-        public Set<String> getManagementDataEntityIDs() {
+        @Nonnull @Unmodifiable @NotLive public Set<String> getManagementDataEntityIDs() {
             synchronized (this) {
-                return Set.copyOf(mgmtDataMap.keySet());
+                return CollectionSupport.copyToSet(mgmtDataMap.keySet());
             }
         }
 
@@ -1640,25 +1632,25 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     protected class EntityManagementData {
         
         /** The entity ID managed by this instance. */
-        private String entityID;
+        @Nonnull private String entityID;
         
         /** Last update time of the associated metadata. */
-        private Instant lastUpdateTime;
+        @Nullable private Instant lastUpdateTime;
         
         /** Expiration time of the associated metadata. */
-        private Instant expirationTime;
+        @Nonnull private Instant expirationTime;
         
         /** Time at which should start attempting to refresh the metadata. */
-        private Instant refreshTriggerTime;
+        @Nonnull private Instant refreshTriggerTime;
         
         /** The last time at which the entity's backing store data was accessed. */
-        private Instant lastAccessedTime;
+        @Nonnull private Instant lastAccessedTime;
         
         /** The time at which the negative lookup cache flag expires, if set. */
-        private Instant negativeLookupCacheExpiration;
+        @Nullable private Instant negativeLookupCacheExpiration;
         
         /** Read-write lock instance which governs access to the entity's backing store data. */
-        private ReadWriteLock readWriteLock;
+        @Nonnull private ReadWriteLock readWriteLock;
         
         /** Constructor. 
          * 
@@ -1696,7 +1688,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          * 
          * @param dateTime the last update time
          */
-        public void setLastUpdateTime(@Nonnull final Instant dateTime) {
+        public void setLastUpdateTime(@Nullable final Instant dateTime) {
             lastUpdateTime = dateTime;
         }
         
@@ -1766,8 +1758,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          * 
          * @return the time before which no further lookups for the entity will be performed
          */
-        public Instant initNegativeLookupCache() {
+        @Nonnull public Instant initNegativeLookupCache() {
             negativeLookupCacheExpiration = Instant.now().plus(getNegativeLookupCacheDuration());
+            assert negativeLookupCacheExpiration != null;
             return negativeLookupCacheExpiration;
         }
         

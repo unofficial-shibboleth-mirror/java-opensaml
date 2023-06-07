@@ -35,7 +35,6 @@ import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
@@ -62,7 +61,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     @NonnullAfterInit private Function<ProfileRequestContext,SAMLObject> objectLookupStrategy;
 
     /** Formats to apply policy to. */
-    @Nonnull @NonnullElements private Set<String> formats;
+    @Nonnull private Set<String> formats;
     
     /** Constructor. */
     public AbstractNameIDPolicyPredicate() {

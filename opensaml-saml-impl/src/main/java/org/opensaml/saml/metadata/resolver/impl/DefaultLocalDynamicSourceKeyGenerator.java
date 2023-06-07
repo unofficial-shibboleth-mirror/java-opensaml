@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -43,7 +44,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class DefaultLocalDynamicSourceKeyGenerator extends EntityIDDigestGenerator {
     
     /** Hex encoder. */
-    private static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
+    @Nonnull private static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
 
     /**
      * Constructor.

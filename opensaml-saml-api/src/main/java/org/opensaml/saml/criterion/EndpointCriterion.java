@@ -121,8 +121,8 @@ public final class EndpointCriterion<EndpointType extends Endpoint> implements C
             return false;
         }
 
-        if (obj instanceof EndpointCriterion) {
-            final Endpoint endpoint2 = ((EndpointCriterion<?>) obj).getEndpoint();
+        if (obj instanceof EndpointCriterion<?> other) {
+            final Endpoint endpoint2 = other.getEndpoint();
             if (!Objects.equals(endpoint.getElementQName(), endpoint2.getElementQName())) {
                 return false;
             } else if (!Objects.equals(endpoint.getBinding(), endpoint2.getBinding())) {
@@ -138,4 +138,5 @@ public final class EndpointCriterion<EndpointType extends Endpoint> implements C
 
         return false;
     }
+    
 }

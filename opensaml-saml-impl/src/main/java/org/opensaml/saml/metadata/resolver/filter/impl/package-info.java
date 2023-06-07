@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
-/** Implementation of the resolver filters. */
-
+/** Implementation of Metadata Filters. */
+@NonnullElements
 package org.opensaml.saml.metadata.resolver.filter.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

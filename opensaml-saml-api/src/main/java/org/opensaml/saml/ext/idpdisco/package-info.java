@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Metadata Extension Identity Provider Discovery.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.idpdisco;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -44,7 +44,6 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -207,7 +206,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
      * 
      * @return null or the list
      */
-    @Nullable @NonnullElements protected Collection<RequestedAttribute> getRequestedAttributes(
+    @Nullable protected Collection<RequestedAttribute> getRequestedAttributes(
             @Nonnull final MessageContext messageContext, @Nonnull final AuthnRequest authn) {
         final Extensions extensions = authn.getExtensions();
         if (extensions == null) {

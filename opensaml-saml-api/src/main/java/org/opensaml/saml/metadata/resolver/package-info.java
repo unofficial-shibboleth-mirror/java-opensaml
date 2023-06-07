@@ -16,5 +16,7 @@
  */
 
 /** Classes for SAML metadata resolution. */
-
+@NonnullElements
 package org.opensaml.saml.metadata.resolver;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

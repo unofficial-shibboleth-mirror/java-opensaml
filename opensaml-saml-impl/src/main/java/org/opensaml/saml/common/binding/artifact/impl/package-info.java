@@ -18,4 +18,7 @@
 /**
  * Implementation of SAML artifact mapping.
  */
+@NonnullElements
 package org.opensaml.saml.common.binding.artifact.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -281,7 +281,6 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     private class AssertionStrategy implements Function<ProfileRequestContext,List<Assertion>> {
 
         /** {@inheritDoc} */
-        @Override
         @Nullable public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
             if (input != null && input.getOutboundMessageContext() != null) {
                 final Object outboundMessage = input.ensureOutboundMessageContext().getMessage();

@@ -19,4 +19,7 @@
  * Classes responsible for performing transport-related and basic message
  * validation of decoded SAML messages.
  */
+@NonnullElements
 package org.opensaml.saml.common.binding.security.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -55,7 +55,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
@@ -530,7 +529,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @return  a list of descriptors
      * @throws ResolverException if an error occurs
      */
-    @Nonnull @NonnullElements protected List<EntityDescriptor> lookupEntityID(@Nonnull @NotEmpty final String entityID)
+    @Nonnull protected List<EntityDescriptor> lookupEntityID(@Nonnull @NotEmpty final String entityID)
             throws ResolverException {
         if (!isInitialized()) {
             throw new ResolverException("Metadata resolver has not been initialized");
@@ -569,8 +568,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @return list copy of indexed entityID's, may be empty, will never be null
      */
-    @Nonnull @NonnullElements protected List<EntityDescriptor> lookupIndexedEntityID(
-            @Nonnull @NotEmpty final String entityID) {
+    @Nonnull protected List<EntityDescriptor> lookupIndexedEntityID(@Nonnull @NotEmpty final String entityID) {
         final List<EntityDescriptor> descriptors = ensureBackingStore().getIndexedDescriptors().get(entityID);
         if (descriptors != null) {
             return new ArrayList<>(descriptors);

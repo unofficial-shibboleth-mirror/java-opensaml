@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -58,7 +58,7 @@ public interface AttributeQuery extends SubjectQuery {
      * 
      * @return the list of AttributeDesignators
      */
-    @Nonnull @NonnullElements List<AttributeDesignator> getAttributeDesignators();
+    @Nonnull @Live List<AttributeDesignator> getAttributeDesignators();
     
     /**
      * Get Resource attribute.

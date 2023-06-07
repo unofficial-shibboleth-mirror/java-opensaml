@@ -50,7 +50,6 @@ public interface StatementValidator {
      * 
      * @throws AssertionValidationException if there is a problem processing the validation operation
      */
-    @Nonnull ValidationResult validate(@Nonnull final Statement statement, 
-            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
-            throws AssertionValidationException;
+    @Nonnull ValidationResult validate(@Nonnull final Statement statement, @Nonnull final Assertion assertion,
+            @Nonnull final ValidationContext context) throws AssertionValidationException;
 }

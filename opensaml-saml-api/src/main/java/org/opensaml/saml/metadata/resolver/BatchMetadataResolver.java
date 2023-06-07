@@ -34,13 +34,13 @@ public interface BatchMetadataResolver extends MetadataResolver {
      *
      * @return the validUntil date/time of the root element, or null if not available
      */
-    @Nullable public Instant getRootValidUntil();
+    @Nullable Instant getRootValidUntil();
 
     /**
      * Get the validity state of the metadata batch root element, as determined in an implementation-specific manner.
      *
      * @return true if root element is valid, false if not valid, null if indeterminate
      */
-    @Nullable public Boolean isRootValid();
+    @Nullable Boolean isRootValid();
 
 }

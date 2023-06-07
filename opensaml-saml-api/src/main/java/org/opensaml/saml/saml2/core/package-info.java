@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2.0 core and protocol interfaces.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.core;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

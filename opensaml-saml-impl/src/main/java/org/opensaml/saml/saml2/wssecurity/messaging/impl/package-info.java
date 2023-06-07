@@ -18,4 +18,7 @@
 /**
  * Implementation of SAML WS-Security message handler functionality.
  */
+@NonnullElements
 package org.opensaml.saml.saml2.wssecurity.messaging.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

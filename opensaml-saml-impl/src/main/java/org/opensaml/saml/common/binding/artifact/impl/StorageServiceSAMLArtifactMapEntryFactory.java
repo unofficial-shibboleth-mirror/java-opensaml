@@ -92,7 +92,6 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
     
     
     /** {@inheritDoc} */
-    @Override
     @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
             @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull final SAMLObject samlMessage) {
@@ -105,7 +104,6 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
     }
     
     /** {@inheritDoc} */
-    @Override
     @Nonnull public String serialize(@Nonnull final SAMLArtifactMapEntry instance) throws IOException {        
         log.debug("Serializing SAMLArtifactMapEntry for storage");
         

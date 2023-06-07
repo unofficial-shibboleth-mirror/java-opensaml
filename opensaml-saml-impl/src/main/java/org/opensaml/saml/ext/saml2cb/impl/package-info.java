@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML v2.0 Channel Binding Extensions Version 1.0.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2cb.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

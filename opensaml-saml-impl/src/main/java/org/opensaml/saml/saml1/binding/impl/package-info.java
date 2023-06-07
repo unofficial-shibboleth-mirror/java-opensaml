@@ -18,5 +18,7 @@
 /**
  * General message handlers for SAML 1.x. 
  */
-
+@NonnullElements
 package org.opensaml.saml.saml1.binding.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

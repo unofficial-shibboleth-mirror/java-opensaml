@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML 2 Protocol Extension for Async Logout objects.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2aslo.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

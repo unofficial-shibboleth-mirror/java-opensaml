@@ -18,6 +18,7 @@
 package org.opensaml.saml.security.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.Reference;
@@ -31,13 +32,13 @@ import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A validator for instances of {@link Signature}, which validates that the signature meets security-related
@@ -46,7 +47,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLSignatureProfileValidator.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLSignatureProfileValidator.class);
 
     /** {@inheritDoc} */
     @Override
@@ -69,13 +70,13 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
      * @param sigImpl the signature implementation object to validate
      * @throws SignatureException thrown if the signature is not valid with respect to the profile
      */
-    protected void validateSignatureImpl(final SignatureImpl sigImpl) throws SignatureException {
+    protected void validateSignatureImpl(@Nonnull final SignatureImpl sigImpl) throws SignatureException {
 
-        if (sigImpl.getXMLSignature() == null) {
+        final XMLSignature apacheSig = sigImpl.getXMLSignature();
+        if (apacheSig == null) {
             log.error("SignatureImpl did not contain the an Apache XMLSignature child");
             throw new SignatureException("Apache XMLSignature does not exist on SignatureImpl");
         }
-        final XMLSignature apacheSig = sigImpl.getXMLSignature();
 
         if (!(sigImpl.getParent() instanceof SignableSAMLObject)) {
             log.error("Signature is not an immedidate child of a SignableSAMLObject");
@@ -85,6 +86,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
 
         final Reference ref = validateReference(apacheSig);
 
+        assert signableObject != null;
         validateReferenceURI(ref.getURI(), signableObject);
 
         validateTransforms(ref);
@@ -102,7 +104,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
      * @throws SignatureException thrown if the Signature does not contain exactly 1 Reference, or if there is an error
      *             obtaining the Reference instance
      */
-    protected Reference validateReference(final XMLSignature apacheSig) throws SignatureException {
+    @Nonnull protected Reference validateReference(@Nonnull final XMLSignature apacheSig) throws SignatureException {
         final int numReferences = apacheSig.getSignedInfo().getLength();
         if (numReferences != 1) {
             log.error("Signature SignedInfo had invalid number of References: " + numReferences);
@@ -134,7 +136,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
      * @param signableObject the SignableSAMLObject whose signature is being validated
      * @throws SignatureException  if the URI is invalid or doesn't resolve to the expected DOM node
      */
-    protected void validateReferenceURI(final String uri, final SignableSAMLObject signableObject)
+    protected void validateReferenceURI(final String uri, @Nonnull final SignableSAMLObject signableObject)
             throws SignatureException {
         final String id = signableObject.getSignatureReferenceID();
         validateReferenceURI(uri, id);
@@ -175,12 +177,13 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
      * @param id the Signature parents ID attribute value
      * @throws SignatureException thrown if the URI or ID attribute values are invalid
      */
-    protected void validateReferenceURI(final String uri, final String id) throws SignatureException {
-        if (!Strings.isNullOrEmpty(uri)) {
+    protected void validateReferenceURI(@Nullable final String uri, @Nullable final String id)
+            throws SignatureException {
+        if (uri != null && !uri.isEmpty()) {
             if (!uri.startsWith("#")) {
                 log.error("Signature Reference URI was not a document fragment reference: " + uri);
                 throw new SignatureException("Signature Reference URI was not a document fragment reference");
-            } else if (Strings.isNullOrEmpty(id)) {
+            } else if (id == null || id.isEmpty()) {
                 log.error("SignableSAMLObject did not contain an ID attribute");
                 throw new SignatureException("SignableSAMLObject did not contain an ID attribute");
             } else if (uri.length() < 2 || !id.equals(uri.substring(1))) {
@@ -200,7 +203,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
      * @param reference the Signature reference containing the transforms to evaluate
      * @throws SignatureException thrown if the set of transforms is invalid
      */
-    protected void validateTransforms(final Reference reference) throws SignatureException {
+    protected void validateTransforms(@Nonnull final Reference reference) throws SignatureException {
         Transforms transforms = null;
         try {
             transforms = reference.getTransforms();
@@ -254,10 +257,11 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
      * @param apacheSig the Apache XML Signature instance
      * @throws SignatureException if the signature contains ds:Object children
      */
-    protected void validateObjectChildren(final XMLSignature apacheSig) throws SignatureException {
+    protected void validateObjectChildren(@Nonnull final XMLSignature apacheSig) throws SignatureException {
         if (apacheSig.getObjectLength() > 0) {
             log.error("Signature contained {} ds:Object child element(s)", apacheSig.getObjectLength());
             throw new SignatureException("Signature contained illegal ds:Object children");
         }
     }
+
 }

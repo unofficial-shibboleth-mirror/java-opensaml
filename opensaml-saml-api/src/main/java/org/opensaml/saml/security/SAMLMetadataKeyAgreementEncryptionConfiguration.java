@@ -52,7 +52,7 @@ public class SAMLMetadataKeyAgreementEncryptionConfiguration extends KeyAgreemen
     }
     
     /** Option which determines whether symmetric key wrap is to be used with metadata credentials. */
-    private KeyWrap metadataUseKeyWrap;
+    @Nullable private KeyWrap metadataUseKeyWrap;
     
     /**
      * Get the option which determines whether symmetric key wrap is to be used with metadata credentials.
@@ -73,5 +73,3 @@ public class SAMLMetadataKeyAgreementEncryptionConfiguration extends KeyAgreemen
     }
     
 }
-
-

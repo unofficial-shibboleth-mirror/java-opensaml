@@ -30,7 +30,6 @@ import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
@@ -101,8 +100,8 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
      */
     public MetadataQueryProtocolRequestURLBuilder(
             @ParameterName(name="baseURL") @Nonnull @NotEmpty final String baseURL,
-            @ParameterName(name="secondaryURLBuilders") @Nullable @NonnullElements
-                final List<MetadataQueryProtocolURLBuilder> secondaryURLBuilders) {
+            @ParameterName(name="secondaryURLBuilders")
+            @Nullable final List<MetadataQueryProtocolURLBuilder> secondaryURLBuilders) {
         this(baseURL, null, secondaryURLBuilders);
     }
     
@@ -116,8 +115,8 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
     public MetadataQueryProtocolRequestURLBuilder(
             @ParameterName(name="baseURL") @Nonnull @NotEmpty final String baseURL, 
             @ParameterName(name="transform") @Nullable final Function<String,String> transform,
-            @ParameterName(name="secondaryURLBuilders") @Nullable @NonnullElements
-                final List<MetadataQueryProtocolURLBuilder> secondaryURLBuilders
+            @ParameterName(name="secondaryURLBuilders")
+            @Nullable final List<MetadataQueryProtocolURLBuilder> secondaryURLBuilders
             ) {
         base = Constraint.isNotNull(StringSupport.trimOrNull(baseURL), "Base URL was null or empty");
         if (!base.endsWith("/")) {
@@ -166,7 +165,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
      * @param inputEntityID the entityID
      * @return the request URL, or null
      */
-    private String buildFromEntityID(@Nonnull final String inputEntityID) {
+    @Nullable private String buildFromEntityID(@Nonnull final String inputEntityID) {
         String entityID = inputEntityID;
         if (transformer != null) {
             entityID = transformer.apply(inputEntityID);
@@ -189,7 +188,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
      * @param criteria the criteria
      * @return the request URL, or null
      */
-    private String buildFromSecondaryLookups(@Nullable final CriteriaSet criteria) {
+    @Nullable private String buildFromSecondaryLookups(@Nullable final CriteriaSet criteria) {
         if (urlBuilders != null) {
             for (final MetadataQueryProtocolURLBuilder builder : urlBuilders) {
                 final String url = builder.buildURL(base, criteria);
@@ -217,7 +216,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
          * @return a URL based on the supplied inputs, or null if the implementation did not support
          *     or understand any of the supplied criteria 
          */
-        @Nullable public String buildURL(@Nonnull final String baseURL, @Nullable final CriteriaSet criteria);
+        @Nullable String buildURL(@Nonnull final String baseURL, @Nullable final CriteriaSet criteria);
         
     }
 

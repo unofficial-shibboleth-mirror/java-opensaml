@@ -18,5 +18,7 @@
 /**
  * Classes related to general security components within a SAML system.
  */
-
+@NonnullElements
 package org.opensaml.saml.security;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

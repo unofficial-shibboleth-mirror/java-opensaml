@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 Metadata Extension for Third-Party Request Protocol Extension.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.samlpthrpty;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -41,7 +41,6 @@ import org.slf4j.Logger;
 import com.google.common.base.MoreObjects;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -93,8 +92,8 @@ public class EndpointMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nonnull final EntityDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "EntityDescriptor was null");
         final HashSet<MetadataIndexKey> result = new HashSet<>();
         for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
@@ -129,8 +128,8 @@ public class EndpointMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive
-    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nullable final CriteriaSet criteriaSet) {
         final EntityRoleCriterion roleCrit = criteriaSet != null ? criteriaSet.get(EntityRoleCriterion.class) : null;
         final EndpointCriterion<Endpoint> endpointCrit =
             criteriaSet != null ? criteriaSet.get(EndpointCriterion.class) : null;
@@ -316,10 +315,8 @@ public class EndpointMetadataIndex implements MetadataIndex {
          * @param endpointLocation the endpoint location
          * @param isResponse flag indicating whether location is a response or not
          */
-        public EndpointMetadataIndexKey(@Nonnull final QName roleType, 
-                @Nonnull final QName endpointType, 
-                @Nonnull @NotEmpty final String endpointLocation,
-                final boolean isResponse) {
+        public EndpointMetadataIndexKey(@Nonnull final QName roleType, @Nonnull final QName endpointType,
+                @Nonnull @NotEmpty final String endpointLocation, final boolean isResponse) {
             role = Constraint.isNotNull(roleType, "SAML role cannot be null");
             endpoint = Constraint.isNotNull(endpointType, "SAML endpoint type cannot be null");
             location = Constraint.isNotNull(StringSupport.trimOrNull(endpointLocation),
@@ -410,8 +407,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
                 return true;
             }
 
-            if (obj instanceof EndpointMetadataIndexKey) {
-                final EndpointMetadataIndexKey other = (EndpointMetadataIndexKey) obj;
+            if (obj instanceof EndpointMetadataIndexKey other) {
                 String thisLocation = this.canonicalizedLocation;
                 String otherLocation = other.canonicalizedLocation;
                 if (this.isCanonicalizedLowerCase != other.isCanonicalizedLowerCase) {

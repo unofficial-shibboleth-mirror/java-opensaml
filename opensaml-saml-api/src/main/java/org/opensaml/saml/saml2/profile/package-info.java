@@ -18,5 +18,7 @@
 /**
  * Classes for SAML 2.0 profile behavior.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.profile;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML v2.0 Metadata Profile for Algorithm Support Version 1.0.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2alg;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

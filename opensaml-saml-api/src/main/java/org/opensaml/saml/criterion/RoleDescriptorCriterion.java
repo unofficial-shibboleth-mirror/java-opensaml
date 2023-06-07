@@ -75,10 +75,11 @@ public final class RoleDescriptorCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof RoleDescriptorCriterion) {
-            return role.equals(((RoleDescriptorCriterion) obj).role);
+        if (obj instanceof RoleDescriptorCriterion other) {
+            return role.equals(other.role);
         }
 
         return false;
     }
+
 }

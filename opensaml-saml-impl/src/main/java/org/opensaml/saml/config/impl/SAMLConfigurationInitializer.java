@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.config.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
@@ -24,7 +26,8 @@ import org.opensaml.saml.config.SAMLConfiguration;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An initializer which initializes the {@link SAMLConfiguration} instance held
@@ -37,7 +40,7 @@ import org.slf4j.LoggerFactory;
 public class SAMLConfigurationInitializer implements Initializer {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SAMLConfigurationInitializer.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SAMLConfigurationInitializer.class);
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {

@@ -30,6 +30,8 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
@@ -147,7 +149,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * 
      * @return the static parameters map
      */
-    @Nonnull protected Map<String,Object> buildStaticParameters(
+    @Nonnull @Unmodifiable @NotLive protected Map<String,Object> buildStaticParameters(
             @Nonnull final SAML20AssertionTokenValidationInput input) {
         
         final HashMap<String, Object> staticParams = new HashMap<>();
@@ -324,7 +326,8 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * 
      * @return the set of valid addresses
      */
-    @Nonnull protected Set<InetAddress> getValidAddresses(@Nonnull final SAML20AssertionTokenValidationInput input) {
+    @Nonnull @Unmodifiable @NotLive protected Set<InetAddress> getValidAddresses(
+            @Nonnull final SAML20AssertionTokenValidationInput input) {
         try {
             final LazySet<InetAddress> validAddresses = new LazySet<>();
             InetAddress[] addresses = null;
@@ -371,7 +374,8 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * 
      * @return set of audience URI's
      */
-    @Nonnull protected Set<String> getValidAudiences(@Nonnull final SAML20AssertionTokenValidationInput input) {
+    @Nonnull @Unmodifiable @NotLive protected Set<String> getValidAudiences(
+            @Nonnull final SAML20AssertionTokenValidationInput input) {
         final LazySet<String> validAudiences = new LazySet<>();
         
         final SAMLSelfEntityContext selfContext = input.getMessageContext().getSubcontext(SAMLSelfEntityContext.class);

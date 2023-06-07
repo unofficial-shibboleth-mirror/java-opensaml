@@ -18,4 +18,7 @@
 /**
  * Support classes for SAML SOAP message operations.
  */
+@NonnullElements
 package org.opensaml.saml.common.messaging.soap;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

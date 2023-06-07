@@ -228,7 +228,8 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
             if (metadataCtx != null) {
                 final RoleDescriptor role = metadataCtx.getRoleDescriptor();
                 if (role != null) {
-                    log.debug("{} Adding metadata to resolution criteria for signing/digest algorithms", getLogPrefix());
+                    log.debug("{} Adding metadata to resolution criteria for signing/digest algorithms",
+                            getLogPrefix());
                     criteria.add(new RoleDescriptorCriterion(role));
                 }
             }

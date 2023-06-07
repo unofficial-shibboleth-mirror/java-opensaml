@@ -18,4 +18,7 @@
 /**
  * Context classes for SAML-based messaging function.
  */
+@NonnullElements
 package org.opensaml.saml.common.messaging.context;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

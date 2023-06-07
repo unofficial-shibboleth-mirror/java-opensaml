@@ -53,7 +53,6 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
     
     /** Constructor. */
     public ExtractChannelBindingsHeadersHandler() {
-        super();
         nextDestination = true;
     }
     
@@ -88,9 +87,9 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
         final List<XMLObject> headers = SOAPMessagingSupport.getHeaderBlock(messageContext,
                 ChannelBindings.DEFAULT_ELEMENT_NAME, null, finalDestination);
         for (final XMLObject header : headers) {
-            if (header instanceof ChannelBindings) {
+            if (header instanceof ChannelBindings cb) {
                 if (null == ((ActorBearing) header).getSOAP11Actor() || nextDestination) {
-                    channelBindings.add((ChannelBindings) header);
+                    channelBindings.add(cb);
                 }
             }
         }

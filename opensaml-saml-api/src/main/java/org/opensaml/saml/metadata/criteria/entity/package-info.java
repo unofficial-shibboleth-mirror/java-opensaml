@@ -16,5 +16,7 @@
  */
 
 /** Classes for SAML metadata entity criteria. */
-
+@NonnullElements
 package org.opensaml.saml.metadata.criteria.entity;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

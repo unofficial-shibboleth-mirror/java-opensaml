@@ -113,8 +113,8 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * 
      * @throws MessageDecodingException thrown if there is a problem decoding or dereferencing the artifacts
      */
-    protected void processArtifacts(final MessageContext messageContext, final HttpServletRequest request) 
-            throws MessageDecodingException {
+    protected void processArtifacts(@Nonnull final MessageContext messageContext,
+            @Nonnull final HttpServletRequest request) throws MessageDecodingException {
         final String[] encodedArtifacts = request.getParameterValues("SAMLart");
         if (encodedArtifacts == null || encodedArtifacts.length == 0) {
             log.error("URL SAMLart parameter was missing or did not contain a value");
@@ -131,7 +131,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * 
      * @param messageContext the current message context
      */
-    protected void populateBindingContext(final MessageContext messageContext) {
+    protected void populateBindingContext(@Nonnull final MessageContext messageContext) {
         final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(bindingDescriptor);

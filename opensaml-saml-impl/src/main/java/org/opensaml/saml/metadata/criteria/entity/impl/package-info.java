@@ -19,4 +19,7 @@
  * Implementation classes related to {@link org.opensaml.saml.saml2.metadata.EntityDescriptor} criteria, 
  * particularly evaluable (predicate) criteria.
  */
+@NonnullElements
 package org.opensaml.saml.metadata.criteria.entity.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

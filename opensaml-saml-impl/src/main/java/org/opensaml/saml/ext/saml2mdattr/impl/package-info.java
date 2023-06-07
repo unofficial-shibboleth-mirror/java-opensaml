@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML v2.0 Metadata Extension for Entity Attributes Version 1.0.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.saml2mdattr.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

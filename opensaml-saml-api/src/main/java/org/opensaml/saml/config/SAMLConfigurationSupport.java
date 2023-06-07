@@ -26,7 +26,6 @@ import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
@@ -81,7 +80,7 @@ public final class SAMLConfigurationSupport {
      * 
      * @return the list of allowed URL schemes
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public static List<String> getAllowedBindingURLSchemes() {
+    @Nonnull @Unmodifiable @NotLive public static List<String> getAllowedBindingURLSchemes() {
         return ConfigurationService.ensure(SAMLConfiguration.class).getAllowedBindingURLSchemes();
     }
     

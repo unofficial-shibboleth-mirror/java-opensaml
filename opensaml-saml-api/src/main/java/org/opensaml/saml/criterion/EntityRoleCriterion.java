@@ -74,10 +74,11 @@ public final class EntityRoleCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof EntityRoleCriterion) {
-            return role.equals(((EntityRoleCriterion) obj).role);
+        if (obj instanceof EntityRoleCriterion other) {
+            return role.equals(other.role);
         }
 
         return false;
     }
+    
 }

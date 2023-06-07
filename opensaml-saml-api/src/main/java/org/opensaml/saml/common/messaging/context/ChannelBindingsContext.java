@@ -26,7 +26,6 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 /**
  * Context, usually attached to a {@link org.opensaml.messaging.context.MessageContext}
@@ -35,7 +34,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 public final class ChannelBindingsContext extends BaseContext {
 
     /** The set of ChannelBindings. */
-    @Nonnull @NonnullElements private Collection<ChannelBindings> channelBindings;
+    @Nonnull private Collection<ChannelBindings> channelBindings;
     
     /** Constructor. */
     public ChannelBindingsContext() {
@@ -47,7 +46,7 @@ public final class ChannelBindingsContext extends BaseContext {
      * 
      * @return the channel bindings
      */
-    @Nonnull @NonnullElements @Live public Collection<ChannelBindings> getChannelBindings() {
+    @Nonnull @Live public Collection<ChannelBindings> getChannelBindings() {
         return channelBindings;
     }
     

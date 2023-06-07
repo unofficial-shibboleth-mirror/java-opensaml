@@ -18,4 +18,7 @@
 /**
  * Classes related to SAML binding operations.
  */
+@NonnullElements
 package org.opensaml.saml.common.binding;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

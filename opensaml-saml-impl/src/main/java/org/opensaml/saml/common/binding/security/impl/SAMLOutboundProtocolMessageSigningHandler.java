@@ -49,7 +49,6 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
     
     /** Constructor. */
     public SAMLOutboundProtocolMessageSigningHandler() {
-        super();
         signErrorResponses = true;
     }
     

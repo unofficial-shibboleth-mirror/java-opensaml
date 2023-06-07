@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML V2 Protocol Extension for Third-Party Requests.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.samlpthrpty.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

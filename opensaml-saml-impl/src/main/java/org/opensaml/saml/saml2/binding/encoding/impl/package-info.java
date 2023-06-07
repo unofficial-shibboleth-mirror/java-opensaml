@@ -16,7 +16,9 @@
  */
 
 /**
- * SAML 1.x message encoders. 
+ * SAML 2.0 message encoders. 
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.binding.encoding.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -331,9 +331,8 @@ public final class SAMLBindingSupport {
      * @throws MessageException thrown if the endpoint can not be looked up from the message
      *                              context and converted to a string representation
      */
-    @Nonnull public static String getActualReceiverEndpointURI(
-            @Nonnull final MessageContext messageContext,  @Nonnull final HttpServletRequest request)
-                    throws MessageException {
+    @Nonnull public static String getActualReceiverEndpointURI(@Nonnull final MessageContext messageContext,
+            @Nonnull final HttpServletRequest request) throws MessageException {
         Constraint.isNotNull(request, "HttpServletRequest cannot be null");
         
         final SAMLMessageReceivedEndpointContext receivedEnpointContext =

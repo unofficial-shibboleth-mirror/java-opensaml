@@ -307,7 +307,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * 
      * @return the role descriptors corresponding to the input entity role and protocol
      */
-    protected Iterable<RoleDescriptor> getCandidatesByRoleAndProtocol(
+    @Nonnull protected Iterable<RoleDescriptor> getCandidatesByRoleAndProtocol(
             @Nonnull final Iterable<EntityDescriptor> entityDescriptors, @Nullable final CriteriaSet criteria) {
         
         final EntityRoleCriterion roleCriterion =
@@ -336,7 +336,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * 
      * @return all role descriptors contained by the input entity descriptors
      */
-    protected Iterable<RoleDescriptor> getAllCandidates(
+    @Nonnull protected Iterable<RoleDescriptor> getAllCandidates(
             @Nonnull final Iterable<EntityDescriptor> entityDescriptors) {
         
         final ArrayList<Iterable<RoleDescriptor>> aggregate = new ArrayList<>();
@@ -359,9 +359,9 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * 
      * @throws ResolverException if there is a fatal error during resolution
      */
-    protected Iterable<RoleDescriptor> predicateFilterCandidates(@Nonnull final Iterable<RoleDescriptor> candidates,
-            @Nullable final CriteriaSet criteria, final boolean onEmptyPredicatesReturnEmpty)
-                    throws ResolverException {
+    @Nonnull protected Iterable<RoleDescriptor> predicateFilterCandidates(
+            @Nonnull final Iterable<RoleDescriptor> candidates, @Nullable final CriteriaSet criteria,
+            final boolean onEmptyPredicatesReturnEmpty) throws ResolverException {
         
         if (!candidates.iterator().hasNext()) {
             log.debug("Candidates iteration was empty, nothing to filter via predicates");

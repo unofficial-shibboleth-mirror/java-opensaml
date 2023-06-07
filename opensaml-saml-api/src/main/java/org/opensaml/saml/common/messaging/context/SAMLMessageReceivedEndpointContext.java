@@ -40,11 +40,11 @@ import net.shibboleth.shared.logic.Constraint;
 public class SAMLMessageReceivedEndpointContext extends BaseContext {
 
     /** The request URL. */
-    private String requestURL;
+    @Nullable private String requestURL;
 
     /** Constructor. */
     public SAMLMessageReceivedEndpointContext() {
-        super();
+        
     }
 
     /**
@@ -59,7 +59,6 @@ public class SAMLMessageReceivedEndpointContext extends BaseContext {
      * @param request the HTTP request
      */
     public SAMLMessageReceivedEndpointContext(@Nonnull final HttpServletRequest request) {
-        super();
         Constraint.isNotNull(request, "HttpServletRequest was null");
         setRequestURL(request.getRequestURL().toString());
         //TODO add and populate other fields?

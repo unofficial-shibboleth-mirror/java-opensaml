@@ -16,7 +16,9 @@
  */
 
 /**
- * Context classes supporting SAML 2 profile behavior.
+ * Context classes supporting SAML 2 profiles.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.profile.context;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

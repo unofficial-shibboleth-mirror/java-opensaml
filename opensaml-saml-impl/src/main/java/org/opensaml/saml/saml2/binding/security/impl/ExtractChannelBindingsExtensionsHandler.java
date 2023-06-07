@@ -59,7 +59,6 @@ public class ExtractChannelBindingsExtensionsHandler extends AbstractMessageHand
         return true;
     }
     
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
@@ -85,13 +84,12 @@ public class ExtractChannelBindingsExtensionsHandler extends AbstractMessageHand
         final Collection<ChannelBindings> channelBindings =
                 messageContext.ensureSubcontext(ChannelBindingsContext.class).getChannelBindings();
         for (final XMLObject cb : bindings) {
-            if (cb instanceof ChannelBindings) {
-                channelBindings.add((ChannelBindings) cb);
+            if (cb instanceof ChannelBindings downcast) {
+                channelBindings.add(downcast);
             }
         }
         
         log.debug("{} {} ChannelBindings extension(s) found", getLogPrefix(), channelBindings.size());
     }
-// Checkstyle: ReturnCount ON
 
 }

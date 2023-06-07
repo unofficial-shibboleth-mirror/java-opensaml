@@ -18,5 +18,7 @@
 /**
  * Implementations of SAML 1.x core specification types and elements.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml1.core.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

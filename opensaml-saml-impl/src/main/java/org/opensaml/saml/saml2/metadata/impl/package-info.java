@@ -17,14 +17,9 @@
 
 /**
  * 
- * Concrete implementations of the metadata APIs.
- * 
- * Information on using this library can be found in the 
- * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoUserManual">User's Manual</a>
- * and information on extending its functionality can be found in the 
- * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoDeveloperManual">
- *  Developer's Manual.</a> see <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OpenSAML">
- *  OpenSAML</a> Wiki. 
+ * Concrete implementations of SAML 2.0 metadata objects.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.metadata.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

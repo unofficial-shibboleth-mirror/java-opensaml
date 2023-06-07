@@ -16,7 +16,9 @@
  */
 
 /**
- * Security-related message handlers for SAML 2.
+ * Security-related message handlers for SAML 2.0.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.binding.security.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -18,4 +18,7 @@
 /**
  * SAML constants and and misc XML functionality.
  */
+@NonnullElements
 package org.opensaml.saml.common.xml;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

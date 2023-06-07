@@ -39,7 +39,6 @@ import org.slf4j.Logger;
 
 import com.google.common.collect.Iterables;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -105,7 +104,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * 
      * @return the set of configured indexes
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
+    @Nonnull @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
         return indexes;
     }
 
@@ -213,8 +212,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      *          by any indexes.  If 'present' is indicated, then there were applicable/understood criteria,
      *          and the wrapped set contains the indexed data, which may be empty.
      */
-    @Nonnull @NonnullElements 
-    protected Optional<Set<EntityDescriptor>> lookupByIndexes(@Nullable final CriteriaSet criteria) {
+    @Nonnull protected Optional<Set<EntityDescriptor>> lookupByIndexes(@Nullable final CriteriaSet criteria) {
         return ensureBackingStore().getSecondaryIndexManager().lookupIndexedItems(criteria);
     }
     
@@ -327,24 +325,22 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     protected class BatchEntityBackingStore extends EntityBackingStore {
         
         /** The cached original source metadata document. */
-        private XMLObject cachedOriginalMetadata;
+        @Nullable private XMLObject cachedOriginalMetadata;
         
         /** The cached original source metadata document. */
-        private XMLObject cachedFilteredMetadata;
+        @Nullable private XMLObject cachedFilteredMetadata;
         
         /** Manager for secondary indexes. */
-        private MetadataIndexManager<EntityDescriptor> secondaryIndexManager;
+        @Nonnull private final MetadataIndexManager<EntityDescriptor> secondaryIndexManager;
         
         /**
          * Constructor.
          *
          * @param initIndexes secondary indexes for which to initialize storage
          */
-        protected BatchEntityBackingStore(
-                @Nullable @NonnullElements @Unmodifiable @NotLive final Set<MetadataIndex> initIndexes) {
-            super();
-            secondaryIndexManager = new MetadataIndexManager<>(initIndexes, 
-                    new MetadataIndexManager.IdentityExtractionFunction());
+        protected BatchEntityBackingStore(@Nullable final Set<MetadataIndex> initIndexes) {
+            secondaryIndexManager =
+                    new MetadataIndexManager<>(initIndexes, new MetadataIndexManager.IdentityExtractionFunction());
         }
 
         /**
@@ -352,8 +348,22 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          * 
          * @return the cached metadata
          */
-        public XMLObject getCachedOriginalMetadata() {
+        @Nullable public XMLObject getCachedOriginalMetadata() {
             return cachedOriginalMetadata;
+        }
+
+        /**
+         * Get the cached original source metadata, raising an {@link IllegalStateException} if null.
+         * 
+         * @return the cached metadata
+         * 
+         * @since 5.0.0
+         */
+        @Nonnull public XMLObject ensureCachedOriginalMetadata() {
+            if (cachedOriginalMetadata != null) {
+                return cachedOriginalMetadata;
+            }
+            throw new IllegalStateException("Original metadata was absent.");
         }
 
         /**
@@ -361,7 +371,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          * 
          * @param metadata The new cached metadata
          */
-        public void setCachedOriginalMetadata(final XMLObject metadata) {
+        public void setCachedOriginalMetadata(@Nullable final XMLObject metadata) {
             cachedOriginalMetadata = metadata;
         }
         
@@ -370,7 +380,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          * 
          * @return the cached metadata
          */
-        public XMLObject getCachedFilteredMetadata() {
+        @Nullable public XMLObject getCachedFilteredMetadata() {
             return cachedFilteredMetadata;
         }
 
@@ -379,7 +389,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          * 
          * @param metadata The new cached metadata
          */
-        public void setCachedFilteredMetadata(final XMLObject metadata) {
+        public void setCachedFilteredMetadata(@Nullable final XMLObject metadata) {
             cachedFilteredMetadata = metadata;
         }
         
@@ -388,10 +398,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          * 
          * @return the manager for secondary indexes
          */
-        public MetadataIndexManager<EntityDescriptor> getSecondaryIndexManager() {
+        @Nonnull public MetadataIndexManager<EntityDescriptor> getSecondaryIndexManager() {
             return secondaryIndexManager;
         }
-        
     }
 
 }

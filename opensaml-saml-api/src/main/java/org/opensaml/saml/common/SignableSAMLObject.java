@@ -31,5 +31,6 @@ public interface SignableSAMLObject extends SignableXMLObject, SAMLObject {
      * 
      * @return the value of this SAMLObject ID attribute
      */
-    @Nullable public String getSignatureReferenceID();
+    @Nullable String getSignatureReferenceID();
+
 }

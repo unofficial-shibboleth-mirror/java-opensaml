@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -32,14 +31,14 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class BindingCriterion implements Criterion {
 
     /** The SAML binding URI. */
-    @Nonnull @NonnullElements private final List<String> bindings;
+    @Nonnull private final List<String> bindings;
 
     /**
      * Constructor.
      * 
      * @param bindingURIs list of SAML binding URIs
      */
-    public BindingCriterion(@Nonnull @NonnullElements final List<String> bindingURIs) {
+    public BindingCriterion(@Nonnull final List<String> bindingURIs) {
         bindings = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(bindingURIs));
     }
 
@@ -48,7 +47,7 @@ public final class BindingCriterion implements Criterion {
      * 
      * @return ordered list of SAML binding URIs
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getBindings() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getBindings() {
         return bindings;
     }
 
@@ -79,10 +78,11 @@ public final class BindingCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof BindingCriterion) {
-            return bindings.equals(((BindingCriterion) obj).bindings);
+        if (obj instanceof BindingCriterion other) {
+            return bindings.equals(other.bindings);
         }
 
         return false;
     }
+    
 }

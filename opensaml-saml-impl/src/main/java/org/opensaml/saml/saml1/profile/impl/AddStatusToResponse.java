@@ -45,7 +45,6 @@ import org.opensaml.saml.saml1.core.StatusMessage;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
@@ -83,7 +82,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
     @Nullable private Function<ProfileRequestContext,String> statusMessageLookupStrategy;
     
     /** One or more default status codes to insert. */
-    @Nonnull @NonnullElements private List<QName> defaultStatusCodes;
+    @Nonnull private List<QName> defaultStatusCodes;
     
     /** A default status message to include. */
     @Nullable private String statusMessage;
@@ -235,7 +234,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param status    the element to attach to
      * @param codes     the status codes to use
      */
-    private void buildStatusCode(@Nonnull final Status status, @Nonnull @NonnullElements final List<QName> codes) {
+    private void buildStatusCode(@Nonnull final Status status, @Nonnull final List<QName> codes) {
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>ensureBuilder(
                         StatusCode.TYPE_NAME);
@@ -277,7 +276,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
     public static class StatusCodeMappingFunction implements Function<ProfileRequestContext,List<QName>> {
 
         /** Code mappings. */
-        @Nonnull @NonnullElements private Map<String,List<QName>> codeMappings;
+        @Nonnull private Map<String,List<QName>> codeMappings;
         
         /** Strategy function for access to {@link EventContext} to check. */
         @Nonnull private Function<ProfileRequestContext,EventContext> eventContextLookupStrategy;
@@ -287,14 +286,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
          *
          * @param mappings the status code mappings to use
          */
-        public StatusCodeMappingFunction(@Nonnull @NonnullElements final Map<String,List<QName>> mappings) {
+        public StatusCodeMappingFunction(@Nonnull final Map<String,List<QName>> mappings) {
             Constraint.isNotNull(mappings, "Status code mappings cannot be null");
             
             codeMappings = new HashMap<>(mappings.size());
             for (final Map.Entry<String,List<QName>> entry : mappings.entrySet()) {
                 final String event = StringSupport.trimOrNull(entry.getKey());
                 if (event != null && entry.getValue() != null) {
-                    codeMappings.put(event, List.copyOf(entry.getValue()));
+                    codeMappings.put(event, CollectionSupport.copyToList(entry.getValue()));
                 }
             }
             
@@ -312,7 +311,6 @@ public class AddStatusToResponse extends AbstractProfileAction {
         }
         
         /** {@inheritDoc} */
-        @Override
         @Nullable public List<QName> apply(@Nullable final ProfileRequestContext input) {
             final EventContext eventCtx = eventContextLookupStrategy.apply(input);
             if (eventCtx != null && eventCtx.getEvent() != null) {

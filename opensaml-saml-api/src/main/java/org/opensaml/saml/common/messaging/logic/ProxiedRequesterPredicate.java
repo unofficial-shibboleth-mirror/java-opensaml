@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.context.ProxiedRequesterContext;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -42,14 +41,14 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class ProxiedRequesterPredicate implements Predicate<MessageContext> {
 
     /** Set of entityIDs to check for. */
-    @Nonnull @NonnullElements private final Set<String> entityIds;
+    @Nonnull private final Set<String> entityIds;
 
     /**
      * Constructor.
      * 
      * @param ids the entityIDs to check for
      */
-    public ProxiedRequesterPredicate(@Nonnull @NonnullElements final Collection<String> ids) {
+    public ProxiedRequesterPredicate(@Nonnull final Collection<String> ids) {
         Constraint.isNotNull(ids, "EntityID collection cannot be null");
         
         entityIds = new HashSet<>(StringSupport.normalizeStringCollection(ids));

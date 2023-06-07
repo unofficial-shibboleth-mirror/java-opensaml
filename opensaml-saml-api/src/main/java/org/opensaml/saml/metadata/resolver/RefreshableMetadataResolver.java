@@ -61,20 +61,20 @@ public interface RefreshableMetadataResolver extends MetadataResolver {
      * 
      * @return time the last successful refresh cycle occurred
      */
-    @Nullable public Instant getLastSuccessfulRefresh();
+    @Nullable Instant getLastSuccessfulRefresh();
 
     /**
      * Gets whether the last refresh cycle was successful.
      * 
      * @return true if last refresh cycle was successful, false if not
      */
-    @Nullable public Boolean wasLastRefreshSuccess();
+    @Nullable Boolean wasLastRefreshSuccess();
     
     /**
      * Gets the reason the last refresh failed.
      *
      * @return reason the last refresh failed or null if the last refresh was successful
      */
-    @Nullable public Throwable getLastFailureCause();
+    @Nullable Throwable getLastFailureCause();
 
 }

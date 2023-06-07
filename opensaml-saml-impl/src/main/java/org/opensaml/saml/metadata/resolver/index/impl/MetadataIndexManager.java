@@ -32,7 +32,6 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -66,10 +65,8 @@ public class MetadataIndexManager<T> {
      * @param initIndexes indexes for which to initialize storage
      * @param extractionFunction function to extract the indexed data item from an EntityDescriptor
      */
-    public MetadataIndexManager(
-            @Nullable @NonnullElements @Unmodifiable @NotLive final Set<MetadataIndex> initIndexes,
-            @Nonnull final Function<EntityDescriptor, T> extractionFunction
-            ) {
+    public MetadataIndexManager(@Nullable final Set<MetadataIndex> initIndexes,
+            @Nonnull final Function<EntityDescriptor, T> extractionFunction) {
         
         entityDescriptorFunction = Constraint.isNotNull(extractionFunction, 
                 "EntityDescriptor extraction function was null");
@@ -88,6 +85,7 @@ public class MetadataIndexManager<T> {
      * 
      * @return the set of all current indexes
      */
+    @SuppressWarnings("null")
     @Nonnull @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
         return CollectionSupport.copyToSet(indexes.keySet());
     }
@@ -115,8 +113,7 @@ public class MetadataIndexManager<T> {
      *          by any indexes.  If 'present' is indicated, then there were applicable/understood criteria,
      *          and the wrapped set contains the indexed data, which may be empty.
      */
-    @Nonnull @NonnullElements
-    public Optional<Set<T>> lookupIndexedItems(@Nullable final CriteriaSet criteria) {
+    @Nonnull public Optional<Set<T>> lookupIndexedItems(@Nullable final CriteriaSet criteria) {
         final Set<T> items = new HashSet<>();
         for (final MetadataIndex index : indexes.keySet()) {
             final Set<MetadataIndexKey> keys = index.generateKeys(criteria);

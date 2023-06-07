@@ -31,7 +31,6 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SAML1NameIdentifierGenerator extends NameIdentifierGenerator<NameIdentifier> {
 
     /** {@inheritDoc} */
-    @Override
     @Nullable NameIdentifier generate(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull @NotEmpty final String format) throws SAMLException;
     

@@ -33,7 +33,8 @@ import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -65,7 +66,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
     }
     
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements public List<String> apply(@Nullable final ProfileRequestContext input) {
+    @Nonnull @Unmodifiable @NotLive public List<String> apply(@Nullable final ProfileRequestContext input) {
         final SSODescriptor role = ssoDescriptorLookupStrategy.apply(input);
         if (role != null) {
             final List<String> strings = new ArrayList<>();
@@ -80,7 +81,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
             }
             
             log.debug("Metadata specifies the following formats: {}", strings);
-            return strings;
+            return CollectionSupport.copyToList(strings);
         }
         
         return CollectionSupport.emptyList();
@@ -92,7 +93,6 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
     private class MetadataLookupStrategy implements Function<ProfileRequestContext,SSODescriptor> {
 
         /** {@inheritDoc} */
-        @Override
         @Nullable public SSODescriptor apply(@Nullable final ProfileRequestContext input) {
             if (input != null) {
                 final MessageContext mc = input.getInboundMessageContext();

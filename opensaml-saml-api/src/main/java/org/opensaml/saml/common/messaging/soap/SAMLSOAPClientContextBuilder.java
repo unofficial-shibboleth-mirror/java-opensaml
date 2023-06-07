@@ -415,6 +415,7 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     /** Default TLS CriteriaSet strategy function. */
     public static class DefaultTLSCriteriaSetStrategy implements Function<MessageContext,CriteriaSet> {
 
+// Checkstyle: CyclomaticComplexity OFF
         /** {@inheritDoc} */
         @Nullable public CriteriaSet apply(@Nullable final MessageContext messageContext) {
             final CriteriaSet criteria = new CriteriaSet();
@@ -462,7 +463,7 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
             
             return criteria;
         }
-        
+// Checkstyle: CyclomaticComplexity OFF
     }
 
 }

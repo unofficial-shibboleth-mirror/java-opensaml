@@ -36,7 +36,6 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public class ExpiringSAMLArtifactMapEntryFactory implements SAMLArtifactMapEntryFactory {
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
             @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull final SAMLObject samlMessage) {

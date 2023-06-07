@@ -78,8 +78,8 @@ public final class ArtifactCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof ArtifactCriterion) {
-            return Objects.equals(artifact, ((ArtifactCriterion)obj).artifact);
+        if (obj instanceof ArtifactCriterion other) {
+            return Objects.equals(artifact, other.artifact);
         }
 
         return false;

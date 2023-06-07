@@ -35,7 +35,6 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -122,7 +121,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
     }
     
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements public Iterable<EndpointType> resolve(@Nullable final CriteriaSet criteria)
+    @Nonnull public Iterable<EndpointType> resolve(@Nullable final CriteriaSet criteria)
             throws ResolverException {
         final EndpointCriterion<EndpointType> endpointCriterion = validateCriteria(criteria);
         assert criteria != null;
@@ -278,8 +277,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * 
      * @return mutable list of endpoints from the metadata
      */
-    @Nonnull @NonnullElements private List<EndpointType> getCandidatesFromMetadata(
-            @Nonnull final CriteriaSet criteria) {
+    @Nonnull private List<EndpointType> getCandidatesFromMetadata(@Nonnull final CriteriaSet criteria) {
         
         // Check for metadata.
         final RoleDescriptorCriterion role = criteria.get(RoleDescriptorCriterion.class);
@@ -339,8 +337,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      */
     // Checkstyle: CyclomaticComplexity OFF
     @SuppressWarnings("unchecked")
-    @Nonnull @NonnullElements private List<EndpointType> sortCandidates(
-            @Nonnull @NonnullElements final List<Endpoint> candidates) {
+    @Nonnull private List<EndpointType> sortCandidates(@Nonnull final List<Endpoint> candidates) {
         
         // Use a linked list, and move the default endpoint to the head of the list.
         // SAML defaulting rules apply to IndexedEnpdoint types, and require checking
@@ -350,8 +347,8 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         EndpointType softDefault = null;
         final LinkedList<EndpointType> toReturn = new LinkedList<>();
         for (final Endpoint endpoint : candidates) {
-            if (hardDefault == null && endpoint instanceof IndexedEndpoint) {
-                final Boolean flag = ((IndexedEndpoint) endpoint).isDefault();
+            if (hardDefault == null && endpoint instanceof IndexedEndpoint indexed) {
+                final Boolean flag = indexed.isDefault();
                 if (flag != null) {
                     if (flag.booleanValue()) {
                         hardDefault = (EndpointType) endpoint;

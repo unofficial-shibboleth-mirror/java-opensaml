@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.criteria.role.impl;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.metadata.criteria.role.EvaluableRoleDescriptorCriterion;
@@ -61,7 +62,7 @@ public class EvaluableProtocolRoleDescriptorCriterion implements EvaluableRoleDe
     }
     
     /** {@inheritDoc} */
-    public boolean test(final RoleDescriptor input) {
+    public boolean test(@Nullable final RoleDescriptor input) {
         if (input == null) {
             return false;
         }
@@ -75,13 +76,13 @@ public class EvaluableProtocolRoleDescriptorCriterion implements EvaluableRoleDe
     }
 
     /** {@inheritDoc} */
-    public boolean equals(final Object other) {
-        if (this == other) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
         
-        if (other instanceof EvaluableProtocolRoleDescriptorCriterion) {
-            return Objects.equals(this.protocol, ((EvaluableProtocolRoleDescriptorCriterion)other).protocol);
+        if (obj instanceof EvaluableProtocolRoleDescriptorCriterion other) {
+            return Objects.equals(protocol, other.protocol);
         }
         
         return false;

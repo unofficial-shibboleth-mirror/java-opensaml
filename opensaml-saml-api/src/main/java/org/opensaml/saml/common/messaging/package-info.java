@@ -18,4 +18,7 @@
 /**
  * Support classes for SAML message security operations.
  */
+@NonnullElements
 package org.opensaml.saml.common.messaging;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

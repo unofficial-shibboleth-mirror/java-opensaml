@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.logic.Constraint;
@@ -44,8 +43,8 @@ import com.google.common.base.MoreObjects;
 public class RoleMetadataIndex implements MetadataIndex {
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nullable final CriteriaSet criteriaSet) {
         final EntityRoleCriterion roleCrit = criteriaSet != null ? criteriaSet.get(EntityRoleCriterion.class) : null;
         if (roleCrit != null) {
             final HashSet<MetadataIndexKey> result = new HashSet<>();
@@ -56,8 +55,8 @@ public class RoleMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nonnull final EntityDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "EntityDescriptor was null");
         final HashSet<MetadataIndexKey> result = new HashSet<>();
         for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
@@ -115,8 +114,8 @@ public class RoleMetadataIndex implements MetadataIndex {
                 return true;
             }
 
-            if (obj instanceof RoleMetadataIndexKey) {
-                return role.equals(((RoleMetadataIndexKey) obj).role);
+            if (obj instanceof RoleMetadataIndexKey other) {
+                return role.equals(other.role);
             }
 
             return false;

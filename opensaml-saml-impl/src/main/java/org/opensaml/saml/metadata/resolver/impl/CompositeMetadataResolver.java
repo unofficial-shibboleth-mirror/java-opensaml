@@ -32,7 +32,6 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -42,7 +41,6 @@ import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-
 
 /**
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
@@ -61,7 +59,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
     @Nullable @NotEmpty private String resolverType;
 
     /** Resolvers composed by this resolver. */
-    @Nonnull @NonnullElements private List<MetadataResolver> resolvers;
+    @Nonnull private List<MetadataResolver> resolvers;
 
     /** Constructor. */
     public CompositeMetadataResolver() {
@@ -73,7 +71,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
      * 
      * @return list of currently registered resolvers
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<MetadataResolver> getResolvers() {
+    @Nonnull @Unmodifiable @NotLive public List<MetadataResolver> getResolvers() {
         return resolvers;
     }
 
@@ -84,7 +82,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
      * 
      * @throws ResolverException thrown if there is a problem adding the metadata provider
      */
-    public void setResolvers(@Nullable @NonnullElements final List<MetadataResolver> newResolvers) 
+    public void setResolvers(@Nullable final List<MetadataResolver> newResolvers) 
             throws ResolverException {
         checkSetterPreconditions();
 
@@ -349,4 +347,5 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
             }
         }
     }
+    
 }

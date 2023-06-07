@@ -140,8 +140,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @throws URIException if one of the URI's to evaluate is invalid 
      */
     protected boolean compareEndpointURIs(@Nonnull @NotEmpty final String messageDestination, 
-            @Nullable final String receiverEndpoint, 
-            @Nonnull final URIComparator comparator) throws URIException {
+            @Nullable final String receiverEndpoint, @Nonnull final URIComparator comparator) throws URIException {
         Constraint.isNotNull(messageDestination, "Message destination URI was null");
         Constraint.isNotNull(comparator, "URIComparator was null");
         return comparator.compare(messageDestination, receiverEndpoint);

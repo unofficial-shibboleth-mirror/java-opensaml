@@ -18,5 +18,7 @@
 /**
  * Actions and classes common to both SAML versions. 
  */
-
+@NonnullElements
 package org.opensaml.saml.common.profile.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

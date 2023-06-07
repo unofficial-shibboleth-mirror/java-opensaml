@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +47,6 @@ import org.slf4j.Logger;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -68,7 +66,7 @@ public class EntityAttributesFilter extends AbstractMetadataFilter {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityAttributesFilter.class);
 
     /** Rules for adding attributes. */
-    @Nonnull @NonnullElements private Multimap<Predicate<EntityDescriptor>,Attribute> applyMap;
+    @Nonnull private Multimap<Predicate<EntityDescriptor>,Attribute> applyMap;
 
     /** A condition to apply to pre-existing tags to determine their legitimacy. */
     @Nullable private Predicate<Attribute> attributeFilter;
@@ -95,7 +93,7 @@ public class EntityAttributesFilter extends AbstractMetadataFilter {
      * 
      * @param rules rules to apply
      */
-    public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<Attribute>> rules) {
+    public void setRules(@Nonnull final Map<Predicate<EntityDescriptor>,Collection<Attribute>> rules) {
         checkSetterPreconditions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
         

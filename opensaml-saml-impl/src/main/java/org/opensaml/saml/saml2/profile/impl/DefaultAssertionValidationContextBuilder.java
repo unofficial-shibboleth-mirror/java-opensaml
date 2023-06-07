@@ -71,6 +71,8 @@ import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriter
 import org.slf4j.Logger;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
@@ -977,7 +979,8 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return set of recipient endpoint URI's
      */
-    @Nonnull protected Set<String> getValidRecipients(@Nonnull final AssertionValidationInput input) {
+    @Nonnull @Unmodifiable @NotLive protected Set<String> getValidRecipients(
+            @Nonnull final AssertionValidationInput input) {
         final LazySet<String> validRecipients = new LazySet<>();
         
         try {
@@ -1014,7 +1017,8 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the set of valid addresses
      */
-    @Nonnull protected Set<InetAddress> getValidAddresses(@Nonnull final AssertionValidationInput input) {
+    @Nonnull @Unmodifiable @NotLive protected Set<InetAddress> getValidAddresses(
+            @Nonnull final AssertionValidationInput input) {
         try {
             final LazySet<InetAddress> validAddresses = new LazySet<>();
             InetAddress[] addresses = null;
@@ -1065,7 +1069,8 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return set of audience URI's
      */
-    @Nonnull protected Set<String> getValidAudiences(@Nonnull final AssertionValidationInput input) {
+    @Nonnull @Unmodifiable @NotLive protected Set<String> getValidAudiences(
+            @Nonnull final AssertionValidationInput input) {
         final LazySet<String> validAudiences = new LazySet<>();
         
         final String selfEntityID = getSelfEntityID(input);
@@ -1118,7 +1123,7 @@ public class DefaultAssertionValidationContextBuilder
         }
 
         /** {@inheritDoc} */
-        public String apply(@Nullable final ProfileRequestContext prc) {
+        @Nullable public String apply(@Nullable final ProfileRequestContext prc) {
             if (prc == null || prc.getInboundMessageContext() == null) {
                 return null;
             }
@@ -1149,7 +1154,7 @@ public class DefaultAssertionValidationContextBuilder
         }
 
         /** {@inheritDoc} */
-        public Set<String> apply(@Nullable final ProfileRequestContext prc) {
+        @Nullable @Unmodifiable @NotLive public Set<String> apply(@Nullable final ProfileRequestContext prc) {
             if (prc == null || prc.getInboundMessageContext() == null) {
                 return null;
             }

@@ -57,4 +57,5 @@ public interface SubjectConfirmationValidator {
     @Nonnull ValidationResult validate(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
             throws AssertionValidationException;
+
 }

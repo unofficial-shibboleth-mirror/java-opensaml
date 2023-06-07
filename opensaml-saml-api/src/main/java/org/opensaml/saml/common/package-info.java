@@ -18,4 +18,7 @@
 /**
  * Base classes for working with SAML as Java objects.
  */
+@NonnullElements
 package org.opensaml.saml.common;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

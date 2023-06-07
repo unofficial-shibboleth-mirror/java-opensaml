@@ -18,7 +18,7 @@
 package org.opensaml.saml.config;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -42,9 +42,6 @@ import net.shibboleth.shared.primitive.StringSupport;
  * 
  */
 public class SAMLConfiguration {
-    
-    /** Lowercase string function. */
-    @Nonnull private static final Function<String, String> LOWER = new LowercaseFunction();
 
     /** SAML 1 Artifact factory. */
     @Nullable private SAML1ArtifactBuilderFactory saml1ArtifactBuilderFactory;
@@ -138,23 +135,10 @@ public class SAMLConfiguration {
         } else {
             allowedBindingURLSchemes = StringSupport.normalizeStringCollection(schemes)
                     .stream()
-                    .map(LOWER::apply)
+                    .filter(Objects::nonNull)
+                    .map(String::toLowerCase)
                     .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
         }
     }
-    
-    /**
-     * Function to lowercase a string input.
-     */
-    private static class LowercaseFunction implements Function<String, String> {
 
-        /** {@inheritDoc} */
-        public String apply(final String input) {
-            if (input == null) {
-                return null;
-            }
-            return input.toLowerCase();
-        }
-        
-    }
 }

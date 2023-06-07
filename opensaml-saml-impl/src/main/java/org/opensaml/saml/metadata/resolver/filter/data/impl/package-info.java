@@ -18,5 +18,7 @@
 /**
  * Data classes for use with {@link org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext}.
  */
-
+@NonnullElements
 package org.opensaml.saml.metadata.resolver.filter.data.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

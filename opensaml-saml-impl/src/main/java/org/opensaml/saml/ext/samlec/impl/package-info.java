@@ -18,5 +18,7 @@
 /**
  * Implementation for SAML-EC GSS-API schema content.
  */
-
+@NonnullElements
 package org.opensaml.saml.ext.samlec.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

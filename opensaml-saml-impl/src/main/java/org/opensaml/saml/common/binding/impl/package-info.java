@@ -18,4 +18,7 @@
 /**
  * Implementation of SAML binding-level functionality, such as MessageHandlers.
  */
+@NonnullElements
 package org.opensaml.saml.common.binding.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

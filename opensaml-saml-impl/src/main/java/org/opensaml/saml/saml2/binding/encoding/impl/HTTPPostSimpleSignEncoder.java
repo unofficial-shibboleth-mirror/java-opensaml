@@ -152,8 +152,8 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * @return the form control data string for signature computation
      */
     @Nonnull protected String buildFormDataToSign(@Nonnull final VelocityContext velocityContext,
-            @Nonnull final MessageContext messageContext,
-            final String sigAlgURI) throws MessageEncodingException {
+            @Nonnull final MessageContext messageContext, @Nonnull final String sigAlgURI)
+                    throws MessageEncodingException {
         final StringBuilder builder = new StringBuilder();
 
         boolean isRequest = false;
@@ -208,7 +208,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * @throws MessageEncodingException thrown if the algorithm URI is not supplied explicitly and 
      *          could not be derived from the supplied credential
      */
-    @Nonnull protected String getSignatureAlgorithmURI(final SignatureSigningParameters signingParameters)
+    @Nonnull protected String getSignatureAlgorithmURI(@Nonnull final SignatureSigningParameters signingParameters)
             throws MessageEncodingException {
         
         final String alg = signingParameters.getSignatureAlgorithm();

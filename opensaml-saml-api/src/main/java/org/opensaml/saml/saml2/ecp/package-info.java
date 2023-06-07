@@ -18,5 +18,7 @@
 /**
  * Interfaces for SAML 2 ECP Elements.
  */
-
+@NonnullElements
 package org.opensaml.saml.saml2.ecp;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

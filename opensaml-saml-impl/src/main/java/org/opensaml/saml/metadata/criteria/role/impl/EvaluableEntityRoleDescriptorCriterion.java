@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.criteria.role.impl;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.criterion.EntityRoleCriterion;
@@ -60,7 +61,7 @@ public class EvaluableEntityRoleDescriptorCriterion implements EvaluableRoleDesc
     }
     
     /** {@inheritDoc} */
-    public boolean test(final RoleDescriptor input) {
+    public boolean test(@Nullable final RoleDescriptor input) {
         if (input == null) {
             return false;
         }
@@ -79,13 +80,13 @@ public class EvaluableEntityRoleDescriptorCriterion implements EvaluableRoleDesc
     }
 
     /** {@inheritDoc} */
-    public boolean equals(final Object other) {
-        if (this == other) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
         
-        if (other instanceof EvaluableEntityRoleDescriptorCriterion) {
-            return Objects.equals(this.role, ((EvaluableEntityRoleDescriptorCriterion)other).role);
+        if (obj instanceof EvaluableEntityRoleDescriptorCriterion other) {
+            return Objects.equals(role, other.role);
         }
         
         return false;

@@ -31,6 +31,6 @@ public interface SAML2Artifact extends SAMLArtifact {
      * 
      * @return 2 byte endpoint index for this artifact
      */
-    @Nonnull public byte[] getEndpointIndex();
+    @Nonnull byte[] getEndpointIndex();
 
 }

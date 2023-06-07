@@ -48,8 +48,7 @@ public interface MetadataIndex {
      * @return the set of index keys generated from the criteria.  May be null or empty, 
      *         but will not contain null elements.
      */
-    @Nullable @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor);
+    @Nullable @Unmodifiable @NotLive Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor);
     
     /**
      * Generate a set of one or more {@link MetadataIndexKey} instances based on the input {@link CriteriaSet}.
@@ -64,7 +63,6 @@ public interface MetadataIndex {
      * @return the set of index keys generated from the criteria.  May be null or empty, 
      *         but will not contain null elements.
      */
-    @Nullable @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet);
+    @Nullable @Unmodifiable @NotLive Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet);
 
 }

@@ -51,8 +51,9 @@ import org.slf4j.Logger;
 
 import com.google.common.base.MoreObjects;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
@@ -66,7 +67,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class SAMLArtifactMetadataIndex implements MetadataIndex {
     
     /** Indexing function instance to use. */
-    @Nonnull @NonnullElements private List<Function<EntityDescriptor, Set<MetadataIndexKey>>> indexingFunctions;
+    @Nonnull private List<Function<EntityDescriptor, Set<MetadataIndexKey>>> indexingFunctions;
     
     /**
      * Constructor.
@@ -102,7 +103,8 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nonnull final EntityDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "EntityDescriptor was null");
         final HashSet<MetadataIndexKey> results = new HashSet<>();
         for (final Function<EntityDescriptor, Set<MetadataIndexKey>> indexingFunction : indexingFunctions) {
@@ -115,7 +117,8 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+    @Nullable @Unmodifiable @NotLive public Set<MetadataIndexKey> generateKeys(
+            @Nullable final CriteriaSet criteriaSet) {
         final ArtifactCriterion artifactCrit = criteriaSet != null ? criteriaSet.get(ArtifactCriterion.class) : null;
         if (artifactCrit != null) {
             final LazySet<MetadataIndexKey> results = new LazySet<>();
@@ -328,8 +331,8 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
                 return true;
             }
 
-            if (obj instanceof ArtifactSourceIDMetadataIndexKey) {
-                return Arrays.equals(sourceID, ((ArtifactSourceIDMetadataIndexKey) obj).getSourceID());
+            if (obj instanceof ArtifactSourceIDMetadataIndexKey other) {
+                return Arrays.equals(sourceID, other.getSourceID());
             }
 
             return false;
@@ -416,8 +419,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
                 return true;
             }
 
-            if (obj instanceof ArtifactSourceLocationMetadataIndexKey) {
-                final ArtifactSourceLocationMetadataIndexKey other = (ArtifactSourceLocationMetadataIndexKey) obj;
+            if (obj instanceof ArtifactSourceLocationMetadataIndexKey other) {
                 if (this.isCanonicalizedLowerCase == other.isCanonicalizedLowerCase) {
                     return this.canonicalizedLocation.equals(other.canonicalizedLocation);
                 }
