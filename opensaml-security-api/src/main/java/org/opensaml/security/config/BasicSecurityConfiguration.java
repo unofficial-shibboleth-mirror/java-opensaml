@@ -22,6 +22,7 @@ import java.time.Duration;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.component.IdentifiableComponent;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
@@ -34,8 +35,11 @@ import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
  * 
  * @since 5.0.0
  */
-public class BasicSecurityConfiguration implements SecurityConfiguration {
+public class BasicSecurityConfiguration implements SecurityConfiguration, IdentifiableComponent {
 
+    /** Identifier. */
+    @Nullable private String id;
+    
     /** Acceptable clock skew. */
     @Nonnull private final Duration clockSkew;
 
@@ -73,6 +77,16 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         idGenerator = Constraint.isNotNull(generator, "Identifier generator cannot be null");
     }
 
+    /** {@inheritDoc} */
+    @Nullable public String getId() {
+        return id;
+    }
+
+    /** {@inheritDoc} */
+    public void setId(@Nonnull final String componentId) {
+        id = componentId;
+    }
+    
     /** {@inheritDoc} */
     @Nonnull public Duration getClockSkew() {
         return clockSkew;
