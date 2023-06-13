@@ -12,6 +12,15 @@
        default-init-method="initialize"
        default-destroy-method="destroy">
 
+    <!-- This bean MUST be called "conversionService" to work properly. -->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="net.shibboleth.shared.spring.config.StringToResourceConverter" />
+            </set>
+        </property>
+    </bean>
+
     <bean id="StaticPKIXX509CredentialTrustEngine"
           class="org.opensaml.spring.trust.StaticPKIXFactoryBean">
         <property name="certificates">

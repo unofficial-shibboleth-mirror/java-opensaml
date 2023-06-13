@@ -32,11 +32,11 @@ import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
 
 import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.core.io.Resource;
 
 import com.google.common.io.ByteStreams;
 
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.resource.Resource;
 
 /**
  * Spring bean factory for producing a {@link org.opensaml.security.credential.BasicCredential} from {@link Resource}s.

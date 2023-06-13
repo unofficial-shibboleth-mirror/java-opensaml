@@ -35,13 +35,13 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.resource.Resource;
 
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 
 import org.springframework.beans.FatalBeanException;
-import org.springframework.core.io.Resource;
 
 /**
  * Spring bean factory for producing a {@link org.opensaml.security.x509.BasicX509Credential} from {@link Resource}s.

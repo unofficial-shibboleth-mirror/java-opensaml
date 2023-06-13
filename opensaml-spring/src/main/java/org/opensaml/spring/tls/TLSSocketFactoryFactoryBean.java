@@ -75,7 +75,8 @@ public class TLSSocketFactoryFactoryBean extends AbstractFactoryBean<LayeredConn
 
 
     /** {@inheritDoc} */
-    @Override public Class<LayeredConnectionSocketFactory> getObjectType() {
+    @Override
+    @Nonnull public Class<LayeredConnectionSocketFactory> getObjectType() {
         return LayeredConnectionSocketFactory.class;
     }
 

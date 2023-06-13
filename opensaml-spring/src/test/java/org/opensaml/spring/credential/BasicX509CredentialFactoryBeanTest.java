@@ -36,29 +36,28 @@ public class BasicX509CredentialFactoryBeanTest {
      */
     @Test public void bean() {
         final GenericApplicationContext context = new FilesystemGenericApplicationContext();
-            context.setDisplayName("ApplicationContext: X509Credential");
-            final SchemaTypeAwareXMLBeanDefinitionReader beanDefinitionReader =
-                    new SchemaTypeAwareXMLBeanDefinitionReader(context);
-    
-            beanDefinitionReader.loadBeanDefinitions("org/opensaml/spring/credential/bean.xml");
-    
-            context.refresh();
-            
-             final BasicX509Credential cred1 = context.getBean("Credential", BasicX509Credential.class);
-            
-             final BasicX509Credential cred2 = context.getBean("EncCredential", BasicX509Credential.class);
-             
-             Assert.assertEquals("http://example.org/enc", cred2.getEntityId()); 
-             
-             final byte[] cb1 = Constraint.isNotNull(cred1.getPrivateKey(), "Private key was null").getEncoded();
-             final byte[] cb2 = Constraint.isNotNull(cred2.getPrivateKey(), "Private key was null").getEncoded();
-             
-             Assert.assertEquals(cb1.length, cb2.length);
+        context.setDisplayName("ApplicationContext: X509Credential");
+        final SchemaTypeAwareXMLBeanDefinitionReader beanDefinitionReader =
+                new SchemaTypeAwareXMLBeanDefinitionReader(context);
 
-             for (int i = 0; i< cb1.length; i++)Assert.assertEquals(cb1[i], cb2[i]);
-             
-             Assert.assertEquals(cred2.getPublicKey(), cred2.getPublicKey());
+        beanDefinitionReader.loadBeanDefinitions("org/opensaml/spring/credential/bean.xml");
 
+        context.refresh();
+        
+         final BasicX509Credential cred1 = context.getBean("Credential", BasicX509Credential.class);
+        
+         final BasicX509Credential cred2 = context.getBean("EncCredential", BasicX509Credential.class);
+         
+         Assert.assertEquals("http://example.org/enc", cred2.getEntityId()); 
+         
+         final byte[] cb1 = Constraint.isNotNull(cred1.getPrivateKey(), "Private key was null").getEncoded();
+         final byte[] cb2 = Constraint.isNotNull(cred2.getPrivateKey(), "Private key was null").getEncoded();
+         
+         Assert.assertEquals(cb1.length, cb2.length);
+
+         for (int i = 0; i< cb1.length; i++)Assert.assertEquals(cb1[i], cb2[i]);
+         
+         Assert.assertEquals(cred2.getPublicKey(), cred2.getPublicKey());
     }
 
 }

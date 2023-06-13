@@ -33,9 +33,9 @@ import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 
 import org.springframework.beans.FatalBeanException;
-import org.springframework.core.io.Resource;
 
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.resource.Resource;
 
 /**
  * File system specific bean for PKIXValidationInfo.
@@ -116,4 +116,5 @@ public class PKIXResourceValidationInfoFactoryBean extends AbstractBasicPKIXVali
         }
         return crls;
     }
+
 }

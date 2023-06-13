@@ -77,7 +77,8 @@ public abstract class AbstractBasicPKIXValidationInfoFactoryBean extends
     }
 
     /** {@inheritDoc} */
-    @Override public Class<?> getObjectType() {
+    @Override
+    @Nonnull public Class<?> getObjectType() {
         return BasicPKIXValidationInformation.class;
     }
 

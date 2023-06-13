@@ -40,10 +40,10 @@ import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 
 import org.springframework.beans.FatalBeanException;
-import org.springframework.core.io.Resource;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 /**

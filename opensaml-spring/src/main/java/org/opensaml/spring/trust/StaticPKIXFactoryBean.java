@@ -44,12 +44,12 @@ import org.opensaml.security.x509.impl.X509CredentialNameEvaluator;
 import org.slf4j.Logger;
 
 import org.springframework.beans.FatalBeanException;
-import org.springframework.core.io.Resource;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
+import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 /**
