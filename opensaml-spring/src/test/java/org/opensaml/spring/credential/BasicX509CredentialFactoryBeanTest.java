@@ -22,9 +22,9 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.spring.context.FilesystemGenericApplicationContext;
-import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReader;
+import net.shibboleth.shared.spring.util.ApplicationContextBuilder;
 
 /**
  * Unit test for {@link BasicX509CredentialFactoryBean}.
@@ -35,14 +35,10 @@ public class BasicX509CredentialFactoryBeanTest {
      * Test.
      */
     @Test public void bean() {
-        final GenericApplicationContext context = new FilesystemGenericApplicationContext();
-        context.setDisplayName("ApplicationContext: X509Credential");
-        final SchemaTypeAwareXMLBeanDefinitionReader beanDefinitionReader =
-                new SchemaTypeAwareXMLBeanDefinitionReader(context);
-
-        beanDefinitionReader.loadBeanDefinitions("org/opensaml/spring/credential/bean.xml");
-
-        context.refresh();
+        final ApplicationContextBuilder contextBuilder = new ApplicationContextBuilder();
+        contextBuilder.setUnresolvedServiceConfigurations(CollectionSupport.singletonList("org/opensaml/spring/credential/bean.xml"));
+        
+        final GenericApplicationContext context = contextBuilder.build();
         
          final BasicX509Credential cred1 = context.getBean("Credential", BasicX509Credential.class);
         

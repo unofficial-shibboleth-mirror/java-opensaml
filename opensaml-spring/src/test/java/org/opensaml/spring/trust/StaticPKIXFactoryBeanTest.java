@@ -37,9 +37,9 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
-import net.shibboleth.shared.spring.context.FilesystemGenericApplicationContext;
-import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReader;
+import net.shibboleth.shared.spring.util.ApplicationContextBuilder;
 
 /**
  * Unit test for {@link StaticPKIXFactoryBean}.
@@ -49,14 +49,10 @@ public class StaticPKIXFactoryBeanTest {
 
     @Test
     public void defaults() {
-        final GenericApplicationContext context = new FilesystemGenericApplicationContext();
-        context.setDisplayName("ApplicationContext: X509Credential");
-        final SchemaTypeAwareXMLBeanDefinitionReader beanDefinitionReader =
-                new SchemaTypeAwareXMLBeanDefinitionReader(context);
-
-        beanDefinitionReader.loadBeanDefinitions("org/opensaml/spring/trust/static-pkix-factory-defaults.xml");
-
-        context.refresh();
+        final ApplicationContextBuilder contextBuilder = new ApplicationContextBuilder();
+        contextBuilder.setUnresolvedServiceConfigurations(CollectionSupport.singletonList("org/opensaml/spring/trust/static-pkix-factory-defaults.xml"));
+        
+        final GenericApplicationContext context = contextBuilder.build();
 
         final PKIXX509CredentialTrustEngine trustEngine = context.getBean("StaticPKIXX509CredentialTrustEngine",
                 PKIXX509CredentialTrustEngine.class);
@@ -72,14 +68,10 @@ public class StaticPKIXFactoryBeanTest {
     
     @Test
     public void customPropertiesSuccess() {
-        final GenericApplicationContext context = new FilesystemGenericApplicationContext();
-        context.setDisplayName("ApplicationContext: X509Credential");
-        final SchemaTypeAwareXMLBeanDefinitionReader beanDefinitionReader =
-                new SchemaTypeAwareXMLBeanDefinitionReader(context);
-
-        beanDefinitionReader.loadBeanDefinitions("org/opensaml/spring/trust/static-pkix-factory-custom-success.xml");
-
-        context.refresh();
+        final ApplicationContextBuilder contextBuilder = new ApplicationContextBuilder();
+        contextBuilder.setUnresolvedServiceConfigurations(CollectionSupport.singletonList("org/opensaml/spring/trust/static-pkix-factory-custom-success.xml"));
+        
+        final GenericApplicationContext context = contextBuilder.build();
 
         final PKIXX509CredentialTrustEngine trustEngine = context.getBean("StaticPKIXX509CredentialTrustEngine",
                 PKIXX509CredentialTrustEngine.class);
@@ -95,14 +87,10 @@ public class StaticPKIXFactoryBeanTest {
     
     @Test(expectedExceptions=FatalBeanException.class)
     public void customPropertiesFailsValidation() {
-        final GenericApplicationContext context = new FilesystemGenericApplicationContext();
-        context.setDisplayName("ApplicationContext: X509Credential");
-        final SchemaTypeAwareXMLBeanDefinitionReader beanDefinitionReader =
-                new SchemaTypeAwareXMLBeanDefinitionReader(context);
-
-        beanDefinitionReader.loadBeanDefinitions("org/opensaml/spring/trust/static-pkix-factory-custom-failsValidation.xml");
-
-        context.refresh();
+        final ApplicationContextBuilder contextBuilder = new ApplicationContextBuilder();
+        contextBuilder.setUnresolvedServiceConfigurations(CollectionSupport.singletonList("org/opensaml/spring/trust/static-pkix-factory-custom-failsValidation.xml"));
+        
+        contextBuilder.build();
     }
     
     
