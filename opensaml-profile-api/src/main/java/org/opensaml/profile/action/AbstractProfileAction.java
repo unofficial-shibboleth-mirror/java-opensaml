@@ -65,6 +65,21 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         
         return null;
     }
+    
+    /**
+     * Get the current HTTP request if available, raising an {@link IllegalStateException} if absent.
+     * 
+     * @return current HTTP request
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public HttpServletRequest ensureHttpServletRequest() {
+        final HttpServletRequest ret = getHttpServletRequest();
+        if (ret != null) {
+            return ret;
+        }
+        throw new IllegalStateException("HttpServletRequest was absent");
+    }
 
     /**
      * Get the supplier for  HTTP request if available.
@@ -96,6 +111,22 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         }
         
         return null;
+    }
+    
+    /**
+     * Get the current HTTP response if available, raising an {@link IllegalStateException} if absent.
+     * 
+     * @return current HTTP response
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public HttpServletResponse ensureHttpServletResponse() {
+        final HttpServletResponse ret = getHttpServletResponse();
+        if (ret != null) {
+            return ret;
+        }
+        
+        throw new IllegalStateException("HttpServletResponse was absent");
     }
 
     /**
