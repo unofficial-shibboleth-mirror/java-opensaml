@@ -45,7 +45,6 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Scoping;
 import org.opensaml.saml.saml2.core.Subject;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -325,8 +324,7 @@ public class SAML2ActionTestingSupport {
      * 
      * @since 4.0.0
      */
-    @Nonnull public static Scoping buildScoping(@Nullable final Integer count,
-            @Nullable @NonnullElements Set<String> idplist) {
+    @Nonnull public static Scoping buildScoping(@Nullable final Integer count, @Nullable Set<String> idplist) {
         final SAMLObjectBuilder<Scoping> scopingBuilder = (SAMLObjectBuilder<Scoping>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>ensureBuilder(
                         Scoping.DEFAULT_ELEMENT_NAME);

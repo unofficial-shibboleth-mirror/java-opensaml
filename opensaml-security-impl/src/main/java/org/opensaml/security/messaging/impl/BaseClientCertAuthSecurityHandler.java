@@ -44,7 +44,8 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
@@ -544,7 +545,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      * 
      * @return the list of certificate subject alt names
      */
-    @Nonnull @NonnullElements protected List<String> getAltNames(@Nonnull final X509Certificate cert,
+    @Nonnull @Unmodifiable @NotLive protected List<String> getAltNames(@Nonnull final X509Certificate cert,
             @Nonnull final Integer altNameType) {
         log.debug("{} Extracting alt names from certificate of type: {}", getLogPrefix(), altNameType.toString());
         final Integer[] nameTypes = new Integer[] {altNameType};

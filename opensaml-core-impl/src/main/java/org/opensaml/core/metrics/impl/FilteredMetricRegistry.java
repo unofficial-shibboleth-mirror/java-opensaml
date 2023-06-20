@@ -30,7 +30,6 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.MetricSet;
 import com.codahale.metrics.Timer;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -116,9 +115,9 @@ public class FilteredMetricRegistry extends MetricRegistry {
      * 
      * @throws IllegalArgumentException if any of the names are already registered
      */
-    public void registerMultiple(@Nonnull @NonnullElements final Collection<MetricSet> metricSets)
+    public void registerMultiple(@Nonnull final Collection<MetricSet> metricSets)
             throws IllegalArgumentException {
-        Constraint.isNotNull(metricSets, "Collection cannot be null").forEach(m -> registerAll(m));
+        Constraint.isNotNull(metricSets, "Collection cannot be null").forEach(this::registerAll);
     }
 
 }

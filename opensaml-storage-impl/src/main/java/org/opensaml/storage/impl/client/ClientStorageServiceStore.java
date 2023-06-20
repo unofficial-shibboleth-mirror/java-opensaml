@@ -27,7 +27,6 @@ import org.opensaml.storage.MutableStorageRecord;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -63,7 +62,7 @@ public interface ClientStorageServiceStore {
      * 
      * @return map of contexts to manipulate
      */
-    @Nonnull @NonnullElements @Live Map<String,Map<String,MutableStorageRecord<?>>> getContextMap();
+    @Nonnull @Live Map<String,Map<String,MutableStorageRecord<?>>> getContextMap();
     
     /**
      * Reconstitute stored data.

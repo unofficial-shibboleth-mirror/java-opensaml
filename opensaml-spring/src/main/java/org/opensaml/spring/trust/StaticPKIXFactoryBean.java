@@ -45,7 +45,8 @@ import org.slf4j.Logger;
 
 import org.springframework.beans.FatalBeanException;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -151,9 +152,9 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * 
      * @since 3.4.0
      */
-    public void setTrustedNames(@Nullable @NonnullElements final Collection<String> names) {
+    public void setTrustedNames(@Nullable final Collection<String> names) {
         if (names != null) {
-            trustedNames = Set.copyOf(names);
+            trustedNames = CollectionSupport.copyToSet(names);
         } else {
             trustedNames = null;
         }
@@ -186,7 +187,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * 
      * @return the certificates
      */
-    @Nonnull protected List<X509Certificate> getCertificates() {
+    @Nonnull @Unmodifiable @NotLive protected List<X509Certificate> getCertificates() {
         if (certificateResources == null) {
             return CollectionSupport.emptyList();
         }
@@ -210,7 +211,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * 
      * @return the crls
      */
-    @Nonnull protected List<X509CRL> getCRLs() {
+    @Nonnull @Unmodifiable @NotLive protected List<X509CRL> getCRLs() {
         if (crlResources == null) {
             return CollectionSupport.emptyList();
         }

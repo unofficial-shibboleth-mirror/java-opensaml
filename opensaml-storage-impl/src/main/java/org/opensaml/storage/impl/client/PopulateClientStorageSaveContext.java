@@ -28,7 +28,6 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -52,7 +51,7 @@ public class PopulateClientStorageSaveContext extends AbstractProfileAction {
     @Nonnull private final Logger log = LoggerFactory.getLogger(PopulateClientStorageSaveContext.class);
 
     /** The storage service instances to check for a save requirement. */
-    @Nonnull @NonnullElements private Collection<ClientStorageService> storageServices;
+    @Nonnull private Collection<ClientStorageService> storageServices;
     
     /** Constructor. */
     public PopulateClientStorageSaveContext() {
