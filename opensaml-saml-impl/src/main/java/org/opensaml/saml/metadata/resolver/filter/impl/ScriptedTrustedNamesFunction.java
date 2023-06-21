@@ -28,6 +28,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptException;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.scripting.AbstractScriptEvaluator;
 import net.shibboleth.shared.scripting.EvaluableScript;
@@ -91,15 +92,15 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
      * @return the function
      * @throws ScriptException if the compile fails
      * @throws IOException if the file doesn't exist.
+     * @throws ComponentInitializationException if the scripting initialization fails
      */
-    @SuppressWarnings("removal")
     @Nonnull static ScriptedTrustedNamesFunction resourceScript(@Nonnull @NotEmpty final String engineName,
-            @Nonnull final Resource resource) throws ScriptException, IOException {
+            @Nonnull final Resource resource) throws ScriptException, IOException, ComponentInitializationException {
         try (final InputStream is = resource.getInputStream()) {
             final EvaluableScript script = new EvaluableScript();
             script.setEngineName(engineName);
             script.setScript(is);
-            script.initializeWithScriptException();
+            script.initialize();
             return new ScriptedTrustedNamesFunction(script, resource.getDescription());
         }
     }
@@ -111,9 +112,10 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
      * @return the function
      * @throws ScriptException if the compile fails
      * @throws IOException if the file doesn't exist.
+     * @throws ComponentInitializationException if the scripting initialization fails
      */
     @Nonnull static ScriptedTrustedNamesFunction resourceScript(@Nonnull final Resource resource)
-            throws ScriptException, IOException {
+            throws ScriptException, IOException, ComponentInitializationException {
         return resourceScript(DEFAULT_ENGINE, resource);
     }
 
@@ -124,14 +126,14 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
      * @param engineName the language
      * @return the function
      * @throws ScriptException if the compile fails
+     * @throws ComponentInitializationException if the scripting initialization fails
      */
-    @SuppressWarnings("removal")
     @Nonnull static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty final String engineName,
-            @Nonnull @NotEmpty final String scriptSource) throws ScriptException {
+            @Nonnull @NotEmpty final String scriptSource) throws ScriptException, ComponentInitializationException {
         final EvaluableScript script = new EvaluableScript();
         script.setEngineName(engineName);
         script.setScript(scriptSource);
-        script.initializeWithScriptException();
+        script.initialize();
         return new ScriptedTrustedNamesFunction(script, "Inline");
     }
 
@@ -141,9 +143,10 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
      * @param scriptSource the script, as a string
      * @return the function
      * @throws ScriptException if the compile fails
+     * @throws ComponentInitializationException if the scripting initialization fails
      */
     @Nonnull static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty final String scriptSource)
-            throws ScriptException {
+            throws ScriptException, ComponentInitializationException {
         return inlineScript(DEFAULT_ENGINE, scriptSource);
     }
 

@@ -32,6 +32,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 
@@ -48,7 +49,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
         return builder.buildObject();
     }
     
-    @Test public void inlineScript() throws ScriptException {
+    @Test public void inlineScript() throws ScriptException, ComponentInitializationException {
         
         final Set<String> s = ScriptedTrustedNamesFunction.inlineScript(SCRIPT_8).apply(makeObject());
         assert s != null;
@@ -57,7 +58,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
    }
     
     
-    @Test public void fileScript() throws ScriptException, IOException {
+    @Test public void fileScript() throws ScriptException, IOException, ComponentInitializationException {
         final Resource r = ResourceHelper.of(new ClassPathResource(FILE_8));
         final Set<String> result = ScriptedTrustedNamesFunction.resourceScript(r).apply(makeObject());
         assert result != null;
@@ -65,7 +66,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(result.contains("String"));
     }
     
-    @Test public void customScript() throws ScriptException {
+    @Test public void customScript() throws ScriptException, ComponentInitializationException {
         
         final ScriptedTrustedNamesFunction what = ScriptedTrustedNamesFunction.inlineScript("custom;");
         what.setCustomObject(CollectionSupport.singleton("String"));
