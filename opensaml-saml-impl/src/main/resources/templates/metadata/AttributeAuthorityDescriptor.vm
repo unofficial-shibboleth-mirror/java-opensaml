@@ -1,0 +1,7 @@
+#set ($role = $params.AttributeAuthorityDescriptor)
+    <md:AttributeAuthorityDescriptor protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end">
+#parse("$params.templatePath/KeyDescriptors.vm")
+#foreach ($endpoint in $role.attributeServices)
+        <md:AttributeService Binding="$endpoint.binding" Location="$endpoint.location" />
+#end
+    </md:AttributeAuthorityDescriptor>

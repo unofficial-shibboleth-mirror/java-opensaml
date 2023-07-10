@@ -1,0 +1,13 @@
+<md:EntityDescriptor#if (!$params.omitNamespaceDeclarations)#foreach ($ns in $namespaces.entrySet()) xmlns:$ns.key="$ns.value"#end#end entityID="$params.entityID">
+
+#if ($params.IDPSSODescriptor)
+#parse("$params.templatePath/IDPSSODescriptor.vm")
+#end
+#if ($params.AttributeAuthorityDescriptor)
+#parse("$params.templatePath/AttributeAuthorityDescriptor.vm")
+#end
+#if ($params.SPSSODescriptor)
+#parse("$params.templatePath/SPSSODescriptor.vm")
+#end
+
+</md:EntityDescriptor>
