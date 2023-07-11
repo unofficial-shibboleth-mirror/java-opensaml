@@ -2,12 +2,21 @@
 
 #if ($params.IDPSSODescriptor)
 #parse("$params.templatePath/IDPSSODescriptor.vm")
+
 #end
 #if ($params.AttributeAuthorityDescriptor)
 #parse("$params.templatePath/AttributeAuthorityDescriptor.vm")
+
 #end
 #if ($params.SPSSODescriptor)
 #parse("$params.templatePath/SPSSODescriptor.vm")
-#end
 
+#end
+#if ($params.organizationName || $params.organizationURL)
+    <md:Organization>
+        <md:OrganizationName#if ($params.lang) xml:lang="$params.lang"#end>$params.organizationName</md:OrganizationName>
+        <md:OrganizationDisplayName#if ($params.lang) xml:lang="$params.lang"#end>$params.organizationName</md:OrganizationDisplayName>
+        <md:OrganizationURL#if ($params.lang) xml:lang="$params.lang"#end>$params.organizationURL</md:OrganizationURL>
+    </md:Organization>
+#end
 </md:EntityDescriptor>

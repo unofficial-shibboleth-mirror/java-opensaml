@@ -113,5 +113,26 @@ public interface MetadataGeneratorParameters {
      * @return base64-encoded certificates
      */
     @Nonnull @Unmodifiable @NotLive List<String> getEncryptionCertificates();
-        
+    
+    /**
+     * Get the language tag for language-specific content.
+     *
+     * @return language tag
+     */
+    @Nullable String getLang();
+    
+    /**
+     * Get the organization name.
+     *
+     * @return organization name
+     */
+    @Nullable String getOrganizationName();
+
+    /**
+     * Get the organization URL.
+     *
+     * @return organization URL
+     */
+    @Nullable String getOrganizationURL();
+
 }
