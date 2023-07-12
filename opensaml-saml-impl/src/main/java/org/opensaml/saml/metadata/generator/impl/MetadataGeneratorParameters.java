@@ -23,12 +23,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.Namespace;
+import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Inputs to metadata generation.
@@ -44,21 +48,36 @@ public interface MetadataGeneratorParameters {
      * 
      * @return the unique ID
      */
-    @Nullable String getEntityID();
+    @Nullable default String getEntityID() {
+        return null;
+    }
 
     /**
      * Whether to omit the namespace declarations on the root element.
      * 
      * @return true iff namespace declarations should be omitted
      */
-    boolean isOmitNamespaceDeclarations();
+    default boolean isOmitNamespaceDeclarations() {
+        return false;
+    }
+    
+    /**
+     * Whether to include an {@link Extensions} element in output.
+     * 
+     * @return whether to include extensions element
+     */
+    default boolean isRequiresExtensions() {
+        return getDisplayName() != null || getDescription() != null || getLogo() != null;
+    }
     
     /**
      * Get a set of additional namespaces to declare on root element.
      * 
      * @return additional namespaces
      */
-    @Nullable Set<Namespace> getAdditionalNamespaces();
+    @Nullable default Set<Namespace> getAdditionalNamespaces() {
+        return null;
+    }
 
     /**
      * Get the SP role to generate.
@@ -67,7 +86,9 @@ public interface MetadataGeneratorParameters {
      * 
      * @return SP role or null
      */
-    @Nullable SPSSODescriptor getSPSSODescriptor();
+    @Nullable default SPSSODescriptor getSPSSODescriptor() {
+        return null;
+    }
     
     /**
      * Get the IdP role to generate.
@@ -76,7 +97,9 @@ public interface MetadataGeneratorParameters {
      *  
      * @return IdP role or null
      */
-    @Nullable IDPSSODescriptor getIDPSSODescriptor();
+    @Nullable default IDPSSODescriptor getIDPSSODescriptor() {
+        return null;
+    }
 
     /**
      * Get the AA role to generate.
@@ -85,7 +108,9 @@ public interface MetadataGeneratorParameters {
      *  
      * @return AA role or null
      */
-    @Nullable AttributeAuthorityDescriptor getAttributeAuthorityDescriptor();
+    @Nullable default AttributeAuthorityDescriptor getAttributeAuthorityDescriptor() {
+        return null;
+    }
 
     /**
      * Dual-use certificates.
@@ -94,7 +119,9 @@ public interface MetadataGeneratorParameters {
      * 
      * @return base64-encoded certificates
      */
-    @Nonnull @Unmodifiable @NotLive List<String> getCertificates();
+    @Nonnull @Unmodifiable @NotLive default List<String> getCertificates() {
+        return CollectionSupport.emptyList();
+    }
 
     /**
      * Signing-only certificate path(s).
@@ -103,7 +130,9 @@ public interface MetadataGeneratorParameters {
      * 
      * @return base64-encoded certificates
      */
-    @Nonnull @Unmodifiable @NotLive List<String> getSigningCertificates();
+    @Nonnull @Unmodifiable @NotLive default List<String> getSigningCertificates() {
+        return CollectionSupport.emptyList();
+    }
 
     /**
      * Encryption-only certificate path(s).
@@ -112,27 +141,71 @@ public interface MetadataGeneratorParameters {
      * 
      * @return base64-encoded certificates
      */
-    @Nonnull @Unmodifiable @NotLive List<String> getEncryptionCertificates();
+    @Nonnull @Unmodifiable @NotLive default List<String> getEncryptionCertificates() {
+        return CollectionSupport.emptyList();
+    }
     
     /**
      * Get the language tag for language-specific content.
      *
      * @return language tag
      */
-    @Nullable String getLang();
+    @Nullable default String getLang() {
+        return null;
+    }
+    
+    /**
+     * Get the display name.
+     * 
+     * @return display name
+     */
+    @Nullable default String getDisplayName() {
+        return null;
+    }
+
+    /**
+     * Get the description.
+     * 
+     * @return description
+     */
+    @Nullable default String getDescription() {
+        return null;
+    }
+
+    /**
+     * Get the logo.
+     * 
+     * @return logo
+     */
+    @Nullable default Logo getLogo() {
+        return null;
+    }
     
     /**
      * Get the organization name.
      *
      * @return organization name
      */
-    @Nullable String getOrganizationName();
+    @Nullable default String getOrganizationName() {
+        return null;
+    }
 
     /**
      * Get the organization URL.
      *
      * @return organization URL
      */
-    @Nullable String getOrganizationURL();
+    @Nullable default String getOrganizationURL() {
+        return null;
+    }
+    
+    /**
+     * Get the contacts.
+     * 
+     * @return list of contacts
+     */
+    @Nonnull @Unmodifiable @NotLive default List<ContactPerson> getContactPersons() {
+        return CollectionSupport.emptyList();
+    }
 
 }
