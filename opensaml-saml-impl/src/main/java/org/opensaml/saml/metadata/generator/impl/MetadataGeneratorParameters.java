@@ -54,6 +54,15 @@ public interface MetadataGeneratorParameters {
     @Nullable default String getEntityID() {
         return null;
     }
+    
+    /**
+     * Get the {Scope} extension(s).
+     * 
+     * @return scope list
+     */
+    @Nonnull @Unmodifiable @NotLive default List<String> getScopes() {
+        return CollectionSupport.emptyList();
+    }
 
     /**
      * Whether to omit the namespace declarations on the root element.
@@ -70,7 +79,7 @@ public interface MetadataGeneratorParameters {
      * @return whether to include extensions element
      */
     default boolean isRequiresExtensions() {
-        return getDisplayName() != null || getDescription() != null || getLogo() != null
+        return !getScopes().isEmpty() || getDisplayName() != null || getDescription() != null || getLogo() != null
                 || !getTagAssignments().isEmpty();
     }
     

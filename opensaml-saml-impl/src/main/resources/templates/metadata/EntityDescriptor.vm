@@ -2,6 +2,9 @@
 #if ($params.requiresExtensions)
 
     <md:Extensions>
+#foreach ($scope in $params.scopes)
+        <shibmd:Scope regexp="false">$xmltext.escape($scope)</shibmd:Scope>
+#end
 #if ($params.displayName || $params.description || $params.logo)
         <mdui:UIInfo>
 #if ($params.displayName)
