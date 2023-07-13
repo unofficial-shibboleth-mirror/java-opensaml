@@ -16,13 +16,16 @@
  */
 package org.opensaml.saml.metadata.generator.impl;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.Namespace;
+import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
@@ -67,7 +70,8 @@ public interface MetadataGeneratorParameters {
      * @return whether to include extensions element
      */
     default boolean isRequiresExtensions() {
-        return getDisplayName() != null || getDescription() != null || getLogo() != null;
+        return getDisplayName() != null || getDescription() != null || getLogo() != null
+                || !getTagAssignments().isEmpty();
     }
     
     /**
@@ -207,5 +211,14 @@ public interface MetadataGeneratorParameters {
     @Nonnull @Unmodifiable @NotLive default List<ContactPerson> getContactPersons() {
         return CollectionSupport.emptyList();
     }
-
+    
+    /**
+     * Get the {@link EntityAttributes} tag names and values in the form of a Java-based multi-map.
+     * 
+     * @return map of tag names to zero or more values
+     */
+    @Nonnull @Unmodifiable @NotLive default Map<String,Collection<String>> getTagAssignments() {
+        return CollectionSupport.emptyMap();
+    }
+    
 }

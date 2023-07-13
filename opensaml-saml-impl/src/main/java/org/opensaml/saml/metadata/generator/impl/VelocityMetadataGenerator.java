@@ -31,6 +31,8 @@ import org.opensaml.core.xml.Namespace;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import com.google.common.xml.XmlEscapers;
+
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
@@ -102,7 +104,6 @@ public class VelocityMetadataGenerator extends AbstractIdentifiableInitializable
             final Map<String,String> prefixMap = new HashMap<>();
             
             prefixMap.put(SAMLConstants.SAML20MD_PREFIX, SAMLConstants.SAML20MD_NS);
-            prefixMap.put(SAMLConstants.SAML20_PREFIX, SAMLConstants.SAML20_NS);
             prefixMap.put(SignatureConstants.XMLSIG_PREFIX, SignatureConstants.XMLSIG_NS);
             
             final Set<Namespace> additionalNamespaces = params.getAdditionalNamespaces();
@@ -114,6 +115,9 @@ public class VelocityMetadataGenerator extends AbstractIdentifiableInitializable
             
             context.put("namespaces", prefixMap);
         }
+        
+        context.put("xmltext", XmlEscapers.xmlContentEscaper());
+        context.put("xmlattr", XmlEscapers.xmlAttributeEscaper());
         
         return context;
     }

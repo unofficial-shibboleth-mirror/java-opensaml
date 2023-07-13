@@ -2,12 +2,12 @@
     <md:IDPSSODescriptor protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end">
 #parse("$params.templatePath/KeyDescriptors.vm")
 #foreach ($endpoint in $role.artifactResolutionServices)
-        <md:ArtifactResolutionService index="$endpoint.index" Binding="$endpoint.binding" Location="$endpoint.location" />
+        <md:ArtifactResolutionService index="$endpoint.index" Binding="$endpoint.binding" Location="$xmlattr.escape($endpoint.location)" />
 #end
 #foreach ($endpoint in $role.singleLogoutServices)
-        <md:SingleLogoutService Binding="$endpoint.binding" Location="$endpoint.location" />
+        <md:SingleLogoutService Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
 #end
 #foreach ($endpoint in $role.singleSignOnServices)
-        <md:SingleSignOnService Binding="$endpoint.binding" Location="$endpoint.location" />
+        <md:SingleSignOnService Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
 #end
     </md:IDPSSODescriptor>

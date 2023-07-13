@@ -2,15 +2,15 @@
     <md:SPSSODescriptor #if ($role.wantAssertionsSigned)WantAssertionsSigned="true" #{end}protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end">
 #parse("$params.templatePath/KeyDescriptors.vm")
 #foreach ($endpoint in $role.artifactResolutionServices)
-        <md:ArtifactResolutionService index="$endpoint.index" Binding="$endpoint.binding" Location="$endpoint.location" />
+        <md:ArtifactResolutionService index="$endpoint.index" Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
 #end
 #foreach ($endpoint in $role.singleLogoutServices)
-        <md:SingleLogoutService Binding="$endpoint.binding" Location="$endpoint.location" />
+        <md:SingleLogoutService Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
 #end
 #foreach ($format in $role.nameIDFormats)
-        <md:NameIDFormat>$format.URI</md:NameIDFormat>
+        <md:NameIDFormat>$xmltext.escape($format.URI)</md:NameIDFormat>
 #end
 #foreach ($endpoint in $role.assertionConsumerServices)
-        <md:AssertionConsumerService index="$endpoint.index" Binding="$endpoint.binding" Location="$endpoint.location" />
+        <md:AssertionConsumerService index="$endpoint.index" Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
 #end
     </md:SPSSODescriptor>
