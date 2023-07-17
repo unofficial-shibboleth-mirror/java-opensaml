@@ -1,5 +1,6 @@
 #set ($role = $params.IDPSSODescriptor)
     <md:IDPSSODescriptor protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end">
+#parse("$params.templatePath/Extensions.vm")
 #parse("$params.templatePath/KeyDescriptors.vm")
 #foreach ($endpoint in $role.artifactResolutionServices)
         <md:ArtifactResolutionService index="$endpoint.index" Binding="$endpoint.binding" Location="$xmlattr.escape($endpoint.location)" />

@@ -29,7 +29,6 @@ import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
-import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
@@ -71,16 +70,6 @@ public interface MetadataGeneratorParameters {
      */
     default boolean isOmitNamespaceDeclarations() {
         return false;
-    }
-    
-    /**
-     * Whether to include an {@link Extensions} element in output.
-     * 
-     * @return whether to include extensions element
-     */
-    default boolean isRequiresExtensions() {
-        return !getScopes().isEmpty() || getDisplayName() != null || getDescription() != null || getLogo() != null
-                || !getTagAssignments().isEmpty();
     }
     
     /**

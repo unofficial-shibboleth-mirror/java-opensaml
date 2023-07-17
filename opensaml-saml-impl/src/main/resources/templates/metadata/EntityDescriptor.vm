@@ -1,23 +1,7 @@
 <md:EntityDescriptor entityID="$xmlattr.escape($params.entityID)"#if (!$params.omitNamespaceDeclarations)#foreach ($ns in $namespaces.entrySet()) xmlns:$ns.key="$ns.value"#end#end>
-#if ($params.requiresExtensions)
+#if (!$params.tagAssignments.isEmpty())
 
     <md:Extensions>
-#foreach ($scope in $params.scopes)
-        <shibmd:Scope regexp="false">$xmltext.escape($scope)</shibmd:Scope>
-#end
-#if ($params.displayName || $params.description || $params.logo)
-        <mdui:UIInfo>
-#if ($params.displayName)
-            <mdui:DisplayName>$xmltext.escape($params.displayName)</mdui:DisplayName>
-#end
-#if ($params.description)
-            <mdui:Description>$xmltext.escape($params.description)</mdui:Description>
-#end
-#if ($params.logo)
-            <mdui:Logo#if ($params.lang) xml:lang="$params.lang"#end#if ($params.logo.width) width="$params.logo.width"#end#if ($params.logo.height) height="$params.logo.height"#end>$xmltext.escape($params.logo.URI)</mdui:Logo>
-#end
-#end
-        </mdui:UIInfo>
 #foreach ($tag in $params.tagAssignments.entrySet())
 #if ($foreach.first)
         <mdattr:EntityAttributes>
@@ -32,6 +16,7 @@
 #end
 #end
     </md:Extensions>
+    
 #end
 #if ($params.IDPSSODescriptor)
 #parse("$params.templatePath/IDPSSODescriptor.vm")
