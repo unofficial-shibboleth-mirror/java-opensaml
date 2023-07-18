@@ -1,4 +1,4 @@
-#if ($params.displayName || $params.description || $params.logo || !$scopes.isEmpty())
+#if ($params.displayName || $params.description || $params.logo || !$params.scopes.isEmpty())
         <md:Extensions>
 #foreach ($scope in $params.scopes)
             <shibmd:Scope regexp="false">$xmltext.escape($scope)</shibmd:Scope>
