@@ -141,8 +141,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
                     peerContext.setAuthenticated(true);
                 }
             } else {
-                log.debug(
-                        "{} Validation of protocol message signature failed for context issuer '{}', message type: {}",
+                log.warn("{} Validation of protocol message signature failed for context issuer '{}', message type: {}",
                         getLogPrefix(), contextEntityID, msgType);
                 throw new MessageHandlerException("Validation of protocol message signature failed");
             }
