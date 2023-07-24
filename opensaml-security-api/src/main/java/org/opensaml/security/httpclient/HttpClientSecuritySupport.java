@@ -27,12 +27,16 @@ import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTE
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL;
 
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
+import org.apache.hc.client5.http.ContextBuilder;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.HttpRequest;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.credential.UsageType;
@@ -117,6 +121,35 @@ public final class HttpClientSecuritySupport {
                         "Evaluation of server TLS credential with configured TrustEngine was not performed");
             }
         }
+    }
+    
+    /**
+     * Builds a new {@link HttpClientContext} and marshals the supplied {@link HttpClientSecurityParameters}
+     * into it.
+     * 
+     * @param securityParameters the parameters to apply to the context
+     * 
+     * @return the fresh context
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static HttpClientContext buildHttpClientContext(
+            @Nullable final HttpClientSecurityParameters securityParameters) {
+        final ContextBuilder builder = ContextBuilder.create();
+        
+        if (securityParameters != null) {
+            final Map<HttpHost,UsernamePasswordCredentials> basicAuthMap =
+                    securityParameters.getPreemptiveBasicAuthMap();
+            if (basicAuthMap != null) {
+                basicAuthMap.forEach(builder::preemptiveBasicAuth);
+            }
+        }
+        
+        final HttpClientContext context = builder.build();
+        assert context != null;
+        
+        marshalSecurityParameters(context, securityParameters, true);
+        return context;
     }
     
     /**

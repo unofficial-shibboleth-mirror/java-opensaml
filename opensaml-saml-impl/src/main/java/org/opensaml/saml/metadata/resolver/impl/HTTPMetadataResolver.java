@@ -271,10 +271,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver impl
      * @return a new instance of {@link HttpClientContext}
      */
     @Nonnull protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
-        final HttpClientContext context = HttpClientContext.create();
-        assert context != null;
+        final HttpClientContext context =
+                HttpClientSecuritySupport.buildHttpClientContext(httpClientSecurityParameters);
         
-        HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, true);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(context, request);
         
         return context;

@@ -60,7 +60,6 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
 import net.shibboleth.shared.component.UninitializedComponentException;
-import net.shibboleth.shared.httpclient.HttpClientSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -297,8 +296,8 @@ public class HTTPReporter extends ScheduledReporter implements InitializableComp
      * @return the client context instance
      */
     @Nonnull private HttpClientContext buildHttpContext(@Nonnull final HttpRequest request) {
-        final HttpClientContext clientContext = HttpClientSupport.buildHttpClientContext();
-        HttpClientSecuritySupport.marshalSecurityParameters(clientContext, httpClientSecurityParameters, false);
+        final HttpClientContext clientContext =
+                HttpClientSecuritySupport.buildHttpClientContext(httpClientSecurityParameters);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(clientContext, request);
         return clientContext;
     }

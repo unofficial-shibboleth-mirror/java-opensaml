@@ -20,11 +20,15 @@ package org.opensaml.security.httpclient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -33,6 +37,8 @@ import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.CredentialsProvider;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.HttpHost;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 
@@ -43,6 +49,9 @@ public class HttpClientSecurityParameters {
     
     /** HttpClient credentials provider. */
     @Nullable private CredentialsProvider credentialsProvider;
+    
+    /** Map of host specifications to basic-auth credentials to be applied preemptively. */
+    @Nullable private Map<HttpHost,UsernamePasswordCredentials> preemptiveBasicAuthMap;
     
     /** HttpClient {@link AuthCache} to allow pre-emptive authentication. */
     @Nullable private AuthCache authCache;
@@ -88,6 +97,35 @@ public class HttpClientSecurityParameters {
     @Nonnull public HttpClientSecurityParameters setCredentialsProvider(@Nullable final CredentialsProvider provider) {
         credentialsProvider = provider;
         return this;
+    }
+    
+    /**
+     * Install a map of rules for preemptive basic authentication using the supplied hosts and credentials.
+     * 
+     * <p>Use of this feature requires that the eventual {@link HttpClientContext} used be built using
+     * {@link HttpClientSecuritySupport#buildHttpClientContext(HttpClientSecurityParameters)}.</p>
+     * 
+     * @param map preemptive basic-auth map
+     * 
+     * @return this object
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public HttpClientSecurityParameters setPreemptiveBasicAuthMap(
+            @Nullable final Map<HttpHost,UsernamePasswordCredentials> map) {
+        preemptiveBasicAuthMap = map != null ? CollectionSupport.copyToMap(map) : null;
+        return this;
+    }
+    
+    /**
+     * Get the map of rules for preemptive basic authentication using the supplied hosts and credentials.
+     * 
+     * @return basic-auth rule map or null
+     * 
+     * @since 5.0.0
+     */
+    @Nullable @Unmodifiable @NotLive public Map<HttpHost,UsernamePasswordCredentials> getPreemptiveBasicAuthMap() {
+        return preemptiveBasicAuthMap;
     }
     
     /**

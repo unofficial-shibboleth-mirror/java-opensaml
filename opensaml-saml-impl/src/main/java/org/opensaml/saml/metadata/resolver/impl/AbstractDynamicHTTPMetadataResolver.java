@@ -318,12 +318,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @return a new instance of {@link HttpClientContext}
      */
     @Nonnull protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
-        final HttpClientContext context = HttpClientContext.create();
-        assert context != null;
-        
-        HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, true);
+        final HttpClientContext context =
+                HttpClientSecuritySupport.buildHttpClientContext(httpClientSecurityParameters);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(context, request);
-        
         return context;
     }
     
