@@ -333,7 +333,7 @@ public final class AlgorithmSupport {
             }
         }
     
-        LOG.info("Mapping from algorithm URI {} to key length not available", algorithmURI);
+        LOG.debug("Mapping from algorithm URI {} to key length not available", algorithmURI);
         return null;
     }
 
