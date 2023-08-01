@@ -18,13 +18,19 @@
 package org.opensaml.security.httpclient;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
 import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.core5.http.HttpHost;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * The security configuration information to use when performing HTTP client requests.
@@ -37,6 +43,15 @@ public interface HttpClientSecurityConfiguration {
      * @return the credentials provider, or null
      */
     @Nullable CredentialsProvider getCredentialsProvider();
+    
+    /**
+     * Get the map of rules for preemptive basic authentication using the supplied hosts and credentials.
+     * 
+     * @return basic-auth rule map or null
+     * 
+     * @since 5.0.0
+     */
+    @Nullable @Unmodifiable @NotLive Map<HttpHost,UsernamePasswordCredentials> getPreemptiveBasicAuthMap();
     
     /**
      * Sets the optional trust engine used in evaluating server TLS credentials.

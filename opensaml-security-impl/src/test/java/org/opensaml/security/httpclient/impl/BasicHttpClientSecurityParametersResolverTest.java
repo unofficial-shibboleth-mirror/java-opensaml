@@ -25,8 +25,10 @@ import java.security.cert.CertificateException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
+import org.apache.hc.core5.http.HttpHost;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
@@ -79,6 +81,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
+        Assert.assertNotNull(params.getPreemptiveBasicAuthMap());
         Assert.assertNotNull(params.getHostnameVerifier());
         Assert.assertNotNull(params.getTLSCipherSuites());
         Assert.assertNull(params.getTLSCriteriaSet());
@@ -98,6 +101,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         Assert.assertNull(params.getAuthCache());
         Assert.assertNull(params.getClientTLSCredential());
         Assert.assertNull(params.getCredentialsProvider());
+        Assert.assertNull(params.getPreemptiveBasicAuthMap());
         Assert.assertNull(params.getHostnameVerifier());
         Assert.assertNull(params.getTLSCipherSuites());
         Assert.assertNull(params.getTLSCriteriaSet());
@@ -122,6 +126,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
+        Assert.assertNotNull(params.getPreemptiveBasicAuthMap());
         Assert.assertNotNull(params.getHostnameVerifier());
         Assert.assertNotNull(params.getTLSCipherSuites());
         Assert.assertNull(params.getTLSCriteriaSet());
@@ -140,6 +145,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
+        Assert.assertNotNull(params.getPreemptiveBasicAuthMap());
         Assert.assertNotNull(params.getHostnameVerifier());
         Assert.assertNotNull(params.getTLSCipherSuites());
         Assert.assertNull(params.getTLSCriteriaSet());
@@ -158,6 +164,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
+        Assert.assertNotNull(params.getPreemptiveBasicAuthMap());
         Assert.assertNotNull(params.getHostnameVerifier());
         Assert.assertNotNull(params.getTLSCipherSuites());
         Assert.assertNull(params.getTLSCriteriaSet());
@@ -232,6 +239,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         BasicHttpClientSecurityConfiguration config = new BasicHttpClientSecurityConfiguration();
         config.setClientTLSCredential(x509Credential);
         config.setCredentialsProvider(new BasicCredentialsProvider());
+        config.setPreemptiveBasicAuthMap(CollectionSupport.singletonMap(new HttpHost("test"), new UsernamePasswordCredentials("test", "test".toCharArray())));
         config.setHostnameVerifier(new DefaultHostnameVerifier());
         config.setTLSCipherSuites(CollectionSupport.singletonList("test"));
         config.setTLSProtocols(CollectionSupport.singletonList("test"));

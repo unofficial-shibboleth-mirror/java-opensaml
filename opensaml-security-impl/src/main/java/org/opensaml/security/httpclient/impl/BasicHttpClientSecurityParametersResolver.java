@@ -107,6 +107,8 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
                     config.getClientTLSCredential()));
             params.setCredentialsProvider(ObjectSupport.firstNonNull(params.getCredentialsProvider(), 
                     config.getCredentialsProvider()));
+            params.setPreemptiveBasicAuthMap(ObjectSupport.firstNonNull(params.getPreemptiveBasicAuthMap(), 
+                    config.getPreemptiveBasicAuthMap()));
             params.setHostnameVerifier(ObjectSupport.firstNonNull(params.getHostnameVerifier(), 
                     config.getHostnameVerifier()));
             params.setTLSCipherSuites(ObjectSupport.firstNonNull(params.getTLSCipherSuites(), 
@@ -164,6 +166,7 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
             
             log.debug("\tAuthCache: {}", params.getAuthCache() != null ? "present" : "null");
             log.debug("\tCredentialsProvider: {}", params.getCredentialsProvider() != null ? "present" : "null");
+            log.debug("\tPreEmptive Basic Auth Map: {}", params.getPreemptiveBasicAuthMap());
         }
     }
 
