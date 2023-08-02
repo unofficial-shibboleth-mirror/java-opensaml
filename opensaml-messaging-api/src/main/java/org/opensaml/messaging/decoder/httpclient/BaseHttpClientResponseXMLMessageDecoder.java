@@ -32,10 +32,8 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.slf4j.Logger;
-
 import org.w3c.dom.Element;
 
 /**
@@ -44,9 +42,6 @@ import org.w3c.dom.Element;
  */
 public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHttpClientResponseMessageDecoder {
     
-    /** Used to log protocol messages. */
-    @Nonnull private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
-
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseHttpClientResponseXMLMessageDecoder.class);
 
@@ -63,8 +58,6 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
         log.debug("Beginning to decode message from HttpResponse");
         
         super.decode();
-        
-        logDecodedMessage();
 
         log.debug("Successfully decoded message from HttpResponse");
     }
@@ -97,35 +90,21 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
             throw new ComponentInitializationException("Parser pool cannot be null");
         }
     }
-
-    /**
-     * Log the decoded message to the protocol message logger.
-     */
-    protected void logDecodedMessage() {
-        if (protocolMessageLog.isDebugEnabled() ){
-            final Object message = getMessageToLog();
-            if (message == null || !(message instanceof XMLObject)) {
-                log.warn("Decoded message was null or unsupported, nothing to log");
-                return;
-            }
-            
-            try {
-                final Element dom = XMLObjectSupport.marshall((XMLObject) message);
-                protocolMessageLog.debug("\n" + SerializeSupport.prettyPrintXML(dom));
-            } catch (final MarshallingException e) {
-                log.error("Unable to marshall message for logging purposes", e);
-            }
-        }
-    }
     
-    /**
-     * Get the XMLObject which will be logged as the protocol message.
-     * 
-     * @return the XMLObject message considered to be the protocol message for logging purposes
-     */
-    @Nullable protected Object getMessageToLog() {
-        final MessageContext mc = getMessageContext();
-        return mc != null ? mc.getMessage() : null;
+    /** {@inheritDoc} */
+    @Override
+    @Nullable protected String serializeMessageForLogging(@Nullable final Object message) {
+        if (message == null || !XMLObject.class.isInstance(message)) {
+            log.debug("Message was null or unsupported, can not serialize");
+            return null;
+        }
+        try {
+            final Element dom = XMLObjectSupport.marshall(XMLObject.class.cast(message));
+            return SerializeSupport.prettyPrintXML(dom);     
+        } catch (MarshallingException e) {
+            log.error("Unable to marshall message for logging purposes", e);
+            return null;
+        }
     }
 
     /**

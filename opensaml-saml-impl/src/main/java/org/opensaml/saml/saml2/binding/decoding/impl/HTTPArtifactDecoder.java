@@ -25,13 +25,13 @@ import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.binding.EndpointResolver;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.SAMLSourceLocationArtifact;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.binding.impl.BaseSAMLHttpServletRequestDecoder;
 import org.opensaml.saml.common.binding.impl.DefaultEndpointResolver;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.soap.SAMLSOAPClientContextBuilder;
@@ -78,7 +78,7 @@ import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 /** 
  * SAML 2 Artifact Binding decoder, support both HTTP GET and POST.
  */
-public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder implements SAMLMessageDecoder {
+public class HTTPArtifactDecoder extends BaseSAMLHttpServletRequestDecoder implements SAMLMessageDecoder {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPArtifactDecoder.class);

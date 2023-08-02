@@ -19,10 +19,10 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.binding.impl.BaseSAMLHttpServletRequestDecoder;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ import net.shibboleth.shared.primitive.StringSupport;
  * 
  * <strong>NOTE: This decoder is not yet implemented.</strong>
  */
-public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder 
+public class HTTPArtifactDecoder extends BaseSAMLHttpServletRequestDecoder
         implements SAMLMessageDecoder {
 
     /** Class logger. */

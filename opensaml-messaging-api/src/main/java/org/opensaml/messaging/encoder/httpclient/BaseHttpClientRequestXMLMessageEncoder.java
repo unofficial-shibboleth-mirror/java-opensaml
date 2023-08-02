@@ -53,40 +53,24 @@ public abstract class BaseHttpClientRequestXMLMessageEncoder  extends AbstractHt
         }
 
         super.encode();
-
-        logEncodedMessage();
         
         log.debug("Successfully encoded message.");
     }
-
-    /**
-     * Log the encoded message to the protocol message logger.
-     */
-    protected void logEncodedMessage() {
-        if (protocolMessageLog.isDebugEnabled() ){
-            final Object message = getMessageToLog();
-            if (message == null || !(message instanceof XMLObject)) {
-                log.warn("Encoded message was null or unsupported, nothing to log");
-                return;
-            }
-            
-            try {
-                final Element dom = XMLObjectSupport.marshall((XMLObject) message);
-                protocolMessageLog.debug("\n" + SerializeSupport.prettyPrintXML(dom));
-            } catch (final MarshallingException e) {
-                log.error("Unable to marshall message for logging purposes", e);
-            }
-        }
-    }
     
-    /**
-     * Get the XMLObject which will be logged as the protocol message.
-     * 
-     * @return the XMLObject message considered to be the protocol message for logging purposes
-     */
-    @Nullable protected Object getMessageToLog() {
-        final MessageContext mc = getMessageContext();
-        return mc != null ? mc.getMessage() : null;
+    /** {@inheritDoc} */
+    @Override
+    @Nullable protected String serializeMessageForLogging(@Nullable final Object message) {
+        if (message == null || !XMLObject.class.isInstance(message)) {
+            log.debug("Message was null or unsupported, can not serialize");
+            return null;
+        }
+        try {
+            final Element dom = XMLObjectSupport.marshall(XMLObject.class.cast(message));
+            return SerializeSupport.prettyPrintXML(dom);     
+        } catch (MarshallingException e) {
+            log.error("Unable to marshall message for logging purposes", e);
+            return null;
+        }
     }
 
     /**

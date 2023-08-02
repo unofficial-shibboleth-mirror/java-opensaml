@@ -44,6 +44,12 @@ public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.imp
     /** Optional {@link BindingDescriptor} to inject into {@link SAMLBindingContext} created. */
     @Nullable private BindingDescriptor bindingDescriptor;
     
+    /** Constructor. */
+    public HTTPSOAP11Decoder() {
+        super();
+        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SAML");
+    }
+
     /** {@inheritDoc} */
     @Nonnull @NotEmpty public String getBindingURI() {
         return SAMLConstants.SAML2_SOAP11_BINDING_URI;

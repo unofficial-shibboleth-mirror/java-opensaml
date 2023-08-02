@@ -26,6 +26,14 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public class HTTPSOAP11Encoder extends org.opensaml.soap.soap11.encoder.http.impl.HTTPSOAP11Encoder
         implements SAMLMessageEncoder {
     
+    
+    
+    /** Constructor. */
+    public HTTPSOAP11Encoder() {
+        super();
+        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SAML");
+    }
+
     /** {@inheritDoc} */
     @Override
     @Nullable protected String getSOAPAction() {

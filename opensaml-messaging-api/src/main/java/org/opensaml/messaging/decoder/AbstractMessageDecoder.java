@@ -14,27 +14,42 @@
 
 package org.opensaml.messaging.decoder;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
+import org.slf4j.Logger;
 
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.UnmodifiableComponent;
+import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Abstract message decoder.
  */
 public abstract class AbstractMessageDecoder extends AbstractInitializableComponent
         implements MessageDecoder, UnmodifiableComponent {
+    
+    @Nonnull public static final String BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY = "PROTOCOL_MESSAGE";
+    
+    /** Used to log protocol messages. */
+    @Nonnull private Logger protocolMessageLog = LoggerFactory.getLogger(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY);
+
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMessageDecoder.class);
 
     /** Message context. */
     @Nullable private MessageContext messageContext;
+    
+    /** The configured logging category for protocol messages. */
+    @Nonnull private String protocolMessageLoggerCategory = BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY;
 
     /** {@inheritDoc} */
     @Nullable public MessageContext getMessageContext() {
         return messageContext;
     }
-
+    
     /**
      * Set the message context.
      * 
@@ -48,6 +63,85 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     public void decode() throws MessageDecodingException {
         checkComponentActive();
         doDecode();
+        logDecodedMessage();
+    }
+    
+    /**
+     * Get the protocol message logger.
+     * 
+     * @return The protocol message logger
+     */
+    @Nonnull protected Logger getProtocolMessageLogger() {
+        return protocolMessageLog;
+    }
+    
+    /**
+     * Get the configured logging category for protocol messages.
+     * 
+     * @return the logging category
+     */
+    @Nonnull protected String getProtocolMessageLoggerCategory() {
+        return protocolMessageLoggerCategory;
+    }
+    
+    /**
+     * Set the configured logging category for protocol messages.
+     * 
+     * <p>
+     * If null, {@link AbstractMessageDecoder#BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY} will be used.
+     * </p>
+     * 
+     * @param category the logging category
+     */
+    protected void setProtocolMessageLoggerCategory(@Nullable final String category) {
+       final String trimmed = StringSupport.trimOrNull(category);
+       if (trimmed != null) {
+           protocolMessageLoggerCategory = trimmed;
+       } else {
+           protocolMessageLoggerCategory = BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY;
+       }
+       protocolMessageLog = LoggerFactory.getLogger(protocolMessageLoggerCategory);
+    }
+    
+    /**
+     * Log the decoded message to the protocol message logger.
+     */
+    protected void logDecodedMessage() {
+        if (protocolMessageLog.isDebugEnabled() ){
+            final String serializedMessage = serializeMessageForLogging(getMessageToLog());
+            if (serializedMessage == null) {
+                log.debug("Serialized decoded protocol message was null, nothing to log");
+                return;
+            }
+            
+            protocolMessageLog.debug("\n" + serializedMessage);
+        }
+    }
+    
+    /**
+     * Get the XMLObject which will be logged as the protocol message.
+     * 
+     * @return the XMLObject message considered to be the protocol message for logging purposes
+     */
+    @Nullable protected Object getMessageToLog() {
+        final MessageContext mc = getMessageContext();
+        return mc != null ? mc.getMessage() : null;
+    }
+    
+    /**
+     * Serialize the message for logging purposes.
+     * 
+     * <p>
+     * Default implementation is to return the message object's {@link #toString()},
+     * but subclasses should override if a better message-specific serialization mechanism exists.
+     * </p>
+     * 
+     * @param message the message to serialize
+     * 
+     * @return the serialized message, or null if message can not be serialized
+     */
+    @Nullable protected String serializeMessageForLogging(@Nullable final Object message) {
+        return message != null ? message.toString() : null;
     }
 
     /**
@@ -57,5 +151,6 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
      * @throws MessageDecodingException thrown if there is a problem decoding the message
      */
     protected abstract void doDecode() throws MessageDecodingException;
+    
 
 }

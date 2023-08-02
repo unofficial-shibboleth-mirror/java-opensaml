@@ -3,7 +3,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%-5level %logger{0} - %msg%n</pattern>
+            <pattern>%-5level %logger - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -81,6 +81,10 @@
     
     <logger name="org.opensaml.saml">
         <level value="INFO"/>
+    </logger>
+
+    <logger name="PROTOCOL_MESSAGE">
+        <level value="DEBUG"/>
     </logger>
 
     <root>

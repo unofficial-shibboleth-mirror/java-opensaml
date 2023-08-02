@@ -29,6 +29,12 @@ public class HttpClientRequestSOAP11Encoder
         extends org.opensaml.soap.client.soap11.encoder.http.impl.HttpClientRequestSOAP11Encoder
         implements SAMLMessageEncoder {
 
+    /** Constructor. */
+    public HttpClientRequestSOAP11Encoder() {
+        super();
+        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SAML");
+    }
+
     /** {@inheritDoc} */
     @Nonnull @NotEmpty public String getBindingURI() {
         return SAMLConstants.SAML2_SOAP11_BINDING_URI;

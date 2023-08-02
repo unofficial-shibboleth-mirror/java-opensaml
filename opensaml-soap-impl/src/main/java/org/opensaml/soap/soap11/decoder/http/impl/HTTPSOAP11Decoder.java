@@ -67,7 +67,13 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
     
     /** Message handler to use in processing the message body. */
     @NonnullAfterInit private MessageHandler bodyHandler;
-    
+
+    /** Constructor. */
+    public HTTPSOAP11Decoder() {
+        super();
+        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SOAP");
+    }
+
     /**
      * Get the configured body handler MessageHandler.
      * 
