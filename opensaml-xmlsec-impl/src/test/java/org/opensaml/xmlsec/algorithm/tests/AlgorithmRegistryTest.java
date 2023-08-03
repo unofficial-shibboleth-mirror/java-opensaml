@@ -152,6 +152,10 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA512));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA3_224));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA3_256));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA3_384));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA3_512));
         
         // HMAC
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
@@ -187,6 +191,15 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
         
         // SymmetricKeyWrap
         Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
@@ -224,6 +237,10 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA384));
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA512));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA3_224));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA3_256));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA3_384));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA3_512));
         Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.MessageDigest).stream().filter(Objects::nonNull).count(), byType.size());
         
         // HMAC
@@ -267,6 +284,15 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
         Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.Signature).stream().filter(Objects::nonNull).count(), byType.size());
         
         // SymmetricKeyWrap
@@ -339,8 +365,28 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
             
+            // These added by later versions of Java
+            
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+            
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+            
+            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
+            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+            
+            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+            
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA3_224));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA3_256));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA3_384));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA3_512));
+            
             // Conditional environment tests
             
+            // Elliptic-Curve
             if (providerSupport.haveSunEC() || providerSupport.haveBC()) {
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
@@ -358,18 +404,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
                 Assert.assertFalse(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES));
             }
 
-            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
-            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
-            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
-            
-            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
-            
-            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
-            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
-            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
-            
-            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
-            
+            // RIPE
             if (providerSupport.haveBC()) {
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_RIPEMD160));
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
@@ -379,6 +414,38 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
                 Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
                 Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
             }
+
+            // RSASSA-PSA SHA-2
+            // According to the Java 17 security providers docs, these RSASSA-PSA SHA-2 variants are supposed to be
+            // supported by that version of the SunRsaSign provider. But in reality they appear to currently be unsupported.
+            // Confirmed by iterating the java.security.Security Providers. Brent 2023-08-03. 
+            if (providerSupport.haveBC()) {
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
+            } else {
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
+            }
+
+            // RSASSA-PSA SHA-3
+            if (providerSupport.haveBC()) {
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
+            } else {
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
+                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
+            }
+            
         
         } finally {
             providerSupport.unloadBC();

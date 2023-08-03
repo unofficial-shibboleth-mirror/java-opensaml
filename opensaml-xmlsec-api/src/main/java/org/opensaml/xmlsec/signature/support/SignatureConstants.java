@@ -41,6 +41,9 @@ public final class SignatureConstants {
     /** Algorithm URI prefix used by RFC 4051. */
     @Nonnull @NotEmpty public static final String MORE_ALGO_NS = "http://www.w3.org/2001/04/xmldsig-more#";
 
+    /** Algorithm URI prefix used by RFC 4051 and RFC 9231. */
+    @Nonnull @NotEmpty public static final String MORE_ALGO_2007_05_NS = "http://www.w3.org/2007/05/xmldsig-more#";
+
     // *********************************************************
     // Algorithm URI's
     // *********************************************************
@@ -208,9 +211,9 @@ public final class SignatureConstants {
      *  "http://www.w3.org/2002/06/xmldsig-filter2";
      */
 
-    // *********************************************************
-    // Some additional algorithm URIs from RFC 4051
-    // *********************************************************
+    // ************************************************************
+    // Some additional algorithm URIs from RFC 4051 and RFC 9231
+    // ************************************************************
     /** Signature - NOT Recommended RSAwithMD5. */
     @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 = MORE_ALGO_NS + "rsa-md5";
 
@@ -270,6 +273,55 @@ public final class SignatureConstants {
 
     /** Digest - Optional SHA384. */
     @Nonnull @NotEmpty public static final String ALGO_ID_DIGEST_SHA384 = MORE_ALGO_NS + "sha384";
+
+    /** Digest - Optional SHA-3 224. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_DIGEST_SHA3_224 = MORE_ALGO_2007_05_NS + "sha3-224";
+
+    /** Digest - Optional SHA-3 256. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_DIGEST_SHA3_256 = MORE_ALGO_2007_05_NS + "sha3-256";
+
+    /** Digest - Optional SHA-3 384. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_DIGEST_SHA3_384 = MORE_ALGO_2007_05_NS + "sha3-384";
+
+    /** Digest - Optional SHA-3 512. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_DIGEST_SHA3_512 = MORE_ALGO_2007_05_NS + "sha3-512";
+    
+    /** Signature - Optional RSASSA-PSS with SHA1 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha1-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA-224 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha224-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA-256 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha256-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA-384 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha384-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA-512 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha512-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA3-224 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha3-224-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA3-256 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha3-256-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA3-384 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha3-384-rsa-MGF1";
+    
+    /** Signature - Optional RSASSA-PSS with SHA3-512 and MGF1. */
+    @Nonnull @NotEmpty public static final String ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1 =
+            MORE_ALGO_2007_05_NS + "sha3-512-rsa-MGF1";
+
     
     // *********************************************************
     // Some additional algorithm URIs from XML Signature 1.1

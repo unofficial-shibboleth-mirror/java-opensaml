@@ -12,6 +12,10 @@ org.opensaml.xmlsec.algorithm.descriptors.DigestSHA224
 org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256
 org.opensaml.xmlsec.algorithm.descriptors.DigestSHA384
 org.opensaml.xmlsec.algorithm.descriptors.DigestSHA512
+org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_224
+org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_256
+org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_384
+org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_512
 org.opensaml.xmlsec.algorithm.descriptors.HMACMD5
 org.opensaml.xmlsec.algorithm.descriptors.HMACRIPEMD160
 org.opensaml.xmlsec.algorithm.descriptors.HMACSHA1
@@ -39,6 +43,15 @@ org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA224
 org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256
 org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA384
 org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA512
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA1_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA224_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA256_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA384_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_224_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_256_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_384_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_512_MGF1
+org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA512_MGF1
 org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES128
 org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES192
 org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES256

@@ -36,6 +36,10 @@ import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA1;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA224;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_224;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_256;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_384;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA3_512;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA512;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACMD5;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACRIPEMD160;
@@ -64,6 +68,15 @@ import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA224;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA384;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA1_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA224_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA256_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA384_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_224_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_256_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_384_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA3_512_MGF1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA512_MGF1;
 import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES128;
 import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES192;
 import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES256;
@@ -184,6 +197,28 @@ public class AlgorithmDescriptorsTest {
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA512); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA512); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
+        
+        descriptor = new DigestSHA3_224();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA3_224);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA3_224); 
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
+        
+        descriptor = new DigestSHA3_256();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA3_256);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA3_256); 
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
+        
+        descriptor = new DigestSHA3_384();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA3_384);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA3_384); 
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
+        
+        descriptor = new DigestSHA3_512();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA3_512);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA3_512); 
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
+        
+        
     }
     
     // HMAC
@@ -387,6 +422,69 @@ public class AlgorithmDescriptorsTest {
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA512);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA1_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA1);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA1_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA224_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA224);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA224_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA256_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA256);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA256_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA384_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA384);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA384_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA512_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA512);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA512_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA3_224_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA3_224);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA3_224_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA3_256_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA3_256);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA3_256_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA3_384_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA3_384);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA3_384_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
+        
+        descriptor = new SignatureRSASSA_PSS_SHA3_512_MGF1();
+        Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA3_512);
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA3_512_MGF1);
+        Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
+        Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
     }
     

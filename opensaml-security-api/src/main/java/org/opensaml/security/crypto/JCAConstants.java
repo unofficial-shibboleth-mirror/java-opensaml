@@ -122,6 +122,17 @@ public final class JCAConstants {
     /** Digest algorithm: "SHA-512". */
     @Nonnull @NotEmpty public static final String DIGEST_SHA512 = "SHA-512";
     
+    /** Digest algorithm: "SHA-512". */
+    @Nonnull @NotEmpty public static final String DIGEST_SHA3_224 = "SHA3-224";
+    
+    /** Digest algorithm: "SHA-512". */
+    @Nonnull @NotEmpty public static final String DIGEST_SHA3_256 = "SHA3-256";
+    
+    /** Digest algorithm: "SHA-512". */
+    @Nonnull @NotEmpty public static final String DIGEST_SHA3_384 = "SHA3-384";
+    
+    /** Digest algorithm: "SHA-512". */
+    @Nonnull @NotEmpty public static final String DIGEST_SHA3_512 = "SHA3-512";
     
     
     // Signature types
@@ -171,6 +182,32 @@ public final class JCAConstants {
     /** Signature algorithm: "SHA512withECDSA". */
     @Nonnull @NotEmpty public static final String SIGNATURE_ECDSA_SHA512 = "SHA512withECDSA";
     
+    /** Signature algorithm: "SHA1withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA1_MGF1= "SHA1withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA224withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA224_MGF1= "SHA224withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA256withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA256_MGF1 = "SHA256withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA384withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA384_MGF1 = "SHA384withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA512withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA512_MGF1= "SHA512withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA3-224withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA3_224_MGF1 = "SHA3-224withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA3-256withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA3_256_MGF1 = "SHA3-256withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA3-384withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA3_384_MGF1 = "SHA3-384withRSAandMGF1";
+    
+    /** Signature algorithm: "SHA3-512withRSAandMGF1". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA3_512_MGF1 = "SHA3-512withRSAandMGF1";
     
     
     // MAC types
