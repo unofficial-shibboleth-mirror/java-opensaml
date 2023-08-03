@@ -92,6 +92,37 @@ public class StorageRecord<Type> {
     @Nullable public Long getExpiration() {
         return expiration;
     }
+    
+    /**
+     * Get whether the record is valid with respect to the supplied time.
+     * 
+     * @param evalTime time to evaluate expiration against
+     * 
+     * @return true iff the record is non-expired
+     * 
+     * @since 5.0.0
+     */
+    public boolean isValid(final long evalTime) {
+        final Long exp = expiration;
+        if (exp != null) {
+            return evalTime < exp;
+        }
+        
+        return true;
+    }
+
+    /**
+     * Get whether the record has expired with respect to the supplied time.
+     * 
+     * @param evalTime time to evaluate expiration against
+     * 
+     * @return true iff the record is expired
+     * 
+     * @since 5.0.0
+     */
+    public boolean isExpired(final long evalTime) {
+        return !isValid(evalTime);
+    }
 
     /**
      * Set the record version.

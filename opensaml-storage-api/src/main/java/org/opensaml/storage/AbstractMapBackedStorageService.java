@@ -17,10 +17,9 @@ package org.opensaml.storage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,6 +27,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -40,7 +40,8 @@ import org.slf4j.Logger;
  * <p>Abstract methods supply the map of data to manipulate and the lock to use, which allows
  * optimizations in cases where locking isn't required or data isn't shared.</p> 
  */
-public abstract class AbstractMapBackedStorageService extends AbstractStorageService {
+public abstract class AbstractMapBackedStorageService extends AbstractStorageService
+        implements EnumeratableStorageService {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMapBackedStorageService.class);
@@ -79,8 +80,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             final StorageRecord<?> record = dataMap.get(key);
             if (record != null) {
                 // Not yet expired?
-                final Long exp = record.getExpiration();
-                if (exp == null || System.currentTimeMillis() < exp) {
+                if (record.isValid(System.currentTimeMillis())) {
                     return false;
                 }
                 
@@ -180,10 +180,9 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             final Map<String, MutableStorageRecord<?>> dataMap = contextMap.get(context);
             if (dataMap != null) {    
                 setDirty();
-                final Long now = System.currentTimeMillis();
+                final long now = System.currentTimeMillis();
                 for (final MutableStorageRecord<?> record : dataMap.values()) {
-                    final Long exp = record.getExpiration();
-                    if (exp == null || now < exp) {
+                    if (record.isValid(now)) {
                         record.setExpiration(expiration);
                     }
                 }
@@ -244,6 +243,38 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             
         } finally {
             writeLock.unlock();
+        }
+    }
+    
+    /** {@inheritDoc} */
+    @Nonnull public Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context) throws IOException {
+        final Lock readLock = getLock().readLock();
+        
+        try {
+            readLock.lock();
+            
+            final Map<String,Map<String,MutableStorageRecord<?>>> contextMap;
+            
+            try {
+                contextMap = getContextMap();
+            } catch (final Exception e) {
+                throw new IOException(e);
+            }
+            
+            final Map<String, MutableStorageRecord<?>> dataMap = contextMap.get(context);
+            if (dataMap == null) {
+                log.debug("Read failed, context '{}' not found", context);
+                return CollectionSupport.emptyList();
+            }
+            
+            final long now = System.currentTimeMillis();            
+            return dataMap.entrySet().stream()
+                    .filter(e -> e.getValue().isValid(now))
+                    .map(Map.Entry::getKey)
+                    .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
+            
+        } finally {
+            readLock.unlock();
         }
     }
 
@@ -316,8 +347,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 return new Pair<>();
             }
             
-            final Long exp = record.getExpiration();
-            if (exp != null && System.currentTimeMillis() >= exp) {
+            if (record.isExpired(System.currentTimeMillis())) {
                 log.debug("Read failed, key '{}' expired in context '{}'", key, context);
                 return new Pair<>();
             }
@@ -375,8 +405,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 return null;
             }
             
-            final Long exp = record.getExpiration();
-            if (exp != null && System.currentTimeMillis() >= exp) {
+            if (record.isExpired(System.currentTimeMillis())) {
                 log.debug("Update failed, key '{}' expired in context '{}'", key, context);
                 return null;
             }
@@ -468,16 +497,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * @return  true iff anything was purged
      */
     protected boolean reapWithLock(@Nonnull final Map<String, MutableStorageRecord<?>> dataMap, final long expiration) {
-        return dataMap.entrySet().removeIf(new Predicate<Entry<String, MutableStorageRecord<?>>>() {
-                public boolean test(@Nullable final Entry<String, MutableStorageRecord<?>> entry) {
-                    if (entry != null) {
-                        final Long exp = entry.getValue().getExpiration();
-                        return exp != null && exp <= expiration;
-                    }
-                    return false;
-                }
-            }
-        );
+        return dataMap.entrySet().removeIf(e -> e.getValue().isExpired(expiration));
     }
     
 }

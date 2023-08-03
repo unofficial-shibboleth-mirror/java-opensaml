@@ -19,9 +19,12 @@ import static org.testng.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.storage.EnumeratableStorageService;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.VersionMismatchException;
@@ -46,14 +49,14 @@ public abstract class StorageServiceTest {
     
     protected SecureRandom random;
     
-    protected StorageService shared;
+    protected EnumeratableStorageService shared;
 
     /**
      * Returns a fresh service instance to test.
      * 
      * @return  a new instance
      */
-    @Nonnull protected abstract StorageService getStorageService();
+    @Nonnull protected abstract EnumeratableStorageService getStorageService();
     
     /** Called to init a thread in preparation to run a test. */
     protected void threadInit() {
@@ -80,12 +83,17 @@ public abstract class StorageServiceTest {
     public void strings() throws IOException {
         threadInit();
         
-        String context = Long.toString(random.nextLong());
+        final String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
             boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 300000);
             Assert.assertTrue(result);
         }
+        
+        final List<String> keylist = new ArrayList<>();
+        Iterable<String> keys = shared.getContextKeys(context);
+        keys.forEach(keylist::add);
+        Assert.assertEquals(keylist.size(), 100);
         
         for (int i = 1; i <= 100; i++) {
             StorageRecord<?> rec = shared.read(context, Integer.toString(i));
@@ -114,13 +122,18 @@ public abstract class StorageServiceTest {
             StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
+        
+        keylist.clear();
+        keys = shared.getContextKeys(context);
+        keys.forEach(keylist::add);
+        Assert.assertEquals(keylist.size(), 0);
     }
 
     @Test
     public void expiration() throws IOException, InterruptedException {
         threadInit();
         
-        String context = Long.toString(random.nextLong());
+        final String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
             shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 5000);
@@ -132,14 +145,16 @@ public abstract class StorageServiceTest {
             StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
+        
+        Assert.assertFalse(shared.getContextKeys(context).iterator().hasNext());
     }
     
     @Test
     public void updates() throws IOException, VersionMismatchException {
         threadInit();
         
-        String key = "key";
-        String context = Long.toString(random.nextLong());
+        final String key = "key";
+        final String context = Long.toString(random.nextLong());
         
         shared.create(context, key, "foo", null);
         
@@ -187,8 +202,8 @@ public abstract class StorageServiceTest {
     public void objects() throws IOException, InterruptedException {
         threadInit();
         
-        AnnotatedObject o1 = new AnnotatedObject();
-        AnnotatedObject o2 = new AnnotatedObject();
+        final AnnotatedObject o1 = new AnnotatedObject();
+        final AnnotatedObject o2 = new AnnotatedObject();
         
         o1.generate();
         shared.create(o1);

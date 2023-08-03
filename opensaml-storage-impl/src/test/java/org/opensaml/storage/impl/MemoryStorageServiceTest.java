@@ -18,7 +18,7 @@ import java.time.Duration;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.storage.StorageService;
+import org.opensaml.storage.EnumeratableStorageService;
 import org.opensaml.storage.testing.StorageServiceTest;
 import org.testng.annotations.Test;
 
@@ -31,7 +31,7 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull protected StorageService getStorageService() {
+    @Nonnull protected EnumeratableStorageService getStorageService() {
         MemoryStorageService ss = new MemoryStorageService();
         ss.setId("test");
         ss.setCleanupInterval(Duration.ofSeconds(1));
