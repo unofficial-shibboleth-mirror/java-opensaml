@@ -192,12 +192,33 @@ public class AlgorithmRegistry {
      * @param digestMethod the JCA digest method ID.
      * 
      * @return the algorithm descriptor, or null
+     * 
+     * @deprecated Use instead {@link #getSignatureAlgorithms(String, String)}
      */
+    @Deprecated
     @Nullable public SignatureAlgorithm getSignatureAlgorithm(@Nonnull final String keyType, 
             @Nonnull final String digestMethod) {
         Constraint.isNotNull(keyType, "Key type was null");
         Constraint.isNotNull(digestMethod, "Digest type was null");
         return signatureAlgorithms.get(new SignatureAlgorithmIndex(keyType, digestMethod));
+    }
+
+    /**
+     * Lookup signature algorithm descriptors by the JCA key algorithm and digest method IDs.
+     * 
+     * @param keyType the JCA key algorithm ID.
+     * @param digestMethod the JCA digest method ID.
+     * 
+     * @return the list of matching algorithm descriptors, possibly empty
+     */
+    @Nonnull public Set<SignatureAlgorithm> getSignatureAlgorithms(@Nonnull final String keyType, 
+            @Nonnull final String digestMethod) {
+        Constraint.isNotNull(keyType, "Key type was null");
+        Constraint.isNotNull(digestMethod, "Digest type was null");
+        return getRegisteredByType(AlgorithmType.Signature).stream()
+                .map(SignatureAlgorithm.class::cast)
+                .filter(alg -> alg.getKey().equals(keyType) && alg.getDigest().equals(digestMethod))
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableSet())).get();
     }
 
     /**

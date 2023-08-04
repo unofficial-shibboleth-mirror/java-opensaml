@@ -16,6 +16,7 @@ package org.opensaml.xmlsec.algorithm.tests;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
@@ -24,15 +25,19 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.SignatureAlgorithm;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASSA_PSS_SHA256_MGF1;
 import org.opensaml.xmlsec.config.GlobalAlgorithmRegistryInitializer;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Tests for the AlgorithmRegistry.
@@ -97,6 +102,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
+    @SuppressWarnings("deprecation")
     public void testSignatureIndexing() {
         AlgorithmRegistry registry = new AlgorithmRegistry();
         Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
@@ -110,6 +116,35 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         registry.deregister(new SignatureRSASHA256());
         Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         Assert.assertNull(registry.getSignatureAlgorithm(JCAConstants.KEY_ALGO_RSA, JCAConstants.DIGEST_SHA256));
+    }
+    
+    @Test
+    public void testGetSignatureAlgorithms() {
+        Set<String> algorithms;
+        AlgorithmRegistry registry = new AlgorithmRegistry();
+        Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+
+        algorithms = registry.getSignatureAlgorithms(JCAConstants.KEY_ALGO_RSA, JCAConstants.DIGEST_SHA256).stream().map(SignatureAlgorithm::getURI).collect(Collectors.toSet());
+        Assert.assertTrue(algorithms.isEmpty());
+        
+        registry.register(new SignatureRSASHA256());
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        
+        algorithms = registry.getSignatureAlgorithms(JCAConstants.KEY_ALGO_RSA, JCAConstants.DIGEST_SHA256).stream().map(SignatureAlgorithm::getURI).collect(Collectors.toSet());
+        Assert.assertEquals(algorithms, CollectionSupport.setOf(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        
+        registry.register(new SignatureRSASSA_PSS_SHA256_MGF1());
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+
+        algorithms = registry.getSignatureAlgorithms(JCAConstants.KEY_ALGO_RSA, JCAConstants.DIGEST_SHA256).stream().map(SignatureAlgorithm::getURI).collect(Collectors.toSet());
+        Assert.assertEquals(algorithms, CollectionSupport.setOf(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+        
+        registry.deregister(new SignatureRSASHA256());
+        registry.deregister(new SignatureRSASSA_PSS_SHA256_MGF1());
+        Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+        algorithms = registry.getSignatureAlgorithms(JCAConstants.KEY_ALGO_RSA, JCAConstants.DIGEST_SHA256).stream().map(SignatureAlgorithm::getURI).collect(Collectors.toSet());
+        Assert.assertTrue(algorithms.isEmpty());
     }
     
     @Test
