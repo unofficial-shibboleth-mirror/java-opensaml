@@ -47,7 +47,7 @@ public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.imp
     /** Constructor. */
     public HTTPSOAP11Decoder() {
         super();
-        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SAML");
+        setProtocolMessageLoggerSubCategory("SAML");
     }
 
     /** {@inheritDoc} */

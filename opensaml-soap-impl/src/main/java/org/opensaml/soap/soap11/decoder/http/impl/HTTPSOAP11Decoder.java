@@ -71,7 +71,7 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
     /** Constructor. */
     public HTTPSOAP11Decoder() {
         super();
-        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SOAP");
+        setProtocolMessageLoggerSubCategory("SOAP");
     }
 
     /**

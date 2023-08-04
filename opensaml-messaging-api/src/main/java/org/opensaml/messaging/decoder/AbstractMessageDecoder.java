@@ -42,8 +42,8 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     /** Message context. */
     @Nullable private MessageContext messageContext;
     
-    /** The configured logging category for protocol messages. */
-    @Nonnull private String protocolMessageLoggerCategory = BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY;
+    /** The configured logging sub-category for protocol messages. */
+    @Nonnull private String protocolMessageLoggerSubCategory;
 
     /** {@inheritDoc} */
     @Nullable public MessageContext getMessageContext() {
@@ -76,31 +76,27 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     }
     
     /**
-     * Get the configured logging category for protocol messages.
+     * Get the configured logging sub-category for protocol messages.
      * 
-     * @return the logging category
+     * @return the logging sub-category
      */
-    @Nonnull protected String getProtocolMessageLoggerCategory() {
-        return protocolMessageLoggerCategory;
+    @Nonnull protected String getProtocolMessageLoggerSubCategory() {
+        return protocolMessageLoggerSubCategory;
     }
     
     /**
-     * Set the configured logging category for protocol messages.
+     * Set the configured logging sub-category for protocol messages.
      * 
-     * <p>
-     * If null, {@link AbstractMessageDecoder#BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY} will be used.
-     * </p>
-     * 
-     * @param category the logging category
+     * @param category the logging sub-category
      */
-    protected void setProtocolMessageLoggerCategory(@Nullable final String category) {
-       final String trimmed = StringSupport.trimOrNull(category);
-       if (trimmed != null) {
-           protocolMessageLoggerCategory = trimmed;
-       } else {
-           protocolMessageLoggerCategory = BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY;
-       }
-       protocolMessageLog = LoggerFactory.getLogger(protocolMessageLoggerCategory);
+    protected void setProtocolMessageLoggerSubCategory(@Nullable final String category) {
+        protocolMessageLoggerSubCategory = StringSupport.trimOrNull(category);
+        if (protocolMessageLoggerSubCategory != null) {
+            protocolMessageLog = LoggerFactory.getLogger(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + "."
+                    + protocolMessageLoggerSubCategory);
+        } else {
+            protocolMessageLog = LoggerFactory.getLogger(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY);
+        }
     }
     
     /**

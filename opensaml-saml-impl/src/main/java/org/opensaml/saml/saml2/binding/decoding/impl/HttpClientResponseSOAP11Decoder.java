@@ -48,7 +48,7 @@ public class HttpClientResponseSOAP11Decoder
      */
     public HttpClientResponseSOAP11Decoder() {
         setBodyHandler(new SAMLSOAPDecoderBodyHandler());
-        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SAML");
+        setProtocolMessageLoggerSubCategory("SAML");
     }
 
     /** {@inheritDoc} */

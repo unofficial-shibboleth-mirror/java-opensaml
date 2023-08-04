@@ -32,7 +32,7 @@ public class HttpClientRequestSOAP11Encoder
     /** Constructor. */
     public HttpClientRequestSOAP11Encoder() {
         super();
-        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SAML");
+        setProtocolMessageLoggerSubCategory("SAML");
     }
 
     /** {@inheritDoc} */

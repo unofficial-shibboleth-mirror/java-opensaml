@@ -69,7 +69,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
     /** Constructor. */
     public HttpClientResponseSOAP11Decoder() {
         super();
-        setProtocolMessageLoggerCategory(BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY + ".SOAP");
+        setProtocolMessageLoggerSubCategory("SOAP");
     }
 
     /**
