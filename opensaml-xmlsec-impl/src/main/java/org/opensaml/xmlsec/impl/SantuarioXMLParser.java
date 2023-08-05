@@ -41,7 +41,7 @@ import net.shibboleth.shared.xml.impl.BasicParserPool;
  * <li>It is configured into Santuario by setting the class name using system
  *     property <code>org.apache.xml.security.XMLParser</code>. For details see: {@link XMLUtils}.</li>
  * <li>The internal parser pool's max pool size may be configured via system property
- *     <code>org.opensaml.xmlsec.impl.SantuarioXMLParser.maxPoolSize</code>.</li>
+ *     <code>org.opensaml.xmlsec.impl.SantuarioXMLParser.maxPoolSize</code>. The default is: 50</li>
  * </ul>
  */
 public class SantuarioXMLParser implements XMLParser {
