@@ -91,7 +91,7 @@ public abstract class StorageServiceTest {
         }
         
         final List<String> keylist = new ArrayList<>();
-        Iterable<String> keys = shared.getContextKeys(context);
+        Iterable<String> keys = shared.getContextKeys(context, null);
         keys.forEach(keylist::add);
         Assert.assertEquals(keylist.size(), 100);
         
@@ -124,7 +124,7 @@ public abstract class StorageServiceTest {
         }
         
         keylist.clear();
-        keys = shared.getContextKeys(context);
+        keys = shared.getContextKeys(context, null);
         keys.forEach(keylist::add);
         Assert.assertEquals(keylist.size(), 0);
     }
@@ -146,7 +146,7 @@ public abstract class StorageServiceTest {
             Assert.assertNull(rec);
         }
         
-        Assert.assertFalse(shared.getContextKeys(context).iterator().hasNext());
+        Assert.assertFalse(shared.getContextKeys(context, null).iterator().hasNext());
     }
     
     @Test
@@ -226,6 +226,31 @@ public abstract class StorageServiceTest {
         Assert.assertNull(shared.read(o2));
     }
     
+    @Test
+    public void enumerate() throws IOException {
+        final String context = "zork";
+        shared.create(context, "foo", "bar", null);
+        shared.create(context, "foo2", "bar", null);
+        shared.create(context, "foo3", "bar", null);
+        shared.create(context, "foo33", "bar", null);
+        shared.create(context + "2", "foo3", "bar", null);
+        
+        final List<String> copy = new ArrayList<>();
+        Iterable<String> keys = shared.getContextKeys(context, null);
+        keys.forEach(copy::add);
+        Assert.assertEquals(copy.size(), 4);
+        
+        copy.clear();
+        keys = shared.getContextKeys(context, "foo");
+        keys.forEach(copy::add);
+        Assert.assertEquals(copy.size(), 4);
+
+        copy.clear();
+        keys = shared.getContextKeys(context, "foo3");
+        keys.forEach(copy::add);
+        Assert.assertEquals(copy.size(), 2);
+    }
+    
     @Context("context")
     @Key("key")
     @Value("value")
@@ -277,4 +302,5 @@ public abstract class StorageServiceTest {
         }
         
     }
+
 }

@@ -17,6 +17,7 @@ package org.opensaml.storage;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
@@ -36,11 +37,13 @@ public interface EnumeratableStorageService extends StorageService {
      * Return an iterable collection of the keys stored in a context.
      * 
      * @param context the context to enumerate
+     * @param prefix optional prefix to filter keys
      * 
      * @return keys stored in a context
      * 
      * @throws IOException on error 
      */
-    @Nonnull Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context) throws IOException;
+    @Nonnull Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context, @Nullable final String prefix)
+            throws IOException;
     
 }

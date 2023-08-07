@@ -247,7 +247,8 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
     
     /** {@inheritDoc} */
-    @Nonnull public Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context) throws IOException {
+    @Nonnull public Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context, @Nullable final String prefix)
+            throws IOException {
         final Lock readLock = getLock().readLock();
         
         try {
@@ -267,9 +268,9 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 return CollectionSupport.emptyList();
             }
             
-            final long now = System.currentTimeMillis();            
+            final long now = System.currentTimeMillis();         
             return dataMap.entrySet().stream()
-                    .filter(e -> e.getValue().isValid(now))
+                    .filter(e -> e.getValue().isValid(now) && (prefix != null ? e.getKey().startsWith(prefix) : true))
                     .map(Map.Entry::getKey)
                     .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
             
