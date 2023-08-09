@@ -14,19 +14,28 @@
 
 package org.opensaml.xmlsec.config.impl;
 
+import java.util.Properties;
+
 import javax.annotation.Nonnull;
 
 import org.apache.xml.security.Init;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
+import org.opensaml.xmlsec.signature.support.impl.provider.ApacheSantuarioXMLParser;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Initializer which initializes the Apache XML Security library (Santuario).
  */
 public class ApacheXMLSecurityInitializer implements Initializer {
+    
+    /** Config property for enabling the use of {@link ApacheSantuarioXMLParser}. */
+    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_XML_PARSER_ENABLE =
+            "opensaml.config.xmlsec.ApacheSantuarioXMLParser.enable";
     
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(ApacheXMLSecurityInitializer.class);
@@ -38,6 +47,22 @@ public class ApacheXMLSecurityInitializer implements Initializer {
         if (System.getProperty(lineBreakPropName) == null) {
             System.setProperty(lineBreakPropName, "true");
         }
+        
+        final Properties props = ConfigurationService.getConfigurationProperties(); 
+        final boolean enableXMLParser =
+                (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_PARSER_ENABLE, "true"))
+                        : true;
+
+        if (enableXMLParser) {
+            final String xmlParserPropName = "org.apache.xml.security.XMLParser";
+            // Don't override if it was set explicitly
+            if (System.getProperty(xmlParserPropName) == null) {
+                log.trace("Enabling use of ApacheSantuarioXMLParser");
+                System.setProperty(xmlParserPropName,
+                        "org.opensaml.xmlsec.signature.support.impl.provider.ApacheSantuarioXMLParser");
+            }
+        }
+
         if (!Init.isInitialized()) {
             log.debug("Initializing Apache XMLSecurity library");
             Init.init();

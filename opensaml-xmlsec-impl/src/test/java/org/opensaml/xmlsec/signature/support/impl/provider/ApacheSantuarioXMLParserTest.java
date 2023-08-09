@@ -12,25 +12,26 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.impl;
+package org.opensaml.xmlsec.signature.support.impl.provider;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.xml.security.parser.XMLParserException;
 import org.opensaml.core.config.InitializationException;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
-public class SantuarioXMLParserTest {
+public class ApacheSantuarioXMLParserTest extends XMLObjectBaseTestCase {
     
-    private SantuarioXMLParser parser;
+    private ApacheSantuarioXMLParser parser;
     
     @BeforeClass
     public void setUpClass() throws InitializationException {
-        parser = new SantuarioXMLParser();
+        parser = new ApacheSantuarioXMLParser();
     }
     
     @Test
