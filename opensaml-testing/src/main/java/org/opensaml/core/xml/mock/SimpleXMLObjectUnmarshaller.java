@@ -32,10 +32,10 @@ import org.w3c.dom.Attr;
 public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(@Nonnull XMLObject parentXMLObject, @Nonnull XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
 
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) parentXMLObject;
+        final SimpleXMLObject simpleXMLObject = (SimpleXMLObject) parentXMLObject;
 
         if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
@@ -45,8 +45,9 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull XMLObject xmlObject, @Nonnull Attr attribute) throws UnmarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (attribute.getLocalName().equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
             simpleXMLObject.setId(attribute.getValue());
@@ -57,8 +58,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull XMLObject xmlObject, @Nonnull String elementContent) {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
+        final SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         simpleXMLObject.setValue(elementContent);
     }

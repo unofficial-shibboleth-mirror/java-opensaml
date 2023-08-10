@@ -49,9 +49,4 @@ public class DetailUnmarshaller extends AbstractXMLObjectUnmarshaller {
         detail.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
-        // do nothing, no child content
-    }
-
 }

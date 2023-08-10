@@ -33,16 +33,9 @@ public class EndPointReferenceUnmarshaller extends AbstractXMLObjectUnmarshaller
 
         if (childXMLObject instanceof Address) {
             endPointReference.setAddress((Address) childXMLObject);
+        } else {
+            super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
 
-    /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
-
-    }
 }

@@ -20,7 +20,6 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.RequestedSecurityToken;
-import org.w3c.dom.Attr;
 
 /** A thread-safe unmarshaller for {@link org.opensaml.soap.wsfed.RequestedSecurityToken} objects. */
 public class RequestedSecurityTokenUnmarshaller extends AbstractXMLObjectUnmarshaller {
@@ -32,13 +31,4 @@ public class RequestedSecurityTokenUnmarshaller extends AbstractXMLObjectUnmarsh
         requestedSecurityToken.getSecurityTokens().add(childXMLObject);
     }
 
-    /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
-
-    }
 }

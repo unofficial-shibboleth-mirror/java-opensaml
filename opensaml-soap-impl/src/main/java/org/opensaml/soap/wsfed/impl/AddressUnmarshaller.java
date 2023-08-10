@@ -34,12 +34,14 @@ public class AddressUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
+        super.processAttribute(xmlObject, attribute);
 
     }
 
     /** {@inheritDoc} */
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
+        super.processChildElement(parentXMLObject, childXMLObject);
     }
 
 }

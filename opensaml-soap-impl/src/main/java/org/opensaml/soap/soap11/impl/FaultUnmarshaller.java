@@ -27,7 +27,6 @@ import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultActor;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
-import org.w3c.dom.Attr;
 
 /**
  * A thread-safe unmarshaller for {@link org.opensaml.soap.soap11.Fault}s.
@@ -47,18 +46,9 @@ public class FaultUnmarshaller extends AbstractXMLObjectUnmarshaller {
             fault.setActor((FaultActor) childXMLObject);
         }else if(childXMLObject instanceof Detail){
             fault.setDetail((Detail) childXMLObject);
+        } else {
+            super.processChildElement(parentXMLObject, childXMLObject);
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-        // nothing to do, no attributes
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
-        //nothing to do, no element conent
     }
 
 }

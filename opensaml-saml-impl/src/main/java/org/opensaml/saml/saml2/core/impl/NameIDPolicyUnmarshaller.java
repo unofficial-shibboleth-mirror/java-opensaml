@@ -41,11 +41,9 @@ public class NameIDPolicyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(NameIDPolicy.FORMAT_ATTRIB_NAME)) {
                 policy.setFormat(attribute.getValue());
-            }
-            if (attribute.getLocalName().equals(NameIDPolicy.SP_NAME_QUALIFIER_ATTRIB_NAME)) {
+            } else if (attribute.getLocalName().equals(NameIDPolicy.SP_NAME_QUALIFIER_ATTRIB_NAME)) {
                 policy.setSPNameQualifier(attribute.getValue());
-            }
-            if (attribute.getLocalName().equals(NameIDPolicy.ALLOW_CREATE_ATTRIB_NAME)) {
+            } else if (attribute.getLocalName().equals(NameIDPolicy.ALLOW_CREATE_ATTRIB_NAME)) {
                 policy.setAllowCreate(XSBooleanValue.valueOf(attribute.getValue()));
             } else {
                 super.processAttribute(xmlObject, attribute);

@@ -14,10 +14,7 @@
 
 package org.opensaml.xacml.impl;
 
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.core.xml.io.UnmarshallingException;
-import org.w3c.dom.Attr;
 
 /**
  * An thread safe abstract unmarshaller. This abstract marshaller only works with
@@ -25,22 +22,4 @@ import org.w3c.dom.Attr;
  */
 public abstract class AbstractXACMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
-    }
 }

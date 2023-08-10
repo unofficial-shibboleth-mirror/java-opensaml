@@ -18,7 +18,6 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.w3c.dom.Attr;
 
 /**
  * AbstractElementExtensibleUnmarshaller unmarshalls element of type <code>xs:any</code>, but without
@@ -36,25 +35,6 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final ElementExtensibleXMLObject any = (ElementExtensibleXMLObject) parentXMLObject;
         any.getUnknownXMLObjects().add(childXMLObject);
-    }
-
-    /**
-     * No <code>xs:anyAttribute</code> attribute.
-     * 
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-    }
-
-    /**
-     * No text content.
-     * 
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
     }
 
 }

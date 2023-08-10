@@ -21,7 +21,6 @@ import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.AppliesTo;
 import org.opensaml.soap.wsfed.EndPointReference;
-import org.w3c.dom.Attr;
 
 /** A thread-safe unmarshaller for {@link AppliesTo} objects. */
 public class AppliesToUnmarshaller extends AbstractXMLObjectUnmarshaller {
@@ -34,16 +33,9 @@ public class AppliesToUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
         if (childXMLObject instanceof EndPointReference) {
             appliesTo.setEndPointReference((EndPointReference) childXMLObject);
+        } else {
+            super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
 
-    /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
-
-    }
 }

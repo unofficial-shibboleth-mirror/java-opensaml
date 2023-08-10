@@ -15,11 +15,15 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.xml.XMLParserException;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
@@ -74,9 +78,9 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(keyDescriptor.getUse(), expectedUse, "Use attribute");
     }
     
-    @Test
-    public void testSingleElementUnknownAttribute() {
-        unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorUnknownAttribute.xml");
+    @Test(expectedExceptions=UnmarshallingException.class)
+    public void testSingleElementUnknownAttribute() throws XMLParserException, UnmarshallingException {
+        unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorUnknownAttribute.xml", true);
     }
     
     @Test

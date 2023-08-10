@@ -22,7 +22,6 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.AppliesTo;
 import org.opensaml.soap.wsfed.RequestSecurityTokenResponse;
 import org.opensaml.soap.wsfed.RequestedSecurityToken;
-import org.w3c.dom.Attr;
 
 /** A thread-safe unmarshaller for {@link RequestSecurityTokenResponse} objects. */
 public class RequestSecurityTokenResponseUnmarshaller extends AbstractXMLObjectUnmarshaller {
@@ -36,16 +35,9 @@ public class RequestSecurityTokenResponseUnmarshaller extends AbstractXMLObjectU
             response.getRequestedSecurityToken().add((RequestedSecurityToken) childXMLObject);
         } else if (childXMLObject instanceof AppliesTo) {
             response.setAppliesTo((AppliesTo) childXMLObject);
+        } else {
+            super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
 
-    /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
-
-    }
 }

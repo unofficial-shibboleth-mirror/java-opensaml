@@ -10,11 +10,11 @@
         </saml:AuthnContext>
     </saml:AuthnStatement>
     <saml:AttributeStatement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-        <saml:Attribute>
-            <saml:AttributeValue Name="urn:string:attribName" xsi:type="xsd:string">SomeValue</saml:AttributeValue>
+        <saml:Attribute Name="urn:string:attribName" >
+            <saml:AttributeValue xsi:type="xsd:string">SomeValue</saml:AttributeValue>
         </saml:Attribute>
-        <saml:Attribute>
-            <saml:AttributeValue Name="urn:string:attribName2" xsi:type="xsd:string">SomeOtherValue</saml:AttributeValue>
+        <saml:Attribute Name="urn:string:attribName2">
+            <saml:AttributeValue xsi:type="xsd:string">SomeOtherValue</saml:AttributeValue>
         </saml:Attribute>
     </saml:AttributeStatement>
 </saml:Assertion>

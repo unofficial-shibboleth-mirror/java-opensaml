@@ -15,17 +15,13 @@
 package org.opensaml.core.xml.io;
 
 import java.util.Objects;
+import java.util.Properties;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import net.shibboleth.shared.primitive.LoggerFactory;
-import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.shared.xml.ParserPool;
-import net.shibboleth.shared.xml.QNameSupport;
-import net.shibboleth.shared.xml.XMLConstants;
-
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
@@ -35,12 +31,18 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.primitive.StringSupport;
+import net.shibboleth.shared.xml.ParserPool;
+import net.shibboleth.shared.xml.QNameSupport;
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * A thread safe abstract unmarshaller. This unmarshaller will:
@@ -75,6 +77,10 @@ import org.w3c.dom.Text;
  * </p>
  */
 public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
+    
+    /** Config property for controlling the use of strict mode. */
+    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_XML_STRICT_MODE =
+            "opensaml.config.xml.unmarshall.strictMode";
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectUnmarshaller.class);
@@ -84,6 +90,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /** Factory for creating unmarshallers for child elements. */
     @Nonnull private final UnmarshallerFactory unmarshallerFactory;
+    
+    /** Flag for strict mode which disallows unexpected content. */
+    private final boolean strictMode;
 
     /**
      * Constructor.
@@ -91,6 +100,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     protected AbstractXMLObjectUnmarshaller() {
         xmlObjectBuilderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
+
+        final Properties props = ConfigurationService.getConfigurationProperties(); 
+        strictMode = (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_STRICT_MODE, "true"))
+                : true;
     }
 
     /** {@inheritDoc} */
@@ -365,7 +378,14 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
-        log.debug("Ignoring unknown child element {}", childXMLObject.getElementQName());
+
+        if (strictMode) {
+            throw new UnmarshallingException(String.format("Saw invalid child element %s on parent %s",
+                    childXMLObject.getElementQName(), parentXMLObject.getElementQName()));
+        }
+
+        log.debug("Ignoring unknown child element {} of parent {}", childXMLObject.getElementQName(),
+                parentXMLObject.getElementQName());
     }
 
     /**
@@ -380,7 +400,14 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        log.debug("Ignoring unknown attribute {}", QNameSupport.getNodeQName(attribute));
+
+        if (strictMode) {
+            throw new UnmarshallingException(String.format("Saw invalid attribute %s on element %s",
+                    QNameSupport.getNodeQName(attribute), xmlObject.getElementQName()));
+        }
+
+        log.debug("Ignoring unknown attribute {} on element {}", QNameSupport.getNodeQName(attribute),
+                xmlObject.getElementQName());
     }
 
     /**
@@ -390,9 +417,18 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @param xmlObject XMLObject the content will be given to
      * @param elementContent the Element's content
+     * 
+     * @throws UnmarshallingException if there is a problem adding the element content to the XMLObject
      */
-    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
-        log.debug("Ignoring unknown element content {}", elementContent);
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent)
+            throws UnmarshallingException {
+
+        if (strictMode) {
+            throw new UnmarshallingException(String.format("Saw invalid element content %s of elemment %s",
+                    elementContent, xmlObject.getElementQName()));
+        }
+
+        log.debug("Ignoring unknown element content {} of element {}", elementContent, xmlObject.getElementQName());
     }
     
     /**

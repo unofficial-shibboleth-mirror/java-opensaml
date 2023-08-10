@@ -34,13 +34,13 @@ public class X509SerialNumberUnmarshaller extends AbstractXMLObjectUnmarshaller 
     /** {@inheritDoc} */
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
-        // no children
+        super.processChildElement(parentXMLObject, childXMLObject);
     }
 
     /** {@inheritDoc} */
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        //no attributes
+        super.processAttribute(xmlObject, attribute);
     }
 
     /** {@inheritDoc} */

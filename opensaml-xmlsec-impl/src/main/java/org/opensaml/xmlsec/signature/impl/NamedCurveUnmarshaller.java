@@ -33,6 +33,8 @@ public class NamedCurveUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
         if (attribute.getLocalName().equals(NamedCurve.URI_ATTRIB_NAME)) {
             nc.setURI(attribute.getValue());
+        } else {
+            super.processAttribute(xmlObject, attribute);
         }
     }
 

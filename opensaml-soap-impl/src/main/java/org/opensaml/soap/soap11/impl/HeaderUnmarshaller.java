@@ -49,8 +49,4 @@ public class HeaderUnmarshaller extends AbstractXMLObjectUnmarshaller {
         header.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
-        // do nothing, no child content
-    }
 }

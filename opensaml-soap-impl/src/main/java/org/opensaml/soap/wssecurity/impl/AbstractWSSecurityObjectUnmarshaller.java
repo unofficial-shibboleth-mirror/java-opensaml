@@ -14,42 +14,11 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
-import javax.annotation.Nonnull;
-
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.core.xml.io.UnmarshallingException;
-import org.slf4j.Logger;
-import org.w3c.dom.Attr;
-
-import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An abstract unmarshaller implementation for XMLObjects from WS-Security.
  */
 public abstract class AbstractWSSecurityObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /**
-     * Logger.
-     */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractWSSecurityObjectUnmarshaller.class);
-
-    /** {@inheritDoc} */
-    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
-            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
-        log.warn("{} ignoring unknown child element {}", parentXMLObject.getElementQName().getLocalPart(),
-                childXMLObject.getElementQName().getLocalPart());
-    }
-
-    /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-        log.warn("{} ignoring unknown attribute {}", xmlObject.getElementQName().getLocalPart(), attribute
-                .getLocalName());
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
-        log.warn("{} ignoring unknown element content: {}", xmlObject.getElementQName().getLocalPart(), elementContent);
-    }
 }

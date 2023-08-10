@@ -35,8 +35,7 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
-        // no child elements
-        // left this in to bypass the "ignore" logging message since we're not in fact ignoring the content
+        super.processChildElement(parentXMLObject, childXMLObject);
     }
 
     /** {@inheritDoc} */
