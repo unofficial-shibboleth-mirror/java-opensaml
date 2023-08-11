@@ -247,8 +247,8 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
     
     /** {@inheritDoc} */
-    @Nonnull public Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context, @Nullable final String prefix)
-            throws IOException {
+    @Nonnull public Iterable<String> getContextKeys(@Nonnull @NotEmpty final String context,
+            @Nullable final String prefix) throws IOException {
         final Lock readLock = getLock().readLock();
         
         try {

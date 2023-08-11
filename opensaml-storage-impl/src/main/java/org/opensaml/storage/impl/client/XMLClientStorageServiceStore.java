@@ -170,8 +170,8 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
 
             if (empty) {
                 log.trace("{} Data is empty", storageService.getLogPrefix());
-                return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(), null,
-                        source);
+                return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(),
+                        null, source);
             }
             
             assert rootElement != null;

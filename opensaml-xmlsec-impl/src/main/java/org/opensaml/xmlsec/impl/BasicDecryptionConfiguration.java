@@ -125,7 +125,7 @@ public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      * 
      * @param newRecipients the recipients
      */
-    public void setRecipients(@Nullable Set<String> newRecipients) {
+    public void setRecipients(@Nullable final Set<String> newRecipients) {
         recipients = newRecipients;
     }
     

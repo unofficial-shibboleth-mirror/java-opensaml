@@ -21,7 +21,7 @@ import org.opensaml.xmlsec.algorithm.DigestAlgorithm;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Algorithm descriptor for digest algorithm: SHA3-256
+ * Algorithm descriptor for digest algorithm: SHA3-256.
  */
 public final class DigestSHA3_256 implements DigestAlgorithm {
 

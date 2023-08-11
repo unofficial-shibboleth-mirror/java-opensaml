@@ -88,7 +88,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @return the merged recipients
      */
     @Nonnull @Unmodifiable @NotLive
-    protected Set<String> getEffectiveRecipients(@Nullable Set<String> values) {
+    protected Set<String> getEffectiveRecipients(@Nullable final Set<String> values) {
         final Set<String> temp = new HashSet<>();
         temp.addAll(getRecipients());
         if (values != null) {
@@ -106,7 +106,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      *        If empty, then all recipients match
      * @return true if the recipient value matches the resolver's criteria, false otherwise
      */
-    protected boolean matchRecipient(@Nullable final String recipient, @Nonnull Set<String> validRecipients) {
+    protected boolean matchRecipient(@Nullable final String recipient, @Nonnull final Set<String> validRecipients) {
         if (validRecipients.isEmpty()) {
             return true;
         }

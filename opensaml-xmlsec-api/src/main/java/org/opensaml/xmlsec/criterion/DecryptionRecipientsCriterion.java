@@ -44,7 +44,7 @@ public class DecryptionRecipientsCriterion implements Criterion {
     }
     
     /**
-     * Get the set of recipients
+     * Get the set of recipients.
      * 
      * @return the set of recipients
      */
@@ -53,7 +53,7 @@ public class DecryptionRecipientsCriterion implements Criterion {
     }
     
     /**
-     * Set the set of recipients
+     * Set the set of recipients.
      * 
      * @param values the new recipients
      */

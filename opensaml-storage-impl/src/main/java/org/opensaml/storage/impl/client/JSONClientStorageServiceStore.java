@@ -89,7 +89,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
         }
     }
 
-//Checkstyle: CyclomaticComplexity OFF        
+//Checkstyle: CyclomaticComplexity|MethodLength OFF        
     /** {@inheritDoc} */
     @Nullable public ClientStorageServiceOperation save(@Nonnull final ClientStorageService storageService)
             throws IOException {
@@ -166,7 +166,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             throw new IOException(e);
         }
     }
-//Checkstyle: CyclomaticComplexity ON
+//Checkstyle: CyclomaticComplexity|MethodLength ON
     
     /** Factory for JSON-backed store. */
     public static class JSONClientStorageServiceStoreFactory implements Factory {
