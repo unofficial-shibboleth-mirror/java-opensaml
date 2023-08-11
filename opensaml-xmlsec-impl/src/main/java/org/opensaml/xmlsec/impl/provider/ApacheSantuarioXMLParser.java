@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature.support.impl.provider;
+package org.opensaml.xmlsec.impl.provider;
 
 import java.io.InputStream;
 import java.util.Properties;

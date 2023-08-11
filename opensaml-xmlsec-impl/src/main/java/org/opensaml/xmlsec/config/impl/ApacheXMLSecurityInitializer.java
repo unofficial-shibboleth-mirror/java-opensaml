@@ -22,7 +22,7 @@ import org.apache.xml.security.Init;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
-import org.opensaml.xmlsec.signature.support.impl.provider.ApacheSantuarioXMLParser;
+import org.opensaml.xmlsec.impl.provider.ApacheSantuarioXMLParser;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
@@ -58,8 +58,7 @@ public class ApacheXMLSecurityInitializer implements Initializer {
             // Don't override if it was set explicitly
             if (System.getProperty(xmlParserPropName) == null) {
                 log.trace("Enabling use of ApacheSantuarioXMLParser");
-                System.setProperty(xmlParserPropName,
-                        "org.opensaml.xmlsec.signature.support.impl.provider.ApacheSantuarioXMLParser");
+                System.setProperty(xmlParserPropName, ApacheSantuarioXMLParser.class.getName());
             }
         }
 
