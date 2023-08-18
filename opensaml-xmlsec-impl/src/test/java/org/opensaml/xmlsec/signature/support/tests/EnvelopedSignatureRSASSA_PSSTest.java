@@ -41,7 +41,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
-import jakarta.xml.bind.ValidationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -86,11 +85,10 @@ public class EnvelopedSignatureRSASSA_PSSTest extends XMLObjectBaseTestCase {
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws ValidationException ...
      * @throws SignatureException ...
      */
     @Test
-    public void testSigningAndVerification() throws MarshallingException, ValidationException, SignatureException {
+    public void testSigningAndVerification() throws MarshallingException, SignatureException {
         // BC is currently necessary for the RSASSA-PSS SHA-2 algos, even though it shouldn't be.
         final SecurityProviderTestSupport  providerSupport = new SecurityProviderTestSupport();
         try {

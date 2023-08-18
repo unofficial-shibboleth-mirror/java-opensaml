@@ -51,7 +51,6 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import jakarta.xml.bind.ValidationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
@@ -113,11 +112,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws ValidationException thrown if signature validator fails to validate the signature
      * @throws SignatureException ...
      */
     @Test
-    public void testSigningAndVerificationNoOutputLength() throws MarshallingException, ValidationException, SignatureException {
+    public void testSigningAndVerificationNoOutputLength() throws MarshallingException, SignatureException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 

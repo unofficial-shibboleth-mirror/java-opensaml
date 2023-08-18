@@ -48,7 +48,6 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import jakarta.xml.bind.ValidationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -94,11 +93,10 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws ValidationException ...
      * @throws SignatureException ...
      */
     @Test
-    public void testSigningAndVerification() throws MarshallingException, ValidationException, SignatureException {
+    public void testSigningAndVerification() throws MarshallingException, SignatureException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
