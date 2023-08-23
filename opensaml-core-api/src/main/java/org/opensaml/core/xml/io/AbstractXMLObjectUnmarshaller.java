@@ -424,7 +424,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             throws UnmarshallingException {
 
         if (strictMode) {
-            throw new UnmarshallingException(String.format("Saw invalid element content %s of elemment %s",
+            throw new UnmarshallingException(String.format("Saw invalid element content %s of element %s",
                     elementContent, xmlObject.getElementQName()));
         }
 
