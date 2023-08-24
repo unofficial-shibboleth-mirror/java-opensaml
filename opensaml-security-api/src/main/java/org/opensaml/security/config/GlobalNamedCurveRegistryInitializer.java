@@ -15,13 +15,13 @@
 package org.opensaml.security.config;
 
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
@@ -69,7 +69,7 @@ public class GlobalNamedCurveRegistryInitializer implements Initializer {
             registry.register(curve);
         }
         
-        final Properties props = ConfigurationService.getConfigurationProperties(); 
+        final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
         final boolean registerBCCurves =
                 (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES))
                         : false;

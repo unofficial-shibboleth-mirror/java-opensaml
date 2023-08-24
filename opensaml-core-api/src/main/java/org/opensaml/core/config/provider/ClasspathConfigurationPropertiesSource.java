@@ -21,6 +21,7 @@ import java.util.Properties;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 import org.slf4j.Logger;
 
@@ -43,7 +44,7 @@ public class ClasspathConfigurationPropertiesSource implements ConfigurationProp
     @Nullable private Properties cachedProperties;
     
     /** {@inheritDoc} */
-    @Nullable public Properties getProperties() {
+    @Nullable public ConfigurationProperties getProperties() {
         synchronized (this) {
             if (cachedProperties == null) {
                 try (final InputStream is =
@@ -61,7 +62,7 @@ public class ClasspathConfigurationPropertiesSource implements ConfigurationProp
                             + RESOURCE_NAME + "' from classpath", e);
                 }
             }
-            return cachedProperties;
+            return cachedProperties != null ? new PropertiesAdapter(cachedProperties) : null;
         }
     }
 

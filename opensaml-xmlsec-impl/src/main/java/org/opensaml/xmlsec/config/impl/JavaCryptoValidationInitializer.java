@@ -15,12 +15,12 @@
 package org.opensaml.xmlsec.config.impl;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
 
 import javax.annotation.Nonnull;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
@@ -79,7 +79,7 @@ public class JavaCryptoValidationInitializer implements Initializer {
         }
         
         if (!valid) {
-            final Properties props = ConfigurationService.getConfigurationProperties(); 
+            final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
             final String isFatal =
                     (props != null) ? props.getProperty(CONFIG_PROPERTY_FAIL_IS_FATAL, "false") : "false";
             if ("true".equalsIgnoreCase(isFatal) || "1".equals(isFatal)) {

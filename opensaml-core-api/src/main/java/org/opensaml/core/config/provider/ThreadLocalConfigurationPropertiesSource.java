@@ -18,6 +18,7 @@ import java.util.Properties;
 
 import javax.annotation.Nullable;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 
 /**
@@ -47,8 +48,9 @@ import org.opensaml.core.config.ConfigurationPropertiesSource;
 public class ThreadLocalConfigurationPropertiesSource implements ConfigurationPropertiesSource {
 
     /** {@inheritDoc} */
-    @Nullable public Properties getProperties() {
-        return ThreadLocalConfigurationPropertiesHolder.getProperties();
+    @Nullable public ConfigurationProperties getProperties() {
+        final Properties props = ThreadLocalConfigurationPropertiesHolder.getProperties();
+        return props != null ? new PropertiesAdapter(props) : null;
     }
 
 }

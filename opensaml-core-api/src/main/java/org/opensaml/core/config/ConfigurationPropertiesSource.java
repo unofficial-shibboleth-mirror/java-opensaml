@@ -14,8 +14,6 @@
 
 package org.opensaml.core.config;
 
-import java.util.Properties;
-
 import javax.annotation.Nullable;
 
 /**
@@ -28,6 +26,6 @@ public interface ConfigurationPropertiesSource {
      * 
      * @return the properties set or null
      */
-    @Nullable Properties getProperties();
+    @Nullable ConfigurationProperties getProperties();
     
 }

@@ -14,13 +14,14 @@
 
 package org.opensaml.core.config.provider;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.util.Properties;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationPropertiesSource;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test {@link ThreadLocalConfigurationPropertiesSource}.
@@ -51,7 +52,7 @@ public class ThreadLocalConfigurationPropertiesSourceTest {
     @Test
     public void testSource() {
         source = new ThreadLocalConfigurationPropertiesSource();
-        final Properties props = source.getProperties();
+        final ConfigurationProperties props = source.getProperties();
         assert props != null;
         
         Assert.assertEquals(props.getProperty("opensaml.config.partitionName"), "myapp-threadlocal", "Incorrect property value");

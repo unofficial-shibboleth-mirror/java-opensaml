@@ -14,11 +14,10 @@
 
 package org.opensaml.xmlsec.config.impl;
 
-import java.util.Properties;
-
 import javax.annotation.Nonnull;
 
 import org.apache.xml.security.Init;
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
@@ -48,7 +47,7 @@ public class ApacheXMLSecurityInitializer implements Initializer {
             System.setProperty(lineBreakPropName, "true");
         }
         
-        final Properties props = ConfigurationService.getConfigurationProperties(); 
+        final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
         final boolean enableXMLParser =
                 (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_PARSER_ENABLE, "true"))
                         : true;

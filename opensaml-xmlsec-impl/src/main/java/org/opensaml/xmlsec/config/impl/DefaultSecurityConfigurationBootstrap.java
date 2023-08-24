@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.agreement.impl.DigestMethod;
@@ -141,7 +141,7 @@ public class DefaultSecurityConfigurationBootstrap {
         final Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = new HashMap<>();
         try {
             
-            final Properties props = ConfigurationService.getConfigurationProperties(); 
+            final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
             
             final KeyAgreementEncryptionConfiguration ecConfig = new KeyAgreementEncryptionConfiguration();
             ecConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);

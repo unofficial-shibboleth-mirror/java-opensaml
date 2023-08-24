@@ -14,15 +14,15 @@
 
 package org.opensaml.core.config.provider;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationPropertiesSource;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
@@ -70,7 +70,7 @@ public class FilesystemConfigurationPropertiesSourceTest {
     @Test
     public void testSource() {
         source = new TestFilesystemConfigurationPropertiesSource();
-        final Properties props = source.getProperties();
+        final ConfigurationProperties props = source.getProperties();
         assert props != null;
         
         Assert.assertEquals(props.getProperty("opensaml.config.partitionName"), "myapp", "Incorrect property value");

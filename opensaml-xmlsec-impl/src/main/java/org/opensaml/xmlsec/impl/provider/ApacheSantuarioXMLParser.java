@@ -15,13 +15,13 @@
 package org.opensaml.xmlsec.impl.provider;
 
 import java.io.InputStream;
-import java.util.Properties;
 
 import javax.annotation.Nonnull;
 
 import org.apache.xml.security.parser.XMLParser;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.XMLUtils;
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
@@ -83,7 +83,7 @@ public class ApacheSantuarioXMLParser implements XMLParser {
             log.trace("Configured parser pool as global ParserPool");
         } else {
             try {
-                final Properties props = ConfigurationService.getConfigurationProperties(); 
+                final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
                 final int maxPoolSize =
                         (props != null) ? Integer.parseUnsignedInt(
                                 props.getProperty(CONFIG_PROPERTY_MAX_POOL_SIZE, "50"))

@@ -15,20 +15,18 @@
 package org.opensaml.core.config;
 
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.primitive.LoggerFactory;
-
 import org.opensaml.core.config.provider.MapBasedConfiguration;
 import org.opensaml.core.config.provider.SystemPropertyConfigurationPropertiesSource;
 import org.slf4j.Logger;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A service which provides for the registration, retrieval and deregistration of objects
@@ -158,9 +156,8 @@ public class ConfigurationService {
      * 
      * @return the set of configuration meta-properties
      */
-    @Nullable @Live public static Properties getConfigurationProperties() {
-        //TODO make these immutable?
-        LOG.trace("Resolving configuration propreties source");
+    @Nullable public static ConfigurationProperties getConfigurationProperties() {
+        LOG.trace("Resolving configuration properties source");
         final Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();
         
         if (!iter.hasNext()) {
@@ -171,7 +168,7 @@ public class ConfigurationService {
         while (iter.hasNext()) {
             final ConfigurationPropertiesSource source = iter.next();
             LOG.trace("Evaluating configuration properties implementation: {}", source.getClass().getName());
-            final Properties props = source.getProperties();
+            final ConfigurationProperties props = source.getProperties();
             if (props != null) {
                 LOG.trace("Resolved non-null configuration properties using implementation: {}", 
                         source.getClass().getName());
@@ -209,7 +206,7 @@ public class ConfigurationService {
      * @return the partition name
      */
     @Nonnull @NotEmpty protected static String getPartitionName() {
-        final Properties configProperties = getConfigurationProperties();
+        final ConfigurationProperties configProperties = getConfigurationProperties();
         String partitionName = null;
         if (configProperties != null) {
             partitionName = configProperties.getProperty(PROPERTY_PARTITION_NAME, DEFAULT_PARTITION_NAME);
@@ -217,7 +214,6 @@ public class ConfigurationService {
             partitionName = DEFAULT_PARTITION_NAME;
         }
         LOG.trace("Resolved effective configuration partition name '{}'", partitionName);
-        assert partitionName != null;
         return partitionName;
     }
 

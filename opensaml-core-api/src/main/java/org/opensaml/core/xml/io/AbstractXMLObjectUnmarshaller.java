@@ -15,12 +15,12 @@
 package org.opensaml.core.xml.io;
 
 import java.util.Objects;
-import java.util.Properties;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
@@ -101,7 +101,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         xmlObjectBuilderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
 
-        final Properties props = ConfigurationService.getConfigurationProperties(); 
+        final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
         strictMode = (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_STRICT_MODE, "true"))
                 : true;
     }
