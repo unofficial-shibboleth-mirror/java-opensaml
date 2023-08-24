@@ -71,6 +71,9 @@ public class ConfigurationService {
     /** The configuration instance to use. */
     @Nullable private static Configuration configuration;
     
+    /** A default configuration properties source to use. */
+    @Nullable private static ConfigurationPropertiesSource defaultConfigurationPropertiesSource;
+    
     /** Constructor. */
     protected ConfigurationService() { }
     
@@ -144,9 +147,25 @@ public class ConfigurationService {
      * service itself.
      * 
      * <p>
-     * The properties set is obtained from the first registered instance of 
+     * The properties set is obtained from the first configured instance of 
      * {@link ConfigurationPropertiesSource} which returns a non-null properties set.
-     * The implementations of properties sources to use are obtained via the Java Services API.
+     * </p>
+     * 
+     * <p>
+     * The first properties source to evaluate is the instance configured by
+     * {@link #setDefaultConfigurationPropertiesSource(ConfigurationPropertiesSource)}.
+     * </p>
+     * 
+     * <p>
+     * If that is null or produces a null properties set, and there are no properties sources 
+     * configured via the Java Services API, then a default implementation which exposes the
+     * standard Java system properties from {@link System#getProperties()} set is used.
+     * </p>
+     * 
+     * <p>
+     * If properties sources are configured via the Java Services API, then those are 
+     * evaluated in order, and the first non-null properties set returned is used.
+     * If no configured sources return a properties set, then null is returned.
      * </p>
      * 
      * <p>
@@ -157,7 +176,21 @@ public class ConfigurationService {
      * @return the set of configuration meta-properties
      */
     @Nullable public static ConfigurationProperties getConfigurationProperties() {
-        LOG.trace("Resolving configuration properties source");
+        final ConfigurationPropertiesSource defaultSource = defaultConfigurationPropertiesSource;
+        if (defaultSource != null) {
+            final ConfigurationProperties props = defaultSource.getProperties();
+            if (props != null) {
+                LOG.trace("Resolved configuration properties from configured default properties source: {}",
+                        defaultSource.getClass().getName());
+                return props;
+            } else {
+                LOG.trace("A default properties source was configured, but produced a null properties set");
+            }
+        } else {
+            LOG.trace("No default configuration properties source was configured");
+        }
+
+        LOG.trace("Attempting to resolve configuration properties source candidates via Java Services API");
         final Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();
         
         if (!iter.hasNext()) {
@@ -177,6 +210,38 @@ public class ConfigurationService {
         }
         LOG.trace("Unable to resolve non-null configuration properties from any ConfigurationPropertiesSource");
         return null;
+    }
+    
+    /**
+     * Get the default {@link ConfigurationPropertiesSource} instance to use.
+     * 
+     * <p>
+     * The configuration properties source to use is normally resolved via the Java Services API,
+     * or is defaulted if none are configured. However, this method is provided to allow the default
+     * properties source instance to be supplied externally, perhaps using an application-specific
+     * means such as Spring dependency injection.
+     * </p>
+     * 
+     * @return the default ConfigurationPropertiesSource, possibly null
+     */
+    @Nullable public static ConfigurationPropertiesSource getDefaultConfigurationPropertiesSource() {
+        return defaultConfigurationPropertiesSource;
+    }
+    
+    /**
+     * Set the default {@link ConfigurationPropertiesSource} instance to use.
+     * 
+     * <p>
+     * The configuration properties source to use is normally resolved via the Java Services API,
+     * or is defaulted if none are configured. However, this method is provided to allow the default
+     * properties source instance to be supplied externally, perhaps using an application-specific
+     * means such as Spring dependency injection.
+     * </p>
+     * 
+     * @param source the default ConfigurationPropertiesSource instance to use
+     */
+    public static void setDefaultConfigurationPropertiesSource(@Nullable final ConfigurationPropertiesSource source) {
+        defaultConfigurationPropertiesSource = source;
     }
     
     /**
