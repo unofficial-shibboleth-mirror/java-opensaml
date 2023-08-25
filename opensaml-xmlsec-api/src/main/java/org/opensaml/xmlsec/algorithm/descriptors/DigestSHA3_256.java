@@ -23,7 +23,9 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Algorithm descriptor for digest algorithm: SHA3-256.
  */
+//CheckStyle: TypeName OFF
 public final class DigestSHA3_256 implements DigestAlgorithm {
+//CheckStyle: TypeName ON
 
     /** {@inheritDoc} */
     @Nonnull public String getURI() {

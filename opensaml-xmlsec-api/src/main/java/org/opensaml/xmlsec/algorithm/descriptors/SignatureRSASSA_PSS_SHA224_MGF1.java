@@ -23,7 +23,9 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Algorithm descriptor for signature algorithm: RSASSA-PSS SHA-224 with MGF1.
  */
+//CheckStyle: TypeName OFF
 public final class SignatureRSASSA_PSS_SHA224_MGF1 implements SignatureAlgorithm {
+//CheckStyle: TypeName ON
 
     /** {@inheritDoc} */
     @Nonnull public String getKey() {
