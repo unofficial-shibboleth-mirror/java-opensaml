@@ -15,12 +15,15 @@
 package org.opensaml.core.config;
 
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.core.config.provider.EmptyConfigurationProperties;
 import org.opensaml.core.config.provider.MapBasedConfiguration;
+import org.opensaml.core.config.provider.PropertiesAdapter;
 import org.opensaml.core.config.provider.SystemPropertyConfigurationPropertiesSource;
 import org.slf4j.Logger;
 
@@ -165,7 +168,10 @@ public class ConfigurationService {
      * <p>
      * If properties sources are configured via the Java Services API, then those are 
      * evaluated in order, and the first non-null properties set returned is used.
-     * If no configured sources return a properties set, then null is returned.
+     * </p>
+     * 
+     * <p>
+     * If no configured sources return a properties set, then an empty properties set is returned.
      * </p>
      * 
      * <p>
@@ -175,7 +181,7 @@ public class ConfigurationService {
      * 
      * @return the set of configuration meta-properties
      */
-    @Nullable public static ConfigurationProperties getConfigurationProperties() {
+    @Nonnull public static ConfigurationProperties getConfigurationProperties() {
         final ConfigurationPropertiesSource defaultSource = defaultConfigurationPropertiesSource;
         if (defaultSource != null) {
             final ConfigurationProperties props = defaultSource.getProperties();
@@ -195,7 +201,9 @@ public class ConfigurationService {
         
         if (!iter.hasNext()) {
             LOG.trace("No ConfigurationPropertiesSources are configured, defaulting to system properties");
-            return new SystemPropertyConfigurationPropertiesSource().getProperties();
+            // This shouldn't happen but have to satisfy the non-null contract.
+            final Properties systemProps = System.getProperties();
+            return systemProps != null ? new PropertiesAdapter(systemProps) : new EmptyConfigurationProperties();
         }
         
         while (iter.hasNext()) {
@@ -209,7 +217,7 @@ public class ConfigurationService {
             }
         }
         LOG.trace("Unable to resolve non-null configuration properties from any ConfigurationPropertiesSource");
-        return null;
+        return new EmptyConfigurationProperties();
     }
     
     /**
@@ -272,12 +280,7 @@ public class ConfigurationService {
      */
     @Nonnull @NotEmpty protected static String getPartitionName() {
         final ConfigurationProperties configProperties = getConfigurationProperties();
-        String partitionName = null;
-        if (configProperties != null) {
-            partitionName = configProperties.getProperty(PROPERTY_PARTITION_NAME, DEFAULT_PARTITION_NAME);
-        } else {
-            partitionName = DEFAULT_PARTITION_NAME;
-        }
+        String partitionName = configProperties.getProperty(PROPERTY_PARTITION_NAME, DEFAULT_PARTITION_NAME);
         LOG.trace("Resolved effective configuration partition name '{}'", partitionName);
         return partitionName;
     }

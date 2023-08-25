@@ -48,9 +48,8 @@ public class ApacheXMLSecurityInitializer implements Initializer {
         }
         
         final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
-        final boolean enableXMLParser =
-                (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_PARSER_ENABLE, "true"))
-                        : true;
+        final boolean enableXMLParser = Boolean.parseBoolean(
+                props.getProperty(CONFIG_PROPERTY_XML_PARSER_ENABLE, "true"));
 
         if (enableXMLParser) {
             final String xmlParserPropName = "org.apache.xml.security.XMLParser";

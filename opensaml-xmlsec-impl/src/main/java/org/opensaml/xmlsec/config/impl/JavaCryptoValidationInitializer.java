@@ -80,9 +80,8 @@ public class JavaCryptoValidationInitializer implements Initializer {
         
         if (!valid) {
             final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
-            final String isFatal =
-                    (props != null) ? props.getProperty(CONFIG_PROPERTY_FAIL_IS_FATAL, "false") : "false";
-            if ("true".equalsIgnoreCase(isFatal) || "1".equals(isFatal)) {
+            final Boolean isFatal = Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_FAIL_IS_FATAL, "false"));
+            if (isFatal) {
                 log.warn("Configuration indicates an invalid crypto configuration should be fatal");
                 throw new InitializationException(
                         "A fatal error was encountered validating required crypto capabilities");

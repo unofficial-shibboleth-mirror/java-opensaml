@@ -102,8 +102,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
 
         final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
-        strictMode = (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_STRICT_MODE, "true"))
-                : true;
+        strictMode = Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_XML_STRICT_MODE, "true"));
+                
     }
 
     /** {@inheritDoc} */

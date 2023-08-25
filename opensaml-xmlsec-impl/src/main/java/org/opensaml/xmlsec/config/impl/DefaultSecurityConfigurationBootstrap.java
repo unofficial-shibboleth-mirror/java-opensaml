@@ -146,8 +146,7 @@ public class DefaultSecurityConfigurationBootstrap {
             final KeyAgreementEncryptionConfiguration ecConfig = new KeyAgreementEncryptionConfiguration();
             ecConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
             
-            final String ecKDF = 
-                    props != null ? props.getProperty(CONFIG_PROPERTY_ECDH_DEFAULT_KDF, CONCATKDF) : CONCATKDF;
+            final String ecKDF = props.getProperty(CONFIG_PROPERTY_ECDH_DEFAULT_KDF, CONCATKDF);
                     
             if (CONCATKDF.equals(ecKDF)) {
                 final ConcatKDF ecConcatKDF = new ConcatKDF();

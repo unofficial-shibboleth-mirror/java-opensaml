@@ -70,9 +70,8 @@ public class GlobalNamedCurveRegistryInitializer implements Initializer {
         }
         
         final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
-        final boolean registerBCCurves =
-                (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES))
-                        : false;
+        final boolean registerBCCurves = Boolean.parseBoolean(
+                props.getProperty(CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES));
         
         if (registerBCCurves) {
             // Don't register if already done above. Use the OID as the canonical unique identifier.  Names may differ.

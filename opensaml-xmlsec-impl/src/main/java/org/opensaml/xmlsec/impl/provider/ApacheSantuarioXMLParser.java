@@ -84,10 +84,8 @@ public class ApacheSantuarioXMLParser implements XMLParser {
         } else {
             try {
                 final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
-                final int maxPoolSize =
-                        (props != null) ? Integer.parseUnsignedInt(
-                                props.getProperty(CONFIG_PROPERTY_MAX_POOL_SIZE, "50"))
-                                : 50;
+                final int maxPoolSize = Integer.parseUnsignedInt(
+                        props.getProperty(CONFIG_PROPERTY_MAX_POOL_SIZE, "50"));
 
                 final BasicParserPool basicPool = new BasicParserPool();
                 basicPool.setMaxPoolSize(maxPoolSize);
