@@ -6,9 +6,9 @@
         <md:ArtifactResolutionService index="$endpoint.index" Binding="$endpoint.binding" Location="$xmlattr.escape($endpoint.location)" />
 #end
 #foreach ($endpoint in $role.singleLogoutServices)
-        <md:SingleLogoutService Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
+        <md:SingleLogoutService Binding="$endpoint.binding" Location="$xmlattr.escape($endpoint.location)" />
 #end
 #foreach ($endpoint in $role.singleSignOnServices)
-        <md:SingleSignOnService Binding="$endpoint.binding" Location=""$xmlattr.escape($endpoint.location)" />
+        <md:SingleSignOnService Binding="$endpoint.binding" Location="$xmlattr.escape($endpoint.location)" />
 #end
     </md:IDPSSODescriptor>
