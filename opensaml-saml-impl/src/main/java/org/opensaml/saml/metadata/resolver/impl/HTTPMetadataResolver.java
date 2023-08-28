@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
@@ -231,8 +230,8 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver impl
             throw new ResolverException(errMsg, e);
         } finally {
             try {
-                if (response != null && response instanceof CloseableHttpResponse) {
-                    ((CloseableHttpResponse) response).close();
+                if (response != null) {
+                    response.close();
                 }
             } catch (final IOException e) {
                 log.error("{} Error closing HTTP response from {}", metadataURI, getLogPrefix(), e);

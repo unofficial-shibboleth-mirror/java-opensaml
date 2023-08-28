@@ -28,7 +28,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
@@ -229,8 +228,8 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                 }
             } finally {
                 try {
-                    if (response != null && response instanceof CloseableHttpResponse) {
-                        ((CloseableHttpResponse)response).close();
+                    if (response != null) {
+                        response.close();
                     }
                 } catch (final IOException e) {
                     log.error("Error closing HttpResponse", e);

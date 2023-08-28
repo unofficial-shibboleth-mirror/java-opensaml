@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpStatus;
 import org.opensaml.core.xml.XMLObject;
@@ -128,9 +127,9 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             log.error("Unable to obtain input stream from HttpResponse: {}", e.getMessage());
             throw new MessageDecodingException("Unable to obtain input stream from HttpResponse", e);
         } finally {
-            if (response instanceof CloseableHttpResponse) {
+            if (response != null) {
                 try {
-                    ((CloseableHttpResponse)response).close();
+                    response.close();
                 } catch (final IOException e) {
                     log.warn("Error closing HttpResponse", e);
                 }
