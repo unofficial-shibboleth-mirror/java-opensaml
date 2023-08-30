@@ -26,6 +26,8 @@ import javax.net.ssl.HostnameVerifier;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -144,8 +146,14 @@ public class HttpClientSecurityParameters {
      * @return this object
      * 
      * @since 3.4.0
+     * 
+     * @deprecated use {@link #setPreemptiveBasicAuthMap(Map)}
      */
+    @Deprecated
     @Nonnull public HttpClientSecurityParameters setAuthCache(@Nullable final AuthCache cache) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAuthCache", "HttpClientSecurityParameters",
+                "setPreemptiveBasicAuthMap(Map)");
+
         authCache = cache;
         
         return this;
@@ -164,7 +172,10 @@ public class HttpClientSecurityParameters {
      * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
      * 
      * @param credentials the username and password credentials
+     * 
+     * @deprecated use {@link #setPreemptiveBasicAuthMap(Map)} or {@link #setCredentialsProvider(CredentialsProvider)}
      */
+    @Deprecated
     public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
         setBasicCredentialsWithScope(credentials, null);
     }
@@ -184,11 +195,17 @@ public class HttpClientSecurityParameters {
      * @param credentials the username and password credentials
      * @param scope the HTTP client auth scope with which to scope the credentials, may be null
      * 
+     * @deprecated use {@link #setPreemptiveBasicAuthMap(Map)} or {@link #setCredentialsProvider(CredentialsProvider)}
+     * 
      * @return this object
      */
+    @Deprecated
     @Nonnull public HttpClientSecurityParameters setBasicCredentialsWithScope(
             @Nullable final UsernamePasswordCredentials credentials,
             @Nullable final AuthScope scope) {
+        
+        DeprecationSupport.warn(ObjectType.METHOD, "setBasicCredentialsWithScope", "HttpClientSecurityParameters",
+                "setPreemptiveBasicAuthMap(Map) or setCredentialsProvider(CredentialsProvider)");
 
         if (credentials != null) {
             AuthScope authScope = scope;
