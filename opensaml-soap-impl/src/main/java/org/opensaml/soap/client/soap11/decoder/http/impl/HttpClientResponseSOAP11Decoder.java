@@ -126,14 +126,6 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
         } catch (final IOException e) {
             log.error("Unable to obtain input stream from HttpResponse: {}", e.getMessage());
             throw new MessageDecodingException("Unable to obtain input stream from HttpResponse", e);
-        } finally {
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (final IOException e) {
-                    log.warn("Error closing HttpResponse", e);
-                }
-            }
         }
         
         try {

@@ -33,6 +33,7 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -189,7 +190,6 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                 Constraint.isNotNull(strategy, "SOAP 1.1 context lookup strategy cannot be null");
     }
     
-// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     public void send(@Nonnull @NotEmpty final String endpoint, @Nonnull final InOutOperationContext context)
             throws SOAPException, SecurityException {
@@ -208,42 +208,24 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
             soapRequestParams = (HttpSOAPRequestParameters) clientCtx.getSOAPRequestParameters();
         }
         
-        HttpPost post = null;
-        try {
-            post = createPostMethod(endpoint, soapRequestParams, env);
+        final HttpPost post = createPostMethod(endpoint, soapRequestParams, env);
 
-            ClassicHttpResponse response = null;
-            try {
-                response = httpClient.executeOpen(null, post, null);
-                final int code = response.getCode();
-                log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
+        try (final ClassicHttpResponse response = httpClient.executeOpen(null, post, null)) {
+            final int code = response.getCode();
+            log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
 
-                if (code == HttpStatus.SC_OK) {
-                    processSuccessfulResponse(response, context);
-                } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                    processFaultResponse(response, context);
-                } else {
-                    throw new SOAPClientException("Received " + code +
-                            " HTTP response status code from HTTP request to " + endpoint);
-                }
-            } finally {
-                try {
-                    if (response != null) {
-                        response.close();
-                    }
-                } catch (final IOException e) {
-                    log.error("Error closing HttpResponse", e);
-                }
+            if (code == HttpStatus.SC_OK) {
+                processSuccessfulResponse(response, context);
+            } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                processFaultResponse(response, context);
+            } else {
+                throw new SOAPClientException("Received " + code +
+                        " HTTP response status code from HTTP request to " + endpoint);
             }
         } catch (final IOException e) {
             throw new SOAPClientException("Unable to send request to " + endpoint, e);
-        } finally {
-            if (post != null) {
-                post.reset();
-            }
         }
     }
-// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Create the post method used to send the SOAP request.

@@ -196,15 +196,16 @@ public abstract class AbstractPipelineHttpSOAPClient
             
             // HttpClient execution
             final HttpClientContext httpContext = buildHttpContext(httpRequest, operationContext);
-            final ClassicHttpResponse httpResponse = getHttpClient().executeOpen(null, httpRequest, httpContext);
-            HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getScheme());
-            
-            // Response decoding
-            final HttpClientResponseMessageDecoder decoder = pipeline.getDecoder();
-            decoder.setHttpResponse(httpResponse);
-            decoder.initialize();
-            decoder.decode();
-            operationContext.setInboundMessageContext(decoder.getMessageContext());
+            try (final ClassicHttpResponse httpResponse = getHttpClient().executeOpen(null, httpRequest, httpContext)) {
+                HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getScheme());
+
+                // Response decoding
+                final HttpClientResponseMessageDecoder decoder = pipeline.getDecoder();
+                decoder.setHttpResponse(httpResponse);
+                decoder.initialize();
+                decoder.decode();
+                operationContext.setInboundMessageContext(decoder.getMessageContext());
+            }
             
             // Inbound message handling
             

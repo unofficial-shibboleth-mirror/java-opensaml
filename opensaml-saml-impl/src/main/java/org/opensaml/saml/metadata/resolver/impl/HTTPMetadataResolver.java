@@ -196,11 +196,10 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver impl
     @Nullable protected byte[] fetchMetadata() throws ResolverException {
         final HttpGet httpGet = buildHttpGet();
         final HttpClientContext context = buildHttpClientContext(httpGet);
-        ClassicHttpResponse response = null;
 
-        try {
-            log.debug("{} Attempting to fetch metadata document from '{}'", getLogPrefix(), metadataURI);
-            response = httpClient.executeOpen(null, httpGet, context);
+        log.debug("{} Attempting to fetch metadata document from '{}'", getLogPrefix(), metadataURI);
+        try (final ClassicHttpResponse response = httpClient.executeOpen(null, httpGet, context)) {
+            
             HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, metadataURI.getScheme());
             final int httpStatusCode = response.getCode();
 
@@ -228,14 +227,6 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver impl
             final String errMsg = "Error retrieving metadata from " + metadataURI;
             log.error("{} {}: {}", getLogPrefix(), errMsg, e.getMessage());
             throw new ResolverException(errMsg, e);
-        } finally {
-            try {
-                if (response != null) {
-                    response.close();
-                }
-            } catch (final IOException e) {
-                log.error("{} Error closing HTTP response from {}", metadataURI, getLogPrefix(), e);
-            }
         }
     }
 
