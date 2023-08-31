@@ -33,7 +33,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -63,15 +62,21 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.DeprecationSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * SOAP client that uses HTTP as the underlying transport and POST as the binding.
+ * 
+ * @deprecated use instead a concrete implementation of {@link AbstractPipelineHttpSOAPClient},
+ *             such as {@link PipelineFactoryHttpSOAPClient}
  */
 @ThreadSafe
+@Deprecated
 public class HttpSOAPClient extends AbstractInitializableComponent implements SOAPClient {
 
     /** Class logger. */
@@ -97,6 +102,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
     
     /** Constructor. */
     public HttpSOAPClient() {
+        DeprecationSupport.warn(ObjectType.CLASS, "HttpSOAPClient", null, "Pipeline-based SOAP client");
         soapClientContextLookupStrategy = new ChildContextLookup<>(SOAPClientContext.class);
         soap11ContextLookupStrategy = new ChildContextLookup<>(SOAP11Context.class);
     }
