@@ -290,11 +290,12 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      */
     protected void processSuccessfulResponse(@Nonnull final ClassicHttpResponse httpResponse,
             @Nonnull final InOutOperationContext context) throws SOAPClientException {
-        try {
-            if (httpResponse.getEntity() == null) {
+        try (final HttpEntity entity = httpResponse.getEntity()) {
+            if (entity == null) {
                 throw new SOAPClientException("No response body from server");
             }
-            final Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
+
+            final Envelope response = unmarshallResponse(entity.getContent());
             context.setInboundMessageContext(new MessageContext());
             context.ensureInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
             //TODO: goes away?
@@ -315,11 +316,13 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      */
     protected void processFaultResponse(@Nonnull final ClassicHttpResponse httpResponse,
             @Nonnull final InOutOperationContext context) throws SOAPClientException, SOAPFaultException {
-        try {
-            if (httpResponse.getEntity() == null) {
+
+        try (final HttpEntity entity = httpResponse.getEntity()){
+            if (entity == null) {
                 throw new SOAPClientException("No response body from server");
             }
-            final Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
+
+            final Envelope response = unmarshallResponse(entity.getContent());
             context.setInboundMessageContext(new MessageContext());
             context.ensureInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
 
@@ -369,7 +372,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      */
     @Nonnull protected Envelope unmarshallResponse(@Nonnull final InputStream responseStream)
             throws SOAPClientException {
-        try {
+        try (responseStream) {
             final Element responseElem = parserPool.parse(responseStream).getDocumentElement();
             assert responseElem != null;
             if (log.isDebugEnabled()) {
@@ -379,7 +382,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                     XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(responseElem),
                     "SOAP envelope unmarshaller not available");
             return (Envelope) unmarshaller.unmarshall(responseElem);
-        } catch (final XMLParserException e) {
+        } catch (final XMLParserException|IOException e) {
             throw new SOAPClientException("Unable to parse the XML within the response", e);
         } catch (final UnmarshallingException e) {
             throw new SOAPClientException("Unable to unmarshall the response DOM", e);

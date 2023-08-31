@@ -14,6 +14,7 @@
 
 package org.opensaml.messaging.decoder.httpclient;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
@@ -101,7 +102,7 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
         try {
             final Element dom = XMLObjectSupport.marshall(XMLObject.class.cast(message));
             return SerializeSupport.prettyPrintXML(dom);     
-        } catch (MarshallingException e) {
+        } catch (final MarshallingException e) {
             log.error("Unable to marshall message for logging purposes", e);
             return null;
         }
@@ -117,13 +118,9 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
      * @throws MessageDecodingException thrown if there is a problem deserializing and unmarshalling the message
      */
     protected XMLObject unmarshallMessage(@Nonnull final InputStream messageStream) throws MessageDecodingException {
-        try {
-            final XMLObject message = XMLObjectSupport.unmarshallFromInputStream(getParserPool(), messageStream);
-            return message;
-        } catch (final XMLParserException e) {
-            log.error("Error unmarshalling message from input stream: {}", e.getMessage());
-            throw new MessageDecodingException("Error unmarshalling message from input stream", e);
-        } catch (final UnmarshallingException e) {
+        try (messageStream) {
+            return XMLObjectSupport.unmarshallFromInputStream(getParserPool(), messageStream);
+        } catch (final XMLParserException|UnmarshallingException|IOException e) {
             log.error("Error unmarshalling message from input stream: {}", e.getMessage());
             throw new MessageDecodingException("Error unmarshalling message from input stream", e);
         }

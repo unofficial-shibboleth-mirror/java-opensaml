@@ -15,7 +15,6 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Timer;
@@ -29,6 +28,7 @@ import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.opensaml.saml.metadata.resolver.RemoteMetadataResolver;
@@ -296,15 +296,11 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver impl
             throws ResolverException {
         log.debug("{} Attempting to extract metadata from response to request for metadata from '{}'", 
                 getLogPrefix(), getMetadataURI());
-        try {
-            final InputStream ins = response.getEntity().getContent();
-            return inputstreamToByteArray(ins);
+        try (final HttpEntity entity = response.getEntity()) {
+            return inputstreamToByteArray(entity.getContent());
         } catch (final IOException e) {
             log.error("{} Unable to read response: {}", getLogPrefix(), e.getMessage());
             throw new ResolverException("Unable to read response", e);
-        } finally {
-            // Make sure entity has been completely consumed.
-            EntityUtils.consumeQuietly(response.getEntity());
         }
     }
 }

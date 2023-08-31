@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
@@ -157,19 +158,22 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             @Nonnull final SOAP11Context soapContext) 
             throws MessageDecodingException, IOException {
         
-        if (httpResponse.getEntity() == null) {
-            throw new MessageDecodingException("No response body from server");
+        try (final HttpEntity entity = httpResponse.getEntity()) {
+            if (entity == null) {
+                throw new MessageDecodingException("No response body from server");
+            }
+
+            final Envelope soapMessage = (Envelope) unmarshallMessage(entity.getContent());
+
+            // Defensive sanity check, otherwise body handler could later fail non-gracefully with runtime exception
+            final Fault fault = getFault(soapMessage);
+            if (fault != null) {
+                throw new SOAP11FaultDecodingException(fault);
+            }
+
+            soapContext.setEnvelope(soapMessage);
+            soapContext.setHTTPResponseStatus(httpResponse.getCode());
         }
-        final Envelope soapMessage = (Envelope) unmarshallMessage(httpResponse.getEntity().getContent());
-        
-        // Defensive sanity check, otherwise body handler could later fail non-gracefully with runtime exception
-        final Fault fault = getFault(soapMessage);
-        if (fault != null) {
-            throw new SOAP11FaultDecodingException(fault);
-        }
-        
-        soapContext.setEnvelope(soapMessage);
-        soapContext.setHTTPResponseStatus(httpResponse.getCode());
     }
 
     /**
@@ -184,24 +188,27 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
     @Nonnull protected MessageDecodingException buildFaultException(@Nonnull final ClassicHttpResponse response) 
             throws MessageDecodingException, IOException {
         
-        if (response.getEntity() == null) {
-            throw new MessageDecodingException("No response body from server");
+        try (final HttpEntity entity = response.getEntity()) {
+            if (entity == null) {
+                throw new MessageDecodingException("No response body from server");
+            }
+
+            final Envelope soapMessage = (Envelope) unmarshallMessage(entity.getContent());
+
+            final Fault fault = getFault(soapMessage);
+            if (fault == null) {
+                throw new MessageDecodingException("HTTP status code was 500 but SOAP response contained no Fault");
+            }
+
+            final FaultCode fcode = fault.getCode();
+            final QName code = fcode != null ? fcode.getValue() : null;
+
+            final FaultString fmsg = fault.getMessage();
+            final String msg = fmsg != null ? fmsg.getValue() : null;
+            log.debug("SOAP fault code '{}' with message '{}'", code != null ? code.toString() : "(not set)", msg);
+
+            return new SOAP11FaultDecodingException(fault);
         }
-        final Envelope soapMessage = (Envelope) unmarshallMessage(response.getEntity().getContent());
-        
-        final Fault fault = getFault(soapMessage);
-        if (fault == null) {
-            throw new MessageDecodingException("HTTP status code was 500 but SOAP response did not contain a Fault");
-        }
-        
-        final FaultCode fcode = fault.getCode();
-        final QName code = fcode != null ? fcode.getValue() : null;
-        
-        final FaultString fmsg = fault.getMessage();
-        final String msg = fmsg != null ? fmsg.getValue() : null;
-        log.debug("SOAP fault code '{}' with message '{}'", code != null ? code.toString() : "(not set)", msg);
-        
-        return new SOAP11FaultDecodingException(fault);
     }
     
     /**

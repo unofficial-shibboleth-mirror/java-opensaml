@@ -682,7 +682,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @throws ResolverException thrown if there is a problem reading the resultant byte array
      */
     @Nonnull protected byte[] inputstreamToByteArray(@Nonnull final InputStream ins) throws ResolverException {
-        try {
+        try (ins) {
             // 1 MB read buffer
             final byte[] buffer = new byte[1024 * 1024];
             final ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -695,15 +695,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             return output.toByteArray();
         } catch (final IOException e) {
             throw new ResolverException(e);
-        } finally {
-            try {
-                ins.close();
-            } catch (final IOException e) {
-                // Ignore here.  If the read() threw also, then that should be reported, not this.
-                // If the close() throws, we don't care b/c we've already read the bytes.
-            }
         }
-
     }
 
     /** Background task that refreshes metadata. */

@@ -31,6 +31,7 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.opensaml.core.xml.XMLObject;
@@ -354,14 +355,17 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
                 return null;
             }
             
-            try {
-                final InputStream ins = response.getEntity().getContent();
-                final byte[] source = ByteStreams.toByteArray(ins);
-                assert source != null;
-                try (final ByteArrayInputStream bais = new ByteArrayInputStream(source)) {
-                    final XMLObject xmlObject = unmarshallMetadata(bais);
-                    xmlObject.getObjectMetadata().put(new XMLObjectSource(source));
-                    return xmlObject;
+            try (final HttpEntity entity = response.getEntity()) {
+                try (final InputStream ins = entity.getContent()) {
+                    // TODO why are we buffering the InputStream to byte[] like this,
+                    // rather than just unmarshalling it directly?
+                    final byte[] source = ByteStreams.toByteArray(ins);
+                    assert source != null;
+                    try (final ByteArrayInputStream bais = new ByteArrayInputStream(source)) {
+                        final XMLObject xmlObject = unmarshallMetadata(bais);
+                        xmlObject.getObjectMetadata().put(new XMLObjectSource(source));
+                        return xmlObject;
+                    }
                 }
             } catch (final IOException | UnmarshallingException e) {
                 log.error("{} Error unmarshalling HTTP response stream", getLogPrefix(), e);
