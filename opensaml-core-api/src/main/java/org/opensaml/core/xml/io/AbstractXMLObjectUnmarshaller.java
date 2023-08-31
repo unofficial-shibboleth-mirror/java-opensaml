@@ -402,11 +402,11 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             throws UnmarshallingException {
 
         if (strictMode) {
-            throw new UnmarshallingException(String.format("Saw invalid attribute %s on element %s",
+            throw new UnmarshallingException(String.format("Saw invalid attribute '%s' on element %s",
                     QNameSupport.getNodeQName(attribute), xmlObject.getElementQName()));
         }
 
-        log.debug("Ignoring unknown attribute {} on element {}", QNameSupport.getNodeQName(attribute),
+        log.debug("Ignoring unknown attribute '{}' on element {}", QNameSupport.getNodeQName(attribute),
                 xmlObject.getElementQName());
     }
 
@@ -424,11 +424,11 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             throws UnmarshallingException {
 
         if (strictMode) {
-            throw new UnmarshallingException(String.format("Saw invalid element content %s of element %s",
+            throw new UnmarshallingException(String.format("Saw invalid element content '%s' of element %s",
                     elementContent, xmlObject.getElementQName()));
         }
 
-        log.debug("Ignoring unknown element content {} of element {}", elementContent, xmlObject.getElementQName());
+        log.debug("Ignoring unknown element content '{}' of element {}", elementContent, xmlObject.getElementQName());
     }
     
     /**
