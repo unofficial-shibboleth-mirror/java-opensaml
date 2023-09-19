@@ -62,6 +62,9 @@
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
         <opensaml-parent.site.url>${shibboleth.site.deploy.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
         <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
+
+        <!-- TODO: Remove once in project parent: Base URL for all our deployed javadocs. -->
+        <javadoc.url>https://shibboleth.net/api</javadoc.url>
     </properties>
 
     <!-- Dependencies which are required by every single project module should go here and will be inherited by all modules. -->
@@ -144,6 +147,15 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>net.shibboleth.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <links combine.children="append">
+                        <link>${javadoc.url}/java-shib-shared/${shib-shared.version}</link>
+                    </links>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
