@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.shibboleth</groupId>
         <artifactId>parent</artifactId>
-        <version>17.0.1</version>
+        <version>17.0.2-SNAPSHOT</version>
     </parent>
 
     <name>OpenSAML</name>
@@ -62,9 +62,6 @@
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
         <opensaml-parent.site.url>${shibboleth.site.deploy.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
         <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
-
-        <!-- TODO: Remove once in project parent: Base URL for all our deployed javadocs. -->
-        <javadoc.url>https://shibboleth.net/api</javadoc.url>
     </properties>
 
     <!-- Dependencies which are required by every single project module should go here and will be inherited by all modules. -->
