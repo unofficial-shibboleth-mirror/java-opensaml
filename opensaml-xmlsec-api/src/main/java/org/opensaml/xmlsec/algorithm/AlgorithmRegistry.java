@@ -38,6 +38,7 @@ import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
+import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
@@ -328,6 +329,12 @@ public class AlgorithmRegistry {
                     
                 case Signature:
                     Signature.getInstance(descriptor.getJCAAlgorithmID());
+                    // Have to special case and test the implicit digest method separately,
+                    // since the Santuario and hence AlgorithmDescriptor methodology of "RSASSA-PSS"
+                    // doesn't include the digest explicitly like the others do.  See OSJ-272 and OSJ-388.
+                    if (JCAConstants.SIGNATURE_RSA_SSA_PSS.equals(descriptor.getJCAAlgorithmID())) {
+                        MessageDigest.getInstance(SignatureAlgorithm.class.cast(descriptor).getDigest());
+                    }
                     break;
                     
                 case Mac:

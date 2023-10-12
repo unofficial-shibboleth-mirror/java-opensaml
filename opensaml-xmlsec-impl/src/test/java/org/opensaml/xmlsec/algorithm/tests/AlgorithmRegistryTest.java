@@ -451,36 +451,17 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             }
 
             // RSASSA-PSA SHA-2
-            // According to the Java 17 security providers docs, these RSASSA-PSA SHA-2 variants are supposed to be
-            // supported by that version of the SunRsaSign provider. But in reality they appear to currently be unsupported.
-            // Confirmed by iterating the java.security.Security Providers. Brent 2023-08-03. 
-            if (providerSupport.haveBC()) {
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
-            } else {
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
-            }
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1));
 
             // RSASSA-PSA SHA-3
-            if (providerSupport.haveBC()) {
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
-                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
-            } else {
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
-            }
-            
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1));
         
         } finally {
             providerSupport.unloadBC();

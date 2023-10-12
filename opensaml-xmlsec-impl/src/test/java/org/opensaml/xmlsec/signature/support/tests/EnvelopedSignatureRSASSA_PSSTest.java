@@ -26,7 +26,6 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.Signature;
@@ -38,6 +37,7 @@ import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
@@ -65,9 +65,6 @@ public class EnvelopedSignatureRSASSA_PSSTest extends XMLObjectBaseTestCase {
     /** Builder of Signature XML objects. */
     private XMLObjectBuilder<Signature> sigBuilder;
     
-    /** Signature algorithm URI. */
-    private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1;
-
     @BeforeMethod
     protected void setUp() throws Exception {
         KeyPair keyPair = KeySupport.generateKeyPair("RSA", 2048, null);
@@ -81,58 +78,70 @@ public class EnvelopedSignatureRSASSA_PSSTest extends XMLObjectBaseTestCase {
                 Signature.DEFAULT_ELEMENT_NAME);
     }
 
+    @DataProvider(name = "testAlgorithms")
+    protected Object[][] testAlgorithms() {
+        return new Object[][]  {
+            // SHA-2 ones
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA1_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA224_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA256_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA384_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA512_MGF1 },
+
+            // SHA-3 ones
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_224_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_256_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_384_MGF1 },
+            new Object[] { SignatureConstants.ALGO_ID_SIGNATURE_RSASSA_PSS_SHA3_512_MGF1 },
+        };
+        
+    }
+
     /**
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws SignatureException ...
      */
-    @Test
-    public void testSigningAndVerification() throws MarshallingException, SignatureException {
-        // BC is currently necessary for the RSASSA-PSS SHA-2 algos, even though it shouldn't be.
-        final SecurityProviderTestSupport  providerSupport = new SecurityProviderTestSupport();
+    @Test(dataProvider = "testAlgorithms")
+    public void testSigningAndVerification(final String signatureAlgorithmURI) throws MarshallingException, SignatureException {
+        SignableSimpleXMLObject sxo = getXMLObjectWithSignature(signatureAlgorithmURI);
+        Signature signature = sxo.getSignature();
+
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
+        Element signedElement = marshaller.marshall(sxo);
+
+        assert signature != null;
+        Signer.signObject(signature);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Marshalled Signature: \n" + SerializeSupport.nodeToString(signedElement));
+        }
+
+        SignatureValidator.validate(signature, goodCredential);
+
         try {
-            providerSupport.loadBC();
-            
-            SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
-            Signature signature = sxo.getSignature();
-
-            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
-            Element signedElement = marshaller.marshall(sxo);
-
-            assert signature != null;
-            Signer.signObject(signature);
-
-            if (log.isDebugEnabled()) {
-                log.debug("Marshalled Signature: \n" + SerializeSupport.nodeToString(signedElement));
-            }
-
-            SignatureValidator.validate(signature, goodCredential);
-
-            try {
-                SignatureValidator.validate(signature, badCredential);
-                Assert.fail("Validated signature with improper public key");
-            } catch (SignatureException e) {
-                // expected
-            }
-        } finally {
-            providerSupport.unloadBC();
+            SignatureValidator.validate(signature, badCredential);
+            Assert.fail("Validated signature with improper public key");
+        } catch (SignatureException e) {
+            // expected
         }
     }
 
     /**
      * Creates a XMLObject that has a Signature child element.
+     * @param signatureAlgorithmURI 
      * 
      * @return a XMLObject that has a Signature child element
      */
-    private SignableSimpleXMLObject getXMLObjectWithSignature() {
+    private SignableSimpleXMLObject getXMLObjectWithSignature(final String signatureAlgorithmURI) {
         SignableSimpleXMLObject sxo = sxoBuilder.buildObject();
         sxo.setId("FOO");
 
         Signature sig = sigBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
         sig.setSigningCredential(goodCredential);
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        sig.setSignatureAlgorithm(algoURI);
+        sig.setSignatureAlgorithm(signatureAlgorithmURI);
         
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);

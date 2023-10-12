@@ -44,7 +44,7 @@ public final class SignatureRSASSA_PSS_SHA3_384_MGF1 implements SignatureAlgorit
 
     /** {@inheritDoc} */
     @Nonnull public String getJCAAlgorithmID() {
-        return JCAConstants.SIGNATURE_RSA_SHA3_384_MGF1;
+        return JCAConstants.SIGNATURE_RSA_SSA_PSS;
     }
 
     /** {@inheritDoc} */

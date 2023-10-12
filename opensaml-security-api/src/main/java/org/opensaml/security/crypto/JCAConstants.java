@@ -209,6 +209,9 @@ public final class JCAConstants {
     /** Signature algorithm: "SHA3-512withRSAandMGF1". */
     @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SHA3_512_MGF1 = "SHA3-512withRSAandMGF1";
     
+    /** Signature algorithm: "RSASSA-PSS". */
+    @Nonnull @NotEmpty public static final String SIGNATURE_RSA_SSA_PSS= "RSASSA-PSS";
+    
     
     // MAC types
     
