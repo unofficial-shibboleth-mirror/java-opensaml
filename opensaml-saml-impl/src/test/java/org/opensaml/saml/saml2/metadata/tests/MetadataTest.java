@@ -14,6 +14,7 @@
 
 package org.opensaml.saml.saml2.metadata.tests;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -31,7 +32,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test cases that parses real, "in-the-wild", metadata files. Currently uses the InCommon and SWITCH federation
  * metadata files (current as of the time this test was written).
  */
-@SuppressWarnings({"null", "javadoc"})
+@SuppressWarnings({"null"})
 public class MetadataTest extends XMLObjectBaseTestCase {
 
     /**
@@ -51,8 +52,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
     public void testInCommonUnmarshall() throws XMLParserException, UnmarshallingException {
         String inCommonMDFile = "/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml";
 
-        try {
-            InputStream in = MetadataTest.class.getResourceAsStream(inCommonMDFile);
+        try (final InputStream in = MetadataTest.class.getResourceAsStream(inCommonMDFile)) {
             Document inCommonMDDoc = parserPool.parse(in);
             Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     inCommonMDDoc.getDocumentElement());
@@ -65,6 +65,8 @@ public class MetadataTest extends XMLObjectBaseTestCase {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
             Assert.fail("Unable to unmarshall XML: " + ue);
+        } catch (IOException ue) {
+            Assert.fail("Unable to close stream: " + ue);
         }
     }
 
@@ -75,8 +77,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
     public void testSWITCHUnmarshall() {
         String switchMDFile = "/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml";
 
-        try {
-            InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
+        try (final InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile)) {
             Document switchMDDoc = parserPool.parse(in);
             Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     switchMDDoc.getDocumentElement());
@@ -89,18 +90,19 @@ public class MetadataTest extends XMLObjectBaseTestCase {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
             Assert.fail("Unable to unmarshall XML: " + ue);
+        } catch (final IOException ue) {
+            Assert.fail("Unable to close stream: " + ue);
         }
     }
     
     /**
-     * Tests unmarshalling an SWITCH metadata document.
+     * Tests unmarshalling a UKFed metadata document.
      */
     @Test
     public void testUKFedUnmarshall() {
-        String switchMDFile = "/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml";
+        String ukMDFile = "/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml";
 
-        try {
-            InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
+        try (final InputStream in = MetadataTest.class.getResourceAsStream(ukMDFile)) {
             Document ukFedDoc = parserPool.parse(in);            
             Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     ukFedDoc.getDocumentElement());
@@ -112,6 +114,31 @@ public class MetadataTest extends XMLObjectBaseTestCase {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
             Assert.fail("Unable to unmarshall XML: " + ue);
+        } catch (final IOException ue) {
+            Assert.fail("Unable to close stream: " + ue);
         }
     }
+
+    /** Tests unmarshalling an ADFS metadata document with their "fun" extensions. */
+    @Test(enabled=false)
+    public void testADFSUnmarshall() {
+        String adfsMDFile = "/org/opensaml/saml/saml2/metadata/adfs-metadata.xml";
+
+        try (final InputStream in = MetadataTest.class.getResourceAsStream(adfsMDFile)) {
+            Document adfsDoc = parserPool.parse(in);            
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
+                    adfsDoc.getDocumentElement());
+            XMLObject ukFedMD = unmarshaller.unmarshall(adfsDoc.getDocumentElement());
+
+            Assert.assertEquals(ukFedMD.getElementQName().getLocalPart(), "EntityDescriptor",
+                    "First element of ADFS metadata was not expected EntityDescriptor");
+        } catch (XMLParserException xe) {
+            Assert.fail("Unable to parse XML file: " + xe);
+        } catch (UnmarshallingException ue) {
+            Assert.fail("Unable to unmarshall XML: " + ue);
+        } catch (final IOException ue) {
+            Assert.fail("Unable to close stream: " + ue);
+        }
+    }
+    
 }
