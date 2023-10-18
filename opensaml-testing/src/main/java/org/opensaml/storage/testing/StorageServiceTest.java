@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.storage.EnumeratableStorageService;
 import org.opensaml.storage.StorageRecord;
@@ -49,10 +48,10 @@ import net.shibboleth.shared.component.InitializableComponent;
 public abstract class StorageServiceTest {
     
     /** Random source. */
-    @Nullable protected SecureRandom random;
+    protected SecureRandom random;
     
     /** Service being tested. */
-    @Nullable protected EnumeratableStorageService shared;
+    protected EnumeratableStorageService shared;
 
     /**
      * Returns a fresh service instance to test.

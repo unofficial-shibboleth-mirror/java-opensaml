@@ -56,7 +56,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 
     /** Parser pool. */
-    @Nullable protected static ParserPool parserPool;
+    protected static ParserPool parserPool;
 
     /** XMLObject builder factory. */
     protected static XMLObjectBuilderFactory builderFactory;
