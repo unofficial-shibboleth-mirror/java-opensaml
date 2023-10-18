@@ -36,42 +36,43 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Simple XMLObject that can be used for testing
+ * Simple XMLObject that can be used for testing.
  */
-public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
+public class SimpleXMLObject extends AbstractXMLObject
+        implements ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
     
-    /** Default namespace */
-    @Nonnull @NotEmpty public final static String NAMESPACE = "http://www.example.org/testObjects";
+    /** Default namespace. */
+    @Nonnull @NotEmpty public static final String NAMESPACE = "http://www.example.org/testObjects";
     
-    /** Default namespace prefix */
-    @Nonnull @NotEmpty public final static String NAMESPACE_PREFIX = "test";
+    /** Default namespace prefix. */
+    @Nonnull @NotEmpty public static final String NAMESPACE_PREFIX = "test";
     
-    /** Element local name */
-    @Nonnull @NotEmpty public final static String LOCAL_NAME = "SimpleElement";
+    /** Element local name. */
+    @Nonnull @NotEmpty public static final String LOCAL_NAME = "SimpleElement";
     
-    /** Default element name */
-    @Nonnull public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
+    /** Default element name. */
+    @Nonnull public static final QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
     
-    /** Name attribute name */
-    @Nonnull @NotEmpty public final static String ID_ATTRIB_NAME = "Id";
+    /** Name attribute name. */
+    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
     
-    /** Name attribute */
+    /** Name attribute. */
     @Nullable private String id;
     
-    /** Value of the object stored as text content in the element */
+    /** Value of the object stored as text content in the element. */
     @Nullable private String value;
     
-    /** Child SimpleXMLObjects */
+    /** Child SimpleXMLObjects. */
     @Nonnull private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
     
-    /** Other children */
+    /** Other children. */
     @Nonnull private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
     
     /** anyAttribute wildcard attributes. */
     @Nonnull private AttributeMap unknownAttributes;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namspaceURI namespace for the node
      * @param localName local name for the node
@@ -139,13 +140,13 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
     
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
     @Nullable public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new LinkedList<>();
+        final List<XMLObject> children = new LinkedList<>();
         
         children.addAll(simpleXMLObjects);
         children.addAll(unknownXMLObjects);

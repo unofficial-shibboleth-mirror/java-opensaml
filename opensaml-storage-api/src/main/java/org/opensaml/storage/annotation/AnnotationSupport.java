@@ -32,7 +32,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public final class AnnotationSupport {
 
     /** Simple cache of fields we have seen. */
-    private static final Map<String, Field> FIELD_CACHE = new ConcurrentHashMap<>();
+    @Nonnull private static final Map<String, Field> FIELD_CACHE = new ConcurrentHashMap<>();
     
     /** Private constructor of utility class. */
     private AnnotationSupport() {
@@ -43,7 +43,7 @@ public final class AnnotationSupport {
      * Gets the value of the field indicated by the {@link Context} annotation on the given object.
      * 
      * <p>If the value is not a {@link String}, then it is converted to one
-     * by calling {@link Object#toString()} on the object.<p>
+     * by calling {@link Object#toString()} on the object.</p>
      *
      * @param target object from which to get context
      * 
@@ -81,7 +81,7 @@ public final class AnnotationSupport {
      * Gets the value of the field indicated by the {@link Key} annotation on the given object.
      * 
      * <p>If the value is not a {@link String}, then it is converted to one
-     * by calling {@link Object#toString()} on the object.<p>
+     * by calling {@link Object#toString()} on the object.</p>
      *
      * @param target object from which to get key
      * 
@@ -119,7 +119,7 @@ public final class AnnotationSupport {
      * Gets the value of the field indicated by the {@link Value} annotation on the given object.
      * 
      * <p>If the value is not a {@link String}, then it is converted to one
-     * by calling {@link Object#toString()} on the object.<p>
+     * by calling {@link Object#toString()} on the object.</p>
      *
      * @param target Object from which to get value
      * 
@@ -158,8 +158,7 @@ public final class AnnotationSupport {
      * or null if none.
      * 
      * <p>The value is returned as a long, in milliseconds since the beginning of the Unix epoch.
-     * The following data types are supported:
-     * </p>
+     * The following data types are supported:</p>
      *  <ul>
      *     <li><code>long</code></li>
      *     <li>{@link Date}</li>
@@ -191,8 +190,7 @@ public final class AnnotationSupport {
      * Sets the value of the field indicated by the {@link Expiration} annotation on the given object.
      *
      * <p>The expiration is expressed in milliseconds since the beginning of the Unix epoch.
-     * The following data types are supported:
-     * </p>
+     * The following data types are supported:</p>
      *  <ul>
      *     <li><code>long</code></li>
      *     <li>{@link Date}</li>

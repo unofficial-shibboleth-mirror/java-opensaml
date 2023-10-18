@@ -52,35 +52,41 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Base test case class for tests that operate on XMLObjects.
  */
+@SuppressWarnings("null")
 public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 
-    /** Logger */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
+    /** Parser pool. */
+    @Nullable protected static ParserPool parserPool;
 
-    /** Parser pool */
-    protected static ParserPool parserPool;
-
-    /** XMLObject builder factory */
+    /** XMLObject builder factory. */
     protected static XMLObjectBuilderFactory builderFactory;
 
-    /** XMLObject marshaller factory */
+    /** XMLObject marshaller factory. */
     protected static MarshallerFactory marshallerFactory;
 
-    /** XMLObject unmarshaller factory */
+    /** XMLObject unmarshaller factory. */
     protected static UnmarshallerFactory unmarshallerFactory;
 
-    /** QName for SimpleXMLObject */
+    /** QName for SimpleXMLObject. */
     @Nonnull protected static QName simpleXMLObjectQName =
             new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
 
+    /** Logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
+
+    /**
+     * Init support of XMLObjects.
+     * 
+     * @throws Exception on error
+     */
     @BeforeClass
-	protected void initXMLObjectSupport() throws Exception {
+    protected void initXMLObjectSupport() throws Exception {
         try {
             parserPool = XMLObjectProviderRegistrySupport.getParserPool();
             builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
             marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
             unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Can not initialize XMLObjectBaseTestCase: {}", e.getMessage());
             throw e;
         }
@@ -93,7 +99,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param expectedDOM the expected DOM
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
-    protected void assertXMLEquals(Document expectedDOM, @Nonnull XMLObject xmlObject) {
+    protected void assertXMLEquals(final Document expectedDOM, @Nonnull final XMLObject xmlObject) {
         assertXMLEquals("Marshalled DOM was not the same as the expected DOM", expectedDOM, xmlObject);
     }
 
@@ -105,7 +111,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param expectedDOM the expected DOM
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
-    protected void assertXMLEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
+    protected void assertXMLEquals(final String failMessage, final Document expectedDOM, final XMLObject xmlObject) {
         assert xmlObject!=null;
         final Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
@@ -139,9 +145,6 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      */
     @Nonnull protected <T extends XMLObject> T buildXMLObject(@Nonnull final QName name) {
         final XMLObjectBuilder<T> builder = getBuilder(name);
-        if (builder == null) {
-            Assert.fail("no builder registered for: " + name);
-        }
         final T wsObj = builder.buildObject(name);
         Assert.assertNotNull(wsObj);
         return wsObj;
@@ -158,7 +161,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     @Nullable protected <T extends XMLObject> T unmarshallElement(@Nonnull final String elementFile) {
         try {
             return unmarshallElement(elementFile, false);
-        } catch (XMLParserException | UnmarshallingException e) {
+        } catch (final XMLParserException | UnmarshallingException e) {
             // Won't happen due to flag being passed
             Assert.fail("Unable to parse or unmarshall element file " + elementFile + ": " + e);
             return null;
@@ -169,7 +172,8 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * Unmarshalls an element file into its XMLObject.
      * 
      * @param elementFile the element file to unmarshall
-     * @param propagateErrors if true, checked exceptions will be thrown, if false then they cause assertion of test failure
+     * @param propagateErrors if true, checked exceptions will be thrown,
+     *      if false then they cause assertion of test failure
      * @param <T> expected type
      * 
      * @return the XMLObject from the file
@@ -177,12 +181,14 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @throws XMLParserException ...
      * @throws UnmarshallingException ...
      */
-    @Nullable protected <T extends XMLObject> T unmarshallElement(@Nonnull final String elementFile, boolean propagateErrors) 
+    @Nullable protected <T extends XMLObject> T unmarshallElement(@Nonnull final String elementFile,
+            final boolean propagateErrors) 
             throws XMLParserException, UnmarshallingException {
         try {
             final Document doc = parseXMLDocument(elementFile);
             final Element element = doc.getDocumentElement();
             final Unmarshaller unmarshaller = getUnmarshaller(element);
+            @SuppressWarnings("unchecked")
             final T object = (T) unmarshaller.unmarshall(element);
             Assert.assertNotNull(object);
             return object;
@@ -211,7 +217,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     protected void printXML(@Nonnull final Node node, @Nonnull final String filename) {
         try {
             SerializeSupport.writeNode(node, new FileOutputStream(new File(filename)));
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
@@ -229,7 +235,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
             final Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
             assert marshaller!= null;
             elem = marshaller.marshall(xmlObject);
-        } catch (MarshallingException e) {
+        } catch (final MarshallingException e) {
             e.printStackTrace();
         }
         assert elem != null;
@@ -249,7 +255,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     }
 
     /**
-     * Lookup the marshaller for a QName
+     * Lookup the marshaller for a QName.
      * 
      * @param qname the QName for which to find the marshaller
      * @return the marshaller
@@ -275,7 +281,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @return the unmarshaller
      */
     @Nonnull protected Unmarshaller getUnmarshaller(@Nonnull final QName qname) {
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(qname);
+        final Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(qname);
         if (unmarshaller == null) {
             Assert.fail("no unmarshaller registered for " + qname);
         }
@@ -300,7 +306,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @return the unmarshaller
      */
     @Nonnull protected Unmarshaller getUnmarshaller(@Nonnull final Element element) {
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
+        final Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
         if (unmarshaller == null) {
             Assert.fail("no unmarshaller registered for " + QNameSupport.getNodeQName(element));
         }
@@ -318,7 +324,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     @Nonnull protected Document parseXMLDocument(@Nonnull final String xmlFilename) throws XMLParserException {
         final InputStream is = getClass().getResourceAsStream(xmlFilename);
         assert is != null;
-        Document doc = parserPool.parse(is);
+        final Document doc = parserPool.parse(is);
         return doc;
     }
     

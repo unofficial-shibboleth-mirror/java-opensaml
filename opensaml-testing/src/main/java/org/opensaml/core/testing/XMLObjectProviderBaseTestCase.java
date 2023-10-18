@@ -36,41 +36,46 @@ import net.shibboleth.shared.xml.XMLParserException;
  * of object provider tests, i.e marshalling and unmarshalling of single elements; with optional
  * attributes; and with child elements.
  */
+@SuppressWarnings("null")
 public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCase {
 
-    /** Location of file containing a single element with NO optional attributes */
+    /** Location of file containing a single element with NO optional attributes. */
     protected String singleElementFile;
 
-    /** Location of file containing a single element with all optional attributes */
+    /** Location of file containing a single element with all optional attributes. */
     protected String singleElementOptionalAttributesFile;
 
-    /** Location of file containing a single element with some unknown attributes */
+    /** Location of file containing a single element with some unknown attributes. */
     protected String singleElementUnknownAttributesFile;
 
-    /** Location of file containing a single element with child elements */
+    /** Location of file containing a single element with child elements. */
     protected String childElementsFile;
     
     /** Location of file containing some kind of invalid content. */
     protected String invalidFile;
 
-    /** The expected result of a marshalled single element with no optional attributes */
+    /** The expected result of a marshalled single element with no optional attributes. */
     protected Document expectedDOM;
 
-    /** The expected result of a marshalled single element with all optional attributes */
+    /** The expected result of a marshalled single element with all optional attributes. */
     protected Document expectedOptionalAttributesDOM;
 
-    /** The expected result of a marshalled single element some unknown attributes */
+    /** The expected result of a marshalled single element some unknown attributes. */
     protected Document expectedUnknownAttributesDOM;
 
-    /** The expected result of a marshalled single element with child elements */
+    /** The expected result of a marshalled single element with child elements. */
     protected Document expectedChildElementsDOM;
     
     /** The result of parsing the invalid file. */
     protected Document invalidDOM;
 
-    @SuppressWarnings("null")
+    /**
+     * Init testing fields. 
+     * 
+     * @throws Exception on error
+     */
     @BeforeClass
-	protected void initXMLObjectProviderTestingSupprt() throws Exception {
+    protected void initXMLObjectProviderTestingSupprt() throws Exception {
         if (singleElementFile != null) {
             expectedDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
                     .getResourceAsStream(singleElementFile));
@@ -100,15 +105,16 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     /**
      * Tests unmarshalling a document that contains a single element (no children) with no optional attributes.
      */
-	public abstract void testSingleElementUnmarshall();
+    public abstract void testSingleElementUnmarshall();
 
     /**
      * Tests unmarshalling a document that contains a single element (no children) with all that element's optional
      * attributes.
      */
     @Test
-	public void testSingleElementOptionalAttributesUnmarshall() {
-        Assert.assertNull(singleElementOptionalAttributesFile, "No testSingleElementOptionalAttributesUnmarshall present");
+    public void testSingleElementOptionalAttributesUnmarshall() {
+        Assert.assertNull(singleElementOptionalAttributesFile,
+                "No testSingleElementOptionalAttributesUnmarshall present");
     }
 
     /**
@@ -117,27 +123,28 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
      */
     @Test
     public void testSingleElementUnknownAttributesUnmarshall() {
-        Assert.assertNull(singleElementUnknownAttributesFile, "No testSingleElementUnknownAttributesUnmarshall present");
+        Assert.assertNull(singleElementUnknownAttributesFile,
+                "No testSingleElementUnknownAttributesUnmarshall present");
     }
 
     /**
      * Tests unmarshalling a document that contains a single element with children.
      */
     @Test
-	public void testChildElementsUnmarshall() {
+    public void testChildElementsUnmarshall() {
         Assert.assertNull(childElementsFile, "No testSingleElementChildElementsUnmarshall present");
     }
 
     /**
      * Tests marshalling the contents of a single element, with no optional attributes, to a DOM document.
      */
-	public abstract void testSingleElementMarshall();
+    public abstract void testSingleElementMarshall();
 
     /**
      * Tests marshalling the contents of a single element, with all optional attributes, to a DOM document.
      */
     @Test
-	public void testSingleElementOptionalAttributesMarshall() {
+    public void testSingleElementOptionalAttributesMarshall() {
         Assert.assertNull(expectedOptionalAttributesDOM, "No testSingleElementOptionalAttributesMarshall");
     }
 
@@ -153,19 +160,23 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
      * Tests marshalling the contents of a single element with child elements to a DOM document.
      */
     @Test
-	public void testChildElementsMarshall() {
+    public void testChildElementsMarshall() {
         Assert.assertNull(expectedChildElementsDOM, "No testSingleElementChildElementsMarshall");
     }
 
     /**
      * Test marshalling of attribute IDness.
+     * 
+     * @param target target object
+     * @param idValue ID value
      *
      * @throws MarshallingException
      * @throws XMLParserException
      * */
-    public void testAttributeIDnessMarshall(@Nonnull final XMLObject target, final String idValue) throws MarshallingException, XMLParserException {
+    public void testAttributeIDnessMarshall(@Nonnull final XMLObject target, final String idValue)
+            throws MarshallingException, XMLParserException {
         // Test marshall of newly constructed object
-        Marshaller marshaller = XMLObjectSupport.getMarshaller(target);
+        final Marshaller marshaller = XMLObjectSupport.getMarshaller(target);
         assert marshaller!=null;
         Element origDOM = marshaller.marshall(target);
         Element resolvedDOM = origDOM.getOwnerDocument().getElementById(idValue);
@@ -183,7 +194,7 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
 
         // Remarshall existing DOM as child of new parent Element in new Document
         newDocument = parserPool.newDocument();
-        Element parent = ElementSupport.constructElement(newDocument, "urn:test:foo", "Foo", "foo");
+        final Element parent = ElementSupport.constructElement(newDocument, "urn:test:foo", "Foo", "foo");
         ElementSupport.setDocumentElement(newDocument, parent);
         origDOM = marshaller.marshall(target, parent);
         resolvedDOM = newDocument.getElementById(idValue);

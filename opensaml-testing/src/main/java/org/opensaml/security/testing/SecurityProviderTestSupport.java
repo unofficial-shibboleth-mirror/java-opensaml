@@ -28,22 +28,27 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
  * 
  * <p>
  * One major feature is the ability to check and load the Bouncy Castle security provider for tests which require
- * advanced crypto capabilities, and unload it afterwards, if it wasn't loaded originally.  The goal of this is to preserve
- * the pre-test condition of whether BC was originally loaded or not, so we don't muck with the environment of JVM in which
- * the tests are running.  For example, the JVM may actually have been configured with BC deliberately, 
+ * advanced crypto capabilities, and unload it afterwards, if it wasn't loaded originally.
+ * The goal of this is to preserve the pre-test condition of whether BC was originally loaded or not,
+ * so we don't muck with the environment of JVM in which the tests are running.
+ * For example, the JVM may actually have been configured with BC deliberately, 
  * so we don't want to unload it by mistake.
  * </p>
  */
 public class SecurityProviderTestSupport {
     
+    /** Name of Bouncy Castle JCE provider. */
     @Nonnull @NotEmpty public static final String BC_PROVIDER_NAME = "BC";
     
+    /** Name of Sun Elliptic Curve JCE provider. */
     @Nonnull @NotEmpty public static final String SUNEC_PROVIDER_NAME = "SunEC";
     
+    /** BC flag. */
     private boolean hadBCOriginally;
     
+    /** Constructor. */
     public SecurityProviderTestSupport() {
-        hadBCOriginally = (Security.getProvider(BC_PROVIDER_NAME) != null);
+        hadBCOriginally = Security.getProvider(BC_PROVIDER_NAME) != null;
     }
     
     /**

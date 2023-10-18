@@ -27,15 +27,25 @@ import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolde
  */
 public abstract class InitializerBaseTestCase {
     
+    /**
+     * Test set up.
+     * 
+     * @throws Exception on error
+     */
     @BeforeMethod
     protected void setUp() throws Exception {
-        Properties props = new Properties();
+        final Properties props = new Properties();
         
         props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
         
         ThreadLocalConfigurationPropertiesHolder.setProperties(props);
     }
 
+    /**
+     * Test tear down.
+     * 
+     * @throws Exception on error
+     */
     @AfterMethod
     protected void tearDown() throws Exception {
         ThreadLocalConfigurationPropertiesHolder.clear();

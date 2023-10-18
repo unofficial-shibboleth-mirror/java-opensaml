@@ -31,6 +31,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public abstract class AbstractMessageDecoder extends AbstractInitializableComponent
         implements MessageDecoder, UnmodifiableComponent {
     
+    /** Logging category for protocol messages. */
     @Nonnull public static final String BASE_PROTOCOL_MESSAGE_LOGGER_CATEGORY = "PROTOCOL_MESSAGE";
     
     /** Used to log protocol messages. */
@@ -43,7 +44,7 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     @Nullable private MessageContext messageContext;
     
     /** The configured logging sub-category for protocol messages. */
-    @Nonnull private String protocolMessageLoggerSubCategory;
+    @Nullable private String protocolMessageLoggerSubCategory;
 
     /** {@inheritDoc} */
     @Nullable public MessageContext getMessageContext() {
@@ -80,7 +81,7 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
      * 
      * @return the logging sub-category
      */
-    @Nonnull protected String getProtocolMessageLoggerSubCategory() {
+    @Nullable protected String getProtocolMessageLoggerSubCategory() {
         return protocolMessageLoggerSubCategory;
     }
     

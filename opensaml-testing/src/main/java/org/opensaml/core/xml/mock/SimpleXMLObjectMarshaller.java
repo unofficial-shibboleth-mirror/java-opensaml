@@ -28,8 +28,9 @@ import org.w3c.dom.Element;
 public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(@Nonnull XMLObject xmlObject, @Nonnull Element domElement) throws MarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (simpleXMLObject.getId() != null) {
             domElement.setAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME, simpleXMLObject.getId());
@@ -41,8 +42,9 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(@Nonnull XMLObject xmlObject, @Nonnull Element domElement) throws MarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (simpleXMLObject.getValue() != null) {
             domElement.setTextContent(simpleXMLObject.getValue());

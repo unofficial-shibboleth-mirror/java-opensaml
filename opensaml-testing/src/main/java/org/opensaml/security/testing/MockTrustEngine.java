@@ -22,22 +22,40 @@ import org.opensaml.security.trust.TrustEngine;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+/**
+ * Mock trust engine.
+ *
+ * @param <TokenType> token type for trust engine
+ */
 public class MockTrustEngine<TokenType> implements TrustEngine<TokenType> {
     
+    /** Trusted flag. */
     private boolean trusted;
     
-    private Throwable throwable;
+    /** Exception to raise. */
+    @Nullable private Throwable throwable;
 
-    public MockTrustEngine(boolean flag) {
+    /**
+     * Constructor.
+     *
+     * @param flag flag controlling whether the trust engine mock should accept the input or not.
+     */
+    public MockTrustEngine(final boolean flag) {
         trusted = flag;
     }
 
-    public MockTrustEngine(Throwable t) {
+    /**
+     * Constructor.
+     *
+     * @param t exception to raise from mock.
+     */
+    public MockTrustEngine(@Nullable final Throwable t) {
         throwable = t;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(@Nonnull TokenType token, @Nullable CriteriaSet trustBasisCriteria) throws SecurityException {
+    public boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
         if (throwable != null) {
             if (SecurityException.class.isInstance(throwable)) {
                 throw SecurityException.class.cast(throwable);

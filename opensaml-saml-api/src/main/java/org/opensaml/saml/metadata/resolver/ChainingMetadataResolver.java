@@ -314,7 +314,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /**
      * Collect the unique entityIDs from the supplied iterable of entity descriptors.
      * 
-     * @param descriptors
+     * @param descriptors the input objects
      * @return the unique entityIDs from the supplied descriptors
      */
     private Set<String> collectEntityIDs(@Nonnull final Iterable<EntityDescriptor> descriptors) {

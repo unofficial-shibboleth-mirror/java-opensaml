@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.storage.EnumeratableStorageService;
 import org.opensaml.storage.StorageRecord;
@@ -44,12 +45,14 @@ import net.shibboleth.shared.component.InitializableComponent;
 /**
  * Test of {@link StorageService} implementations.
  */
-@SuppressWarnings({"javadoc", "null"})
+@SuppressWarnings({"null"})
 public abstract class StorageServiceTest {
     
-    protected SecureRandom random;
+    /** Random source. */
+    @Nullable protected SecureRandom random;
     
-    protected EnumeratableStorageService shared;
+    /** Service being tested. */
+    @Nullable protected EnumeratableStorageService shared;
 
     /**
      * Returns a fresh service instance to test.
@@ -79,6 +82,11 @@ public abstract class StorageServiceTest {
         }
     }
     
+    /**
+     * Basic test of string records.
+     * 
+     * @throws IOException on error
+     */
     @Test(threadPoolSize = 10, invocationCount = 10)
     public void strings() throws IOException {
         threadInit();
@@ -86,7 +94,8 @@ public abstract class StorageServiceTest {
         final String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 300000);
+            final boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1),
+                    System.currentTimeMillis() + 300000);
             Assert.assertTrue(result);
         }
         
@@ -96,30 +105,31 @@ public abstract class StorageServiceTest {
         Assert.assertEquals(keylist.size(), 100);
         
         for (int i = 1; i <= 100; i++) {
-            StorageRecord<?> rec = shared.read(context, Integer.toString(i));
+            final StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             assert rec!=null;
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 1));
         }
 
         for (int i = 1; i <= 100; i++) {
-            boolean result = shared.update(context, Integer.toString(i), Integer.toString(i + 2), System.currentTimeMillis() + 300000);
+            final boolean result = shared.update(context, Integer.toString(i), Integer.toString(i + 2),
+                    System.currentTimeMillis() + 300000);
             Assert.assertTrue(result);
         }
 
         for (int i = 1; i <= 100; i++) {
-            StorageRecord<?> rec = shared.read(context, Integer.toString(i));
+            final StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             assert rec!=null;
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 2));
         }
 
         for (int i = 1; i <= 100; i++) {
-            boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1), null);
+            final boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1), null);
             Assert.assertFalse(result, "createString should have failed");
         }        
         
         for (int i = 1; i <= 100; i++) {
             shared.delete(context, Integer.toString(i));
-            StorageRecord<?> rec = shared.read(context, Integer.toString(i));
+            final StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
         
@@ -129,6 +139,12 @@ public abstract class StorageServiceTest {
         Assert.assertEquals(keylist.size(), 0);
     }
 
+    /**
+     * Test of expiration handling.
+     * 
+     * @throws IOException on error
+     * @throws InterruptedException on thread interruption
+     */
     @Test
     public void expiration() throws IOException, InterruptedException {
         threadInit();
@@ -142,13 +158,19 @@ public abstract class StorageServiceTest {
         Thread.sleep(5150);
         
         for (int i = 1; i <= 100; i++) {
-            StorageRecord<?> rec = shared.read(context, Integer.toString(i));
+            final StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
         
         Assert.assertFalse(shared.getContextKeys(context, null).iterator().hasNext());
     }
     
+    /**
+     * Test of versioned update.
+     * 
+     * @throws IOException on error
+     * @throws VersionMismatchException on record version mismatch
+     */
     @Test
     public void updates() throws IOException, VersionMismatchException {
         threadInit();
@@ -163,17 +185,22 @@ public abstract class StorageServiceTest {
         try {
             shared.updateWithVersion(1, context, key, "baz", null);
             Assert.fail("updateStringWithVersion should have failed");
-        } catch (VersionMismatchException e) {
+        } catch (final VersionMismatchException e) {
             // expected
         }
         
-        StorageRecord<?> rec = shared.read(context, key);
+        final StorageRecord<?> rec = shared.read(context, key);
         assert rec!=null;
         Assert.assertEquals(rec.getVersion(), 2);
     }
     
+    /**
+     * Test updates.
+     * 
+     * @throws IOException on error
+     */
     @Test
-    public void update() throws ComponentInitializationException, IOException {
+    public void update() throws IOException {
         final String context = Long.toString(random.nextLong());
         final String value = Long.toString(random.nextLong());
         final String newValue = Long.toString(random.nextLong());
@@ -198,6 +225,12 @@ public abstract class StorageServiceTest {
         assertNotEquals(rec.getExpiration(), expiration);
     }
 
+    /**
+     * Test object handling.
+     * 
+     * @throws IOException on error
+     * @throws InterruptedException on thread interruption
+     */
     @Test
     public void objects() throws IOException, InterruptedException {
         threadInit();
@@ -226,6 +259,11 @@ public abstract class StorageServiceTest {
         Assert.assertNull(shared.read(o2));
     }
     
+    /**
+     * Test context enumeration.
+     * 
+     * @throws IOException on error
+     */
     @Test
     public void enumerate() throws IOException {
         final String context = "zork";
@@ -251,15 +289,25 @@ public abstract class StorageServiceTest {
         Assert.assertEquals(copy.size(), 2);
     }
     
+    /**
+     * Annotated object class to test with.
+     */
     @Context("context")
     @Key("key")
     @Value("value")
     @Expiration("expiration")
     private class AnnotatedObject {
 
+        /** Context. */
         private String context;
+        
+        /** Key. */
         private String key;
+        
+        /** Value. */
         private String value;
+        
+        /** Expiration. */
         private Long expiration;
         
         public void generate() {
@@ -273,7 +321,7 @@ public abstract class StorageServiceTest {
             return context;
         }
         
-        public void setContext(String c) {
+        public void setContext(final String c) {
             context = c;
         }
         
@@ -281,7 +329,7 @@ public abstract class StorageServiceTest {
             return key;
         }
         
-        public void setKey(String k) {
+        public void setKey(final String k) {
             key = k;
         }
         
@@ -289,7 +337,7 @@ public abstract class StorageServiceTest {
             return value;
         }
         
-        public void setValue(String val) {
+        public void setValue(final String val) {
             value = val;
         }
         
@@ -297,7 +345,7 @@ public abstract class StorageServiceTest {
             return expiration;
         }
         
-        public void setExpiration(long exp) {
+        public void setExpiration(final long exp) {
             expiration = exp;
         }
         

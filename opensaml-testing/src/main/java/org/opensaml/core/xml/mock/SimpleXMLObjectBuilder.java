@@ -27,13 +27,20 @@ import org.opensaml.core.xml.AbstractXMLObjectBuilder;
  * Builder of {@link org.opensaml.core.xml.mock.SimpleXMLObject}s.
  */
 public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SimpleXMLObject> {
-    
-    public SimpleXMLObject buildObject(){
+
+    /**
+     * Default builder method.
+     * 
+     * @return new object
+     */
+    @Nonnull public SimpleXMLObject buildObject(){
         return buildObject(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME, SimpleXMLObject.NAMESPACE_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public @Nonnull SimpleXMLObject buildObject(@Nullable String namespaceURI, @Nonnull String localName, @Nullable String namespacePrefix) {
+    @Nonnull public SimpleXMLObject buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SimpleXMLObject(namespaceURI, localName, namespacePrefix);
     }
+
 }
