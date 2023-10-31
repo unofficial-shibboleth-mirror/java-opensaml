@@ -47,6 +47,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.StringDigester;
+import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.testing.ConstantSupplier;
 
 /**
@@ -118,9 +120,14 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         encoder.setVelocityEngine(velocityEngine);
         
+        encoder.setCSPDigester(new StringDigester("SHA-256", OutputFormat.HEX_LOWER));
+        
         encoder.initialize();
         encoder.prepareContext();
         encoder.encode();
+
+        final String csp = response.getHeader("Content-Security-Policy");
+        Assert.assertTrue(csp != null && csp.contains("script-src-attr 'unsafe-hashes' 'sha256-78f9e25449128af5ff73b5d604669faa1f2d4a9891aca8aa61ea9b1bb3754ce1"));
 
         Assert.assertEquals(response.getContentType(), "text/html;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
@@ -212,10 +219,15 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         encoder.setVelocityEngine(velocityEngine);
         
+        encoder.setCSPDigester(new StringDigester("SHA-256", OutputFormat.HEX_LOWER));
+
         encoder.initialize();
         encoder.prepareContext();
         encoder.encode();
 
+        final String csp = response.getHeader("Content-Security-Policy");
+        Assert.assertTrue(csp != null && csp.contains("script-src-attr 'unsafe-hashes' 'sha256-78f9e25449128af5ff73b5d604669faa1f2d4a9891aca8aa61ea9b1bb3754ce1"));
+        
         Assert.assertEquals(response.getContentType(), "text/html;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");

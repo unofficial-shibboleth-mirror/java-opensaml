@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.HTMLMessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -38,10 +39,12 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.codec.HTMLEncoder;
+import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -50,7 +53,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * SAML 2.0 HTTP Post binding message encoder.
  */
-public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
+public class HTTPPostEncoder extends BaseSAML2MessageEncoder implements HTMLMessageEncoder {
     
     /** Default template ID. */
     @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-binding.vm";
@@ -63,6 +66,12 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
 
     /** ID of the Velocity template used when performing POST encoding. */
     @Nonnull private String velocityTemplateId;
+    
+    /** Digester for CSP hashes. */
+    @Nullable private StringDigester cspDigester;
+
+    /** Generator for CSP nonces. */
+    @Nullable private IdentifierGenerationStrategy cspNonceGenerator;
     
     /** Constructor. */
     public HTTPPostEncoder() {
@@ -116,7 +125,19 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
         velocityTemplateId = Constraint.isNotNull(StringSupport.trimOrNull(newVelocityTemplateId),
                 "Velocity template ID cannot be null or empty");
     }
-
+    
+    /** {@inheritDoc} */
+    public void setCSPDigester(@Nullable final StringDigester digester) {
+        checkSetterPreconditions();
+        cspDigester = digester;
+    }
+    
+    /** {@inheritDoc} */
+    public void setCSPNonceGenerator(@Nullable final IdentifierGenerationStrategy strategy) {
+        checkSetterPreconditions();
+        cspNonceGenerator = strategy;
+    }
+    
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
@@ -159,6 +180,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
 
             final HttpServletResponse response = getHttpServletResponse();
             assert response != null;
+            context.put("response", response);
             
             HttpServletSupport.addNoCacheHeaders(response);
             HttpServletSupport.setUTF8Encoding(response);
@@ -190,6 +212,15 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
         log.debug("Encoding action url of '{}' with encoded value '{}'", endpointURL, encodedEndpointURL);
         velocityContext.put("action", encodedEndpointURL);
         velocityContext.put("binding", getBindingURI());
+        
+        if (cspDigester != null) {
+            log.trace("Adding CSP digester to context");
+            velocityContext.put("cspDigester", cspDigester);
+        }
+        if (cspNonceGenerator != null) {
+            log.trace("Adding CSP nonce generator to context");
+            velocityContext.put("cspNonce", cspNonceGenerator);
+        }
         
         final SAMLObject outboundMessage = (SAMLObject) messageContext.getMessage();
         // Checked above.

@@ -23,8 +23,11 @@ import javax.annotation.Nullable;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.opensaml.core.config.ConfigurationProperties;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.HTMLMessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -36,8 +39,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.codec.HTMLEncoder;
+import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -46,7 +51,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * SAML 1.X HTTP POST message encoder.
  */
-public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
+public class HTTPPostEncoder extends BaseSAML1MessageEncoder implements HTMLMessageEncoder {
     
     /** Default template ID. */
     @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml1-post-binding.vm";
@@ -59,6 +64,12 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
 
     /** ID of the velocity template used when performing POST encoding. */
     @NonnullAfterInit private String velocityTemplateId;
+    
+    /** Digester for CSP hashes. */
+    @Nullable private StringDigester cspDigester;
+
+    /** Generator for CSP nonces. */
+    @Nullable private IdentifierGenerationStrategy cspNonceGenerator;
     
     /** Constructor. */
     public HTTPPostEncoder() {
@@ -111,6 +122,18 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
         checkSetterPreconditions();
         velocityTemplateId = newVelocityTemplateId;
     }
+    
+    /** {@inheritDoc} */
+    public void setCSPDigester(@Nullable final StringDigester digester) {
+        checkSetterPreconditions();
+        cspDigester = digester;
+    }
+    
+    /** {@inheritDoc} */
+    public void setCSPNonceGenerator(@Nullable final IdentifierGenerationStrategy strategy) {
+        checkSetterPreconditions();
+        cspNonceGenerator = strategy;
+    }
 
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
@@ -157,6 +180,15 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             log.debug("Encoding action url of '{}' with encoded value '{}'", endpointURL, encodedEndpointURL);
             context.put("action", encodedEndpointURL);
             context.put("binding", getBindingURI());
+            
+            if (cspDigester != null) {
+                log.trace("Adding CSP digester to context");
+                context.put("cspDigester", cspDigester);
+            }
+            if (cspNonceGenerator != null) {
+                log.trace("Adding CSP nonce generator to context");
+                context.put("cspNonce", cspNonceGenerator);
+            }
 
             log.debug("Marshalling and Base64 encoding SAML message");
             final String messageXML = SerializeSupport.nodeToString(marshallMessage(message));
@@ -172,6 +204,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             
             final HttpServletResponse response = getHttpServletResponse();
             assert response != null;
+            context.put("response", response);
             
             HttpServletSupport.addNoCacheHeaders(response);
             HttpServletSupport.setUTF8Encoding(response);
@@ -192,4 +225,5 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             throw new MessageEncodingException("Error creating output document", e);
         }
     }
+
 }

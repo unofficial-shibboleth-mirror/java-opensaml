@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.HTMLMessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -46,17 +47,19 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.codec.HTMLEncoder;
+import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 
 /**
  * SAML 2 Artifact Binding encoder, support both HTTP GET and POST.
  */
-public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
+public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder implements HTMLMessageEncoder {
     
     /** Default template ID. */
     @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-artifact-binding.vm";
@@ -73,6 +76,12 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     /** ID of the velocity template used when performing POST encoding. */
     @Nonnull @NotEmpty private String velocityTemplateId;
 
+    /** Digester for CSP hashes. */
+    @Nullable private StringDigester cspDigester;
+
+    /** Generator for CSP nonces. */
+    @Nullable private IdentifierGenerationStrategy cspNonceGenerator;
+    
     /** SAML artifact map used to store created artifacts for later retrieval. */
     @NonnullAfterInit private SAMLArtifactMap artifactMap;
 
@@ -154,6 +163,18 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         velocityTemplateId = Constraint.isNotNull(StringSupport.trimOrNull(newVelocityTemplateId),
                 "Velocity template ID cannot be null or empty");
     }
+    
+    /** {@inheritDoc} */
+    public void setCSPDigester(@Nullable final StringDigester digester) {
+        checkSetterPreconditions();
+        cspDigester = digester;
+    }
+    
+    /** {@inheritDoc} */
+    public void setCSPNonceGenerator(@Nullable final IdentifierGenerationStrategy strategy) {
+        checkSetterPreconditions();
+        cspNonceGenerator = strategy;
+    }
 
     /**
      * Get the SAML artifact map to use.
@@ -228,6 +249,15 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             throw new MessageEncodingException("Unable to base64 encode SAML 2 artifact when creating POST form",e);
         }
         context.put("binding", getBindingURI());
+        
+        if (cspDigester != null) {
+            log.trace("Adding CSP digester to context");
+            context.put("cspDigester", cspDigester);
+        }
+        if (cspNonceGenerator != null) {
+            log.trace("Adding CSP nonce generator to context");
+            context.put("cspNonce", cspNonceGenerator);
+        }
 
         final String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
@@ -236,9 +266,11 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             context.put("RelayState", encodedRelayState);
         }
 
+        final HttpServletResponse response = getHttpServletResponse();
+        context.put("response", response);
+
         try {
             log.debug("Invoking velocity template");
-            final HttpServletResponse response = getHttpServletResponse();
             try (final OutputStreamWriter outWriter = new OutputStreamWriter(response.getOutputStream())) {
                 assert velocityEngine != null;
                 velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, outWriter);

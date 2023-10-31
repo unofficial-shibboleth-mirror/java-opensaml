@@ -2,11 +2,16 @@
 ## Velocity Template for SAML 1 HTTP-POST binding
 ##
 ## Velocity context may contain the following properties
+## response - HttpServletResponse
+## cspDigester - Calculates base64-encoded SHA-2 hashes (call apply)
+## cspNonce - Calculates secure nonces (call generateIdentifier)
 ## action - String - the action URL for the form
 ## binding - String - the SAML binding type in use
 ## TARGET - String - the relay state for the message
 ## SAMLResponse - String - the Base64 encoded SAML Response
 ##
+#set ($onLoad="document.forms[0].submit()")
+#if ($cspDigester)$response.addHeader("Content-Security-Policy", "script-src-attr 'unsafe-hashes' 'sha256-$cspDigester.apply($onLoad)'")#end
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +20,7 @@
         #parse ( "/templates/add-html-head-content.vm" )
     </head>
 
-    <body onload="document.forms[0].submit()">
+    <body onload="$onLoad">
         <noscript>
             <p>
                 <strong>Note:</strong> Since your browser does not support JavaScript,
