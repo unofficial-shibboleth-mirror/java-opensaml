@@ -58,7 +58,7 @@
 
     <properties>
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
-        <shib-shared.version>9.0.0</shib-shared.version>
+        <shib-shared.version>9.1.0-SNAPSHOT</shib-shared.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
         <opensaml-parent.site.url>${shibboleth.site.deploy.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
         <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
