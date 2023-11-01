@@ -80,7 +80,6 @@
         <dependency>
             <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-support</artifactId>
-            <version>${shib-shared.version}</version>
         </dependency>
 
         <!-- Provided Dependencies -->
@@ -105,16 +104,58 @@
         used by all project modules. -->
     <dependencyManagement>
         <dependencies>
-            <!-- Import Dependencies:  Shared -->
+            <!-- Compile Dependencies -->
             <dependency>
                 <groupId>${shib-shared.groupId}</groupId>
-                <artifactId>shib-shared-bom</artifactId>
+                <artifactId>shib-cli</artifactId>
                 <version>${shib-shared.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-networking</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-networking-spring</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-security</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-security-spring</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-service</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-spring</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-support</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-velocity</artifactId>
+                <version>${shib-shared.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-velocity-spring</artifactId>
+                <version>${shib-shared.version}</version>
             </dependency>
 
-            <!-- Compile Dependencies -->
             <dependency>
                 <groupId>net.spy</groupId>
                 <artifactId>spymemcached</artifactId>
@@ -126,6 +167,12 @@
             <!-- Runtime Dependencies -->
 
             <!-- Test Dependencies -->
+            <dependency>
+                <groupId>${shib-shared.groupId}</groupId>
+                <artifactId>shib-testing</artifactId>
+                <version>${shib-shared.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
