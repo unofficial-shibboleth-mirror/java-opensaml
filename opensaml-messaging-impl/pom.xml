@@ -71,11 +71,4 @@
         <url>${shibboleth.scm.url}java-opensaml.git</url>
     </scm>
 
-    <distributionManagement>
-        <site>
-            <id>site</id>
-            <url>scp:${opensaml-module.site.url}</url>
-        </site>
-    </distributionManagement>
-
 </project>

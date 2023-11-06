@@ -206,40 +206,18 @@
             <artifactId>spring-core</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
 
-    <profiles>
-        <!--
-            Pull in a Javascript engine for testing in Java
-            versions where the JDK doesn't provide one.
-        -->
-        <profile>
-            <id>get-nashorn</id>
-            <activation>
-                <jdk>[15,</jdk>
-            </activation>
-            <dependencies>
-                <dependency>
-		    <groupId>org.openjdk.nashorn</groupId>
-		    <artifactId>nashorn-core</artifactId>
-		    <version>${nashorn.jdk.version}</version>
-		    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <scm>
         <connection>${shibboleth.scm.connection}java-opensaml</connection>
         <developerConnection>${shibboleth.scm.developerConnection}java-opensaml</developerConnection>
         <url>${shibboleth.scm.url}java-opensaml.git</url>
     </scm>
-
-    <distributionManagement>
-        <site>
-            <id>site</id>
-            <url>scp:${opensaml-module.site.url}</url>
-        </site>
-    </distributionManagement>
 
 </project>
