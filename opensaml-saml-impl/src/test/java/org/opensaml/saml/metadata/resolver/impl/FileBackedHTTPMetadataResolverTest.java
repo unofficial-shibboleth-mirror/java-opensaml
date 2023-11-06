@@ -79,7 +79,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataURLHttp = RepositorySupport.buildHTTPResourceURL("java-opensaml", String.format("opensaml-saml-impl/src/test/resources/%s", relativeMDResource), false);
         
         entityID = "https://www.example.org/sp";
-        badMDURL = "http://www.opensaml.org/foo/bar/baz/samlmd";
+        badMDURL = "http://test.shibboleth.net/foo/bar/baz/samlmd";
         backupFilePath = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") 
                 + "filebacked-http-metadata.xml";
         backupFile = new File(backupFilePath);
