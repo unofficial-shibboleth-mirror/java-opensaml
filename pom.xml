@@ -27,39 +27,39 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../opensaml-core-api</module>
-        <module>../opensaml-storage-api</module>
-        <module>../opensaml-security-api</module>
-        <module>../opensaml-xmlsec-api</module>
-        <module>../opensaml-messaging-api</module>
-        <module>../opensaml-soap-api</module>
-        <module>../opensaml-saml-api</module>
-        <module>../opensaml-xacml-api</module>
-        <module>../opensaml-xacml-saml-api</module>
-        <module>../opensaml-profile-api</module>
+        <module>opensaml-core-api</module>
+        <module>opensaml-storage-api</module>
+        <module>opensaml-security-api</module>
+        <module>opensaml-xmlsec-api</module>
+        <module>opensaml-messaging-api</module>
+        <module>opensaml-soap-api</module>
+        <module>opensaml-saml-api</module>
+        <module>opensaml-xacml-api</module>
+        <module>opensaml-xacml-saml-api</module>
+        <module>opensaml-profile-api</module>
 
-        <module>../opensaml-core-impl</module>
-        <module>../opensaml-storage-impl</module>
-        <module>../opensaml-security-impl</module>
-        <module>../opensaml-xmlsec-impl</module>
-        <module>../opensaml-messaging-impl</module>
-        <module>../opensaml-soap-impl</module>
-        <module>../opensaml-saml-impl</module>
-        <module>../opensaml-xacml-impl</module>
-        <module>../opensaml-xacml-saml-impl</module>
-        <module>../opensaml-profile-impl</module>
+        <module>opensaml-core-impl</module>
+        <module>opensaml-storage-impl</module>
+        <module>opensaml-security-impl</module>
+        <module>opensaml-xmlsec-impl</module>
+        <module>opensaml-messaging-impl</module>
+        <module>opensaml-soap-impl</module>
+        <module>opensaml-saml-impl</module>
+        <module>opensaml-xacml-impl</module>
+        <module>opensaml-xacml-saml-impl</module>
+        <module>opensaml-profile-impl</module>
         
-        <module>../opensaml-spring</module>
+        <module>opensaml-spring</module>
 
-        <module>../opensaml-testing</module>
+        <module>opensaml-testing</module>
 
-        <module>../opensaml-bom</module>
+        <module>opensaml-bom</module>
     </modules>
 
     <properties>
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
         <shib-shared.version>9.1.0-SNAPSHOT</shib-shared.version>
-        <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
+        <checkstyle.configLocation>${project.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
     <!-- Dependencies which are required by every single project module should go here and will be inherited by all modules. -->
