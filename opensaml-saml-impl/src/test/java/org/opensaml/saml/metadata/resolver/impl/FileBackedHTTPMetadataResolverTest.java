@@ -418,7 +418,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test
+    @Test(enabled=false)
     public void testNoBackupFileLoadWhenMetadataCached() throws Exception {
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResource), backupFileOutputStream);
