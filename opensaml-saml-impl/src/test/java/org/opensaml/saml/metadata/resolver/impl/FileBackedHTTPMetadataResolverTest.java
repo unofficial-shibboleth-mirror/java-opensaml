@@ -78,7 +78,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataURLHttp = RepositorySupport.buildHTTPResourceURL("java-opensaml", String.format("opensaml-saml-impl/src/test/resources/%s", relativeMDResource), false);
         
         entityID = "https://www.example.org/sp";
-        badMDURL = "http://www.opensaml.org/foo/bar/baz/samlmd";
+        badMDURL = "https://test.shibboleth.net/foo/bar/baz/samlmd";
         backupFilePath = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") 
                 + "filebacked-http-metadata.xml";
         backupFile = new File(backupFilePath);
@@ -402,6 +402,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertTrue(backupFile.exists(), "Backup file was not created");
         Assert.assertTrue(backupFile.length() > 0, "Backup file contains no data");
+        
+        httpClientBuilder.setConnectionDisregardTLSCertificate(true);
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), badMDURL, backupFilePath);
         metadataProvider.setParserPool(parserPool);
