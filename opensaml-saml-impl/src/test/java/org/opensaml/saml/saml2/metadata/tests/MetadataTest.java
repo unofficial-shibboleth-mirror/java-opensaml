@@ -119,8 +119,8 @@ public class MetadataTest extends XMLObjectBaseTestCase {
         }
     }
 
-    /** Tests unmarshalling an ADFS metadata document with their "fun" extensions. */
-    @Test(enabled=false)
+    /** Tests unmarshalling an ADFS metadata document with their "fun" extensions. See OSJ-392. */
+    @Test
     public void testADFSUnmarshall() {
         String adfsMDFile = "/org/opensaml/saml/saml2/metadata/adfs-metadata.xml";
 

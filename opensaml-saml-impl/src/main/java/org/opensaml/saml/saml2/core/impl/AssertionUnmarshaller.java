@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -59,6 +60,9 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             assertion.setAdvice((Advice) childObject);
         } else if (childObject instanceof Statement) {
             assertion.getStatements().add((Statement) childObject);
+        } else if (Statement.DEFAULT_ELEMENT_NAME.equals(childObject.getElementQName())
+                && XSAny.class.isInstance(childObject)) {
+            assertion.getStatements().add(new StatementXSAnyAdapter(XSAny.class.cast(childObject)));
         } else {
             super.processChildElement(parentObject, childObject);
         }

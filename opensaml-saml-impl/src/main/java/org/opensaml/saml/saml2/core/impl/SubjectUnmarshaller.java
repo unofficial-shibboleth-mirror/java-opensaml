@@ -18,6 +18,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.BaseID;
 import org.opensaml.saml.saml2.core.EncryptedID;
@@ -38,6 +39,9 @@ public class SubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
         if (childObject instanceof BaseID) {
             subject.setBaseID((BaseID) childObject);
+        } else if (BaseID.DEFAULT_ELEMENT_NAME.equals(childObject.getElementQName())
+                && XSAny.class.isInstance(childObject)) {
+            subject.setBaseID(new BaseIDXSAnyAdapter(XSAny.class.cast(childObject)));
         } else if (childObject instanceof NameID) {
             subject.setNameID((NameID) childObject);
         } else if (childObject instanceof EncryptedID) {

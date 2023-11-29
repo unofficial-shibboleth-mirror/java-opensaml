@@ -18,6 +18,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.metadata.Extensions;
@@ -52,6 +53,9 @@ public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller
             entityDescriptor.setSignature((Signature) childObject);
         } else if (childObject instanceof RoleDescriptor) {
             entityDescriptor.getRoleDescriptors().add((RoleDescriptor) childObject);
+        } else if (RoleDescriptor.DEFAULT_ELEMENT_NAME.equals(childObject.getElementQName())
+                && XSAny.class.isInstance(childObject)) {
+            entityDescriptor.getRoleDescriptors().add(new RoleDescriptorXSAnyAdapter(XSAny.class.cast(childObject)));
         } else if (childObject instanceof AffiliationDescriptor) {
             entityDescriptor.setAffiliationDescriptor((AffiliationDescriptor) childObject);
         } else if (childObject instanceof Organization) {
