@@ -33,7 +33,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 /**
  * SAML 2.0 Core LogoutRequest.
  */
-public interface LogoutRequest extends RequestAbstractType {
+public interface LogoutRequest extends RequestAbstractType, LogoutMessage {
     
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "LogoutRequest";

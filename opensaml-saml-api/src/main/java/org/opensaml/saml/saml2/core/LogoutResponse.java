@@ -28,7 +28,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 /**
  * SAML 2.0 Core LogoutResponse.
  */
-public interface LogoutResponse extends StatusResponseType {
+public interface LogoutResponse extends StatusResponseType, LogoutMessage {
 
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "LogoutResponse";
