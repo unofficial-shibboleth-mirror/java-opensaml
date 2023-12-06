@@ -15,6 +15,7 @@
 package org.opensaml.profile.action.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecoder;
@@ -33,6 +34,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#UNABLE_TO_DECODE}
+ * @event {@link EventIds#INVALID_MESSAGE}
  * 
  * @post If decode succeeds, ProfileRequestContext.getInboundMessageContext() != null
  * @post The injected {@link MessageDecoder} is destroyed.
@@ -44,6 +46,9 @@ public class DecodeMessage extends AbstractProfileAction {
 
     /** The {@link MessageDecoder} instance used to decode the incoming message. */
     @Nonnull private final MessageDecoder decoder;
+    
+    /** Optional message type to enforce. */
+    @Nullable private Class<?> messageType;
 
     /**
      * Constructor.
@@ -52,6 +57,19 @@ public class DecodeMessage extends AbstractProfileAction {
      */
     public DecodeMessage(@Nonnull final MessageDecoder messageDecoder) {
         decoder = Constraint.isNotNull(messageDecoder, "MessageDecoder cannot be null");
+    }
+    
+    /**
+     * Set a message type to enforce after decoding.
+     * 
+     * @param type message type
+     * 
+     * @since 5.1.0
+     */
+    public void setMessageType(@Nullable final Class<?> type) {
+        checkSetterPreconditions();
+        
+        messageType = type;
     }
 
     /** {@inheritDoc} */
@@ -65,8 +83,11 @@ public class DecodeMessage extends AbstractProfileAction {
             final Object msg = msgContext != null ? msgContext.getMessage() : null;
 
             if (msg != null) {
-                log.debug("{} Incoming request decoded into a message of type {}", getLogPrefix(), 
-                        msg.getClass().getName());
+                if (messageType != null && !messageType.isInstance(msg)) {
+                    log.warn("{} Message was of incorrect type, expected {}, saw {}", getLogPrefix(), messageType,
+                            msg.getClass().getName());
+                    ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MESSAGE);
+                }
             } else {
                 log.warn("{} Decoder did not produce an incoming message?", getLogPrefix());
             }
