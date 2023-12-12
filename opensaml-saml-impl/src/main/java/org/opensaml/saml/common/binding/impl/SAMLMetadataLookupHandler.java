@@ -15,6 +15,7 @@
 package org.opensaml.saml.common.binding.impl;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -249,6 +250,13 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
         
         final CriteriaSet criteria = new CriteriaSet(entityIdCriterion, protocolCriterion, roleCriterion,
                 detectDuplicatesCriterion, prcCriterion);
+        
+        final BiConsumer<MessageContext,CriteriaSet> hook =
+                lookupParamsContext != null ? lookupParamsContext.getCriteriaExtender() : null;
+        if (hook != null) {
+            hook.accept(messageContext, criteria);
+        }
+        
         return criteria;
     }
 
