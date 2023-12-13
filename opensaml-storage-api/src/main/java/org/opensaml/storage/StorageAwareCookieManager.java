@@ -131,14 +131,16 @@ public class StorageAwareCookieManager extends CookieManager {
     /** {@inheritDoc} */
     @Override
     @Nullable public String getCookieValue(@Nonnull final String name, @Nullable final String defValue) {
-        final String val = super.getCookieValue(name, defValue);
-        if (val != null) {
-            return val;
-        }
         
-        if (storageService != null) {
+        final StorageService ss = storageService;
+        if (ss != null) {
             try {
-                final StorageRecord<String> record = storageService.read(storageContext, name);
+                final String val = super.getCookieValue(name, null);
+                if (val != null) {
+                    return val;
+                }
+
+                final StorageRecord<String> record = ss.read(storageContext, name);
                 if (record != null) {
                     log.debug("Backfilling/setting missing cookie {} based on stored record", name);
                     final Long exp = record.getExpiration();
@@ -154,6 +156,8 @@ public class StorageAwareCookieManager extends CookieManager {
             } catch (final IOException e) {
                 log.warn("Error reading cookie record from storage service", e);
             }
+        } else {
+            return super.getCookieValue(name, defValue);
         }
         
         return defValue;

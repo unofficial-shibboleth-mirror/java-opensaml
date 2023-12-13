@@ -133,7 +133,7 @@ public class StorageAwareCookieManagerTest {
         
         storage.create(cm.getStorageContext(), "foo", "bar", Instant.now().plusSeconds(600).toEpochMilli());
         
-        Assert.assertEquals(cm.getCookieValue("foo", null), "bar");
+        Assert.assertEquals(cm.getCookieValue("foo", "baz"), "bar");
         
         final Cookie cookie = response.getCookie("foo");
         assert(cookie != null);
