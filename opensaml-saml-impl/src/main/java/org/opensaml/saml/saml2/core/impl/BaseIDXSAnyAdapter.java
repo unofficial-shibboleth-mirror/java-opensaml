@@ -14,6 +14,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXSAnyAdapter;
@@ -30,7 +32,7 @@ public class BaseIDXSAnyAdapter extends AbstractXSAnyAdapter implements BaseID {
      *
      * @param xsAny the adapted instance
      */
-    public BaseIDXSAnyAdapter(XSAny xsAny) {
+    public BaseIDXSAnyAdapter(@Nonnull final XSAny xsAny) {
         super(xsAny);
     }
 
@@ -42,7 +44,7 @@ public class BaseIDXSAnyAdapter extends AbstractXSAnyAdapter implements BaseID {
 
     /** {@inheritDoc} */
     @Override
-    public void setNameQualifier(String newNameQualifier) {
+    public void setNameQualifier(@Nullable final String newNameQualifier) {
         getAdapted().getUnknownAttributes().put(new QName(BaseID.NAME_QUALIFIER_ATTRIB_NAME), newNameQualifier);
     }
 
@@ -54,7 +56,7 @@ public class BaseIDXSAnyAdapter extends AbstractXSAnyAdapter implements BaseID {
 
     /** {@inheritDoc} */
     @Override
-    public void setSPNameQualifier(String newSPNameQualifier) {
+    public void setSPNameQualifier(@Nullable final String newSPNameQualifier) {
         getAdapted().getUnknownAttributes().put(new QName(BaseID.SP_NAME_QUALIFIER_ATTRIB_NAME), newSPNameQualifier);
     }
 

@@ -17,10 +17,11 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXSAnyAdapter;
@@ -35,6 +36,9 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -50,26 +54,23 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
      *
      * @param xsAny the instance to adapt
      */
-    public RoleDescriptorXSAnyAdapter(XSAny xsAny) {
+    public RoleDescriptorXSAnyAdapter(@Nonnull final XSAny xsAny) {
         super(xsAny);
         getAdapted().getUnknownAttributes().registerID(new QName(RoleDescriptor.ID_ATTRIB_NAME));
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getSignatureReferenceID() {
+    @Nullable public String getSignatureReferenceID() {
         return getID();
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean isSigned() {
         return getSignature() != null;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Signature getSignature() {
+    @Nullable public Signature getSignature() {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(Signature.DEFAULT_ELEMENT_NAME);
         if (xmlObjects.isEmpty()) {
             return null;
@@ -78,13 +79,11 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setSignature(Signature newSignature) {
+    public void setSignature(@Nullable final Signature newSignature) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean isValid() {
         final Instant validUntil = getValidUntil();
 
@@ -96,48 +95,49 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
     public Instant getValidUntil() {
-        return DOMTypeSupport.stringToInstant(getAdapted().getUnknownAttributes().get(
-                RoleDescriptor.VALID_UNTIL_ATTRIB_QNAME));
+        final String attr = getAdapted().getUnknownAttributes().get(RoleDescriptor.VALID_UNTIL_ATTRIB_QNAME);
+        return attr != null ? DOMTypeSupport.stringToInstant(attr) : null;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setValidUntil(Instant validUntil) {
-        getAdapted().getUnknownAttributes().put(RoleDescriptor.VALID_UNTIL_ATTRIB_QNAME,
-                DOMTypeSupport.instantToString(validUntil));
+    public void setValidUntil(@Nullable final Instant validUntil) {
+        if (validUntil != null) {
+            getAdapted().getUnknownAttributes().put(RoleDescriptor.VALID_UNTIL_ATTRIB_QNAME,
+                    DOMTypeSupport.instantToString(validUntil));
+        } else {
+            getAdapted().getUnknownAttributes().remove(RoleDescriptor.VALID_UNTIL_ATTRIB_QNAME);
+        }
     }
 
     /** {@inheritDoc} */
-    @Override
     public Duration getCacheDuration() {
-        return DOMTypeSupport.stringToDuration(getAdapted().getUnknownAttributes().get(
-                RoleDescriptor.CACHE_DURATION_ATTRIB_QNAME));
+        final String attr = getAdapted().getUnknownAttributes().get(RoleDescriptor.CACHE_DURATION_ATTRIB_QNAME);
+        return attr != null ? DOMTypeSupport.stringToDuration(attr) : null;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setCacheDuration(Duration duration) {
-        getAdapted().getUnknownAttributes().put(RoleDescriptor.CACHE_DURATION_ATTRIB_QNAME,
-                DOMTypeSupport.durationToString(duration));
+    public void setCacheDuration(@Nullable final Duration duration) {
+        if (duration != null) {
+            getAdapted().getUnknownAttributes().put(RoleDescriptor.CACHE_DURATION_ATTRIB_QNAME,
+                    DOMTypeSupport.durationToString(duration));
+        } else {
+            getAdapted().getUnknownAttributes().remove(RoleDescriptor.CACHE_DURATION_ATTRIB_QNAME);
+        }
     }
 
     /** {@inheritDoc} */
-    @Override
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return getAdapted().getUnknownAttributes();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getID() {
+    @Nullable public String getID() {
         return getAdapted().getUnknownAttributes().get(new QName(RoleDescriptor.ID_ATTRIB_NAME));
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setID(String newID) {
+    public void setID(@Nullable final String newID) {
         getAdapted().getUnknownAttributes().put(new QName(RoleDescriptor.ID_ATTRIB_NAME), newID);
     }
     
@@ -170,62 +170,53 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<String> getSupportedProtocols() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getSupportedProtocols() {
         return CollectionSupport.copyToList(fetchSupportedProtocols());
     }
 
     /** {@inheritDoc} */
-    @Override
-    public boolean isSupportedProtocol(String protocol) {
+    public boolean isSupportedProtocol(@Nonnull final String protocol) {
         return fetchSupportedProtocols().contains(protocol);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void addSupportedProtocol(String protocol) {
+    public void addSupportedProtocol(@Nonnull final String protocol) {
         final List<String> protocols = fetchSupportedProtocols();
         protocols.add(protocol);
         storeSupportedProtocols(protocols);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void removeSupportedProtocol(String protocol) {
+    public void removeSupportedProtocol(@Nonnull final String protocol) {
         final List<String> protocols = fetchSupportedProtocols();
         protocols.remove(protocol);
         storeSupportedProtocols(protocols);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void removeSupportedProtocols(Collection<String> protocolsToRemove) {
+    public void removeSupportedProtocols(@Nonnull final Collection<String> protocolsToRemove) {
         final List<String> protocols = fetchSupportedProtocols();
         protocols.removeAll(protocolsToRemove);
         storeSupportedProtocols(protocols);
     }
 
     /** {@inheritDoc} */
-    @Override
     public void removeAllSupportedProtocols() {
-        storeSupportedProtocols(Collections.emptyList());
+        storeSupportedProtocols(CollectionSupport.emptyList());
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getErrorURL() {
+    @Nullable public String getErrorURL() {
         return getAdapted().getUnknownAttributes().get(new QName(RoleDescriptor.ERROR_URL_ATTRIB_NAME));
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setErrorURL(String errorURL) {
+    public void setErrorURL(@Nullable final String errorURL) {
         getAdapted().getUnknownAttributes().put(new QName(RoleDescriptor.ERROR_URL_ATTRIB_NAME), errorURL);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Extensions getExtensions() {
+    @Nullable public Extensions getExtensions() {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(Extensions.DEFAULT_ELEMENT_NAME);
         if (xmlObjects.isEmpty()) {
             return null;
@@ -238,18 +229,14 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setExtensions(Extensions extensions) {
+    public void setExtensions(@Nullable final Extensions extensions) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<KeyDescriptor> getKeyDescriptors() {
+    @Nonnull @Live public List<KeyDescriptor> getKeyDescriptors() {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(KeyDescriptor.DEFAULT_ELEMENT_NAME);
-        if (xmlObjects.isEmpty()) {
-            return null;
-        }
+        // TODO: this returned list is immutable, which violates the API
         return xmlObjects.stream()
                 .filter(KeyDescriptor.class::isInstance)
                 .map(KeyDescriptor.class::cast)
@@ -257,8 +244,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Organization getOrganization() {
+    @Nullable public Organization getOrganization() {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(Organization.DEFAULT_ELEMENT_NAME);
         if (xmlObjects.isEmpty()) {
             return null;
@@ -270,18 +256,14 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setOrganization(Organization organization) {
+    public void setOrganization(@Nullable final Organization organization) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<ContactPerson> getContactPersons() {
+    @Nonnull @Live public List<ContactPerson> getContactPersons() {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(ContactPerson.DEFAULT_ELEMENT_NAME);
-        if (xmlObjects.isEmpty()) {
-            return null;
-        }
+        // TODO: this returned list is immutable, which violates the API
         return xmlObjects.stream()
                 .filter(ContactPerson.class::isInstance)
                 .map(ContactPerson.class::cast)
@@ -289,29 +271,21 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Endpoint> getEndpoints() {
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints() {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(Endpoint.DEFAULT_ELEMENT_NAME);
-        if (xmlObjects.isEmpty()) {
-            return null;
-        }
         return xmlObjects.stream()
                 .filter(Endpoint.class::isInstance)
                 .map(Endpoint.class::cast)
-                .toList();
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Endpoint> getEndpoints(QName type) {
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints(@Nonnull final QName type) {
         final List<XMLObject> xmlObjects = getAdapted().getUnknownXMLObjects(type);
-        if (xmlObjects.isEmpty()) {
-            return null;
-        }
         return xmlObjects.stream()
                 .filter(Endpoint.class::isInstance)
                 .map(Endpoint.class::cast)
-                .toList();
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
     }
 
 }

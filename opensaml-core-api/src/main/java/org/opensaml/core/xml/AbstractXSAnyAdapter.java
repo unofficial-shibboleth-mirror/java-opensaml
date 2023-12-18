@@ -57,184 +57,157 @@ public abstract class AbstractXSAnyAdapter implements XSAnyAdapter {
     }
 
     /** {@inheritDoc} */
-    @Override
     public void detach() {
         adapted.detach();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public Element getDOM() {
         return adapted.getDOM();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull
     public Element ensureDOM() {
         return adapted.ensureDOM();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull
     public QName getElementQName() {
         return adapted.getElementQName();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull
     public IDIndex getIDIndex() {
         return adapted.getIDIndex();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull
     public NamespaceManager getNamespaceManager() {
         return adapted.getNamespaceManager();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull
     public Set<Namespace> getNamespaces() {
         return adapted.getNamespaces();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public String getNoNamespaceSchemaLocation() {
         return adapted.getNoNamespaceSchemaLocation();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public List<XMLObject> getOrderedChildren() {
         return adapted.getOrderedChildren();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public XMLObject getParent() {
         return adapted.getParent();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public String getSchemaLocation() {
         return adapted.getSchemaLocation();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public QName getSchemaType() {
         return adapted.getSchemaType();
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean hasChildren() {
         return adapted.hasChildren();
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean hasParent() {
         return adapted.hasParent();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void releaseChildrenDOM(boolean propagateRelease) {
+    public void releaseChildrenDOM(final boolean propagateRelease) {
         adapted.releaseChildrenDOM(propagateRelease);
     }
 
     /** {@inheritDoc} */
-    @Override
     public void releaseDOM() {
         adapted.releaseDOM();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void releaseParentDOM(boolean propagateRelease) {
+    public void releaseParentDOM(final boolean propagateRelease) {
         adapted.releaseParentDOM(propagateRelease);
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
-    public XMLObject resolveID(@Nonnull String id) {
+    public XMLObject resolveID(@Nonnull final String id) {
         return adapted.resolveID(id);
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
-    public XMLObject resolveIDFromRoot(@Nonnull String id) {
+    public XMLObject resolveIDFromRoot(@Nonnull final String id) {
         return adapted.resolveIDFromRoot(id);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setDOM(@Nullable Element dom) {
+    public void setDOM(@Nullable final Element dom) {
         adapted.setDOM(dom);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setNoNamespaceSchemaLocation(@Nullable String location) {
+    public void setNoNamespaceSchemaLocation(@Nullable final String location) {
         adapted.setNoNamespaceSchemaLocation(location);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setParent(@Nullable XMLObject parent) {
+    public void setParent(@Nullable final XMLObject parent) {
         adapted.setParent(parent);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setSchemaLocation(@Nullable String location) {
+    public void setSchemaLocation(@Nullable final String location) {
         adapted.setSchemaLocation(location);
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public Boolean isNil() {
         return adapted.isNil();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable
     public XSBooleanValue isNilXSBoolean() {
         return adapted.isNilXSBoolean();
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setNil(@Nullable Boolean newNil) {
+    public void setNil(@Nullable final Boolean newNil) {
         adapted.setNil(newNil);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setNil(@Nullable XSBooleanValue newNil) {
+    public void setNil(@Nullable final XSBooleanValue newNil) {
         adapted.setNil(newNil);
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull
     public LockableClassToInstanceMultiMap<Object> getObjectMetadata() {
         return adapted.getObjectMetadata();
