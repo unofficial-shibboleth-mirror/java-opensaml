@@ -117,7 +117,8 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     @Nonnull public <T extends BaseContext> T ensureSubcontext(@Nonnull final Class<T> clazz) {
         final T newContext = getSubcontext(clazz, true);
         if (newContext == null) {
-            throw new IllegalStateException("Context of type " + clazz.getName() + "did not exist or was not created");
+            throw new IllegalStateException("Context of type '" + clazz.getName() +
+                    "' did not exist or was not created");
         }
         
         return newContext;
@@ -177,7 +178,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     @Nullable public BaseContext ensureSubcontext(@Nonnull @NotEmpty final String className) {
         final BaseContext newContext = getSubcontext(className, true);
         if (newContext == null) {
-            throw new IllegalStateException("Context of type " + className + "did not exist or was not created");
+            throw new IllegalStateException("Context of type '" + className + "' did not exist or was not created");
         }
         
         return newContext;
