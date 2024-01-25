@@ -57,6 +57,7 @@
     </modules>
 
     <properties>
+        <shibboleth.projectName>java-opensaml</shibboleth.projectName>
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
         <shib-shared.version>9.1.0-SNAPSHOT</shib-shared.version>
         <checkstyle.configLocation>${project.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
@@ -169,9 +170,9 @@
     </dependencyManagement>
 
     <scm>
-        <connection>${shibboleth.scm.connection}java-opensaml</connection>
-        <developerConnection>${shibboleth.scm.developerConnection}java-opensaml</developerConnection>
-        <url>${shibboleth.scm.url}java-opensaml.git</url>
+        <connection>${shibboleth.scm.connection}${shibboleth.projectName}</connection>
+        <developerConnection>${shibboleth.scm.developerConnection}${shibboleth.projectName}</developerConnection>
+        <url>${shibboleth.scm.url}${shibboleth.projectName}.git</url>
     </scm>
 
     <build>
