@@ -51,13 +51,6 @@
         <!-- Runtime Dependencies -->
 
         <!-- Test Dependencies -->
-        
     </dependencies>
     
-    <scm>
-        <connection>${shibboleth.scm.connection}${shibboleth.projectName}</connection>
-        <developerConnection>${shibboleth.scm.developerConnection}${shibboleth.projectName}</developerConnection>
-        <url>${shibboleth.scm.url}${shibboleth.projectName}.git</url>
-    </scm>
-
 </project>
