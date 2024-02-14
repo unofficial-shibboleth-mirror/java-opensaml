@@ -62,7 +62,7 @@ public class HttpClientSecurityParametersMergingFactoryBean implements FactoryBe
      * 
      * @param input the list of input parameters to merge
      */
-    public void setParameters(@Nonnull @NonnullElements List<HttpClientSecurityParameters> input) {
+    public void setParameters(@Nonnull @NonnullElements final List<HttpClientSecurityParameters> input) {
         parameters = Constraint.isNotNull(input, "Input paramaters list may not be null");
     }
 
@@ -84,7 +84,8 @@ public class HttpClientSecurityParametersMergingFactoryBean implements FactoryBe
         result.setCredentialsProvider(parameters.stream().map(HttpClientSecurityParameters::getCredentialsProvider)
                 .filter(Objects::nonNull).findFirst().orElse(null));
         
-        result.setPreemptiveBasicAuthMap(parameters.stream().map(HttpClientSecurityParameters::getPreemptiveBasicAuthMap)
+        result.setPreemptiveBasicAuthMap(parameters.stream()
+                .map(HttpClientSecurityParameters::getPreemptiveBasicAuthMap)
                 .filter(Objects::nonNull).findFirst().orElse(null));
         
         result.setAuthCache(parameters.stream().map(HttpClientSecurityParameters::getAuthCache)
