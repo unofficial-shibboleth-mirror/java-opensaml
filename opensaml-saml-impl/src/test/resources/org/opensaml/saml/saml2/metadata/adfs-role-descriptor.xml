@@ -1,0 +1,173 @@
+<RoleDescriptor xsi:type="fed:ApplicationServiceType"
+    protocolSupportEnumeration="http://docs.oasis-open.org/ws-sx/ws-trust/200512 http://schemas.xmlsoap.org/ws/2005/02/trust http://docs.oasis-open.org/wsfed/federation/200706"
+    ServiceDisplayName="ESUE Authentication Service" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:fed="http://docs.oasis-open.org/wsfed/federation/200706">
+    <Extensions>
+        <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+        <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+        <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    </Extensions>
+    <KeyDescriptor use="encryption">
+        <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <X509Data>
+                <X509Certificate>MIIFljCCBH6gAwIBAgIKEfZv5gAAAAAADTANBgkqhkiG9w0BAQUFADBUMRMwEQYKCZImiZPyLGQBGRYDZWR1MRowGAYKCZImiZPyLGQBGRYKb2hpby1zdGF0ZTEUMBIGCgmSJomT8ixkARkWBGVzdWUxCzAJBgNVBAMTAmNhMB4XDTEyMDUxNjE2MzM1NFoXDTE0MDUxNjE2MzM1NFowgbAxCzAJBgNVBAYTAlVTMQ0wCwYDVQQIEwRPaGlvMREwDwYDVQQHEwhDb2x1bWJ1czEiMCAGA1UEChMZVGhlIE9oaW8gU3RhdGUgVW5pdmVyc2l0eTE2MDQGA1UECwwtRW5yb2xsbWVudCBTZXJ2aWNlcyAmIFVuZGVyZ3JhZHVhdGUgRWR1Y2F0aW9uMSMwIQYDVQQDExpFU1VFIEFERlMgVG9rZW4gRGVjcnlwdGlvbjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAualSHslnXJe+ZgXy7kbHBE8H5SAyWdyriydB1R83Jhe2ByJK4sAfCQx2y3YGp25jy3kd2CSXPBUQmAH3OWrxlmY3yzH2vj/frSgTpy1qc+vB+vRy2c76e7wk1JlnKcDX1L7f656BGI+8iYXrDW9YrsCY51WuvLL+HocU1ND0i1ECAwEAAaOCAo8wggKLMAsGA1UdDwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATB4BgkqhkiG9w0BCQ8EazBpMA4GCCqGSIb3DQMCAgIAgDAOBggqhkiG9w0DBAICAIAwCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBLTALBglghkgBZQMEAQIwCwYJYIZIAWUDBAEFMAcGBSsOAwIHMAoGCCqGSIb3DQMHMB0GA1UdDgQWBBRyk072xNVXuOmUGxRP5q5DPIQeVzAfBgNVHSMEGDAWgBRjLzq8LOSzBLj6CnMTvp6kjG52ujCBxwYDVR0fBIG/MIG8MIG5oIG2oIGzhoGwbGRhcDovLy9DTj1jYSxDTj1DQVQsQ049Q0RQLENOPVB1YmxpYyUyMEtleSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9ZXN1ZSxEQz1vaGlvLXN0YXRlLERDPWVkdT9jZXJ0aWZpY2F0ZVJldm9jYXRpb25MaXN0P2Jhc2U/b2JqZWN0Q2xhc3M9Y1JMRGlzdHJpYnV0aW9uUG9pbnQwgb8GCCsGAQUFBwEBBIGyMIGvMIGsBggrBgEFBQcwAoaBn2xkYXA6Ly8vQ049Y2EsQ049QUlBLENOPVB1YmxpYyUyMEtleSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9ZXN1ZSxEQz1vaGlvLXN0YXRlLERDPWVkdT9jQUNlcnRpZmljYXRlP2Jhc2U/b2JqZWN0Q2xhc3M9Y2VydGlmaWNhdGlvbkF1dGhvcml0eTAhBgkrBgEEAYI3FAIEFB4SAFcAZQBiAFMAZQByAHYAZQByMA0GCSqGSIb3DQEBBQUAA4IBAQCCMysOLqBXSGizTSetjjNCqMA8ppiPp+2iMA4NAvXF6OMo7DRcXCyxlrBcQ9F4e4wBI/Bwb38VTdMMjdKqhClKR3En0kP7vdwdt+azakrbOEr1g9AMN5IjO8T1taZ822eBAmbehbXmWkmIJsG3jFeUXFYhnfvzIO1kzu46r71zjgevHAOSC5C1iWDgmzgjHe4+uGPhj5XoXPeK65AwVAkTQzoZTgxFY81W49En3kv72WTxkk/2im6bSiKjAZu6i0Z+TgdRcSshZnodjlXDSD9Q+89n9ktwu9Td4j7Jrt2hR1WK/bK/vBabs18KuLVBxFfqXAPRtxxCv9zTT4CbK37b
+                </X509Certificate>
+            </X509Data>
+        </KeyInfo>
+    </KeyDescriptor>
+    <Organization>
+        <OrganizationName xml:lang="en-US">Shibboleth University</OrganizationName>
+        <OrganizationDisplayName xml:lang="en-US">Shibboleth University</OrganizationDisplayName>
+        <OrganizationURL xml:lang="en-US">https://www.shibboleth.net</OrganizationURL>
+    </Organization>
+    <ContactPerson>
+        <Company>Shibboleth University</Company>
+        <EmailAddress>abc123@shibboleth.net</EmailAddress>
+    </ContactPerson>
+    <fed:ClaimTypesRequested>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>E-Mail Address</auth:DisplayName>
+            <auth:Description>The e-mail address of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Given Name</auth:DisplayName>
+            <auth:Description>The given name of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Name</auth:DisplayName>
+            <auth:Description>The unique name of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>UPN</auth:DisplayName>
+            <auth:Description>The user principal name (UPN) of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/claims/CommonName" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Common Name</auth:DisplayName>
+            <auth:Description>The common name of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/claims/EmailAddress" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>AD FS 1.x E-Mail Address</auth:DisplayName>
+            <auth:Description>The e-mail address of the user when interoperating with AD FS 1.1 or ADFS 1.0
+            </auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/claims/Group" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Group</auth:DisplayName>
+            <auth:Description>A group that the user is a member of</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/claims/UPN" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>AD FS 1.x UPN</auth:DisplayName>
+            <auth:Description>The UPN of the user when interoperating with AD FS 1.1 or ADFS 1.0</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Role</auth:DisplayName>
+            <auth:Description>A role that the user has</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Surname</auth:DisplayName>
+            <auth:Description>The surname of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType
+            Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/privatepersonalidentifier" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>PPID</auth:DisplayName>
+            <auth:Description>The private identifier of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Name ID</auth:DisplayName>
+            <auth:Description>The SAML name identifier of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType
+            Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationinstant" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Authentication time stamp</auth:DisplayName>
+            <auth:Description>Used to display the time and date that the user was authenticated</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType
+            Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Authentication method</auth:DisplayName>
+            <auth:Description>The method used to authenticate the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/denyonlysid"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Deny only group SID</auth:DisplayName>
+            <auth:Description>The deny-only group SID of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType
+            Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/denyonlyprimarysid" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Deny only primary SID</auth:DisplayName>
+            <auth:Description>The deny-only primary SID of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType
+            Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/denyonlyprimarygroupsid" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Deny only primary group SID</auth:DisplayName>
+            <auth:Description>The deny-only primary group SID of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Group SID</auth:DisplayName>
+            <auth:Description>The group SID of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/primarygroupsid"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Primary group SID</auth:DisplayName>
+            <auth:Description>The primary group SID of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"
+            Optional="true" xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Primary SID</auth:DisplayName>
+            <auth:Description>The primary SID of the user</auth:Description>
+        </auth:ClaimType>
+        <auth:ClaimType
+            Uri="http://schemas.microsoft.com/ws/2008/06/identity/claims/windowsaccountname" Optional="true"
+            xmlns:auth="http://docs.oasis-open.org/wsfed/authorization/200706">
+            <auth:DisplayName>Windows account name</auth:DisplayName>
+            <auth:Description>The domain account name of the user in the form of &lt;domain&gt;\&lt;user&gt;
+            </auth:Description>
+        </auth:ClaimType>
+    </fed:ClaimTypesRequested>
+    <fed:TargetScopes>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/services/trust/2005/issuedtokenmixedasymmetricbasic256</Address>
+        </EndpointReference>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/services/trust/2005/issuedtokenmixedsymmetricbasic256</Address>
+        </EndpointReference>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/services/trust/13/issuedtokenmixedasymmetricbasic256</Address>
+        </EndpointReference>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/services/trust/13/issuedtokenmixedsymmetricbasic256</Address>
+        </EndpointReference>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/ls/</Address>
+        </EndpointReference>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>http://adfs.example.org/adfs/services/trust</Address>
+        </EndpointReference>
+    </fed:TargetScopes>
+    <fed:ApplicationServiceEndpoint>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/services/trust/2005/issuedtokenmixedasymmetricbasic256</Address>
+        </EndpointReference>
+    </fed:ApplicationServiceEndpoint>
+    <fed:PassiveRequestorEndpoint>
+        <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address>https://adfs.example.org/adfs/ls/</Address>
+        </EndpointReference>
+    </fed:PassiveRequestorEndpoint>
+</RoleDescriptor>
