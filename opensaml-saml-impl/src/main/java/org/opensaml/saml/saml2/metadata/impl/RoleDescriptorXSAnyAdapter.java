@@ -340,7 +340,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
      * Synchronize the instance's local child element storage back to the adapted instance of {@link XSAny}.
      */
     private void syncChildren() {
-        List<XMLObject> children = new LinkedList<>();
+        final List<XMLObject> children = new LinkedList<>();
         
         if (getSignature() != null) {
             children.add(getSignature());
@@ -373,7 +373,6 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
     }
     
     /**
-     *
      * Array implementation which causes all XMLObject children of the owning instance to be synced back to the
      * underlying adapted {@link XSAny} on any list mutation operations.
      * 
@@ -396,7 +395,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public T set(final int index, final T element) {
-            T result = storage.set(index, element);
+            final T result = storage.set(index, element);
             syncChildren();
             return result;
         }
@@ -404,7 +403,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean add(final T e) {
-            boolean result = storage.add(e);
+            final boolean result = storage.add(e);
             syncChildren();
             return result;
         }
@@ -419,7 +418,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public T remove(final int index) {
-            T result = storage.remove(index);
+            final T result = storage.remove(index);
             syncChildren();
             return result;
         }
@@ -427,7 +426,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean remove(final Object o) {
-            boolean result = storage.remove(o);
+            final boolean result = storage.remove(o);
             syncChildren();
             return result;
         }
@@ -442,7 +441,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean addAll(final Collection<? extends T> c) {
-            boolean result = storage.addAll(c);
+            final boolean result = storage.addAll(c);
             syncChildren();
             return result;
         }
@@ -450,7 +449,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean addAll(final int index, final Collection<? extends T> c) {
-            boolean result = storage.addAll(index, c);
+            final boolean result = storage.addAll(index, c);
             syncChildren();
             return result;
         }
@@ -458,7 +457,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean removeAll(final Collection<?> c) {
-            boolean result = storage.removeAll(c);
+            final boolean result = storage.removeAll(c);
             syncChildren();
             return result;
         }
@@ -466,7 +465,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean retainAll(final Collection<?> c) {
-            boolean result = storage.retainAll(c);
+            final boolean result = storage.retainAll(c);
             syncChildren();
             return result;
         }
@@ -474,7 +473,7 @@ public class RoleDescriptorXSAnyAdapter extends AbstractXSAnyAdapter implements 
         /** {@inheritDoc} */
         @Override
         public boolean removeIf(final Predicate<? super T> filter) {
-            boolean result = storage.removeIf(filter);
+            final boolean result = storage.removeIf(filter);
             syncChildren();
             return result;
         }
