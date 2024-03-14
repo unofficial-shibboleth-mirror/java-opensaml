@@ -13,17 +13,11 @@
     <name>OpenSAML</name>
     <description>
         A library for creating, reading, writing and performing some processing of SAML messages.
-
-        For further information see https://wiki.shibboleth.net/confluence/display/OS30/Home
     </description>
 
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
     <version>4.3.1-SNAPSHOT</version>
-    <!-- If you change the version you *MUST* provoke a jenkins 'site'
-         build (to populate the javadoc, which is consumed by the
-         Jenkins 'nightly' builds).
-    -->
     <packaging>pom</packaging>
 
     <modules>
@@ -53,11 +47,10 @@
     </modules>
 
     <properties>
-        <java-support.version>8.4.0</java-support.version>
-        <spring-extensions.version>6.3.0</spring-extensions.version>
+        <shibboleth.projectName>java-opensaml</shibboleth.projectName>
+        <java-support.version>8.4.1-SNAPSHOT</java-support.version>
+        <spring-extensions.version>6.3.1-SNAPSHOT</spring-extensions.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
-        <opensaml-parent.site.url>${shibboleth.site.deploy.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
-        <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
     </properties>
 
     <!-- Dependencies which are required by every single project module should go here and will be inherited by all modules. -->
@@ -135,19 +128,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <scm>
-        <connection>${shibboleth.scm.connection}java-opensaml</connection>
-        <developerConnection>${shibboleth.scm.developerConnection}java-opensaml</developerConnection>
-        <url>${shibboleth.scm.url}java-opensaml.git</url>
-    </scm>
-
-    <distributionManagement>
-        <site>
-            <id>site</id>
-            <url>scp:${opensaml-parent.site.url}</url>
-        </site>
-    </distributionManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -160,22 +140,6 @@
                     </links>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-descriptor</id>
-                        <goals>
-                            <goal>attach-descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <siteDirectory>../opensaml-parent/src/site</siteDirectory>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
