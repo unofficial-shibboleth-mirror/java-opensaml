@@ -59,7 +59,7 @@
     <properties>
         <shibboleth.projectName>java-opensaml</shibboleth.projectName>
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
-        <shib-shared.version>9.1.0</shib-shared.version>
+        <shib-shared.version>9.1.1-SNAPSHOT</shib-shared.version>
         <checkstyle.configLocation>${project.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
