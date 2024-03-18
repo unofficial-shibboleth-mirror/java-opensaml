@@ -23,6 +23,6 @@ package org.opensaml.saml.saml2.core;
  * 
  * @since 5.1.0
  */
-public interface LogoutMessage extends RequestAbstractType {
+public interface LogoutMessage {
 
 }
