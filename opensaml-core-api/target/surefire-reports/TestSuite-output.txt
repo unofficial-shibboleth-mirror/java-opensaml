@@ -1,0 +1,28 @@
+16:00:57,199 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.4.13
+16:00:57,200 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - No custom configurators were discovered as a service.
+16:00:57,200 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+16:00:57,201 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+16:00:57,206 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+16:00:57,206 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+16:00:57,213 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 5 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+16:00:57,213 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+16:00:57,213 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+16:00:57,216 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-api/target/test-classes/logback-test.xml]
+16:00:57,263 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - <level> element is deprecated. Near [level] on line 12
+16:00:57,263 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - Please use "level" attribute within <logger> or <root> elements instead.
+16:00:57,263 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - <level> element is deprecated. Near [level] on line 16
+16:00:57,263 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - Please use "level" attribute within <logger> or <root> elements instead.
+16:00:57,263 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - <level> element is deprecated. Near [level] on line 21
+16:00:57,263 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - Please use "level" attribute within <logger> or <root> elements instead.
+16:00:57,299 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [STDOUT]
+16:00:57,299 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+16:00:57,318 |-INFO in ch.qos.logback.classic.model.processor.LevelModelHandler - org.opensaml.core.xml.persist level set to DEBUG
+16:00:57,318 |-INFO in ch.qos.logback.classic.model.processor.LevelModelHandler - org.opensaml level set to WARN
+16:00:57,319 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [STDOUT] to Logger[ROOT]
+16:00:57,319 |-INFO in ch.qos.logback.classic.model.processor.LevelModelHandler - ROOT level set to WARN
+16:00:57,319 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@79b06cab - End of configuration.
+16:00:57,319 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@3eb7fc54 - Registering current configuration as safe fallback point
+16:00:57,320 |-INFO in ch.qos.logback.classic.util.ContextInitializer@4690b489 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 107 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-api/src/test/resources/opensaml-config.properties
+/var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/opensaml-config.properties4683179433102693813

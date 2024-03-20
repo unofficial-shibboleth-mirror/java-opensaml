@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 21
+Automatic-Module-Name: org.opensaml.core.impl
+Created-By: Maven Integration for Eclipse
+Main-Class: org.opensaml.core.Version
+Sealed: true
+
+Name: org/opensaml/core/
+Implementation-Vendor: opensaml.org
+Implementation-Version: 5.1.0-SNAPSHOT
+Implementation-Title: opensaml-core-impl
+

@@ -1,0 +1,1029 @@
+<html>
+<head>
+<title>TestNG:  Surefire test</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>Surefire test</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>105/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Fri Feb 09 16:01:10 EST 2024</td>
+</tr>
+<tr><td>Total time:</td><td>3 seconds (3411 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testUnmarshallNoNil()'><b>testUnmarshallNoNil</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testObjectType()'><b>testObjectType</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSIntegerTest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSIntegerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.AbstractXMLObjectTest.testDOMAndXMLObjectSourceDropOnMutateAttribute()'><b>testDOMAndXMLObjectSourceDropOnMutateAttribute</b><br>Test class: org.opensaml.core.xml.tests.AbstractXMLObjectTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorPathTrimming()'><b>ctorPathTrimming</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest.checkCheckModifyTimeTracking()'><b>checkCheckModifyTimeTracking</b><br>Test class: org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest</td>
+<td></td>
+<td>1</td>
+<td>org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsNull()'><b>targetKeyIsNull</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td><div><pre>net.shibboleth.shared.logic.ConstraintViolationException: Input key was null or empty
+	at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:429)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsNull(FilesystemLoadSaveManagerTest.java:305)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1455177644", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1455177644'><pre>net.shibboleth.shared.logic.ConstraintViolationException: Input key was null or empty
+	at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:429)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsNull(FilesystemLoadSaveManagerTest.java:305)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSourceTest.testBadCtorParams()'><b>testBadCtorParams</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSourceTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSourceTest@53045c6c</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSupportTest.testXMLObjectCloneWithUnrootedDOM()'><b>testXMLObjectCloneWithUnrootedDOM</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSupportTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorBaseDirPathExistsButNotADirectory()'><b>ctorBaseDirPathExistsButNotADirectory</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td><div><pre>net.shibboleth.shared.logic.ConstraintViolationException: Existing base directory path was not a directory
+	at net.shibboleth.shared.logic.Constraint.isTrue(Constraint.java:341)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:250)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:125)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorBaseDirPathExistsButNotADirectory(FilesystemLoadSaveManagerTest.java:345)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace814111376", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace814111376'><pre>net.shibboleth.shared.logic.ConstraintViolationException: Existing base directory path was not a directory
+	at net.shibboleth.shared.logic.Constraint.isTrue(Constraint.java:341)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:250)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:125)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorBaseDirPathExistsButNotADirectory(FilesystemLoadSaveManagerTest.java:345)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSQNameTest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSQNameTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSIntegerTest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSIntegerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetExistsButIsNotAFile()'><b>targetExistsButIsNotAFile</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td><div><pre>java.io.IOException: Path exists based on specified key, but is not a file: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/abc
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:431)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetExistsButIsNotAFile(FilesystemLoadSaveManagerTest.java:295)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace131037934", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace131037934'><pre>java.io.IOException: Path exists based on specified key, but is not a file: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/abc
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:431)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetExistsButIsNotAFile(FilesystemLoadSaveManagerTest.java:295)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.AbstractXMLObjectTest.testDOMAndXMLObjectSourceDropOnMutateChildElements()'><b>testDOMAndXMLObjectSourceDropOnMutateChildElements</b><br>Test class: org.opensaml.core.xml.tests.AbstractXMLObjectTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSDateTimeTest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSDateTimeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSStringTest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSStringTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSStringTest@909217e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCDATAInElementContentInsecure()'><b>testUnmarshallingWithCDATAInElementContentInsecure</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingSecurityTest</td>
+<td><div><pre>org.opensaml.core.xml.io.UnmarshallingException: Saw illegal CDATA node in parsed DOM, likely due to improper parser configuration
+	at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:143)
+	at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCDATAInElementContentInsecure(UnmarshallingSecurityTest.java:110)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1962398162", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1962398162'><pre>org.opensaml.core.xml.io.UnmarshallingException: Saw illegal CDATA node in parsed DOM, likely due to improper parser configuration
+	at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:143)
+	at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCDATAInElementContentInsecure(UnmarshallingSecurityTest.java:110)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testQualifiedAttributes()'><b>testQualifiedAttributes</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.saveLoadUpdateRemove()'><b>saveLoadUpdateRemove</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest<br>Parameters: true</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testSimpleUnmarshall()'><b>testSimpleUnmarshall</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentBetweenChildElementsInsecure()'><b>testUnmarshallingWithCommentBetweenChildElementsInsecure</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingSecurityTest</td>
+<td><div><pre>org.opensaml.core.xml.io.UnmarshallingException: Saw illegal Comment node in parsed DOM, likely due to improper parser configuration
+	at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:146)
+	at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentBetweenChildElementsInsecure(UnmarshallingSecurityTest.java:142)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace891894789", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace891894789'><pre>org.opensaml.core.xml.io.UnmarshallingException: Saw illegal Comment node in parsed DOM, likely due to improper parser configuration
+	at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:146)
+	at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentBetweenChildElementsInsecure(UnmarshallingSecurityTest.java:142)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorCreateDirectory()'><b>ctorCreateDirectory</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentInElementContentInsecure()'><b>testUnmarshallingWithCommentInElementContentInsecure</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingSecurityTest</td>
+<td><div><pre>org.opensaml.core.xml.io.UnmarshallingException: Saw illegal Comment node in parsed DOM, likely due to improper parser configuration
+	at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:146)
+	at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentInElementContentInsecure(UnmarshallingSecurityTest.java:78)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace766696861", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace766696861'><pre>org.opensaml.core.xml.io.UnmarshallingException: Saw illegal Comment node in parsed DOM, likely due to improper parser configuration
+	at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:146)
+	at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentInElementContentInsecure(UnmarshallingSecurityTest.java:78)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testMarshallSchemaLocation()'><b>testMarshallSchemaLocation</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSBase64BinaryTest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSBase64BinaryTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testListOpChangePropagation()'><b>testListOpChangePropagation</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSQNameTest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSQNameTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCDATAInElementContentDefaults()'><b>testUnmarshallingWithCDATAInElementContentDefaults</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingSecurityTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest.testRemove()'><b>testRemove</b><br>Test class: org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest.testAdd()'><b>testAdd</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testMarshallNoNamespaceSchemaLocation()'><b>testMarshallNoNamespaceSchemaLocation</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest.saveLoadUpdateRemove()'><b>saveLoadUpdateRemove</b><br>Test class: org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSupportTest.testXMLObjectCloneInputMarshalling()'><b>testXMLObjectCloneInputMarshalling</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSupportTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.AbstractXMLObjectTest.testDOMAndXMLObjectSourceDropOnMutateContent()'><b>testDOMAndXMLObjectSourceDropOnMutateContent</b><br>Test class: org.opensaml.core.xml.tests.AbstractXMLObjectTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.config.tests.ConfigurationTest.testIDAttributeRegistration()'><b>testIDAttributeRegistration</b><br>Test class: org.opensaml.core.xml.config.tests.ConfigurationTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testQNameAttributeValue()'><b>testQNameAttributeValue</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.MarshallingTest.testMarshallingExistingEmptyDocument()'><b>testMarshallingExistingEmptyDocument</b><br>Test class: org.opensaml.core.xml.tests.MarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.MarshallingTest@d737b89</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentBetweenChildElementsDefaults()'><b>testUnmarshallingWithCommentBetweenChildElementsDefaults</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingSecurityTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSBooleanTest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSBooleanTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testObjectName()'><b>testObjectName</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest.testSet()'><b>testSet</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingTest.testUnmarshallingWithChildElements()'><b>testUnmarshallingWithChildElements</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingTest@548d708a</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testGlobalIDRegistration()'><b>testGlobalIDRegistration</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testNSDeclaration()'><b>testNSDeclaration</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsEmpty()'><b>targetKeyIsEmpty</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td><div><pre>net.shibboleth.shared.logic.ConstraintViolationException: Input key was null or empty
+	at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:429)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsEmpty(FilesystemLoadSaveManagerTest.java:310)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace379430898", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace379430898'><pre>net.shibboleth.shared.logic.ConstraintViolationException: Input key was null or empty
+	at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:429)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsEmpty(FilesystemLoadSaveManagerTest.java:310)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testChangePropagationInList()'><b>testChangePropagationInList</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSStringTest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSStringTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSStringTest@909217e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.iterator()'><b>iterator</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.AttributeMapTest.testAttributeMapQualifiedAttributes()'><b>testAttributeMapQualifiedAttributes</b><br>Test class: org.opensaml.core.xml.util.tests.AttributeMapTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.config.tests.InitializationServiceTest.testProviderInit()'><b>testProviderInit</b><br>Test class: org.opensaml.core.xml.config.tests.InitializationServiceTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.config.tests.InitializationServiceTest@5149d738</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.MarshallingTest.testMarshallingWithElementContent()'><b>testMarshallingWithElementContent</b><br>Test class: org.opensaml.core.xml.tests.MarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.MarshallingTest@d737b89</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.ElementProxyTest.testUnmarshallUnknownContent()'><b>testUnmarshallUnknownContent</b><br>Test class: org.opensaml.core.xml.tests.ElementProxyTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.ElementProxyTest@2d901eb0</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest.emptyMap()'><b>emptyMap</b><br>Test class: org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.AttributeMapTest.testQNameAttributeValueAsQName()'><b>testQNameAttributeValueAsQName</b><br>Test class: org.opensaml.core.xml.util.tests.AttributeMapTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest.testSet()'><b>testSet</b><br>Test class: org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest.sourceTooShort()'><b>sourceTooShort</b><br>Test class: org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest</td>
+<td><div><pre>org.opensaml.core.xml.XMLRuntimeException: Source length 14 is less than number (8) * length (2) of segments: aabbccddeeffgg
+	at org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategy.apply(SegmentingIntermediateDirectoryStrategy.java:84)
+	at org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest.sourceTooShort(SegmentingIntermediateDirectoryStrategyTest.java:49)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1778877569", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1778877569'><pre>org.opensaml.core.xml.XMLRuntimeException: Source length 14 is less than number (8) * length (2) of segments: aabbccddeeffgg
+	at org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategy.apply(SegmentingIntermediateDirectoryStrategy.java:84)
+	at org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest.sourceTooShort(SegmentingIntermediateDirectoryStrategyTest.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest@606e4010</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSupportTest.testBuildXMLObject()'><b>testBuildXMLObject</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSupportTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testMarshallNil()'><b>testMarshallNil</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest.testIterator()'><b>testIterator</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.buildTargetFileFromKeyWithIntermediateDirs()'><b>buildTargetFileFromKeyWithIntermediateDirs</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSDateTimeTest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSDateTimeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSDateTimeTest.testUnmarshallNoFractional()'><b>testUnmarshallNoFractional</b><br>Test class: org.opensaml.core.xml.schema.impl.XSDateTimeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.saveLoadUpdateRemove()'><b>saveLoadUpdateRemove</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest<br>Parameters: false</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest.iterator()'><b>iterator</b><br>Test class: org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest.testClear()'><b>testClear</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSupportTest.testXMLObjectCloneWithDropDOM()'><b>testXMLObjectCloneWithDropDOM</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSupportTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testUnmarshallSchemaLocation()'><b>testUnmarshallSchemaLocation</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testNonVisibleNamespacePrefixes()'><b>testNonVisibleNamespacePrefixes</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.AttributeMapTest.testClear()'><b>testClear</b><br>Test class: org.opensaml.core.xml.util.tests.AttributeMapTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorEmptyPathString()'><b>ctorEmptyPathString</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td><div><pre>net.shibboleth.shared.logic.ConstraintViolationException: Base directory string instance was null or empty
+	at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:94)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorEmptyPathString(FilesystemLoadSaveManagerTest.java:333)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace611502040", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace611502040'><pre>net.shibboleth.shared.logic.ConstraintViolationException: Base directory string instance was null or empty
+	at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:94)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorEmptyPathString(FilesystemLoadSaveManagerTest.java:333)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest.testProviderInit()'><b>testProviderInit</b><br>Test class: org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest@3a7442c7</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testComplexUnmarshallInList()'><b>testComplexUnmarshallInList</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.MarshallingTest.testMarshallingWithChildElements()'><b>testMarshallingWithChildElements</b><br>Test class: org.opensaml.core.xml.tests.MarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.MarshallingTest@d737b89</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest.testRemove()'><b>testRemove</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testUnmarshallNoNamespaceSchemaLocation()'><b>testUnmarshallNoNamespaceSchemaLocation</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSBooleanTest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSBooleanTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSURITest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSURITest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.config.tests.ConfigurationTest.testInvalidConfiguration()'><b>testInvalidConfiguration</b><br>Test class: org.opensaml.core.xml.config.tests.ConfigurationTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.emptyDir()'><b>emptyDir</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingTest.testUnmarshallingWithAttributes()'><b>testUnmarshallingWithAttributes</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingTest@548d708a</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.MarshallingTest.testMarshallingWithAttributes()'><b>testMarshallingWithAttributes</b><br>Test class: org.opensaml.core.xml.tests.MarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.MarshallingTest@d737b89</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest.testAdd()'><b>testAdd</b><br>Test class: org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.MarshallingTest.testMarshallingReplaceDocumentRoot()'><b>testMarshallingReplaceDocumentRoot</b><br>Test class: org.opensaml.core.xml.tests.MarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.MarshallingTest@d737b89</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.MarshallingTest.testMarshallingXMLFragment()'><b>testMarshallingXMLFragment</b><br>Test class: org.opensaml.core.xml.tests.MarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.MarshallingTest@d737b89</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.config.tests.ConfigurationTest.testObjectProviderConfiguration()'><b>testObjectProviderConfiguration</b><br>Test class: org.opensaml.core.xml.config.tests.ConfigurationTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest.testUnmarshallNil()'><b>testUnmarshallNil</b><br>Test class: org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest.basic()'><b>basic</b><br>Test class: org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest@606e4010</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.AttributeMapTest.testQNameAttributeValueAsString()'><b>testQNameAttributeValueAsString</b><br>Test class: org.opensaml.core.xml.util.tests.AttributeMapTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSDateTimeTest.testUnmarshallCanonical()'><b>testUnmarshallCanonical</b><br>Test class: org.opensaml.core.xml.schema.impl.XSDateTimeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest.testSublist()'><b>testSublist</b><br>Test class: org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentInElementContentDefaults()'><b>testUnmarshallingWithCommentInElementContentDefaults</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingSecurityTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.UnmarshallingTest.testUnmarshallingWithElementContent()'><b>testUnmarshallingWithElementContent</b><br>Test class: org.opensaml.core.xml.tests.UnmarshallingTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.UnmarshallingTest@548d708a</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.saveLoadUpdateRemoveWithIntermediateDirs()'><b>saveLoadUpdateRemoveWithIntermediateDirs</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest<br>Parameters: true</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.NamespaceManagerTest.testQNameElementContent()'><b>testQNameElementContent</b><br>Test class: org.opensaml.core.xml.tests.NamespaceManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.config.tests.ConfigurationTest.testIDAttributeConfiguration()'><b>testIDAttributeConfiguration</b><br>Test class: org.opensaml.core.xml.config.tests.ConfigurationTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSURITest.testUnmarshall()'><b>testUnmarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSURITest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSourceTest.testGetterAndHashCodeAndEquals()'><b>testGetterAndHashCodeAndEquals</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSourceTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSourceTest@53045c6c</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testAttributeMap()'><b>testAttributeMap</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.util.tests.XMLObjectSupportTest.testXMLObjectCloneWithRootInNewDocument()'><b>testXMLObjectCloneWithRootInNewDocument</b><br>Test class: org.opensaml.core.xml.util.tests.XMLObjectSupportTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.buildTargetFileFromKey()'><b>buildTargetFileFromKey</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.schema.impl.XSBase64BinaryTest.testMarshall()'><b>testMarshall</b><br>Test class: org.opensaml.core.xml.schema.impl.XSBase64BinaryTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.saveLoadUpdateRemoveWithIntermediateDirs()'><b>saveLoadUpdateRemoveWithIntermediateDirs</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest<br>Parameters: false</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.tests.IDAttributeTest.testAttributeMapOps()'><b>testAttributeMapOps</b><br>Test class: org.opensaml.core.xml.tests.IDAttributeTest</td>
+<td></td>
+<td>0</td>
+<td>org.opensaml.core.xml.tests.IDAttributeTest@4b013c76</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorRelativeDir()'><b>ctorRelativeDir</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td><div><pre>net.shibboleth.shared.logic.ConstraintViolationException: Base directory specified was not an absolute path
+	at net.shibboleth.shared.logic.Constraint.isTrue(Constraint.java:341)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:248)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:94)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorRelativeDir(FilesystemLoadSaveManagerTest.java:338)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 32 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace594195094", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace594195094'><pre>net.shibboleth.shared.logic.ConstraintViolationException: Base directory specified was not an absolute path
+	at net.shibboleth.shared.logic.Constraint.isTrue(Constraint.java:341)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:248)
+	at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.&lt;init&gt;(FilesystemLoadSaveManager.java:94)
+	at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorRelativeDir(FilesystemLoadSaveManagerTest.java:338)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:829)
+	at org.testng.TestRunner.run(TestRunner.java:602)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+<tr>
+<td title='org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.checkCheckModifyTimeTracking()'><b>checkCheckModifyTimeTracking</b><br>Test class: org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest</td>
+<td></td>
+<td>2</td>
+<td>org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936</td></tr>
+</table><p>
+</body>
+</html>

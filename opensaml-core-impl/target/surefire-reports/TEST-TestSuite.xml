@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestSuite" time="4.623" tests="105" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/test-classes:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/classes:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-api/target/opensaml-core-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/commons-codec/commons-codec/1.16.0/commons-codec-1.16.0.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-security-api/target/opensaml-security-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-messaging-api/target/opensaml-messaging-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/net/shibboleth/shib-security/9.1.0-SNAPSHOT/shib-security-9.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/cryptacular/cryptacular/1.2.6/cryptacular-1.2.6.jar:/Users/putmanb/Dev/Java/maven-repo/org/bouncycastle/bcprov-jdk18on/1.76/bcprov-jdk18on-1.76.jar:/Users/putmanb/Dev/Java/maven-repo/org/bouncycastle/bcpkix-jdk18on/1.76/bcpkix-jdk18on-1.76.jar:/Users/putmanb/Dev/Java/maven-repo/org/bouncycastle/bcutil-jdk18on/1.76/bcutil-jdk18on-1.76.jar:/Users/putmanb/Dev/Java/maven-repo/net/shibboleth/shib-networking/9.1.0-SNAPSHOT/shib-networking-9.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/client5/httpclient5-cache/5.2.1/httpclient5-cache-5.2.1.jar:/Users/putmanb/Dev/Java/maven-repo/io/dropwizard/metrics/metrics-core/4.2.19/metrics-core-4.2.19.jar:/Users/putmanb/Dev/Java/maven-repo/io/dropwizard/metrics/metrics-json/4.2.19/metrics-json-4.2.19.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/core/jackson-databind/2.15.2/jackson-databind-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/core/jackson-annotations/2.15.2/jackson-annotations-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.15.2/jackson-datatype-jsr310-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/core5/httpcore5-h2/5.2/httpcore5-h2-5.2.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/core5/httpcore5/5.2.2/httpcore5-5.2.2.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-testing/target/opensaml-testing-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-profile-api/target/opensaml-profile-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-saml-api/target/opensaml-saml-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-soap-api/target/opensaml-soap-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-xmlsec-api/target/opensaml-xmlsec-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/santuario/xmlsec/3.0.3/xmlsec-3.0.3.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-storage-api/target/opensaml-storage-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/putmanb/Dev/Java/maven-repo/org/checkerframework/checker-qual/3.41.0/checker-qual-3.41.0.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/Users/putmanb/Dev/Java/maven-repo/org/xmlunit/xmlunit-core/2.9.1/xmlunit-core-2.9.1.jar:/Users/putmanb/Dev/Java/maven-repo/jakarta/xml/bind/jakarta.xml.bind-api/2.3.3/jakarta.xml.bind-api-2.3.3.jar:/Users/putmanb/Dev/Java/maven-repo/jakarta/activation/jakarta.activation-api/2.0.1/jakarta.activation-api-2.0.1.jar:/Users/putmanb/Dev/Java/maven-repo/org/xmlunit/xmlunit-matchers/2.9.1/xmlunit-matchers-2.9.1.jar:/Users/putmanb/Dev/Java/maven-repo/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/putmanb/Dev/Java/maven-repo/org/slf4j/slf4j-api/2.0.7/slf4j-api-2.0.7.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/putmanb/Dev/Java/maven-repo/net/shibboleth/shib-support/9.1.0-SNAPSHOT/shib-support-9.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/testng/testng/7.7.1/testng-7.7.1.jar:/Users/putmanb/Dev/Java/maven-repo/com/beust/jcommander/1.81/jcommander-1.81.jar:/Users/putmanb/Dev/Java/maven-repo/org/webjars/jquery/3.6.1/jquery-3.6.1.jar:/Users/putmanb/Dev/Java/maven-repo/ch/qos/logback/logback-classic/1.4.13/logback-classic-1.4.13.jar:/Users/putmanb/Dev/Java/maven-repo/ch/qos/logback/logback-core/1.4.13/logback-core-1.4.13.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/surefire/surefirebooter-20240209160109516_33.jar /Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/surefire 2024-02-09T16-00-56_938-jvmRun1 surefire-20240209160109516_31tmp surefire_6-20240209160109516_32tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/test-classes:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/classes:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-api/target/opensaml-core-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/commons-codec/commons-codec/1.16.0/commons-codec-1.16.0.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-security-api/target/opensaml-security-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-messaging-api/target/opensaml-messaging-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/net/shibboleth/shib-security/9.1.0-SNAPSHOT/shib-security-9.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/cryptacular/cryptacular/1.2.6/cryptacular-1.2.6.jar:/Users/putmanb/Dev/Java/maven-repo/org/bouncycastle/bcprov-jdk18on/1.76/bcprov-jdk18on-1.76.jar:/Users/putmanb/Dev/Java/maven-repo/org/bouncycastle/bcpkix-jdk18on/1.76/bcpkix-jdk18on-1.76.jar:/Users/putmanb/Dev/Java/maven-repo/org/bouncycastle/bcutil-jdk18on/1.76/bcutil-jdk18on-1.76.jar:/Users/putmanb/Dev/Java/maven-repo/net/shibboleth/shib-networking/9.1.0-SNAPSHOT/shib-networking-9.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/client5/httpclient5-cache/5.2.1/httpclient5-cache-5.2.1.jar:/Users/putmanb/Dev/Java/maven-repo/io/dropwizard/metrics/metrics-core/4.2.19/metrics-core-4.2.19.jar:/Users/putmanb/Dev/Java/maven-repo/io/dropwizard/metrics/metrics-json/4.2.19/metrics-json-4.2.19.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/core/jackson-databind/2.15.2/jackson-databind-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/core/jackson-annotations/2.15.2/jackson-annotations-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.15.2/jackson-datatype-jsr310-2.15.2.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/core5/httpcore5-h2/5.2/httpcore5-h2-5.2.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/httpcomponents/core5/httpcore5/5.2.2/httpcore5-5.2.2.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-testing/target/opensaml-testing-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-profile-api/target/opensaml-profile-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-saml-api/target/opensaml-saml-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-soap-api/target/opensaml-soap-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-xmlsec-api/target/opensaml-xmlsec-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/apache/santuario/xmlsec/3.0.3/xmlsec-3.0.3.jar:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-storage-api/target/opensaml-storage-api-5.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/putmanb/Dev/Java/maven-repo/org/checkerframework/checker-qual/3.41.0/checker-qual-3.41.0.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/Users/putmanb/Dev/Java/maven-repo/org/xmlunit/xmlunit-core/2.9.1/xmlunit-core-2.9.1.jar:/Users/putmanb/Dev/Java/maven-repo/jakarta/xml/bind/jakarta.xml.bind-api/2.3.3/jakarta.xml.bind-api-2.3.3.jar:/Users/putmanb/Dev/Java/maven-repo/jakarta/activation/jakarta.activation-api/2.0.1/jakarta.activation-api-2.0.1.jar:/Users/putmanb/Dev/Java/maven-repo/org/xmlunit/xmlunit-matchers/2.9.1/xmlunit-matchers-2.9.1.jar:/Users/putmanb/Dev/Java/maven-repo/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/putmanb/Dev/Java/maven-repo/org/slf4j/slf4j-api/2.0.7/slf4j-api-2.0.7.jar:/Users/putmanb/Dev/Java/maven-repo/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/putmanb/Dev/Java/maven-repo/net/shibboleth/shib-support/9.1.0-SNAPSHOT/shib-support-9.1.0-SNAPSHOT.jar:/Users/putmanb/Dev/Java/maven-repo/org/testng/testng/7.7.1/testng-7.7.1.jar:/Users/putmanb/Dev/Java/maven-repo/com/beust/jcommander/1.81/jcommander-1.81.jar:/Users/putmanb/Dev/Java/maven-repo/org/webjars/jquery/3.6.1/jquery-3.6.1.jar:/Users/putmanb/Dev/Java/maven-repo/ch/qos/logback/logback-classic/1.4.13/logback-classic-1.4.13.jar:/Users/putmanb/Dev/Java/maven-repo/ch/qos/logback/logback-core/1.4.13/logback-core-1.4.13.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/putmanb"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2023-07-18"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/surefire/surefirebooter-20240209160109516_33.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="17.0.8+9-LTS-211"/>
+    <property name="user.name" value="putmanb"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="11.7.6"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="localRepository" value="/Users/putmanb/Dev/Java/maven-repo"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/"/>
+    <property name="java.version" value="17.0.8"/>
+    <property name="user.dir" value="/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="no-check-m2" value="true"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/putmanb/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="17.0.8+9-LTS-211"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="testAttributeMapQualifiedAttributes" classname="org.opensaml.core.xml.util.tests.AttributeMapTest" time="0.004">
+    <system-out><![CDATA[16:01:09,744 |-INFO in ch.qos.logback.classic.LoggerContext[default] - This is logback-classic version 1.4.13
+16:01:09,746 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - No custom configurators were discovered as a service.
+16:01:09,746 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - Trying to configure with ch.qos.logback.classic.joran.SerializedModelConfigurator
+16:01:09,747 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - Constructed configurator of type class ch.qos.logback.classic.joran.SerializedModelConfigurator
+16:01:09,756 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.scmo]
+16:01:09,756 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.scmo]
+16:01:09,764 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - ch.qos.logback.classic.joran.SerializedModelConfigurator.configure() call lasted 10 milliseconds. ExecutionStatus=INVOKE_NEXT_IF_ANY
+16:01:09,764 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - Trying to configure with ch.qos.logback.classic.util.DefaultJoranConfigurator
+16:01:09,765 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - Constructed configurator of type class ch.qos.logback.classic.util.DefaultJoranConfigurator
+16:01:09,768 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/Users/putmanb/Dev/Git/Shib/java-opensaml/opensaml-core-impl/target/test-classes/logback-test.xml]
+16:01:09,826 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - <level> element is deprecated. Near [level] on line 12
+16:01:09,826 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - Please use "level" attribute within <logger> or <root> elements instead.
+16:01:09,826 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - <level> element is deprecated. Near [level] on line 16
+16:01:09,826 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - Please use "level" attribute within <logger> or <root> elements instead.
+16:01:09,826 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - <level> element is deprecated. Near [level] on line 21
+16:01:09,826 |-WARN in ch.qos.logback.classic.joran.action.LevelAction - Please use "level" attribute within <logger> or <root> elements instead.
+16:01:09,868 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [STDOUT]
+16:01:09,868 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+16:01:09,885 |-INFO in ch.qos.logback.classic.model.processor.LevelModelHandler - org.opensaml.core.xml.persist level set to DEBUG
+16:01:09,885 |-INFO in ch.qos.logback.classic.model.processor.LevelModelHandler - org.opensaml level set to WARN
+16:01:09,886 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [STDOUT] to Logger[ROOT]
+16:01:09,886 |-INFO in ch.qos.logback.classic.model.processor.LevelModelHandler - ROOT level set to WARN
+16:01:09,886 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@21de60b4 - End of configuration.
+16:01:09,886 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@c267ef4 - Registering current configuration as safe fallback point
+16:01:09,886 |-INFO in ch.qos.logback.classic.util.ContextInitializer@1700915 - ch.qos.logback.classic.util.DefaultJoranConfigurator.configure() call lasted 121 milliseconds. ExecutionStatus=DO_NOT_INVOKE_NEXT_IF_ANY
+
+]]></system-out>
+  </testcase>
+  <testcase name="testClear" classname="org.opensaml.core.xml.util.tests.AttributeMapTest" time="0.0"/>
+  <testcase name="testQNameAttributeValueAsQName" classname="org.opensaml.core.xml.util.tests.AttributeMapTest" time="0.001"/>
+  <testcase name="testQNameAttributeValueAsString" classname="org.opensaml.core.xml.util.tests.AttributeMapTest" time="0.0"/>
+  <testcase name="testBuildXMLObject" classname="org.opensaml.core.xml.util.tests.XMLObjectSupportTest" time="0.002"/>
+  <testcase name="testXMLObjectCloneInputMarshalling" classname="org.opensaml.core.xml.util.tests.XMLObjectSupportTest" time="0.018"/>
+  <testcase name="testXMLObjectCloneWithDropDOM" classname="org.opensaml.core.xml.util.tests.XMLObjectSupportTest" time="0.001"/>
+  <testcase name="testXMLObjectCloneWithRootInNewDocument" classname="org.opensaml.core.xml.util.tests.XMLObjectSupportTest" time="0.001"/>
+  <testcase name="testXMLObjectCloneWithUnrootedDOM" classname="org.opensaml.core.xml.util.tests.XMLObjectSupportTest" time="0.0"/>
+  <testcase name="testAdd" classname="org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest" time="0.0"/>
+  <testcase name="testRemove" classname="org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest" time="0.001"/>
+  <testcase name="testSet" classname="org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest" time="0.0"/>
+  <testcase name="testSublist" classname="org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest" time="0.001"/>
+  <testcase name="testAdd" classname="org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest" time="0.0"/>
+  <testcase name="testClear" classname="org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest" time="0.0"/>
+  <testcase name="testIterator" classname="org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest" time="0.001"/>
+  <testcase name="testRemove" classname="org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest" time="0.0"/>
+  <testcase name="testSet" classname="org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest" time="0.0"/>
+  <testcase name="testBadCtorParams" classname="org.opensaml.core.xml.util.tests.XMLObjectSourceTest" time="0.0"/>
+  <testcase name="testGetterAndHashCodeAndEquals" classname="org.opensaml.core.xml.util.tests.XMLObjectSourceTest" time="0.001"/>
+  <testcase name="testProviderInit" classname="org.opensaml.core.xml.config.tests.InitializationServiceTest" time="0.026"/>
+  <testcase name="testIDAttributeConfiguration" classname="org.opensaml.core.xml.config.tests.ConfigurationTest" time="0.006"/>
+  <testcase name="testIDAttributeRegistration" classname="org.opensaml.core.xml.config.tests.ConfigurationTest" time="0.0"/>
+  <testcase name="testInvalidConfiguration" classname="org.opensaml.core.xml.config.tests.ConfigurationTest" time="0.009">
+    <system-out><![CDATA[ERROR BasicParserPool - XML Parsing Error
+ERROR XMLConfigurator - Invalid configuration file: Unable to parse inputstream, it contained invalid XML
+]]></system-out>
+  </testcase>
+  <testcase name="testObjectProviderConfiguration" classname="org.opensaml.core.xml.config.tests.ConfigurationTest" time="0.009">
+    <system-out><![CDATA[ERROR XMLConfigurator - Cannot create instance of foo: foo
+ERROR XMLConfigurator - Error initializing object provier [xt:ObjectProvider: null]: Cannot create instance of foo
+]]></system-out>
+  </testcase>
+  <testcase name="testProviderInit" classname="org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest" time="0.01"/>
+  <testcase name="testDOMAndXMLObjectSourceDropOnMutateAttribute" classname="org.opensaml.core.xml.tests.AbstractXMLObjectTest" time="0.001"/>
+  <testcase name="testDOMAndXMLObjectSourceDropOnMutateChildElements" classname="org.opensaml.core.xml.tests.AbstractXMLObjectTest" time="0.0"/>
+  <testcase name="testDOMAndXMLObjectSourceDropOnMutateContent" classname="org.opensaml.core.xml.tests.AbstractXMLObjectTest" time="0.0"/>
+  <testcase name="testUnmarshallingWithAttributes" classname="org.opensaml.core.xml.tests.UnmarshallingTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithChildElements" classname="org.opensaml.core.xml.tests.UnmarshallingTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithElementContent" classname="org.opensaml.core.xml.tests.UnmarshallingTest" time="0.001"/>
+  <testcase name="testAttributeMap" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.001"/>
+  <testcase name="testAttributeMapOps" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.002"/>
+  <testcase name="testChangePropagationInList" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.001"/>
+  <testcase name="testComplexUnmarshallInList" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.001"/>
+  <testcase name="testGlobalIDRegistration" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.002"/>
+  <testcase name="testListOpChangePropagation" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.001"/>
+  <testcase name="testSimpleUnmarshall" classname="org.opensaml.core.xml.tests.IDAttributeTest" time="0.0"/>
+  <testcase name="testUnmarshallingWithCDATAInElementContentDefaults" classname="org.opensaml.core.xml.tests.UnmarshallingSecurityTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithCDATAInElementContentInsecure" classname="org.opensaml.core.xml.tests.UnmarshallingSecurityTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithCommentBetweenChildElementsDefaults" classname="org.opensaml.core.xml.tests.UnmarshallingSecurityTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithCommentBetweenChildElementsInsecure" classname="org.opensaml.core.xml.tests.UnmarshallingSecurityTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithCommentInElementContentDefaults" classname="org.opensaml.core.xml.tests.UnmarshallingSecurityTest" time="0.001"/>
+  <testcase name="testUnmarshallingWithCommentInElementContentInsecure" classname="org.opensaml.core.xml.tests.UnmarshallingSecurityTest" time="0.0"/>
+  <testcase name="testMarshallingExistingEmptyDocument" classname="org.opensaml.core.xml.tests.MarshallingTest" time="0.0"/>
+  <testcase name="testMarshallingReplaceDocumentRoot" classname="org.opensaml.core.xml.tests.MarshallingTest" time="0.0"/>
+  <testcase name="testMarshallingWithAttributes" classname="org.opensaml.core.xml.tests.MarshallingTest" time="0.017"/>
+  <testcase name="testMarshallingWithChildElements" classname="org.opensaml.core.xml.tests.MarshallingTest" time="0.003"/>
+  <testcase name="testMarshallingWithElementContent" classname="org.opensaml.core.xml.tests.MarshallingTest" time="0.004"/>
+  <testcase name="testMarshallingXMLFragment" classname="org.opensaml.core.xml.tests.MarshallingTest" time="0.004"/>
+  <testcase name="testNSDeclaration" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.0"/>
+  <testcase name="testNonVisibleNamespacePrefixes" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.001"/>
+  <testcase name="testObjectName" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.0"/>
+  <testcase name="testObjectType" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.0"/>
+  <testcase name="testQNameAttributeValue" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.0"/>
+  <testcase name="testQNameElementContent" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.0"/>
+  <testcase name="testQualifiedAttributes" classname="org.opensaml.core.xml.tests.NamespaceManagerTest" time="0.0"/>
+  <testcase name="testMarshallNil" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.003"/>
+  <testcase name="testMarshallNoNamespaceSchemaLocation" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.003"/>
+  <testcase name="testMarshallSchemaLocation" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.002"/>
+  <testcase name="testUnmarshallNil" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.001"/>
+  <testcase name="testUnmarshallNoNamespaceSchemaLocation" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.0"/>
+  <testcase name="testUnmarshallNoNil" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.0"/>
+  <testcase name="testUnmarshallSchemaLocation" classname="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest" time="0.001"/>
+  <testcase name="testUnmarshallUnknownContent" classname="org.opensaml.core.xml.tests.ElementProxyTest" time="0.001"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSQNameTest" time="0.003"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSQNameTest" time="0.001"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSBooleanTest" time="0.003"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSBooleanTest" time="0.001"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSIntegerTest" time="0.003"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSIntegerTest" time="0.001"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSURITest" time="0.003"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSURITest" time="0.001"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSBase64BinaryTest" time="0.003"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSBase64BinaryTest" time="0.0"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSDateTimeTest" time="0.004"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSDateTimeTest" time="0.002"/>
+  <testcase name="testUnmarshallCanonical" classname="org.opensaml.core.xml.schema.impl.XSDateTimeTest" time="0.001"/>
+  <testcase name="testUnmarshallNoFractional" classname="org.opensaml.core.xml.schema.impl.XSDateTimeTest" time="0.001"/>
+  <testcase name="testMarshall" classname="org.opensaml.core.xml.schema.impl.XSStringTest" time="0.002"/>
+  <testcase name="testUnmarshall" classname="org.opensaml.core.xml.schema.impl.XSStringTest" time="0.001"/>
+  <testcase name="buildTargetFileFromKey" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="buildTargetFileFromKeyWithIntermediateDirs" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="checkCheckModifyTimeTracking" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="2.012">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+DEBUG FilesystemLoadSaveManager - Target file with key 'foo' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/foo
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - Target file with key 'foo' has not been modified since the last request, returning null: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/foo
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - Target file with key 'foo' has not been modified since the last request, returning null: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/foo
+DEBUG FilesystemLoadSaveManager - Target file with key 'foo' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/foo
+DEBUG FilesystemLoadSaveManager - Target file with key 'bar' has not been modified since the last request, returning null: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/bar
+]]></system-out>
+  </testcase>
+  <testcase name="ctorBaseDirPathExistsButNotADirectory" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="ctorCreateDirectory" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="ctorEmptyPathString" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="ctorPathTrimming" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="ctorRelativeDir" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="emptyDir" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.003">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="iterator" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.006">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - Target file with key 'foo' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/foo
+WARN  FilesystemLoadSaveManager - Target file with key 'foo' was removed since iterator creation, skipping
+]]></system-out>
+  </testcase>
+  <testcase name="saveLoadUpdateRemove[false](1)" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.024">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+DEBUG FilesystemLoadSaveManager - Target file with key 'bogus' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/bogus
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+]]></system-out>
+  </testcase>
+  <testcase name="saveLoadUpdateRemove[true](2)" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.024">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+DEBUG FilesystemLoadSaveManager - Target file with key 'bogus' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/bogus
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+]]></system-out>
+  </testcase>
+  <testcase name="saveLoadUpdateRemoveWithIntermediateDirs[false](1)" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.029">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+DEBUG FilesystemLoadSaveManager - Target file with key 'bogus' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/bo/bogus
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+DEBUG FilesystemLoadSaveManager - XMLObject contained 0 XMLObjectSource instances, persisting marshalled object
+]]></system-out>
+  </testcase>
+  <testcase name="saveLoadUpdateRemoveWithIntermediateDirs[true](2)" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.024">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+DEBUG FilesystemLoadSaveManager - Target file with key 'bogus' does not exist, path: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/bo/bogus
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+DEBUG FilesystemLoadSaveManager - XMLObject contained 1 XMLObjectSource instance, persisting existing byte[]
+]]></system-out>
+  </testcase>
+  <testcase name="targetExistsButIsNotAFile" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="targetKeyIsEmpty" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="targetKeyIsNull" classname="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest" time="0.0">
+    <system-out><![CDATA[DEBUG FilesystemLoadSaveManagerTest - Using base directory: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test
+]]></system-out>
+  </testcase>
+  <testcase name="basic" classname="org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest" time="0.004"/>
+  <testcase name="sourceTooShort" classname="org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest" time="0.001">
+    <system-out><![CDATA[WARN  SegmentingIntermediateDirectoryStrategy - Source length 14 is less than number (8) * length (2) of segments: aabbccddeeffgg
+]]></system-out>
+  </testcase>
+  <testcase name="checkCheckModifyTimeTracking" classname="org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest" time="1.002">
+    <system-out><![CDATA[DEBUG MapLoadSaveManager - Target data with key 'foo' does not exist
+DEBUG MapLoadSaveManager - Target data with key 'foo' has not been modified since the last request, returning null
+DEBUG MapLoadSaveManager - Target data with key 'foo' has not been modified since the last request, returning null
+DEBUG MapLoadSaveManager - Target data with key 'foo' does not exist
+DEBUG MapLoadSaveManager - Target data with key 'bar' has not been modified since the last request, returning null
+]]></system-out>
+  </testcase>
+  <testcase name="emptyMap" classname="org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest" time="0.001"/>
+  <testcase name="iterator" classname="org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest" time="0.0"/>
+  <testcase name="saveLoadUpdateRemove" classname="org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest" time="0.001">
+    <system-out><![CDATA[DEBUG MapLoadSaveManager - Target data with key 'bogus' does not exist
+]]></system-out>
+  </testcase>
+</testsuite>

@@ -1,0 +1,1354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="18" total="123" passed="105" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-02-09T16:01:10 EST" name="Surefire suite" finished-at="2024-02-09T16:01:14 EST" duration-ms="3411">
+    <groups>
+    </groups>
+    <test started-at="2024-02-09T16:01:10 EST" name="Surefire test" finished-at="2024-02-09T16:01:14 EST" duration-ms="3411">
+      <class name="org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest">
+        <test-method is-config="true" signature="setup()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:13 EST" name="setup" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:13 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="checkCheckModifyTimeTracking()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:13 EST" name="checkCheckModifyTimeTracking" finished-at="2024-02-09T16:01:14 EST" duration-ms="1002" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- checkCheckModifyTimeTracking -->
+        <test-method signature="emptyMap()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:14 EST" name="emptyMap" finished-at="2024-02-09T16:01:14 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- emptyMap -->
+        <test-method is-config="true" signature="setup()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:14 EST" name="setup" finished-at="2024-02-09T16:01:14 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="saveLoadUpdateRemove()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:14 EST" name="saveLoadUpdateRemove" finished-at="2024-02-09T16:01:14 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- saveLoadUpdateRemove -->
+        <test-method signature="iterator()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:14 EST" name="iterator" finished-at="2024-02-09T16:01:14 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- iterator -->
+        <test-method is-config="true" signature="setup()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:14 EST" name="setup" finished-at="2024-02-09T16:01:14 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method is-config="true" signature="setup()[pri:0, instance:org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest@8458f04]" started-at="2024-02-09T16:01:14 EST" name="setup" finished-at="2024-02-09T16:01:14 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+      </class> <!-- org.opensaml.core.xml.persist.impl.MapLoadSaveManagerTest -->
+      <class name="org.opensaml.core.xml.tests.MarshallingTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testMarshallingExistingEmptyDocument()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="testMarshallingExistingEmptyDocument" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallingExistingEmptyDocument -->
+        <test-method signature="testMarshallingWithAttributes()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="testMarshallingWithAttributes" finished-at="2024-02-09T16:01:10 EST" duration-ms="18" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallingWithAttributes -->
+        <test-method signature="testMarshallingReplaceDocumentRoot()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="testMarshallingReplaceDocumentRoot" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallingReplaceDocumentRoot -->
+        <test-method signature="testMarshallingWithChildElements()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="testMarshallingWithChildElements" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallingWithChildElements -->
+        <test-method signature="testMarshallingWithElementContent()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="testMarshallingWithElementContent" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallingWithElementContent -->
+        <test-method signature="testMarshallingXMLFragment()[pri:0, instance:org.opensaml.core.xml.tests.MarshallingTest@d737b89]" started-at="2024-02-09T16:01:10 EST" name="testMarshallingXMLFragment" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallingXMLFragment -->
+      </class> <!-- org.opensaml.core.xml.tests.MarshallingTest -->
+      <class name="org.opensaml.core.xml.util.tests.XMLObjectSourceTest">
+        <test-method signature="testBadCtorParams()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSourceTest@53045c6c]" started-at="2024-02-09T16:01:10 EST" name="testBadCtorParams" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testBadCtorParams -->
+        <test-method signature="testGetterAndHashCodeAndEquals()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSourceTest@53045c6c]" started-at="2024-02-09T16:01:10 EST" name="testGetterAndHashCodeAndEquals" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetterAndHashCodeAndEquals -->
+      </class> <!-- org.opensaml.core.xml.util.tests.XMLObjectSourceTest -->
+      <class name="org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest">
+        <test-method signature="testAdd()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9]" started-at="2024-02-09T16:01:10 EST" name="testAdd" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAdd -->
+        <test-method signature="testIterator()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9]" started-at="2024-02-09T16:01:10 EST" name="testIterator" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIterator -->
+        <test-method signature="testClear()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9]" started-at="2024-02-09T16:01:10 EST" name="testClear" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testClear -->
+        <test-method signature="testRemove()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9]" started-at="2024-02-09T16:01:10 EST" name="testRemove" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRemove -->
+        <test-method signature="testSet()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest@795509d9]" started-at="2024-02-09T16:01:10 EST" name="testSet" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSet -->
+      </class> <!-- org.opensaml.core.xml.util.tests.XMLObjectChildrenListTest -->
+      <class name="org.opensaml.core.xml.tests.ElementProxyTest">
+        <test-method signature="testUnmarshallUnknownContent()[pri:0, instance:org.opensaml.core.xml.tests.ElementProxyTest@2d901eb0]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallUnknownContent" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallUnknownContent -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.ElementProxyTest@2d901eb0]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+      </class> <!-- org.opensaml.core.xml.tests.ElementProxyTest -->
+      <class name="org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:11 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="buildTargetFileFromKey()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="buildTargetFileFromKey" finished-at="2024-02-09T16:01:11 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- buildTargetFileFromKey -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="tearDown" finished-at="2024-02-09T16:01:11 EST" duration-ms="4" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="buildTargetFileFromKeyWithIntermediateDirs()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="buildTargetFileFromKeyWithIntermediateDirs" finished-at="2024-02-09T16:01:11 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- buildTargetFileFromKeyWithIntermediateDirs -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="setUp" finished-at="2024-02-09T16:01:11 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="tearDown" finished-at="2024-02-09T16:01:11 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="checkCheckModifyTimeTracking()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="checkCheckModifyTimeTracking" finished-at="2024-02-09T16:01:13 EST" duration-ms="2013" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- checkCheckModifyTimeTracking -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:11 EST" name="setUp" finished-at="2024-02-09T16:01:11 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="ctorBaseDirPathExistsButNotADirectory()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="ctorBaseDirPathExistsButNotADirectory" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <exception class="net.shibboleth.shared.logic.ConstraintViolationException">
+            <message>
+              <![CDATA[Existing base directory path was not a directory]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[net.shibboleth.shared.logic.ConstraintViolationException: Existing base directory path was not a directory
+at net.shibboleth.shared.logic.Constraint.isTrue(Constraint.java:341)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.<init>(FilesystemLoadSaveManager.java:250)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.<init>(FilesystemLoadSaveManager.java:125)
+at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorBaseDirPathExistsButNotADirectory(FilesystemLoadSaveManagerTest.java:345)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- net.shibboleth.shared.logic.ConstraintViolationException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ctorBaseDirPathExistsButNotADirectory -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="ctorCreateDirectory()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="ctorCreateDirectory" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ctorCreateDirectory -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="ctorEmptyPathString()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="ctorEmptyPathString" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <exception class="net.shibboleth.shared.logic.ConstraintViolationException">
+            <message>
+              <![CDATA[Base directory string instance was null or empty]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[net.shibboleth.shared.logic.ConstraintViolationException: Base directory string instance was null or empty
+at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.<init>(FilesystemLoadSaveManager.java:94)
+at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorEmptyPathString(FilesystemLoadSaveManagerTest.java:333)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- net.shibboleth.shared.logic.ConstraintViolationException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ctorEmptyPathString -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="ctorPathTrimming()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="ctorPathTrimming" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ctorPathTrimming -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="ctorRelativeDir()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="ctorRelativeDir" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <exception class="net.shibboleth.shared.logic.ConstraintViolationException">
+            <message>
+              <![CDATA[Base directory specified was not an absolute path]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[net.shibboleth.shared.logic.ConstraintViolationException: Base directory specified was not an absolute path
+at net.shibboleth.shared.logic.Constraint.isTrue(Constraint.java:341)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.<init>(FilesystemLoadSaveManager.java:248)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.<init>(FilesystemLoadSaveManager.java:94)
+at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.ctorRelativeDir(FilesystemLoadSaveManagerTest.java:338)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- net.shibboleth.shared.logic.ConstraintViolationException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ctorRelativeDir -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="emptyDir()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="emptyDir" finished-at="2024-02-09T16:01:13 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- emptyDir -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="iterator()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="iterator" finished-at="2024-02-09T16:01:13 EST" duration-ms="5" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- iterator -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="saveLoadUpdateRemove(java.lang.Boolean)[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="saveLoadUpdateRemove" data-provider="saveLoadUpdateRemoveParams" finished-at="2024-02-09T16:01:13 EST" duration-ms="24" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[false]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- saveLoadUpdateRemove -->
+        <test-method signature="saveLoadUpdateRemove(java.lang.Boolean)[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="saveLoadUpdateRemove" data-provider="saveLoadUpdateRemoveParams" finished-at="2024-02-09T16:01:13 EST" duration-ms="25" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[true]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- saveLoadUpdateRemove -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="saveLoadUpdateRemoveWithIntermediateDirs(java.lang.Boolean)[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="saveLoadUpdateRemoveWithIntermediateDirs" data-provider="saveLoadUpdateRemoveParams" finished-at="2024-02-09T16:01:13 EST" duration-ms="29" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[false]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- saveLoadUpdateRemoveWithIntermediateDirs -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="saveLoadUpdateRemoveWithIntermediateDirs(java.lang.Boolean)[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="saveLoadUpdateRemoveWithIntermediateDirs" data-provider="saveLoadUpdateRemoveParams" finished-at="2024-02-09T16:01:13 EST" duration-ms="25" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[true]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- saveLoadUpdateRemoveWithIntermediateDirs -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="targetExistsButIsNotAFile()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="targetExistsButIsNotAFile" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <exception class="java.io.IOException">
+            <message>
+              <![CDATA[Path exists based on specified key, but is not a file: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/abc]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.io.IOException: Path exists based on specified key, but is not a file: /var/folders/3b/6pjvjt_j3ws2rtq52q2rc_7r0000gn/T/load-save-manager-test/abc
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:431)
+at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetExistsButIsNotAFile(FilesystemLoadSaveManagerTest.java:295)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.io.IOException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- targetExistsButIsNotAFile -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="targetKeyIsEmpty()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="targetKeyIsEmpty" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <exception class="net.shibboleth.shared.logic.ConstraintViolationException">
+            <message>
+              <![CDATA[Input key was null or empty]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[net.shibboleth.shared.logic.ConstraintViolationException: Input key was null or empty
+at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:429)
+at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsEmpty(FilesystemLoadSaveManagerTest.java:310)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- net.shibboleth.shared.logic.ConstraintViolationException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- targetKeyIsEmpty -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="setUp" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="targetKeyIsNull()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="targetKeyIsNull" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <exception class="net.shibboleth.shared.logic.ConstraintViolationException">
+            <message>
+              <![CDATA[Input key was null or empty]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[net.shibboleth.shared.logic.ConstraintViolationException: Input key was null or empty
+at net.shibboleth.shared.logic.Constraint.isNotNull(Constraint.java:306)
+at org.opensaml.core.xml.persist.FilesystemLoadSaveManager.buildFile(FilesystemLoadSaveManager.java:429)
+at org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest.targetKeyIsNull(FilesystemLoadSaveManagerTest.java:305)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- net.shibboleth.shared.logic.ConstraintViolationException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- targetKeyIsNull -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest@18271936]" started-at="2024-02-09T16:01:13 EST" name="tearDown" finished-at="2024-02-09T16:01:13 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- org.opensaml.core.xml.persist.impl.FilesystemLoadSaveManagerTest -->
+      <class name="org.opensaml.core.xml.util.tests.AttributeMapTest">
+        <test-method is-config="true" signature="initOpenSAML()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="initOpenSAML" finished-at="2024-02-09T16:01:10 EST" duration-ms="564" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initOpenSAML -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="7" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testAttributeMapQualifiedAttributes()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="testAttributeMapQualifiedAttributes" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAttributeMapQualifiedAttributes -->
+        <test-method signature="testClear()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="testClear" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testClear -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testQNameAttributeValueAsQName()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="testQNameAttributeValueAsQName" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testQNameAttributeValueAsQName -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testQNameAttributeValueAsString()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="testQNameAttributeValueAsString" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testQNameAttributeValueAsString -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.util.tests.AttributeMapTest@543295b0]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.util.tests.AttributeMapTest -->
+      <class name="org.opensaml.core.xml.tests.UnmarshallingTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingTest@548d708a]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testUnmarshallingWithAttributes()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingTest@548d708a]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithAttributes" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithAttributes -->
+        <test-method signature="testUnmarshallingWithChildElements()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingTest@548d708a]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithChildElements" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithChildElements -->
+        <test-method signature="testUnmarshallingWithElementContent()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingTest@548d708a]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithElementContent" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithElementContent -->
+      </class> <!-- org.opensaml.core.xml.tests.UnmarshallingTest -->
+      <class name="org.opensaml.core.xml.config.tests.InitializationServiceTest">
+        <test-method signature="testProviderInit()[pri:0, instance:org.opensaml.core.xml.config.tests.InitializationServiceTest@5149d738]" started-at="2024-02-09T16:01:10 EST" name="testProviderInit" finished-at="2024-02-09T16:01:10 EST" duration-ms="27" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testProviderInit -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.config.tests.InitializationServiceTest@5149d738]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.config.tests.InitializationServiceTest@5149d738]" started-at="2024-02-09T16:01:10 EST" name="tearDown" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- org.opensaml.core.xml.config.tests.InitializationServiceTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSDateTimeTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="4" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testUnmarshallCanonical()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallCanonical" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallCanonical -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testUnmarshallNoFractional()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallNoFractional" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallNoFractional -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSDateTimeTest@72035809]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSDateTimeTest -->
+      <class name="org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testMarshallNil()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testMarshallNil" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallNil -->
+        <test-method signature="testMarshallNoNamespaceSchemaLocation()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testMarshallNoNamespaceSchemaLocation" finished-at="2024-02-09T16:01:10 EST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallNoNamespaceSchemaLocation -->
+        <test-method signature="testMarshallSchemaLocation()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testMarshallSchemaLocation" finished-at="2024-02-09T16:01:10 EST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshallSchemaLocation -->
+        <test-method signature="testUnmarshallNil()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallNil" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallNil -->
+        <test-method signature="testUnmarshallNoNil()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallNoNil" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallNoNil -->
+        <test-method signature="testUnmarshallNoNamespaceSchemaLocation()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallNoNamespaceSchemaLocation" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallNoNamespaceSchemaLocation -->
+        <test-method signature="testUnmarshallSchemaLocation()[pri:0, instance:org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest@35dab4eb]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallSchemaLocation" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallSchemaLocation -->
+      </class> <!-- org.opensaml.core.xml.tests.XMLObjectXSIAttribsTest -->
+      <class name="org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest@3a7442c7]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testProviderInit()[pri:0, instance:org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest@3a7442c7]" started-at="2024-02-09T16:01:10 EST" name="testProviderInit" finished-at="2024-02-09T16:01:10 EST" duration-ms="10" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testProviderInit -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest@3a7442c7]" started-at="2024-02-09T16:01:10 EST" name="tearDown" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- org.opensaml.core.xml.config.tests.XMLObjectProviderInitializerTest -->
+      <class name="org.opensaml.core.xml.tests.NamespaceManagerTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testNSDeclaration()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testNSDeclaration" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testNSDeclaration -->
+        <test-method signature="testNonVisibleNamespacePrefixes()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testNonVisibleNamespacePrefixes" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testNonVisibleNamespacePrefixes -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testObjectType()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testObjectType" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testObjectType -->
+        <test-method signature="testObjectName()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testObjectName" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testObjectName -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testQNameAttributeValue()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testQNameAttributeValue" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testQNameAttributeValue -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testQualifiedAttributes()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testQualifiedAttributes" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testQualifiedAttributes -->
+        <test-method signature="testQNameElementContent()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="testQNameElementContent" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testQNameElementContent -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.tests.NamespaceManagerTest@8519cb4]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.tests.NamespaceManagerTest -->
+      <class name="org.opensaml.core.xml.tests.UnmarshallingSecurityTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testUnmarshallingWithCDATAInElementContentDefaults()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithCDATAInElementContentDefaults" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithCDATAInElementContentDefaults -->
+        <test-method is-config="true" signature="setup()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="setup" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testUnmarshallingWithCDATAInElementContentInsecure()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithCDATAInElementContentInsecure" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <exception class="org.opensaml.core.xml.io.UnmarshallingException">
+            <message>
+              <![CDATA[Saw illegal CDATA node in parsed DOM, likely due to improper parser configuration]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.opensaml.core.xml.io.UnmarshallingException: Saw illegal CDATA node in parsed DOM, likely due to improper parser configuration
+at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:143)
+at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCDATAInElementContentInsecure(UnmarshallingSecurityTest.java:110)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.opensaml.core.xml.io.UnmarshallingException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithCDATAInElementContentInsecure -->
+        <test-method signature="testUnmarshallingWithCommentBetweenChildElementsDefaults()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithCommentBetweenChildElementsDefaults" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithCommentBetweenChildElementsDefaults -->
+        <test-method signature="testUnmarshallingWithCommentBetweenChildElementsInsecure()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithCommentBetweenChildElementsInsecure" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <exception class="org.opensaml.core.xml.io.UnmarshallingException">
+            <message>
+              <![CDATA[Saw illegal Comment node in parsed DOM, likely due to improper parser configuration]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.opensaml.core.xml.io.UnmarshallingException: Saw illegal Comment node in parsed DOM, likely due to improper parser configuration
+at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:146)
+at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentBetweenChildElementsInsecure(UnmarshallingSecurityTest.java:142)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.opensaml.core.xml.io.UnmarshallingException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithCommentBetweenChildElementsInsecure -->
+        <test-method signature="testUnmarshallingWithCommentInElementContentDefaults()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithCommentInElementContentDefaults" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithCommentInElementContentDefaults -->
+        <test-method signature="testUnmarshallingWithCommentInElementContentInsecure()[pri:0, instance:org.opensaml.core.xml.tests.UnmarshallingSecurityTest@28261e8e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshallingWithCommentInElementContentInsecure" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <exception class="org.opensaml.core.xml.io.UnmarshallingException">
+            <message>
+              <![CDATA[Saw illegal Comment node in parsed DOM, likely due to improper parser configuration]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.opensaml.core.xml.io.UnmarshallingException: Saw illegal Comment node in parsed DOM, likely due to improper parser configuration
+at org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller.unmarshall(AbstractXMLObjectUnmarshaller.java:146)
+at org.opensaml.core.xml.tests.UnmarshallingSecurityTest.testUnmarshallingWithCommentInElementContentInsecure(UnmarshallingSecurityTest.java:78)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.opensaml.core.xml.io.UnmarshallingException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshallingWithCommentInElementContentInsecure -->
+      </class> <!-- org.opensaml.core.xml.tests.UnmarshallingSecurityTest -->
+      <class name="org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest">
+        <test-method signature="basic()[pri:0, instance:org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest@606e4010]" started-at="2024-02-09T16:01:13 EST" name="basic" finished-at="2024-02-09T16:01:13 EST" duration-ms="4" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- basic -->
+        <test-method signature="sourceTooShort()[pri:0, instance:org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest@606e4010]" started-at="2024-02-09T16:01:13 EST" name="sourceTooShort" finished-at="2024-02-09T16:01:13 EST" duration-ms="1" status="PASS">
+          <exception class="org.opensaml.core.xml.XMLRuntimeException">
+            <message>
+              <![CDATA[Source length 14 is less than number (8) * length (2) of segments: aabbccddeeffgg]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.opensaml.core.xml.XMLRuntimeException: Source length 14 is less than number (8) * length (2) of segments: aabbccddeeffgg
+at org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategy.apply(SegmentingIntermediateDirectoryStrategy.java:84)
+at org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest.sourceTooShort(SegmentingIntermediateDirectoryStrategyTest.java:49)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:829)
+at org.testng.TestRunner.run(TestRunner.java:602)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:437)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:431)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:391)
+at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+at org.testng.TestNG.runSuites(TestNG.java:1099)
+at org.testng.TestNG.run(TestNG.java:1067)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.opensaml.core.xml.XMLRuntimeException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- sourceTooShort -->
+      </class> <!-- org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategyTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSIntegerTest">
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSIntegerTest@5f049ea1]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSIntegerTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSStringTest">
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSStringTest@909217e]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSStringTest@909217e]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSStringTest@909217e]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSStringTest@909217e]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSStringTest@909217e]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSStringTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSURITest">
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSURITest@72cc7e6f]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSURITest -->
+      <class name="org.opensaml.core.xml.config.tests.ConfigurationTest">
+        <test-method is-config="true" signature="initClass()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="initClass" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initClass -->
+        <test-method signature="testIDAttributeConfiguration()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="testIDAttributeConfiguration" finished-at="2024-02-09T16:01:10 EST" duration-ms="6" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIDAttributeConfiguration -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="tearDown" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="testIDAttributeRegistration()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="testIDAttributeRegistration" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIDAttributeRegistration -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="tearDown" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="testInvalidConfiguration()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="testInvalidConfiguration" finished-at="2024-02-09T16:01:10 EST" duration-ms="8" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testInvalidConfiguration -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="tearDown" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method signature="testObjectProviderConfiguration()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="testObjectProviderConfiguration" finished-at="2024-02-09T16:01:10 EST" duration-ms="8" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testObjectProviderConfiguration -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.opensaml.core.xml.config.tests.ConfigurationTest@6bbe85a8]" started-at="2024-02-09T16:01:10 EST" name="tearDown" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- org.opensaml.core.xml.config.tests.ConfigurationTest -->
+      <class name="org.opensaml.core.xml.tests.IDAttributeTest">
+        <test-method signature="testAttributeMap()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testAttributeMap" finished-at="2024-02-09T16:01:10 EST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAttributeMap -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testAttributeMapOps()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testAttributeMapOps" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAttributeMapOps -->
+        <test-method signature="testChangePropagationInList()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testChangePropagationInList" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testChangePropagationInList -->
+        <test-method signature="testComplexUnmarshallInList()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testComplexUnmarshallInList" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testComplexUnmarshallInList -->
+        <test-method signature="testGlobalIDRegistration()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testGlobalIDRegistration" finished-at="2024-02-09T16:01:10 EST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGlobalIDRegistration -->
+        <test-method signature="testListOpChangePropagation()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testListOpChangePropagation" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testListOpChangePropagation -->
+        <test-method signature="testSimpleUnmarshall()[pri:0, instance:org.opensaml.core.xml.tests.IDAttributeTest@4b013c76]" started-at="2024-02-09T16:01:10 EST" name="testSimpleUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSimpleUnmarshall -->
+      </class> <!-- org.opensaml.core.xml.tests.IDAttributeTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSQNameTest">
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSQNameTest@3ba987b8]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSQNameTest -->
+      <class name="org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest">
+        <test-method signature="testRemove()[pri:0, instance:org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c]" started-at="2024-02-09T16:01:10 EST" name="testRemove" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRemove -->
+        <test-method signature="testAdd()[pri:0, instance:org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c]" started-at="2024-02-09T16:01:10 EST" name="testAdd" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAdd -->
+        <test-method signature="testSet()[pri:0, instance:org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c]" started-at="2024-02-09T16:01:10 EST" name="testSet" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSet -->
+        <test-method signature="testSublist()[pri:0, instance:org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest@19e4653c]" started-at="2024-02-09T16:01:10 EST" name="testSublist" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSublist -->
+      </class> <!-- org.opensaml.core.xml.util.tests.IndexedXMLObjectChildrenListTest -->
+      <class name="org.opensaml.core.xml.util.tests.XMLObjectSupportTest">
+        <test-method signature="testBuildXMLObject()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2]" started-at="2024-02-09T16:01:10 EST" name="testBuildXMLObject" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testBuildXMLObject -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testXMLObjectCloneInputMarshalling()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2]" started-at="2024-02-09T16:01:10 EST" name="testXMLObjectCloneInputMarshalling" finished-at="2024-02-09T16:01:10 EST" duration-ms="18" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testXMLObjectCloneInputMarshalling -->
+        <test-method signature="testXMLObjectCloneWithDropDOM()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2]" started-at="2024-02-09T16:01:10 EST" name="testXMLObjectCloneWithDropDOM" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testXMLObjectCloneWithDropDOM -->
+        <test-method signature="testXMLObjectCloneWithRootInNewDocument()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2]" started-at="2024-02-09T16:01:10 EST" name="testXMLObjectCloneWithRootInNewDocument" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testXMLObjectCloneWithRootInNewDocument -->
+        <test-method signature="testXMLObjectCloneWithUnrootedDOM()[pri:0, instance:org.opensaml.core.xml.util.tests.XMLObjectSupportTest@58cbafc2]" started-at="2024-02-09T16:01:10 EST" name="testXMLObjectCloneWithUnrootedDOM" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testXMLObjectCloneWithUnrootedDOM -->
+      </class> <!-- org.opensaml.core.xml.util.tests.XMLObjectSupportTest -->
+      <class name="org.opensaml.core.xml.tests.AbstractXMLObjectTest">
+        <test-method signature="testDOMAndXMLObjectSourceDropOnMutateAttribute()[pri:0, instance:org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9]" started-at="2024-02-09T16:01:10 EST" name="testDOMAndXMLObjectSourceDropOnMutateAttribute" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDOMAndXMLObjectSourceDropOnMutateAttribute -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method signature="testDOMAndXMLObjectSourceDropOnMutateChildElements()[pri:0, instance:org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9]" started-at="2024-02-09T16:01:10 EST" name="testDOMAndXMLObjectSourceDropOnMutateChildElements" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDOMAndXMLObjectSourceDropOnMutateChildElements -->
+        <test-method signature="testDOMAndXMLObjectSourceDropOnMutateContent()[pri:0, instance:org.opensaml.core.xml.tests.AbstractXMLObjectTest@4be29ed9]" started-at="2024-02-09T16:01:10 EST" name="testDOMAndXMLObjectSourceDropOnMutateContent" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDOMAndXMLObjectSourceDropOnMutateContent -->
+      </class> <!-- org.opensaml.core.xml.tests.AbstractXMLObjectTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSBase64BinaryTest">
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBase64BinaryTest@5afa3c9]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSBase64BinaryTest -->
+      <class name="org.opensaml.core.xml.schema.impl.XSBooleanTest">
+        <test-method signature="testMarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845]" started-at="2024-02-09T16:01:10 EST" name="testMarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMarshall -->
+        <test-method is-config="true" signature="initXMLObjectSupport()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845]" started-at="2024-02-09T16:01:10 EST" name="initXMLObjectSupport" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initXMLObjectSupport -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testUnmarshall()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845]" started-at="2024-02-09T16:01:10 EST" name="testUnmarshall" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUnmarshall -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.opensaml.core.xml.schema.impl.XSBooleanTest@3f191845]" started-at="2024-02-09T16:01:10 EST" name="setUp" finished-at="2024-02-09T16:01:10 EST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- org.opensaml.core.xml.schema.impl.XSBooleanTest -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>
