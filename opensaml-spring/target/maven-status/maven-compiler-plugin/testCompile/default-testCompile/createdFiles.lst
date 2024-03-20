@@ -1,7 +1,0 @@
-org/opensaml/spring/trust/MockTrustEngine.class
-org/opensaml/spring/trust/StaticPKIXFactoryBeanTest$MockX509CredentialNameEvaluator.class
-org/opensaml/spring/trust/StaticPKIXFactoryBeanTest.class
-org/opensaml/spring/credential/BasicX509CredentialFactoryBeanTest.class
-org/opensaml/spring/trust/AbstractSecurityTest.class
-org/opensaml/spring/trust/StaticExplicitKeyFactoryBeanTest.class
-org/opensaml/spring/trust/StaticPKIXFactoryBeanTest$MockPKIXTrustEvaluator.class
