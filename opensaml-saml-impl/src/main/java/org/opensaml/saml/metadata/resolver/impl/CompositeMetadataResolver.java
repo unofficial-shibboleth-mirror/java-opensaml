@@ -33,7 +33,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -46,7 +46,7 @@ import net.shibboleth.shared.resolver.ResolverException;
  * <p>Note: This appears to be unused, and contained a number of bugs that may or may not have been
  * fully corrected.</p>
  */
-public class CompositeMetadataResolver extends AbstractIdentifiedInitializableComponent implements MetadataResolver,
+public class CompositeMetadataResolver extends AbstractIdentifiableInitializableComponent implements MetadataResolver,
         RefreshableMetadataResolver, ClearableMetadataResolver {
 
     /** Class logger. */
