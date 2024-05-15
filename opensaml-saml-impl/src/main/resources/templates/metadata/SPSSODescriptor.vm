@@ -1,5 +1,5 @@
 #set ($role = $params.SPSSODescriptor)
-    <md:SPSSODescriptor #if ($role.wantAssertionsSigned)WantAssertionsSigned="true" #{end}protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end">
+    <md:SPSSODescriptor#if ($role.wantAssertionsSigned) WantAssertionsSigned="true"#end#if (!$role.supportedProtocols.empty) protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end"#end>
 #parse("$params.templatePath/Extensions.vm")
 #parse("$params.templatePath/KeyDescriptors.vm")
 #foreach ($endpoint in $role.artifactResolutionServices)

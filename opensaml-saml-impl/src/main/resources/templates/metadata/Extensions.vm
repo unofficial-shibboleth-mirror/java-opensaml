@@ -6,10 +6,10 @@
 #if ($params.displayName || $params.description || $params.logo)
             <mdui:UIInfo>
 #if ($params.displayName)
-                <mdui:DisplayName>$xmltext.escape($params.displayName)</mdui:DisplayName>
+                <mdui:DisplayName#if ($params.lang) xml:lang="$params.lang"#else xml:lang="en"#end>$xmltext.escape($params.displayName)</mdui:DisplayName>
 #end
 #if ($params.description)
-                <mdui:Description>$xmltext.escape($params.description)</mdui:Description>
+                <mdui:Description#if ($params.lang) xml:lang="$params.lang"#else xml:lang="en"#end>$xmltext.escape($params.description)</mdui:Description>
 #end
 #if ($params.logo)
                 <mdui:Logo#if ($params.lang) xml:lang="$params.lang"#end#if ($params.logo.width) width="$params.logo.width"#end#if ($params.logo.height) height="$params.logo.height"#end>$xmltext.escape($params.logo.URI)</mdui:Logo>

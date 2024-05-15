@@ -1,4 +1,4 @@
-<md:EntityDescriptor entityID="$xmlattr.escape($params.entityID)"#if (!$params.omitNamespaceDeclarations)#foreach ($ns in $namespaces.entrySet()) xmlns:$ns.key="$ns.value"#end#end>
+<md:EntityDescriptor#if ($params.entityID)entityID="$xmlattr.escape($params.entityID)"#end#if (!$params.omitNamespaceDeclarations)#foreach ($ns in $namespaces.entrySet()) xmlns:$ns.key="$ns.value"#end#end>
 #if (!$params.tagAssignments.isEmpty())
 
     <md:Extensions>
