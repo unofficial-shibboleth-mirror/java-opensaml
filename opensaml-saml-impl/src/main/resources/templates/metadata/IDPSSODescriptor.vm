@@ -1,5 +1,5 @@
 #set ($role = $params.IDPSSODescriptor)
-    <md:IDPSSODescriptor protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end">
+    <md:IDPSSODescriptor#if (!$role.supportedProtocols.empty) protocolSupportEnumeration="#foreach($p in $role.supportedProtocols)$p#if(!$foreach.last) #end#end"#end>
 #parse("$params.templatePath/Extensions.vm")
 #parse("$params.templatePath/KeyDescriptors.vm")
 #foreach ($endpoint in $role.artifactResolutionServices)
