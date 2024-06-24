@@ -271,15 +271,15 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     @Override
     @Nullable protected byte[] fetchMetadata() throws ResolverException {
         if (initializing && initializeFromBackupFile && metadataBackupFile.exists()) {
-            log.debug("{} On initialization, detected existing backup file, attempting load from that: {}",
+            log.info("{} On initialization, detected existing backup file, attempting load from that: {}",
                         getLogPrefix(), metadataBackupFile.getAbsolutePath());
             try {
                 final byte[] backingData = Files.toByteArray(metadataBackupFile);
                 if (backingData == null || backingData.length == 0) {
-                    log.debug("{} Backup file byte array was null or empty, continuing with normal HTTP fetch: {}", 
+                    log.info("{} Backup file byte array was null or empty, continuing with normal HTTP fetch: {}", 
                             getLogPrefix(), metadataBackupFile.getAbsolutePath());
                 } else {
-                    log.debug("{} Successfully initialized from backup file: {}", 
+                    log.info("{} Successfully initialized from backup file: {}", 
                             getLogPrefix(), metadataBackupFile.getAbsolutePath());
                     initializedFromBackupFile = true;
                     return backingData;
