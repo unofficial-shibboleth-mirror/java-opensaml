@@ -98,16 +98,6 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void testConfigFailure() {
-        try {
-            handler.initialize();
-            Assert.fail();
-        } catch (ComponentInitializationException e) {
-            
-        }
-    }
-    
-    @Test
     public void testMissingContexts() throws ComponentInitializationException, MessageHandlerException {
         handler.setRoleDescriptorResolver(roleResolver);
         handler.initialize();

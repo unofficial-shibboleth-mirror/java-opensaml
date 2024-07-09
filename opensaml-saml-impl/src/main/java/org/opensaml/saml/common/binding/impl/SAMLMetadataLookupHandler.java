@@ -42,17 +42,15 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
 
-import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.FunctionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
- * Handler for inbound SAML protocol messages that attempts to locate SAML metadata for
- * a SAML entity, and attaches it as a {@link SAMLMetadataContext} child of a
- * pre-existing concrete instance of {@link AbstractSAMLEntityContext}.
+ * Handler that attempts to locate SAML metadata for a SAML entity, and attaches it as a
+ * {@link SAMLMetadataContext} child of a pre-existing concrete instance of {@link AbstractSAMLEntityContext}.
  *
  * <p>
  * The entity context class is configurable and defaults to {@link SAMLPeerEntityContext}.
@@ -77,7 +75,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLMetadataLookupHandler.class);
 
     /** Resolver used to look up SAML metadata. */
-    @NonnullAfterInit private RoleDescriptorResolver metadataResolver;
+    @Nonnull private Function<MessageContext,RoleDescriptorResolver> metadataResolverLookupStrategy;
     
     /** The context class representing the SAML entity whose data is to be resolved. 
      * Defaults to: {@link SAMLPeerEntityContext}. */
@@ -93,6 +91,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     public SAMLMetadataLookupHandler() {
         entityContextClass = SAMLPeerEntityContext.class;
         profileRequestContextLookupStrategy = new ParentContextLookup<>(ProfileRequestContext.class);
+        metadataResolverLookupStrategy = FunctionSupport.constant(null);
     }
 
     /**
@@ -124,7 +123,22 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      */
     public void setRoleDescriptorResolver(@Nonnull final RoleDescriptorResolver resolver) {
         checkSetterPreconditions();
-        metadataResolver = Constraint.isNotNull(resolver, "RoleDescriptorResolver cannot be null");
+        metadataResolverLookupStrategy = FunctionSupport.constant(
+                Constraint.isNotNull(resolver, "RoleDescriptorResolver cannot be null"));
+    }
+    
+    /**
+     * Set the lookup strategy for the {@link RoleDescriptorResolver} to use.
+     * 
+     * @param strategy lookup strategy
+     * 
+     * @since 5.2.0
+     */
+    public void setRoleDescriptorResolverLookupStrategy(
+            @Nonnull final Function<MessageContext,RoleDescriptorResolver> strategy) {
+        checkSetterPreconditions();
+        metadataResolverLookupStrategy =
+                Constraint.isNotNull(strategy, "RoleDescriptorResolver lookup strategy cannot be null");
     }
     
     /**
@@ -142,21 +156,18 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
         checkSetterPreconditions();
         profileRequestContextLookupStrategy = strategy;
     }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (metadataResolver == null) {
-            throw new ComponentInitializationException("RoleDescriptorResolver cannot be null");
-        }
-    }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         checkComponentActive();
+
+        final RoleDescriptorResolver metadataResolver = metadataResolverLookupStrategy.apply(messageContext);
+        if (metadataResolver == null) {
+            log.error("{} No MetadataResolver available", getLogPrefix());
+            return;
+        }
 
         final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
         final String entityID = entityCtx != null ? entityCtx.getEntityId() : null;
@@ -204,6 +215,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             log.error("{} ResolverException thrown during metadata lookup", getLogPrefix(), e);
         }
     }
+ // Checkstyle: CyclomaticComplexity ON    
 
     /**
      * Build the lookup criteria from the message context data.
