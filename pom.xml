@@ -19,7 +19,7 @@
 
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
-    <version>5.1.3</version>
+    <version>5.1.4-SNAPSHOT</version>
     <!-- If you change the version you *MUST* provoke a jenkins 'site'
          build (to populate the javadoc, which is consumed by the
          Jenkins 'nightly' builds).
