@@ -30,7 +30,8 @@ import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
- * Message handler that checks that a message context has an issuer.
+ * Message handler that checks that a message context's issuer matches an expected value,
+ * both supplied by a lookup function.
  */
 public final class CheckExpectedIssuer extends AbstractMessageHandler {
     
