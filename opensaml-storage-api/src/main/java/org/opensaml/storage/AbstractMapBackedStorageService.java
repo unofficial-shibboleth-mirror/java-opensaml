@@ -353,7 +353,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 return new Pair<>();
             }
             
-            if (version != null && record.getVersion() == version) {
+            if (version != null && version.equals(record.getVersion())) {
                 // Nothing's changed, so just echo back the version.
                 return new Pair<>(version, null);
             }
@@ -411,7 +411,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 return null;
             }
     
-            if (version != null && version != record.getVersion()) {
+            if (version != null && !version.equals(record.getVersion())) {
                 // Caller is out of sync.
                 throw new VersionMismatchException();
             }
@@ -471,7 +471,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             if (record == null) {
                 log.debug("Deleting record '{}' in context '{}'....key not found", key, context);
                 return false;
-            } else if (version != null && record.getVersion() != version) {
+            } else if (version != null && !version.equals(record.getVersion())) {
                 throw new VersionMismatchException();
             } else {
                 setDirty();
