@@ -165,13 +165,13 @@ public abstract class StorageServiceTest {
     }
     
     /**
-     * Test of versioned update.
+     * Test of versions > 127.
      * 
-     * @throws IOException on error
-     * @throws VersionMismatchException on record version mismatch
+     * @throws IOException
+     * @throws VersionMismatchException 
      */
     @Test
-    public void updates() throws IOException, VersionMismatchException {
+    public void versions() throws IOException, VersionMismatchException {
         threadInit();
         
         final String key = "key";
@@ -179,20 +179,16 @@ public abstract class StorageServiceTest {
         
         shared.create(context, key, "foo", null);
         
-        assertEquals(shared.updateWithVersion(1, context, key, "bar", null), 2);
-        
-        try {
-            shared.updateWithVersion(1, context, key, "baz", null);
-            Assert.fail("updateStringWithVersion should have failed");
-        } catch (final VersionMismatchException e) {
-            // expected
+        for (long i = 1; i < 130; i++) {
+            shared.updateWithVersion(i, context, key, "foo" + i, null);
         }
         
         final StorageRecord<?> rec = shared.read(context, key);
-        assert rec!=null;
-        Assert.assertEquals(rec.getVersion(), 2);
+        assert rec != null;
+        Assert.assertEquals(rec.getVersion(), 130);
+        Assert.assertEquals(rec.getValue(), "foo129");
     }
-    
+        
     /**
      * Test updates.
      * 
