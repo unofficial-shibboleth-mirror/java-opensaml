@@ -303,11 +303,11 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     /** Remove from our parent (if there is one).
      */
     public void removeFromParent() {
-        final BaseContext parent = getParent();
-        if (parent == null) {
+        final BaseContext localParent = getParent();
+        if (localParent == null) {
             return;
         }
-        parent.removeSubcontext(this);
+        localParent.removeSubcontext(this);
     }
 
     /**
@@ -316,7 +316,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param <T> the type of subcontext being operated on
      * @param clazz the subcontext class to remove
      */
-    public <T extends BaseContext>void removeSubcontext(@Nonnull final Class<T> clazz) {
+    public <T extends BaseContext> void removeSubcontext(@Nonnull final Class<T> clazz) {
         final BaseContext subcontext = getSubcontext(clazz);
         if (subcontext != null) {
             removeSubcontext(subcontext);
@@ -370,7 +370,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
             throw new MessageRuntimeException("Error creating subcontext", e);
         }
     }
-    
+        
     /**
      * Iterator decorator which disallows the remove() operation on the iterator.
      */
