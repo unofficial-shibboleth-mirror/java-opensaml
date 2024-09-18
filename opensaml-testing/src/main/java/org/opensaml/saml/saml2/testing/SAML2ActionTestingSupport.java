@@ -15,6 +15,7 @@
 package org.opensaml.saml.saml2.testing;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -28,11 +29,13 @@ import org.opensaml.saml.saml2.core.Artifact;
 import org.opensaml.saml.saml2.core.ArtifactResolve;
 import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.AttributeValue;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.IDPEntry;
 import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.LogoutRequest;
@@ -195,6 +198,37 @@ public class SAML2ActionTestingSupport {
                         AttributeStatement.DEFAULT_ELEMENT_NAME);
 
         return statementBuilder.buildObject();
+    }
+    
+    /**
+     * Builds an attribute and values.
+     * 
+     * @param name attribute name
+     * @param format name format
+     * @param values value collection
+     * 
+     * @return the constructed attribute
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull public static Attribute buildAttribute(@Nonnull final String name, @Nonnull final String format,
+            @Nonnull final Collection<String> values) {
+        final SAMLObjectBuilder<Attribute> attributeBuilder = (SAMLObjectBuilder<Attribute>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>ensureBuilder(
+                        Attribute.DEFAULT_ELEMENT_NAME);
+        final Attribute attr = attributeBuilder.buildObject();
+
+        final SAMLObjectBuilder<AttributeValue> valueBuilder = (SAMLObjectBuilder<AttributeValue>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeValue>ensureBuilder(
+                        Attribute.DEFAULT_ELEMENT_NAME);
+        
+        values.forEach(v -> {
+            final AttributeValue val = valueBuilder.buildObject();
+            val.setTextContent(v);
+            attr.getAttributeValues().add(val);
+        });
+        
+        return attr;
     }
 
     /**
