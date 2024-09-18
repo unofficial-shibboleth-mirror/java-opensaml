@@ -48,7 +48,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
  * Helper methods for creating/testing SAML 2 objects within profile action tests. When methods herein refer to mock
  * objects they are always objects that have been created via Mockito unless otherwise noted.
  */
-public final class SAML2ActionTestingSupport {
+public class SAML2ActionTestingSupport {
 
     /** ID used for all generated {@link Response} objects. */
     @Nonnull public static final  String REQUEST_ID = "request";
@@ -58,9 +58,6 @@ public final class SAML2ActionTestingSupport {
 
     /** ID used for all generated {@link Assertion} objects. */
     @Nonnull public static final String ASSERTION_ID = "assertion";
-    
-    /** Constructor. */
-    private SAML2ActionTestingSupport() {}
 
     /**
      * Builds an empty response. The ID of the message is {@link ActionTestingSupport#OUTBOUND_MSG_ID}, the issue
