@@ -48,16 +48,19 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
  * Helper methods for creating/testing SAML 2 objects within profile action tests. When methods herein refer to mock
  * objects they are always objects that have been created via Mockito unless otherwise noted.
  */
-public class SAML2ActionTestingSupport {
+public final class SAML2ActionTestingSupport {
 
     /** ID used for all generated {@link Response} objects. */
-    public final static String REQUEST_ID = "request";
+    @Nonnull public static final  String REQUEST_ID = "request";
 
     /** ID used for all generated {@link Response} objects. */
-    public final static String RESPONSE_ID = "response";
+    @Nonnull public static final String RESPONSE_ID = "response";
 
     /** ID used for all generated {@link Assertion} objects. */
-    public final static String ASSERTION_ID = "assertion";
+    @Nonnull public static final String ASSERTION_ID = "assertion";
+    
+    /** Constructor. */
+    private SAML2ActionTestingSupport() {}
 
     /**
      * Builds an empty response. The ID of the message is {@link ActionTestingSupport#OUTBOUND_MSG_ID}, the issue
@@ -79,8 +82,8 @@ public class SAML2ActionTestingSupport {
     }
 
     /**
-     * Builds an empty artifact response. The ID of the message is {@link ActionTestingSupport#OUTBOUND_MSG_ID}, the issue
-     * instant is 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
+     * Builds an empty artifact response. The ID of the message is {@link ActionTestingSupport#OUTBOUND_MSG_ID},
+     * the issue instant is 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
      * 
      * @return the constructed response
      */
@@ -194,9 +197,7 @@ public class SAML2ActionTestingSupport {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeStatement>ensureBuilder(
                         AttributeStatement.DEFAULT_ELEMENT_NAME);
 
-        final AttributeStatement statement = statementBuilder.buildObject();
-
-        return statement;
+        return statementBuilder.buildObject();
     }
 
     /**
@@ -321,7 +322,7 @@ public class SAML2ActionTestingSupport {
      * 
      * @since 4.0.0
      */
-    @Nonnull public static Scoping buildScoping(@Nullable final Integer count, @Nullable Set<String> idplist) {
+    @Nonnull public static Scoping buildScoping(@Nullable final Integer count, @Nullable final Set<String> idplist) {
         final SAMLObjectBuilder<Scoping> scopingBuilder = (SAMLObjectBuilder<Scoping>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>ensureBuilder(
                         Scoping.DEFAULT_ELEMENT_NAME);
