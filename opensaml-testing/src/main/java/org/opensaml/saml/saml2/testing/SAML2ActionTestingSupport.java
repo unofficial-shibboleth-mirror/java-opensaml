@@ -43,6 +43,8 @@ import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Scoping;
+import org.opensaml.saml.saml2.core.Status;
+import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.Subject;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
@@ -406,6 +408,39 @@ public class SAML2ActionTestingSupport {
         }
 
         return request;
+    }
+    
+    /**
+     * Builds a {@link Status}.
+     * 
+     * @param codeString status code string
+     * @param subcodeString subcode string if any
+     * 
+     * @return the object
+     * 
+     * @aince 5.2.0
+     */
+    @Nonnull public static Status buildStatus(@Nonnull final String codeString, @Nullable final String subcodeString) {
+        final SAMLObjectBuilder<StatusCode> codeBuilder = (SAMLObjectBuilder<StatusCode>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>ensureBuilder(
+                        Status.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Status>ensureBuilder(
+                        Status.DEFAULT_ELEMENT_NAME);
+
+        final StatusCode code = codeBuilder.buildObject();
+        code.setValue(codeString);
+        
+        if (subcodeString != null) {
+            final StatusCode subcode = codeBuilder.buildObject();
+            subcode.setValue(subcodeString);
+            code.setStatusCode(subcode);
+        }
+        
+        final Status status = statusBuilder.buildObject();
+        status.setStatusCode(code);
+        
+        return status;
     }
     
 }
