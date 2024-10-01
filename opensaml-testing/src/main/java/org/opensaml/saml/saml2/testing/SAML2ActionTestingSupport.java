@@ -423,7 +423,7 @@ public class SAML2ActionTestingSupport {
     @Nonnull public static Status buildStatus(@Nonnull final String codeString, @Nullable final String subcodeString) {
         final SAMLObjectBuilder<StatusCode> codeBuilder = (SAMLObjectBuilder<StatusCode>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>ensureBuilder(
-                        Status.DEFAULT_ELEMENT_NAME);
+                        StatusCode.DEFAULT_ELEMENT_NAME);
         final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Status>ensureBuilder(
                         Status.DEFAULT_ELEMENT_NAME);
