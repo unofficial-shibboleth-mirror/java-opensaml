@@ -29,9 +29,45 @@ import net.shibboleth.shared.primitive.NonnullSupplier;
 public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractMessageDecoder
         implements HttpServletRequestMessageDecoder {
 
+    /** Flag for whether to check for servlet request during init. */
+    private boolean checkDuringInit;
+    
     /** Current HTTP request, if available. */
     @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
+    /** Constructor. */
+    public AbstractHttpServletRequestMessageDecoder() {
+        checkDuringInit = true;
+    }
+    
+    /**
+     * Get whether {{@link #initialize()} should throw an exception if {@link #getHttpServletRequest()}
+     * returns null.
+     * 
+     * @return whether a null request should fail initialization
+     * 
+     * @since 5.2.0
+     */
+    public boolean isCheckDuringInit() {
+        return checkDuringInit;
+    }
+    
+    /**
+     * Set whether {{@link #initialize()} should throw an exception if {@link #getHttpServletRequest()}
+     * returns null.
+     * 
+     * <p>Defaults to true.</p>
+     * 
+     * @param flag
+     * 
+     * @since 5.2.0
+     */
+    public void setCheckDuringInit(final boolean flag) {
+        checkSetterPreconditions();
+        
+        checkDuringInit = flag;
+    }
+    
     /** {@inheritDoc} */
     @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
         if (httpServletRequestSupplier != null) {
@@ -42,7 +78,9 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     }
 
     /**
-     * Get the supplier for  HTTP request if available.
+     * Get the supplier for HTTP request if available.
+     * 
+     * <p>The return annotation is valid only in the default state, when {@link #isCheckDuringInit()} is true.</p>
      *
      * @return current HTTP request
      */
@@ -62,7 +100,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 
-        if (getHttpServletRequest() == null) {
+        if (isCheckDuringInit() && getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HTTP Servlet request cannot be null");
         }
     }
