@@ -12,11 +12,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.decoder.servlet;
+package org.opensaml.messaging.handler;
 
 import javax.annotation.Nullable;
-
-import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -24,19 +22,20 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
- * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
+ * Base class for message handlers that require access to an {@link HttpServletRequest}.
+ * 
+ * @since 5.2.0
  */
-public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractMessageDecoder
-        implements HttpServletRequestMessageDecoder {
+public abstract class AbstractHttpServletRequestMessageHandler extends AbstractMessageHandler {
 
     /** Flag for whether to check for servlet request during init. */
     private boolean checkDuringInit;
     
-    /** Current HTTP request, if available. */
+    /** The HttpServletRequest being processed. */
     @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Constructor. */
-    public AbstractHttpServletRequestMessageDecoder() {
+    public AbstractHttpServletRequestMessageHandler() {
         checkDuringInit = true;
     }
     
@@ -45,8 +44,6 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      * returns null.
      * 
      * @return whether a null request should fail initialization
-     * 
-     * @since 5.2.0
      */
     public boolean isCheckDuringInit() {
         return checkDuringInit;
@@ -59,8 +56,6 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      * <p>Defaults to true.</p>
      * 
      * @param flag
-     * 
-     * @since 5.2.0
      */
     public void setCheckDuringInit(final boolean flag) {
         checkSetterPreconditions();
@@ -69,21 +64,22 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     }
     
     /**
-     * {@inheritDoc}
+     * Get the HTTP servlet request being processed.
      * 
      * <p>The return annotation is valid only in the default state, when {@link #isCheckDuringInit()} is true.</p>
+     * 
+     * @return Returns the request.
      */
     @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        if (httpServletRequestSupplier != null) {
-            return httpServletRequestSupplier.get();
+        if (httpServletRequestSupplier == null) {
+            return null;
         }
-        
-        return null;
+        return httpServletRequestSupplier.get();
     }
 
     /**
-     * Get the supplier for HTTP request if available.
-     * 
+     * Get the supplier for  HTTP request if available.
+     *
      * <p>The return annotation is valid only in the default state, when {@link #isCheckDuringInit()} is true.</p>
      * 
      * @return current HTTP request
@@ -92,8 +88,11 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
         return httpServletRequestSupplier;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Set the current HTTP request Supplier.
+     *
+     * @param requestSupplier Supplier for the current HTTP request
+     */
     public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
@@ -101,12 +100,13 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-
+        
         if (isCheckDuringInit() && getHttpServletRequest() == null) {
-            throw new ComponentInitializationException("HTTP Servlet request cannot be null");
+            throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
-
+    
 }

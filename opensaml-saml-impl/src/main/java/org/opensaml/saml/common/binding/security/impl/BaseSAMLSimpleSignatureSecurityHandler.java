@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
+import org.opensaml.messaging.handler.AbstractHttpServletRequestMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
@@ -40,30 +40,23 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
 
-import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
-import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * Base class for security-oriented message handlers which verify simple "blob" signatures computed 
  * over some components of a request.
  */
-public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMessageHandler {
+public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractHttpServletRequestMessageHandler {
 
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseSAMLSimpleSignatureSecurityHandler.class);
-
-    /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** The context representing the SAML peer entity. */
     @Nullable private SAMLPeerEntityContext peerContext;
@@ -87,48 +80,6 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      */
     @Nullable protected SignatureTrustEngine getTrustEngine() {
         return trustEngine;
-    }
-
-    /**
-     * Get the current HTTP request if available.
-     * 
-     * @return current HTTP request
-     */
-    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        if (httpServletRequestSupplier == null) {
-            return null;
-        }
-        return httpServletRequestSupplier.get();
-    }
-
-    /**
-     * Get the supplier for  HTTP request if available.
-     *
-     * @return current HTTP request
-     */
-    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
-        return httpServletRequestSupplier;
-    }
-
-    /**
-     * Set the current HTTP request Supplier.
-     *
-     * @param requestSupplier Supplier for the current HTTP request
-     */
-    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
-        checkSetterPreconditions();
-
-        httpServletRequestSupplier = requestSupplier;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (getHttpServletRequest() == null) {
-            throw new ComponentInitializationException("HttpServletRequest cannot be null");
-        }
     }
 
     /** {@inheritDoc} */
@@ -162,7 +113,6 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         return true;
     }
 
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
@@ -195,7 +145,6 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
 
         doEvaluate(signature, signedContent, sigAlg, messageContext);
     }
-// Checkstyle: ReturnCount OFF
 
     /**
      * Evaluate the simple signature based on information in the request and/or message context.

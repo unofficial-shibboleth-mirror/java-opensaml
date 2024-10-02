@@ -19,37 +19,30 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
+import org.opensaml.messaging.handler.AbstractHttpServletRequestMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.slf4j.Logger;
 
-import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URIComparator;
 import net.shibboleth.shared.net.URIException;
 import net.shibboleth.shared.net.impl.BasicURLComparator;
 import net.shibboleth.shared.primitive.LoggerFactory;
-import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Message handler which checks the validity of the SAML protocol message receiver 
  * endpoint against requirements indicated in the message.
  */
-public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
+public class ReceivedEndpointSecurityHandler extends AbstractHttpServletRequestMessageHandler {
     
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(ReceivedEndpointSecurityHandler.class);
     
     /** The URI comparator to use in performing the validation. */
     @Nonnull private URIComparator uriComparator;
-    
-    /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
@@ -73,48 +66,6 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     public void setURIComparator(@Nonnull final URIComparator comparator) {
         checkSetterPreconditions();
         uriComparator = Constraint.isNotNull(comparator, "URIComparator cannot be null");
-    }
-    
-    /**
-     * Get the HTTP servlet request being processed.
-     * 
-     * @return Returns the request.
-     */
-    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        if (httpServletRequestSupplier == null) {
-            return null;
-        }
-        return httpServletRequestSupplier.get();
-    }
-
-    /**
-     * Get the supplier for  HTTP request if available.
-     *
-     * @return current HTTP request
-     */
-    @NonnullAfterInit public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
-        return httpServletRequestSupplier;
-    }
-
-    /**
-     * Set the current HTTP request Supplier.
-     *
-     * @param requestSupplier Supplier for the current HTTP request
-     */
-    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
-        checkSetterPreconditions();
-
-        httpServletRequestSupplier = requestSupplier;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (getHttpServletRequest() == null) {
-            throw new ComponentInitializationException("HttpServletRequest cannot be null");
-        }
     }
 
     /** {@inheritDoc} */
