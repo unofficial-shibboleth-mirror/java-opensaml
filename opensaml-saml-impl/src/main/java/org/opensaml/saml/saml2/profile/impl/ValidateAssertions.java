@@ -62,7 +62,10 @@ public class ValidateAssertions extends AbstractProfileAction {
     
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
-    
+
+    /** Flag for whether to check for servlet request during init. */
+    private boolean checkDuringInit;
+
     /** The SAML 2.0 Assertion validator lookup function, may be null.*/
     @Nonnull
     private Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
@@ -80,6 +83,7 @@ public class ValidateAssertions extends AbstractProfileAction {
     /** Constructor. */
     public ValidateAssertions() {
         setInvalidFatal(true);
+        setCheckDuringInit(true);
         assertionValidatorLookup = FunctionSupport.constant(null);
         validationContextBuilder = new DefaultAssertionValidationContextBuilder();
         assertionResolver = new DefaultAssertionResolver();
@@ -163,6 +167,34 @@ public class ValidateAssertions extends AbstractProfileAction {
     }
     
     /**
+     * Get whether {{@link #initialize()} should throw an exception if {@link #getHttpServletRequest()}
+     * returns null.
+     * 
+     * @return whether a null request should fail initialization
+     * 
+     * @since 5.2.0
+     */
+    public boolean isCheckDuringInit() {
+        return checkDuringInit;
+    }
+    
+    /**
+     * Set whether {{@link #initialize()} should throw an exception if {@link #getHttpServletRequest()}
+     * returns null.
+     * 
+     * <p>Defaults to true.</p>
+     * 
+     * @param flag
+     * 
+     * @since 5.2.0
+     */
+    public void setCheckDuringInit(final boolean flag) {
+        checkSetterPreconditions();
+        
+        checkDuringInit = flag;
+    }
+    
+    /**
      * Get the configured Assertion validator.
      * 
      * @param profileRequestContext  profile request context
@@ -200,7 +232,7 @@ public class ValidateAssertions extends AbstractProfileAction {
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (getHttpServletRequest() == null) {
+        if (isCheckDuringInit() && getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
@@ -325,6 +357,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * Class which holds data relevant to validating a SAML 2.0 Assertion.
      */
     public static class AssertionValidationInput {
+        
         /** The profile request context input. */
         @Nonnull private ProfileRequestContext profileContext;
         
