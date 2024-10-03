@@ -30,6 +30,8 @@ import org.opensaml.saml.saml2.core.ArtifactResolve;
 import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.AttributeValue;
+import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.IDPEntry;
@@ -46,6 +48,9 @@ import org.opensaml.saml.saml2.core.Scoping;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.Subject;
+import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
+import org.opensaml.saml.saml2.core.SubjectLocality;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
@@ -77,7 +82,7 @@ public class SAML2ActionTestingSupport {
 
         final Response response = responseBuilder.buildObject();
         response.setID(ActionTestingSupport.OUTBOUND_MSG_ID);
-        response.setIssueInstant(Instant.ofEpochMilli(0));
+        response.setIssueInstant(Instant.EPOCH);
         response.setVersion(SAMLVersion.VERSION_20);
 
         return response;
@@ -124,7 +129,7 @@ public class SAML2ActionTestingSupport {
 
         final LogoutRequest req = reqBuilder.buildObject();
         req.setID(REQUEST_ID);
-        req.setIssueInstant(Instant.ofEpochMilli(0));
+        req.setIssueInstant(Instant.EPOCH);
         req.setIssuer(issuer);
         req.setVersion(SAMLVersion.VERSION_20);
 
@@ -148,7 +153,7 @@ public class SAML2ActionTestingSupport {
 
         final LogoutResponse response = responseBuilder.buildObject();
         response.setID(ActionTestingSupport.OUTBOUND_MSG_ID);
-        response.setIssueInstant(Instant.ofEpochMilli(0));
+        response.setIssueInstant(Instant.EPOCH);
         response.setVersion(SAMLVersion.VERSION_20);
 
         return response;
@@ -167,7 +172,7 @@ public class SAML2ActionTestingSupport {
 
         final Assertion assertion = assertionBuilder.buildObject();
         assertion.setID(ASSERTION_ID);
-        assertion.setIssueInstant(Instant.ofEpochMilli(0));
+        assertion.setIssueInstant(Instant.EPOCH);
         assertion.setVersion(SAMLVersion.VERSION_20);
 
         return assertion;
@@ -184,7 +189,51 @@ public class SAML2ActionTestingSupport {
                         AuthnStatement.DEFAULT_ELEMENT_NAME);
 
         final AuthnStatement statement = statementBuilder.buildObject();
-        statement.setAuthnInstant(Instant.ofEpochMilli(0));
+        statement.setAuthnInstant(Instant.EPOCH);
+
+        return statement;
+    }
+
+    /**
+     * Builds an authentication statement with specified timestamp and subject locality data
+     * and context class ref.
+     * 
+     * @param ts authn time
+     * @param address client address
+     * @param classRef authentication context class ref
+     * 
+     * @return the constructed statement
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull public static AuthnStatement buildAuthnStatement(@Nonnull final Instant ts, @Nonnull final String address,
+            @Nonnull final String classRef) {
+        final SAMLObjectBuilder<AuthnStatement> statementBuilder = (SAMLObjectBuilder<AuthnStatement>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnStatement>ensureBuilder(
+                        AuthnStatement.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<SubjectLocality> localityBuilder = (SAMLObjectBuilder<SubjectLocality>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectLocality>ensureBuilder(
+                        SubjectLocality.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<AuthnContext> contextBuilder = (SAMLObjectBuilder<AuthnContext>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnContext>ensureBuilder(
+                        AuthnContext.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<AuthnContextClassRef> classBuilder = (SAMLObjectBuilder<AuthnContextClassRef>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnContextClassRef>ensureBuilder(
+                        AuthnContextClassRef.DEFAULT_ELEMENT_NAME);
+
+        final SubjectLocality locality = localityBuilder.buildObject();
+        locality.setAddress(address);
+        
+        final AuthnContextClassRef ref = classBuilder.buildObject();
+        ref.setURI(classRef);
+        
+        final AuthnContext ac = contextBuilder.buildObject();
+        ac.setAuthnContextClassRef(ref);
+        
+        final AuthnStatement statement = statementBuilder.buildObject();
+        statement.setAuthnInstant(ts);
+        statement.setSubjectLocality(locality);
+        statement.setAuthnContext(ac);
 
         return statement;
     }
@@ -253,7 +302,7 @@ public class SAML2ActionTestingSupport {
 
         return subject;
     }
-
+    
     /**
      * Builds a {@link NameID}.
      * 
@@ -268,6 +317,41 @@ public class SAML2ActionTestingSupport {
         final NameID nameId = nameIdBuilder.buildObject();
         nameId.setValue(principalName);
         return nameId;
+    }
+
+    /**
+     * Builds a {@link SubjectConfirmation}.
+     * 
+     * @param method confirmation method
+     * @param recipient recipient value
+     * @param address confirmation address
+     * 
+     * @return the built subject confirmation
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull public static SubjectConfirmation buildSubjectConfirmation(@Nullable final String method,
+            @Nullable final String recipient, @Nullable final String address) {
+        final SAMLObjectBuilder<SubjectConfirmation> confBuilder = (SAMLObjectBuilder<SubjectConfirmation>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmation>ensureBuilder(
+                        SubjectConfirmation.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<SubjectConfirmationData> dataBuilder = (SAMLObjectBuilder<SubjectConfirmationData>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmationData>ensureBuilder(
+                        SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
+
+        final SubjectConfirmation conf = confBuilder.buildObject();
+        conf.setMethod(method);
+
+        if (method != null || recipient != null || address != null) {
+            final SubjectConfirmationData data = dataBuilder.buildObject();
+            data.setRecipient(recipient);
+            data.setAddress(address);
+            data.setNotBefore(Instant.now().minusSeconds(60));
+            data.setNotOnOrAfter(Instant.now().plusSeconds(180));
+            conf.setSubjectConfirmationData(data);
+        }
+        
+        return conf;
     }
     
     /**
@@ -308,7 +392,7 @@ public class SAML2ActionTestingSupport {
 
         final AttributeQuery query = queryBuilder.buildObject();
         query.setID(REQUEST_ID);
-        query.setIssueInstant(Instant.ofEpochMilli(0));
+        query.setIssueInstant(Instant.EPOCH);
         query.setIssuer(issuer);
         query.setVersion(SAMLVersion.VERSION_20);
 
@@ -338,7 +422,7 @@ public class SAML2ActionTestingSupport {
 
         final AuthnRequest request = requestBuilder.buildObject();
         request.setID(REQUEST_ID);
-        request.setIssueInstant(Instant.ofEpochMilli(0));
+        request.setIssueInstant(Instant.EPOCH);
         request.setIssuer(issuer);
         request.setVersion(SAMLVersion.VERSION_20);
 
@@ -395,7 +479,7 @@ public class SAML2ActionTestingSupport {
                         ArtifactResolve.DEFAULT_ELEMENT_NAME);
         final ArtifactResolve request = requestBuilder.buildObject();
         request.setID(REQUEST_ID);
-        request.setIssueInstant(Instant.ofEpochMilli(0));
+        request.setIssueInstant(Instant.EPOCH);
         request.setVersion(SAMLVersion.VERSION_11);
         
         if (artifact != null) {
