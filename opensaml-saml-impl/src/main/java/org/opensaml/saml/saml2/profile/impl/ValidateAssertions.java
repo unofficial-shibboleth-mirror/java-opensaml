@@ -52,8 +52,10 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * <p>
  * The {@link ValidationResult} along with the {@link ValidationContext} used are stored in the assertion's
  * {@link XMLObject#getObjectMetadata()} as instance of {@link ValidationProcessingData}.
- * 
  * </p>
+ * 
+ * @event {@link SAMLEventIds#ASSERTION_INVALID}
+ * @event {@link SAMLEventIds#UNABLE_VALIDATE_ASSERTION}
  */
 public class ValidateAssertions extends AbstractProfileAction {
 
@@ -235,7 +237,6 @@ public class ValidateAssertions extends AbstractProfileAction {
         
             try { 
                 final ValidationContext validationContext = buildValidationContext(profileContext, assertion);
-            
                 final ValidationResult validationResult = validator.validate(assertion, validationContext);
                 if (validationResult != ValidationResult.VALID) {
                     sawNonValid = true;
