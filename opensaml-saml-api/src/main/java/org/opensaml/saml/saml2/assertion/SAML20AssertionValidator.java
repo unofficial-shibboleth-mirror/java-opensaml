@@ -422,7 +422,7 @@ public class SAML20AssertionValidator {
         // Check assertion has not expired
         if (expiration.isBefore(now)) {
             context.getValidationFailureMessages().add(
-                    String.format("Assertion IssueInstant was expired: IssueInstant: '{}', expiration: '{}', now: '{}'",
+                    String.format("Assertion IssueInstant was expired: IssueInstant: '%s', expiration: '%s', now: '%s'",
                             issueInstant, expiration, now));
             return ValidationResult.INVALID;
         }
