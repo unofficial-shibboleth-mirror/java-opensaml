@@ -17,6 +17,7 @@ package org.opensaml.saml.saml2.assertion;
 import javax.annotation.Nonnull;
 
 import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.core.SubjectLocality;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
@@ -61,6 +62,14 @@ public final class SAML2AssertionValidationParameters {
      * {@link org.opensaml.saml.saml2.core.Issuer} values.
      */
     @Nonnull @NotEmpty public static final String VALID_ISSUERS = STD_PREFIX + ".ValidIssuers";
+
+    /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether the issuer must have the
+     * {@link NameIDType#ENTITY} Format.
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull @NotEmpty public static final String REQUIRE_ENTITY_ISSUER = STD_PREFIX + ".RequireEntityIssuer";
 
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether the Assertion is required to be signed.

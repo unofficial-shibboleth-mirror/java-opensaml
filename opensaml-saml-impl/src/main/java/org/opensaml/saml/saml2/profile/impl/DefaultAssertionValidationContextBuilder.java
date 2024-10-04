@@ -55,6 +55,7 @@ import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
 import org.opensaml.security.SecurityException;
@@ -118,6 +119,9 @@ public class DefaultAssertionValidationContextBuilder
     /** Function for determining additional valid Issuer values. */
     @Nonnull private Function<ProfileRequestContext, Set<String>> validIssuers;
     
+    /** Predicate for determining whether to require issuer be of the {@link NameIDType#ENTITY} format. */
+    @Nonnull private Predicate<ProfileRequestContext> requireEntityIssuer;
+    
     /** Function for determining the valid InResponseTo value. */
     @Nullable private Function<ProfileRequestContext, String> inResponseTo;
     
@@ -157,6 +161,7 @@ public class DefaultAssertionValidationContextBuilder
         addressRequired = PredicateSupport.alwaysFalse();
         requiredConditions = CollectionSupport.emptySet();
         validIssuers = new DefaultValidIssuersLookupFunction();
+        requireEntityIssuer = PredicateSupport.alwaysFalse();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
                 .compose(new InboundMessageContextLookup());
@@ -557,6 +562,30 @@ public class DefaultAssertionValidationContextBuilder
     public void setValidIssuers(@Nonnull final Function<ProfileRequestContext,Set<String>> function) {
         validIssuers = Constraint.isNotNull(function, "Valied Issuers function was null");
     }
+    
+    /**
+     * Get the predicate which determines whether to require the Issuer contain the {@link NameIDType#ENTITY} Format.
+     * 
+     * @return predicate
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull public Predicate<ProfileRequestContext> getRequireEntityIssuer() {
+        return requireEntityIssuer;
+    }
+    
+    /**
+     * Get the predicate which determines whether to require the Issuer contain the {@link NameIDType#ENTITY} Format.
+     * 
+     * <p>Defaults to false.</p>
+     * 
+     * @param predicate the condition to set
+     * 
+     * @since 5.2.0
+     */
+    public void setRequireEntityIssuer(@Nonnull final Predicate<ProfileRequestContext> predicate) {
+        requireEntityIssuer = Constraint.isNotNull(predicate, "Entity issuer predicate was null");
+    }
 
     /**
      * Get the function for determining the max allowed time since authentication.
@@ -649,6 +678,9 @@ public class DefaultAssertionValidationContextBuilder
         // Issuer
         staticParams.put(SAML2AssertionValidationParameters.VALID_ISSUERS,
                 getValidIssuers().apply(input.getProfileRequestContext()));
+        
+        staticParams.put(SAML2AssertionValidationParameters.REQUIRE_ENTITY_ISSUER,
+                Boolean.valueOf(getRequireEntityIssuer().test(input.getProfileRequestContext())));
         
         // Signature
         populateSignatureParameters(staticParams, input);

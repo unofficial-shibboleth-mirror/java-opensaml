@@ -41,6 +41,7 @@ import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
@@ -431,6 +432,7 @@ public class SAML20AssertionValidator {
         return ValidationResult.VALID;
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Validates the Assertion {@link Issuer}.
      * 
@@ -455,6 +457,17 @@ public class SAML20AssertionValidator {
         }
         
         log.debug("Evaluating Assertion Issuer of : {}", issuer);
+        
+        final Boolean requireEntityIssuer = (Boolean) context.getStaticParameters().get(
+                SAML2AssertionValidationParameters.REQUIRE_ENTITY_ISSUER);
+        if (requireEntityIssuer != null && requireEntityIssuer) {
+            assert issuerElement != null;
+            if (issuerElement.getFormat() != null && !NameIDType.ENTITY.equals(issuerElement.getFormat())) {
+                context.getValidationFailureMessages().add(
+                        String.format("Issuer had invalid Format: %s", issuerElement.getFormat()));
+                return ValidationResult.INVALID;
+            }
+        }
 
         final Set<String> validIssuers;
         try {
@@ -484,6 +497,7 @@ public class SAML20AssertionValidator {
                 "Issuer of Assertion '%s' did not match any valid issuers", assertion.getID()));
         return ValidationResult.INVALID;
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Validates the signature of the assertion, if it is signed.
