@@ -30,10 +30,14 @@ import org.opensaml.saml.saml2.core.ArtifactResolve;
 import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.AttributeValue;
+import org.opensaml.saml.saml2.core.Audience;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
 import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.IDPEntry;
 import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -368,6 +372,50 @@ public class SAML2ActionTestingSupport {
         final Issuer issuer = issuerBuilder.buildObject();
         issuer.setValue(entityID);
         return issuer;
+    }
+    
+    /**
+     * Builds a {@link Conditions}, with optional content.
+     * 
+     * @param notBefore the NotBefore to set
+     * @param notOnOrAfter the NotOnOrAfter to set
+     * @param audience audience to place into {@link AudienceRestriction}
+     * 
+     * @return the object
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull public static Conditions buildConditions(@Nullable final Instant notBefore,
+            @Nullable final Instant notOnOrAfter, @Nullable final String audience) {
+        final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>ensureBuilder(
+                        Conditions.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<AudienceRestriction> audienceCondBuilder = (SAMLObjectBuilder<AudienceRestriction>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AudienceRestriction>ensureBuilder(
+                        AudienceRestriction.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>ensureBuilder(
+                        Audience.DEFAULT_ELEMENT_NAME);
+        
+        final Conditions conditions = conditionsBuilder.buildObject();
+        
+        if (notBefore != null) {
+            conditions.setNotBefore(notBefore);
+        }
+        
+        if (notOnOrAfter != null) {
+            conditions.setNotOnOrAfter(notOnOrAfter);
+        }
+        
+        if (audience != null) {
+            final Audience aud = audienceBuilder.buildObject();
+            aud.setURI(audience);
+            final AudienceRestriction cond = audienceCondBuilder.buildObject();
+            cond.getAudiences().add(aud);
+            conditions.getAudienceRestrictions().add(cond);
+        }
+        
+        return conditions;
     }
     
     /**
