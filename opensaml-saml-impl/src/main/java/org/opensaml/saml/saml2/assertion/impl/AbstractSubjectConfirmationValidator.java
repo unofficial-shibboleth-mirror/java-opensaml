@@ -276,7 +276,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         }
         
         context.getValidationFailureMessages().add(String.format(
-                "Subject confirmation InResponseTo for assertion '%s' did not match the valid value: %s",
+                "SubjectConfirmationData/@InResponseTo for assertion '%s' did not match the valid value: %s",
                 assertion.getID(), validInResponseTo));
         return ValidationResult.INVALID;
     }
@@ -313,7 +313,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 notBefore, skewedNow);
         if (notBefore != null && notBefore.isAfter(skewedNow)) {
             context.getValidationFailureMessages().add(String.format(
-                    "Subject confirmation, in assertion '%s', with NotBefore condition of '%s' is not yet valid",
+                    "SubjectConfirmationData in assertion '%s', with NotBefore condition of '%s' is not yet valid",
                     assertion.getID(), notBefore));
             return ValidationResult.INVALID;
         }
@@ -353,7 +353,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 notOnOrAfter, skewedNow);
         if (notOnOrAfter != null && notOnOrAfter.isBefore(skewedNow)) {
             context.getValidationFailureMessages().add(String.format(
-                    "Subject confirmation, in assertion '%s', with NotOnOrAfter condition of '%s' is no longer valid",
+                    "SubjectConfirmationData, in assertion '%s', with NotOnOrAfter condition of '%s' is no longer valid",
                     assertion.getID(), notOnOrAfter));
             return ValidationResult.INVALID;
         }
@@ -412,7 +412,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         }
 
         context.getValidationFailureMessages().add(String.format(
-                "Subject confirmation recipient for assertion '%s' did not match any valid recipients: %s",
+                "SubjectConfirmationData/@Recipient for assertion '%s' did not match any valid recipients: %s",
                 assertion.getID(), validRecipients));
         return ValidationResult.INVALID;
     }
