@@ -266,12 +266,14 @@ public class SAML2ActionTestingSupport {
      * 
      * @since 5.2.0
      */
-    @Nonnull public static Attribute buildAttribute(@Nonnull final String name, @Nonnull final String format,
+    @Nonnull public static Attribute buildAttribute(@Nonnull final String name, @Nullable final String format,
             @Nonnull final Collection<String> values) {
         final SAMLObjectBuilder<Attribute> attributeBuilder = (SAMLObjectBuilder<Attribute>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>ensureBuilder(
                         Attribute.DEFAULT_ELEMENT_NAME);
         final Attribute attr = attributeBuilder.buildObject();
+        attr.setName(name);
+        attr.setNameFormat(format);
 
         final SAMLObjectBuilder<AttributeValue> valueBuilder = (SAMLObjectBuilder<AttributeValue>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeValue>ensureBuilder(
