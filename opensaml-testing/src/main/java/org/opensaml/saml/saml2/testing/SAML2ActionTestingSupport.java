@@ -275,7 +275,7 @@ public class SAML2ActionTestingSupport {
 
         final SAMLObjectBuilder<AttributeValue> valueBuilder = (SAMLObjectBuilder<AttributeValue>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeValue>ensureBuilder(
-                        Attribute.DEFAULT_ELEMENT_NAME);
+                        AttributeValue.DEFAULT_ELEMENT_NAME);
         
         values.forEach(v -> {
             final AttributeValue val = valueBuilder.buildObject();
