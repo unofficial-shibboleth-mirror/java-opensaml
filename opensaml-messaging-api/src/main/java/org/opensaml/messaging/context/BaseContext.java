@@ -200,7 +200,9 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate) {
         try {
-            return getSubcontext(Class.forName(className).asSubclass(BaseContext.class), autocreate);
+            final Class<? extends BaseContext> claz = Class.forName(className).asSubclass(BaseContext.class);
+            assert claz != null;
+            return getSubcontext(claz, autocreate);
         } catch (final ClassNotFoundException e) {
             
             // Check for a deprecated class name.
@@ -363,7 +365,9 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      */
     @Nonnull protected <T extends BaseContext> T createSubcontext(@Nonnull final Class<T> clazz) {
         try {
-            return clazz.getConstructor().newInstance();
+            final T result = clazz.getConstructor().newInstance();
+            assert result != null;
+            return result;
         } catch (final SecurityException|NoSuchMethodException|IllegalArgumentException|InstantiationException|
                     IllegalAccessException|InvocationTargetException e) {
             log.error("Error creating subcontext: {}", e.getMessage());
