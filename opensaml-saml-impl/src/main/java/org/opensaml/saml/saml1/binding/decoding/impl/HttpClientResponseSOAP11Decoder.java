@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.SAMLRuntimeException;
 import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.binding.impl.SAMLSOAPDecoderBodyHandler;
@@ -28,6 +29,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -47,7 +49,15 @@ public class HttpClientResponseSOAP11Decoder
      * Constructor.
      */
     public HttpClientResponseSOAP11Decoder() {
-        setBodyHandler(new SAMLSOAPDecoderBodyHandler());
+        final SAMLSOAPDecoderBodyHandler bodyHandler = new SAMLSOAPDecoderBodyHandler();
+        try {
+            bodyHandler.initialize();
+        } catch (ComponentInitializationException e) {
+            // This handler init can't really fail, but we need to handle
+            // without changing the ctor signature by adding a checked exception
+            throw new SAMLRuntimeException("Error initializing SOAP decoder body handler", e);
+        }
+        setBodyHandler(bodyHandler);
         setProtocolMessageLoggerSubCategory("SAML");
     }
 
