@@ -211,7 +211,7 @@ public class AttributeConsumingServiceSelector {
             // Check for null b/c don't ever want to fail with an NPE due to autoboxing.
             // Note: metadata index property is an int, not an Integer.
             if (index != null) {
-                if (index == attribCS.getIndex()) {
+                if (index.equals(attribCS.getIndex())) {
                     log.debug("Selected AttributeConsumingService with index: {}", index);
                     return attribCS;
                 }
