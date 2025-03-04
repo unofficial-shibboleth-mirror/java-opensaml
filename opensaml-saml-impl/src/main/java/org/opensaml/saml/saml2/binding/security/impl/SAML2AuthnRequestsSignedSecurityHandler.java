@@ -102,7 +102,7 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
         
         final SPSSODescriptor spssoRole = (SPSSODescriptor) metadataContext.getRoleDescriptor();
         assert spssoRole != null;
-        if (spssoRole.isAuthnRequestsSigned() == Boolean.TRUE) {
+        if (Boolean.TRUE.equals(spssoRole.isAuthnRequestsSigned())) {
             log.debug("SPSSODescriptor for entity ID '{}' indicates AuthnRequests must be signed", messageIssuer);
             return true;
         }
