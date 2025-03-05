@@ -105,7 +105,7 @@ public class PopulateClientStorageLoadContext extends AbstractProfileAction {
             } catch (final IOException e) {
                 log.warn("{} Error checking load status of {}, assuming unloaded", getLogPrefix(), service.getId());
                 loadCtx.getStorageKeys().add(service.getStorageName());
-                ids.add(service.getId());
+                ids.add(service.ensureId());
             }
         }
         

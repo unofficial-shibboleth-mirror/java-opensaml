@@ -130,6 +130,7 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
         
         if (getContextMap().isEmpty()) {
             log.trace("{} Data is empty", storageService.getLogPrefix());
+            setDirty(false);
             return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(), null,
                     source);
         }
@@ -170,6 +171,7 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
 
             if (empty) {
                 log.trace("{} Data is empty", storageService.getLogPrefix());
+                setDirty(false);
                 return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(),
                         null, source);
             }
@@ -209,7 +211,6 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
         /** {@inheritDoc} */
         @Override
         protected void doInitialize() throws ComponentInitializationException {
-            // TODO Auto-generated method stub
             super.doInitialize();
             
             ((BasicParserPool) parserPool).setNamespaceAware(false);

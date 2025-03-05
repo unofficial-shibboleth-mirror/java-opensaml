@@ -106,6 +106,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
         
         if (getContextMap().isEmpty()) {
             log.trace("{} Data is empty", storageService.getLogPrefix());
+            setDirty(false);
             return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(), null,
                     source);
         }
@@ -144,8 +145,9 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
 
             if (empty) {
                 log.trace("{} Data is empty", storageService.getLogPrefix());
-                return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
-                        source);
+                setDirty(false);
+                return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(),
+                        null, source);
             }
             
             final String raw = sink.toString();

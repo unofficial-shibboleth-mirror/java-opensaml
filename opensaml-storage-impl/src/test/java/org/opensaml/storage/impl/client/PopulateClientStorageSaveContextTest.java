@@ -106,5 +106,36 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
         Assert.assertEquals(op.getKey(), ss.getStorageName());
         Assert.assertEquals(op.getStorageSource(), ClientStorageSource.HTML_LOCAL_STORAGE);
     }
+
+    @Test public void testInvalidBecomesClean() throws ComponentInitializationException, IOException {
+        final ClientStorageService ss = getStorageService();
+        action.setStorageServices(CollectionSupport.singletonList(ss));
+        action.initialize();
+
+        HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
+
+        ss.load("invalid encrypted data", ClientStorageSource.HTML_LOCAL_STORAGE);
+
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+
+        final ClientStorageSaveContext saveCtx = prc.getSubcontext(ClientStorageSaveContext.class);
+        assert saveCtx != null;
+        Assert.assertTrue(saveCtx.isSourceRequired(ClientStorageSource.HTML_LOCAL_STORAGE));
+        Assert.assertEquals(saveCtx.getStorageOperations().size(), 1);
+
+        final ClientStorageServiceOperation op = saveCtx.getStorageOperations().iterator().next();
+        Assert.assertEquals(op.getStorageServiceID(), ss.getId());
+        Assert.assertEquals(op.getKey(), ss.getStorageName());
+        Assert.assertNull(op.getValue());
+        Assert.assertEquals(op.getStorageSource(), ClientStorageSource.HTML_LOCAL_STORAGE);
+
+        prc.removeSubcontext(ClientStorageSaveContext.class);
+
+        action.execute(prc);
+        ActionTestingSupport.assertEvent(prc, PopulateClientStorageSaveContext.SAVE_NOT_NEEDED);
+
+        Assert.assertNull(prc.getSubcontext(ClientStorageSaveContext.class));
+    }
    
 }
