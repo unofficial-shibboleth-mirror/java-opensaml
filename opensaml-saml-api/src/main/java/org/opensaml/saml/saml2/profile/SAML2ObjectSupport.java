@@ -19,12 +19,22 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.Subject;
+import org.slf4j.Logger;
+
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A helper class for working with SAMLObjects.
  */
 public final class SAML2ObjectSupport {
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SAML2ObjectSupport.class);
     
     /** Constructor. */
     private SAML2ObjectSupport() {
@@ -106,6 +116,56 @@ public final class SAML2ObjectSupport {
             name2qual = relyingParty;
         }
         return Objects.equals(name1qual, name2qual);
+    }
+    
+    /**
+     * Match a target {@link Subject} against a control instance according to the requirements specified
+     * in SAML Core 3.3.4.
+     * 
+     * <p>
+     * Any {@link EncryptedID} instances which were originally present must have already been decrypted
+     * and stored in-place on the Subject. {@link BaseID} is currently unsupported. Presence of either
+     * in either target or control subject will throw {@link IllegalArgumentException}.
+     * </p>
+     * 
+     * @param target the target subject to evaluate
+     * @param control the control subject against which to evaluate the target
+     * 
+     * @return true if target matches the control, otherwise false
+     * 
+     * @throws IllegalArgumentException if EncryptedID or BaseID is present in either Subject instance
+     */
+    public static boolean matchSubject(@Nonnull final Subject target, @Nonnull final Subject control) {
+        Constraint.isNotNull(target, "Target Subject was null");
+        Constraint.isNotNull(control, "Control Subject was null");
+        
+        //TODO implement SubjectConfirmation support. Need registry of method URI -> SC matchers
+        if (!target.getSubjectConfirmations().isEmpty()) {
+            LOG.warn("Target Subject contains SubjectConfirmation, currently not supported and eval is skipped");
+        }
+        
+        if (target.getEncryptedID() != null || control.getEncryptedID() != null) {
+            throw new IllegalArgumentException("Saw EncryptedID in Subject, matching not supported");
+        }
+        
+        if (target.getBaseID() != null || control.getBaseID() != null) {
+            throw new IllegalArgumentException("Saw BaseID in Subject, matching not supported");
+        }
+        
+        final NameID targetNameID = target.getNameID();
+        final NameID controlNameID = control.getNameID();
+        
+        if (targetNameID == null && controlNameID == null) {
+            LOG.debug("Both target and control NameIDs are null, trivially match");
+            return true;
+        }
+        if (targetNameID == null || controlNameID == null) {
+            LOG.debug("One NameID is null ({}), the other is not, trivially do not match",
+                    targetNameID == null ? "target" : "control");
+            return false;
+        }
+
+        return areNameIDsEquivalent(targetNameID, controlNameID);
     }
 
 }

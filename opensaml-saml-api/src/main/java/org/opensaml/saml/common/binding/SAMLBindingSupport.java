@@ -367,6 +367,30 @@ public final class SAMLBindingSupport {
     }
     
     /**
+     * Extract the transport endpoint URI at which this message was received.
+     * 
+     * @param messageContext current message context
+     * @return string representing the transport endpoint URI at which the current message was received
+     * @throws MessageException thrown if the endpoint can not be looked up from the message
+     *                              context and converted to a string representation
+     *                              
+     * @since 5.2.0
+     */
+    @Nullable public static String getActualReceiverEndpointURI(@Nonnull final MessageContext messageContext)
+            throws MessageException {
+
+        final SAMLMessageReceivedEndpointContext receivedEnpointContext =
+                messageContext.getSubcontext(SAMLMessageReceivedEndpointContext.class);
+        if (receivedEnpointContext != null) {
+            final String url = receivedEnpointContext.getRequestURL();
+            if (url != null) {
+                return url;
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Convert a 2-byte artifact endpoint index byte[] as typically used by SAML 2 artifact types to an integer,
      * appropriate for use with {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint} impls.
      * 
