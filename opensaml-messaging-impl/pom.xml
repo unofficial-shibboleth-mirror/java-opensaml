@@ -35,8 +35,16 @@
             <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-networking</artifactId>
         </dependency>        
+        <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-support</artifactId>
+        </dependency>        
 
         <!-- Provided Dependencies -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
 
         <!-- Runtime Dependencies -->
 
@@ -59,6 +67,11 @@
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
 
