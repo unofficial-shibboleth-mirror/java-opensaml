@@ -28,7 +28,7 @@ import net.shibboleth.shared.logic.Constraint;
  * 
  * @param <ChildContext> type of the child context
  * 
- * @since 5.2.0
+ * @since 5.1.4
  */
 public class RecursiveTypedChildContextLookup<ChildContext extends BaseContext>
         implements ContextDataLookupFunction<BaseContext, ChildContext> {
