@@ -196,8 +196,11 @@ public class HttpServletRequestParametersValidationHandlerTest {
             List<Pair<String, String[]>> requestParams, boolean valid) throws Exception{
 
         MockHttpServletRequest request = new MockHttpServletRequest();
-        for (Pair<String,String[]> requestParam : requestParams) {
-            request.addParameter(requestParam.getFirst(), requestParam.getSecond()); 
+        for (final Pair<String,String[]> requestParam : requestParams) {
+            final String first = requestParam.getFirst();
+            final String[] second = requestParam.getSecond();
+            assert first != null && second != null;
+            request.addParameter(first, second); 
         }
 
         handler.setHttpServletRequestSupplier(() -> request);
