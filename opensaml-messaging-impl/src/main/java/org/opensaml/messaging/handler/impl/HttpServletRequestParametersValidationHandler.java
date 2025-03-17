@@ -21,19 +21,22 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.handler.AbstractHttpServletRequestMessageHandler;
+import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Message handler that validates HTTP request parameters for required presence, uniqueness and mutual exclusivity.
  */
-public class HttpServletRequestParametersValidationHandler extends AbstractHttpServletRequestMessageHandler {
+public class HttpServletRequestParametersValidationHandler extends AbstractMessageHandler {
     
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(HttpServletRequestParametersValidationHandler.class);
@@ -46,6 +49,40 @@ public class HttpServletRequestParametersValidationHandler extends AbstractHttpS
     
     /** Mutually exclusive parameters. */
     @Nonnull private Set<Set<String>> mutuallyExclusiveParameters = CollectionSupport.emptySet();
+    
+    /** The HttpServletRequest being processed. */
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    
+    /**
+     * Get the HTTP servlet request being processed.
+     * 
+     * @return Returns the request.
+     */
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
+        if (httpServletRequestSupplier == null) {
+            return null;
+        }
+        return httpServletRequestSupplier.get();
+    }
+
+    /**
+     * Get the supplier for  HTTP request if available.
+     *
+     * @return current HTTP request
+     */
+    @NonnullAfterInit public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+        return httpServletRequestSupplier;
+    }
+
+    /**
+     * Set the current HTTP request Supplier.
+     *
+     * @param requestSupplier Supplier for the current HTTP request
+     */
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
+        checkSetterPreconditions();
+        httpServletRequestSupplier = requestSupplier;
+    }
 
     /**
      * Get the required parameters. 
@@ -122,6 +159,16 @@ public class HttpServletRequestParametersValidationHandler extends AbstractHttpS
                     .map(StringSupport::normalizeStringCollection)
                     .map(CollectionSupport::copyToSet)
                     .collect(CollectionSupport.nonnullCollector(Collectors.toSet())).get();
+        }
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (getHttpServletRequest() == null) {
+            throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
 
