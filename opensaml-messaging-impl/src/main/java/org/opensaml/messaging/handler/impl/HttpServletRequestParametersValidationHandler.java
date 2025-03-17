@@ -44,7 +44,7 @@ public class HttpServletRequestParametersValidationHandler extends AbstractHttpS
     /** Unique parameters. */
     @Nonnull private Set<String> uniqueParameters = CollectionSupport.emptySet();
     
-    /** Mutually exclusive parameters */
+    /** Mutually exclusive parameters. */
     @Nonnull private Set<Set<String>> mutuallyExclusiveParameters = CollectionSupport.emptySet();
 
     /**
@@ -65,7 +65,7 @@ public class HttpServletRequestParametersValidationHandler extends AbstractHttpS
      * 
      * @param params the required parameters
      */
-    @Nonnull public void setRequiredParameters(@Nullable final Set<String> params) {
+    public void setRequiredParameters(@Nullable final Set<String> params) {
         checkSetterPreconditions();
         requiredParameters = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(params));
     }
@@ -88,7 +88,7 @@ public class HttpServletRequestParametersValidationHandler extends AbstractHttpS
      * 
      * @param params the unique parameters
      */
-    @Nonnull public void setUniqueParameters(@Nullable final Set<String> params) {
+    public void setUniqueParameters(@Nullable final Set<String> params) {
         checkSetterPreconditions();
         uniqueParameters = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(params));
     }
@@ -113,7 +113,7 @@ public class HttpServletRequestParametersValidationHandler extends AbstractHttpS
      * 
      * @param params the mutually exclusive parameters 
      */
-    @Nonnull public void setMutuallyExclusiveParameters(@Nonnull final Set<Set<String>> params) {
+    public void setMutuallyExclusiveParameters(@Nullable final Set<Set<String>> params) {
         checkSetterPreconditions();
         if (params == null) {
             mutuallyExclusiveParameters = CollectionSupport.emptySet();
