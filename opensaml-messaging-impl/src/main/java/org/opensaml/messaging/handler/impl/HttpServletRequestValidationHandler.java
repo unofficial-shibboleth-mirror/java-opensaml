@@ -91,6 +91,7 @@ public class HttpServletRequestValidationHandler extends AbstractMessageHandler 
      * @param newValidator the request validator
      */
     public void setValidator(final @Nullable HttpServletRequestValidator newValidator) {
+        checkSetterPreconditions();
         validator = newValidator;
     }
 
