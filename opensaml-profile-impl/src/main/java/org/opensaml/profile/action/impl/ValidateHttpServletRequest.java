@@ -78,7 +78,7 @@ public class ValidateHttpServletRequest extends AbstractConditionalProfileAction
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileContext) {
        try {
-            getValidator().validate(getHttpServletRequest());
+            getValidator().validate(ensureHttpServletRequest());
             ActionSupport.buildProceedEvent(profileContext);
         } catch (final ServletException e) {
             log.warn("HttpServletRequest failed validation", e);
