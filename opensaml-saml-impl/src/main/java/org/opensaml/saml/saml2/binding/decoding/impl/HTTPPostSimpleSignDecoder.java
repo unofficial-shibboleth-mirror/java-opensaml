@@ -69,8 +69,10 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
             log.warn("Failed to build signed content data, signature evaluation will be skipped");
             return;
         }
-
-        getMessageContext().ensureSubcontext(SimpleSignatureContext.class).setSignedContent(signedContent);
+        
+        final MessageContext messageContext = getMessageContext();
+        assert messageContext != null;
+        messageContext.ensureSubcontext(SimpleSignatureContext.class).setSignedContent(signedContent);
     }
 
     /**
@@ -87,10 +89,14 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
         final String samlMsg;
         try {
             if (request.getParameter("SAMLRequest") != null) {
-                samlMsg = new String(Base64Support.decode(request.getParameter("SAMLRequest")), "UTF-8");
+                final String paramValue = request.getParameter("SAMLRequest");
+                assert paramValue != null;
+                samlMsg = new String(Base64Support.decode(paramValue), "UTF-8");
                 builder.append("SAMLRequest=" + samlMsg);
             } else if (request.getParameter("SAMLResponse") != null) {
-                samlMsg = new String(Base64Support.decode(request.getParameter("SAMLResponse")), "UTF-8");
+                final String paramValue = request.getParameter("SAMLResponse");
+                assert paramValue != null;
+                samlMsg = new String(Base64Support.decode(paramValue), "UTF-8");
                 builder.append("SAMLResponse=" + samlMsg);
             } else {
                 log.warn("Could not extract either a SAMLRequest or a SAMLResponse from the form control data");
