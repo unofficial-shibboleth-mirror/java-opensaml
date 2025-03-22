@@ -112,6 +112,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
             samlMessageParamName = "SAMLResponse";
             samlMessageEncoded = request.getParameter("SAMLResponse");
         }
+        assert samlMessageParamName != null;
 
         if (samlMessageEncoded != null) {
             try (final InputStream samlMessageIns = decodeMessage(samlMessageEncoded)) {
@@ -176,6 +177,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
             log.warn("Could not extract signed content string from query string");
             return null;
         }
+        assert constructed != null;
         log.debug("Constructed signed content string for HTTP-Redirect DEFLATE {}", constructed);
 
         try {
@@ -197,7 +199,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
      * 
      * @throws MessageDecodingException thrown if there is an error during request processing
      */
-    @Nonnull @NotEmpty private String buildSignedContentString(@Nullable final String queryString,
+    @Nullable @NotEmpty private String buildSignedContentString(@Nullable final String queryString,
             @Nonnull final String samlMessageParamName, @Nonnull final String samlMessage)
                     throws MessageDecodingException {
 

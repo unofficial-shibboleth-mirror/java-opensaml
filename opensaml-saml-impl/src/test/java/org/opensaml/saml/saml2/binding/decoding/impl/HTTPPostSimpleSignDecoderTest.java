@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
-import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.testing.ConstantSupplier;
 
 /**
@@ -50,9 +49,11 @@ public class HTTPPostSimpleSignDecoderTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         httpRequest = new MockHttpServletRequest();
         httpRequest.setMethod("POST");
+        assert expectedRelayValue != null;
         httpRequest.setParameter("RelayState", expectedRelayValue);
         
         decoder = new HTTPPostSimpleSignDecoder();
+        assert parserPool != null;
         decoder.setParserPool(parserPool);
         decoder.setHttpServletRequestSupplier(new ConstantSupplier<>(httpRequest));
         decoder.initialize();
@@ -102,8 +103,10 @@ public class HTTPPostSimpleSignDecoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
         Assert.assertNotNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
         
+        final String requestValue = httpRequest.getParameter("SAMLRequest");
+        assert requestValue != null;
         final byte[] expectedSignedContent = new StringBuilder()
-                .append("SAMLRequest=" + new String(Base64Support.decode(httpRequest.getParameter("SAMLRequest")), "UTF-8"))
+                .append("SAMLRequest=" + new String(Base64Support.decode(requestValue), "UTF-8"))
                 .append("&")
                 .append("RelayState=" + httpRequest.getParameter("RelayState"))
                 .append("&")
