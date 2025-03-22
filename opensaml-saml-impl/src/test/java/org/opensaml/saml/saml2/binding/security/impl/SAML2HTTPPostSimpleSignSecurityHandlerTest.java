@@ -37,6 +37,8 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.testing.SAMLTestSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.binding.decoding.impl.HTTPPostSimpleSignDecoder;
+import org.opensaml.saml.saml2.binding.decoding.impl.SimpleSignatureContext;
 import org.opensaml.saml.saml2.binding.encoding.impl.HTTPPostSimpleSignEncoder;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
@@ -217,20 +219,30 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         
         sigValParams = new SignatureValidationParameters();
         sigValParams.setSignatureTrustEngine(signatureTrustEngine);
-
-        handler = new SAML2HTTPPostSimpleSignSecurityHandler();
-        final HttpServletRequest httpRequest = buildServletRequest();
-        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(httpRequest));
-        handler.setParser(parserPool);
-        handler.setKeyInfoResolver(kiResolver);
-        handler.initialize();
         
-        messageContext = new MessageContext();
+        final HttpServletRequest request = buildServletRequest();
+        
+        final HTTPPostSimpleSignDecoder decoder = new HTTPPostSimpleSignDecoder();
+        decoder.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
+        decoder.setParserPool(parserPool);
+        decoder.initialize();
+        
+        decoder.decode();
+
+        messageContext = decoder.getMessageContext();
+        assert messageContext != null;
         messageContext.setMessage(buildInboundSAMLMessage());
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(issuer);
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS);
         messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureValidationParameters(sigValParams);
+
+        handler = new SAML2HTTPPostSimpleSignSecurityHandler();
+        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
+        handler.setParser(parserPool);
+        handler.setKeyInfoResolver(kiResolver);
+        handler.initialize();
+        
     }
 
     /**
@@ -279,13 +291,23 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
      * Test context issuer set, invalid signature with trusted credential.
      * 
      * @throws MessageHandlerException ...
+     * @throws UnsupportedEncodingException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
-    public void testInvalidSignature() throws MessageHandlerException {
+    public void testInvalidSignature() throws MessageHandlerException, UnsupportedEncodingException {
         trustedCredentials.add(signingX509Cred);
 
+        // Note: this is just for posterity and clarity as to what's going on. Can't manipulate the request anymore to cause signature failure,
+        // since the signed content is now obtained from the message context, as populated by the decoder.
         final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         request.setParameter("RelayState", "AlteredData" + request.getParameter("RelayState"));
+        
+        // This actually causes the expected signature failure
+        final String origSignedContent = new String(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent(), "UTF-8");
+        final String badSignedContent = origSignedContent.replaceFirst("RelayState=", "RelayState=AlteredData");
+        //System.err.println("Actual:   " + origSignedContent);
+        //System.err.println("Expected: " + badSignedContent);
+        messageContext.ensureSubcontext(SimpleSignatureContext.class).setSignedContent(badSignedContent.getBytes());
         
         handler.invoke(messageContext);
     }

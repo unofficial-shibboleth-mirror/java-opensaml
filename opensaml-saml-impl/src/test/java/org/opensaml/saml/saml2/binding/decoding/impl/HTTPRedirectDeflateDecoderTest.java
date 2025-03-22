@@ -16,6 +16,7 @@ package org.opensaml.saml.saml2.binding.decoding.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.Deflater;
@@ -41,6 +42,9 @@ import org.w3c.dom.Element;
 
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.testing.ConstantSupplier;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -84,6 +88,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
+        Assert.assertNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
     }    
    
     @Test
@@ -102,6 +107,48 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
+        Assert.assertNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
+    }
+    
+    @Test
+    public void testRequestDecodingWithSignature() throws MessageDecodingException, MessageEncodingException, 
+                                                            MarshallingException, EncodingException, UnsupportedEncodingException {
+        final AuthnRequest samlRequest =
+                (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+        assert samlRequest != null;
+        samlRequest.setDestination(null);
+
+        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
+        httpRequest.setParameter("SigAlg", "TheAlgorithm");
+        httpRequest.setParameter("Signature", "TheSignature");
+        // Note RelayState is already set to 'relay'
+        
+        String query = URISupport.buildQuery(CollectionSupport.listOf(
+                new Pair<>("SAMLRequest", httpRequest.getParameter("SAMLRequest")),
+                new Pair<>("SigAlg", httpRequest.getParameter("SigAlg")),
+                new Pair<>("Signature", httpRequest.getParameter("Signature")),
+                new Pair<>("RelayState", httpRequest.getParameter("RelayState"))
+                ));
+        httpRequest.setQueryString(query);
+
+        decoder.decode();
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
+
+        Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
+        Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
+        Assert.assertNotNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
+        
+        final byte[] expectedSignedContent = new StringBuilder()
+                .append(URISupport.getRawQueryStringParameter(httpRequest.getQueryString(), "SAMLRequest"))
+                .append("&")
+                .append(URISupport.getRawQueryStringParameter(httpRequest.getQueryString(), "RelayState"))
+                .append("&")
+                .append(URISupport.getRawQueryStringParameter(httpRequest.getQueryString(), "SigAlg"))
+                .toString().getBytes("UTF-8");
+        //System.err.println("Actual:   " + new String(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent(), "UTF-8"));
+        //System.err.println("Expected: " + new String(expectedSignedContent, "UTF-8"));
+        Assert.assertEquals(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent(), expectedSignedContent);
     }
     
     /**
