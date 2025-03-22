@@ -28,6 +28,7 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
+import org.opensaml.saml.saml2.binding.decoding.impl.SimpleSignatureContext;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
@@ -137,7 +138,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractHtt
         }
         assert sigAlg != null;
 
-        final byte[] signedContent = getSignedContent();
+        final byte[] signedContent = getSignedContent(messageContext);
         if (signedContent == null || signedContent.length == 0) {
             log.warn("{} Signed content could not be extracted from HTTP request, cannot validate", getLogPrefix());
             return;
@@ -364,10 +365,16 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractHtt
      * Get the content over which to validate the signature, in the form suitable for input into
      * {@link SignatureTrustEngine#validate(byte[], byte[], String, CriteriaSet, Credential)}.
      * 
+     * @param messageContext the message context which is being evaluated
+     * 
      * @return the signed content extracted from the request, in the format suitable for input to the trust engine.
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    @Nullable protected abstract byte[] getSignedContent() throws MessageHandlerException;
+    @Nullable protected byte[] getSignedContent(@Nonnull final MessageContext messageContext)
+            throws MessageHandlerException {
+       
+        return messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent();
+    };
 
     /**
      * Determine whether the rule should handle the request, based on the unwrapped HTTP servlet request and/or message

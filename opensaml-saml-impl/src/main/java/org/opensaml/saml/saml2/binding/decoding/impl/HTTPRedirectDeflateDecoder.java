@@ -17,6 +17,10 @@ package org.opensaml.saml.saml2.binding.decoding.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
@@ -39,6 +43,9 @@ import com.google.common.base.Strings;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -96,8 +103,15 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
         log.debug("Decoded RelayState: {}", relayState);
         SAMLBindingSupport.setRelayState(messageContext, relayState);
 
-        final String samlMessageEncoded = !Strings.isNullOrEmpty(request.getParameter("SAMLRequest"))
-                ? request.getParameter("SAMLRequest") : request.getParameter("SAMLResponse");
+        String samlMessageEncoded = null;
+        String samlMessageParamName = null;
+        if (!Strings.isNullOrEmpty(request.getParameter("SAMLRequest"))) {
+            samlMessageParamName = "SAMLRequest";
+            samlMessageEncoded = request.getParameter("SAMLRequest");
+        } else if (!Strings.isNullOrEmpty(request.getParameter("SAMLResponse"))) {
+            samlMessageParamName = "SAMLResponse";
+            samlMessageEncoded = request.getParameter("SAMLResponse");
+        }
 
         if (samlMessageEncoded != null) {
             try (final InputStream samlMessageIns = decodeMessage(samlMessageEncoded)) {
@@ -111,10 +125,161 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
             throw new MessageDecodingException(
                     "No SAMLRequest or SAMLResponse query path parameter, invalid SAML 2 HTTP Redirect message");
         }
+        
+        populateSimpleSignatureContext(messageContext, samlMessageParamName, samlMessageEncoded);
 
         populateBindingContext(messageContext);
 
         setMessageContext(messageContext);
+    }
+
+    /**
+     * Build signed content string and populate the {@link SimpleSignatureContext}.
+     * 
+     * @param messageContext the current message context
+     * @param samlMessageParamName the URL-decoded SAML message parameter name
+     * @param samlMessage the URL-decoded Base64-encoded SAML message data
+     * 
+     * @throws MessageDecodingException if there is a fatal issue building the signed content
+     */
+    protected void populateSimpleSignatureContext(@Nonnull final MessageContext messageContext,
+            @Nonnull final String samlMessageParamName, @Nonnull final String samlMessage)
+                    throws MessageDecodingException {
+
+        messageContext.ensureSubcontext(SimpleSignatureContext.class).setSignedContent(
+                getSignedContent(samlMessageParamName, samlMessage));
+    }
+    
+    /**
+     * Get the signed content data.
+     * 
+     * @param samlMessageParamName the URL-decoded SAML message parameter name
+     * @param samlMessage the URL-decoded Base64-encoded SAML message data
+     * 
+     * @return the signed content
+     * 
+     * @throws MessageDecodingException if there is a fatal issue building the signed content
+     */
+    @Nullable private byte[] getSignedContent(@Nonnull final String samlMessageParamName,
+            @Nonnull final String samlMessage) throws MessageDecodingException {
+
+        // We need the raw non-URL-decoded query string param values for HTTP-Redirect DEFLATE simple signature
+        // validation.
+        // We have to construct a string containing the signature input by accessing the
+        // request directly. We can't use the decoded parameters because we need the raw
+        // data and URL-encoding isn't canonical.
+        final String queryString = getHttpServletRequest().getQueryString();
+        log.debug("Constructing signed content string from URL query string {}", queryString);
+
+        final String constructed = buildSignedContentString(queryString, samlMessageParamName, samlMessage);
+        if (Strings.isNullOrEmpty(constructed)) {
+            log.warn("Could not extract signed content string from query string");
+            return null;
+        }
+        log.debug("Constructed signed content string for HTTP-Redirect DEFLATE {}", constructed);
+
+        try {
+            return constructed.getBytes("UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
+            throw new MessageDecodingException("Unable to process message, UTF-8 encoding is not supported");
+        }
+    }
+
+    /**
+     * Extract the raw request parameters and build a string representation of the content that was signed.
+     * 
+     * @param queryString the raw HTTP query string from the request
+     * @param samlMessageParamName the URL-decoded SAML message parameter name
+     * @param samlMessage the URL-decoded Base64-encoded SAML message data
+     * 
+     * @return a string representation of the signed content
+     * 
+     * @throws MessageDecodingException thrown if there is an error during request processing
+     */
+    @Nonnull @NotEmpty private String buildSignedContentString(@Nullable final String queryString,
+            @Nonnull final String samlMessageParamName, @Nonnull final String samlMessage)
+                    throws MessageDecodingException {
+
+        final StringBuilder builder = new StringBuilder();
+
+        if (!appendSAMLMessageParameter(builder, queryString, samlMessageParamName, samlMessage)) {
+            log.warn("Could not extract SAML message '{}' from the query string, cannot build simple signature content",
+                    samlMessageParamName);
+            return null;
+        }
+
+        // This is optional
+        appendParameter(builder, queryString, "RelayState");
+
+        // This is mandatory
+        if (!appendParameter(builder, queryString, "SigAlg")) {
+            log.warn("Signature algorithm could not be extracted from request, cannot build simple signature content");
+            return null;
+        }
+
+        return builder.toString();
+    }
+    
+    /**
+     * Find the raw query string parameter indicated and append it to the string builder.
+     * 
+     * The appended value will be in the form 'paramName=paramValue' (minus the quotes).
+     * 
+     * @param builder string builder to which to append the parameter
+     * @param queryString the URL query string containing parameters
+     * @param paramName the name of the SAML message parameter to append
+     * @param paramValue the value of the SAML message parameter to append
+     * @return true if parameter was found, false otherwise
+     */
+    private boolean appendSAMLMessageParameter(@Nonnull final StringBuilder builder, @Nullable final String queryString,
+            @Nonnull final String paramName, @Nonnull final String paramValue) {
+
+        final List<Pair<String,String>> rawParams = URISupport.getRawQueryStringParameters(queryString, paramName)
+                .stream()
+                .filter(p -> Objects.equals(paramValue, URISupport.doURLDecode(p.getSecond())))
+                .collect(CollectionSupport.nonnullCollector(Collectors.toList())).get();
+
+        if (rawParams.isEmpty() || rawParams.size() > 1) {
+            log.debug("SAML message raw params extraction resulted in an invalid # of params: {}", rawParams.size());
+            return false;
+        }
+        
+        final Pair<String,String> rawParam = rawParams.get(0);
+
+        if (builder.length() > 0) {
+            builder.append('&');
+        }
+
+        builder.append(rawParam.getFirst() + "=" + rawParam.getSecond());
+
+        return true;
+    }
+
+    /**
+     * Find the raw query string parameter indicated and append it to the string builder.
+     * 
+     * The appended value will be in the form 'paramName=paramValue' (minus the quotes).
+     * 
+     * @param builder string builder to which to append the parameter
+     * @param queryString the URL query string containing parameters
+     * @param paramName the name of the parameter to append
+     * @return true if parameter was found, false otherwise
+     */
+    private boolean appendParameter(@Nonnull final StringBuilder builder, @Nullable final String queryString,
+            @Nullable final String paramName) {
+        final String rawParam = URISupport.getRawQueryStringParameter(queryString, paramName);
+        if (rawParam == null) {
+            return false;
+        }
+
+        if (builder.length() > 0) {
+            builder.append('&');
+        }
+
+        builder.append(rawParam);
+
+        return true;
     }
 
     /**

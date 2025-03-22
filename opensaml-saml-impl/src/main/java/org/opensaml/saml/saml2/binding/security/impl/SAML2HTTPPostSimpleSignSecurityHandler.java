@@ -15,12 +15,10 @@
 package org.opensaml.saml.saml2.binding.security.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
@@ -28,6 +26,8 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.security.impl.BaseSAMLSimpleSignatureSecurityHandler;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
@@ -37,7 +37,6 @@ import org.w3c.dom.Document;
 
 import com.google.common.base.Strings;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -116,55 +115,9 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
     /** {@inheritDoc} */
     @Override
     protected boolean ruleHandles(@Nonnull final MessageContext messageContext) {
-        return "POST".equals(getHttpServletRequest().getMethod());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Nullable protected byte[] getSignedContent() throws MessageHandlerException {
-        final HttpServletRequest request = getHttpServletRequest();
-        
-        final StringBuilder builder = new StringBuilder();
-        final String samlMsg;
-        try {
-            if (request.getParameter("SAMLRequest") != null) {
-                samlMsg = new String(Base64Support.decode(request.getParameter("SAMLRequest")), "UTF-8");
-                builder.append("SAMLRequest=" + samlMsg);
-            } else if (request.getParameter("SAMLResponse") != null) {
-                samlMsg = new String(Base64Support.decode(request.getParameter("SAMLResponse")), "UTF-8");
-                builder.append("SAMLResponse=" + samlMsg);
-            } else {
-                log.warn("Could not extract either a SAMLRequest or a SAMLResponse from the form control data");
-                throw new MessageHandlerException("Extract of SAMLRequest or SAMLResponse from form control data");
-            }
-        } catch (final UnsupportedEncodingException e) {
-            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
-            throw new MessageHandlerException("Unable to process message, UTF-8 encoding is not supported");
-        } catch (final DecodingException e) {
-            log.error("Unable to Base64 decode either a SAMLRequest or a SAMLResponse from the form control data");
-            throw new MessageHandlerException("Unable to Base64 decode either a SAMLRequest or a SAMLResponse "
-                    + "from the form control data",e);
-        }
-
-        if (request.getParameter("RelayState") != null) {
-            builder.append("&RelayState=" + request.getParameter("RelayState"));
-        }
-
-        builder.append("&SigAlg=" + request.getParameter("SigAlg"));
-
-        final String constructed = builder.toString();
-        if (Strings.isNullOrEmpty(constructed)) {
-            log.warn("Could not construct signed content string from form control data");
-            return null;
-        }
-        log.debug("Constructed signed content string for HTTP-Post-SimpleSign {}", constructed);
-
-        try {
-            return constructed.getBytes("UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
-            throw new MessageHandlerException("Unable to process message, UTF-8 encoding is not supported");
-        }
+        return "POST".equals(getHttpServletRequest().getMethod())
+                && SAMLConstants.SAML2_POST_SIMPLE_SIGN_BINDING_URI.equals(
+                        messageContext.ensureSubcontext(SAMLBindingContext.class).getBindingUri());
     }
 
     /** {@inheritDoc} */

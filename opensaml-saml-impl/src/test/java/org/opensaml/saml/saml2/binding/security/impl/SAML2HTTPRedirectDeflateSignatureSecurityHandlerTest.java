@@ -14,6 +14,7 @@
 
 package org.opensaml.saml.saml2.binding.security.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.security.KeyException;
 import java.security.PrivateKey;
@@ -33,6 +34,8 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.testing.SAMLTestSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.binding.decoding.impl.HTTPRedirectDeflateDecoder;
+import org.opensaml.saml.saml2.binding.decoding.impl.SimpleSignatureContext;
 import org.opensaml.saml.saml2.binding.encoding.impl.HTTPRedirectDeflateEncoder;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
@@ -199,17 +202,26 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         sigValParams = new SignatureValidationParameters();
         sigValParams.setSignatureTrustEngine(signatureTrustEngine);
         
-        handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
         final HttpServletRequest request = buildServletRequest();
-        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
-        handler.initialize();
         
-        messageContext = new MessageContext();
+        final HTTPRedirectDeflateDecoder decoder = new HTTPRedirectDeflateDecoder();
+        decoder.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
+        decoder.setParserPool(parserPool);
+        decoder.initialize();
+        
+        decoder.decode();
+
+        messageContext = decoder.getMessageContext();
+        assert messageContext != null;
         messageContext.setMessage(buildInboundSAMLMessage());
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(issuer);
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS);
         messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureValidationParameters(sigValParams);
+
+        handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
+        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
+        handler.initialize();
     }
     
     /**
@@ -258,17 +270,26 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
      * Test context issuer set, invalid signature with trusted credential.
      * 
      * @throws MessageHandlerException ...
+     * @throws UnsupportedEncodingException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
-    public void testInvalidSignature() throws MessageHandlerException {
+    public void testInvalidSignature() throws MessageHandlerException, UnsupportedEncodingException {
         trustedCredentials.add(signingX509Cred);
         
+        // Note: this is just for posterity and clarity as to what's going on. Can't manipulate the request anymore to cause signature failure,
+        // since the signed content is now obtained from the message context, as populated by the decoder.
         final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         final String queryString = request.getQueryString();
         assert queryString != null;
         request.setQueryString(queryString.replaceFirst("RelayState=", "RelayState=AlteredData"));
-        // Really only the query string is necessary to cause failure, but just to be safe...
         request.setParameter("RelayState", "AlteredData" + request.getParameter("RelayState") );
+        
+        // This actually causes the expected signature failure
+        final String origSignedContent = new String(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent(), "UTF-8");
+        final String badSignedContent = origSignedContent.replaceFirst("RelayState=", "RelayState=AlteredData");
+        //System.err.println("Actual:   " + origSignedContent);
+        //System.err.println("Expected: " + badSignedContent);
+        messageContext.ensureSubcontext(SimpleSignatureContext.class).setSignedContent(badSignedContent.getBytes());
         
         handler.invoke(messageContext);
     }
