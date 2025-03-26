@@ -19,7 +19,7 @@
 
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
-    <version>5.1.4-SNAPSHOT</version>
+    <version>5.1.4</version>
     <!-- If you change the version you *MUST* provoke a jenkins 'site'
          build (to populate the javadoc, which is consumed by the
          Jenkins 'nightly' builds).
@@ -59,7 +59,7 @@
     <properties>
         <shibboleth.projectName>java-opensaml</shibboleth.projectName>
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
-        <shib-shared.version>9.1.4-SNAPSHOT</shib-shared.version>
+        <shib-shared.version>9.1.4</shib-shared.version>
         <checkstyle.configLocation>${project.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
