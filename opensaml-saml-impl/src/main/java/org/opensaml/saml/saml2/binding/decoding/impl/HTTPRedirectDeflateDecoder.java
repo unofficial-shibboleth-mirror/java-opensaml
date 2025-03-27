@@ -17,7 +17,7 @@ package org.opensaml.saml.saml2.binding.decoding.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -174,18 +174,13 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
 
         final String constructed = buildSignedContentString(queryString, samlMessageParamName, samlMessage);
         if (Strings.isNullOrEmpty(constructed)) {
-            log.warn("Could not extract signed content string from query string");
+            log.debug("Could not extract signed content string from query string");
             return null;
         }
         assert constructed != null;
         log.debug("Constructed signed content string for HTTP-Redirect DEFLATE {}", constructed);
 
-        try {
-            return constructed.getBytes("UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
-            throw new MessageDecodingException("Unable to process message, UTF-8 encoding is not supported");
-        }
+        return constructed.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
@@ -206,7 +201,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
         final StringBuilder builder = new StringBuilder();
 
         if (!appendSAMLMessageParameter(builder, queryString, samlMessageParamName, samlMessage)) {
-            log.warn("Could not extract SAML message '{}' from the query string, cannot build simple signature content",
+            log.info("Could not extract SAML message '{}' from the query string, cannot build simple signature content",
                     samlMessageParamName);
             return null;
         }
@@ -216,7 +211,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
 
         // This is mandatory
         if (!appendParameter(builder, queryString, "SigAlg")) {
-            log.warn("Signature algorithm could not be extracted from request, cannot build simple signature content");
+            log.debug("Signature algorithm could not be extracted from request, cannot build simple signature content");
             return null;
         }
 
