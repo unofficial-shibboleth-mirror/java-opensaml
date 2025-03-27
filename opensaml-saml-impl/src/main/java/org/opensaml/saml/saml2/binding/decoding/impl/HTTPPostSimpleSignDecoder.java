@@ -14,7 +14,7 @@
 
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,20 +91,17 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
             if (request.getParameter("SAMLRequest") != null) {
                 final String paramValue = request.getParameter("SAMLRequest");
                 assert paramValue != null;
-                samlMsg = new String(Base64Support.decode(paramValue), "UTF-8");
+                samlMsg = new String(Base64Support.decode(paramValue), StandardCharsets.UTF_8);
                 builder.append("SAMLRequest=" + samlMsg);
             } else if (request.getParameter("SAMLResponse") != null) {
                 final String paramValue = request.getParameter("SAMLResponse");
                 assert paramValue != null;
-                samlMsg = new String(Base64Support.decode(paramValue), "UTF-8");
+                samlMsg = new String(Base64Support.decode(paramValue), StandardCharsets.UTF_8);
                 builder.append("SAMLResponse=" + samlMsg);
             } else {
                 log.warn("Could not extract either a SAMLRequest or a SAMLResponse from the form control data");
                 return null;
             }
-        } catch (final UnsupportedEncodingException e) {
-            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
-            throw new MessageDecodingException("Unable to process message, UTF-8 encoding is not supported");
         } catch (final DecodingException e) {
             log.error("Unable to Base64 decode either a SAMLRequest or a SAMLResponse from the form control data");
             throw new MessageDecodingException("Unable to Base64 decode either a SAMLRequest or a SAMLResponse "
@@ -130,12 +127,7 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
         }
         log.debug("Constructed signed content string for HTTP-Post-SimpleSign {}", constructed);
 
-        try {
-            return constructed.getBytes("UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
-            throw new MessageDecodingException("Unable to process message, UTF-8 encoding is not supported");
-        }
+        return constructed.getBytes(StandardCharsets.UTF_8);
     }
     
 }
