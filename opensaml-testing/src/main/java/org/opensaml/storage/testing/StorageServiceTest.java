@@ -167,8 +167,8 @@ public abstract class StorageServiceTest {
     /**
      * Test of versions > 127.
      * 
-     * @throws IOException
-     * @throws VersionMismatchException 
+     * @throws IOException on error
+     * @throws VersionMismatchException on version mismatch 
      */
     @Test
     public void versions() throws IOException, VersionMismatchException {

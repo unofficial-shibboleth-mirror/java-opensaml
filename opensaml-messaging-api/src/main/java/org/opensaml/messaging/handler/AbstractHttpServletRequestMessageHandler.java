@@ -55,7 +55,7 @@ public abstract class AbstractHttpServletRequestMessageHandler extends AbstractM
      * 
      * <p>Defaults to true.</p>
      * 
-     * @param flag
+     * @param flag flag to set
      */
     public void setCheckDuringInit(final boolean flag) {
         checkSetterPreconditions();

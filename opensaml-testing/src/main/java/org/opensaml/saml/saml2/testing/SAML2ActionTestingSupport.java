@@ -36,7 +36,6 @@ import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
-import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.IDPEntry;
 import org.opensaml.saml.saml2.core.IDPList;
@@ -552,7 +551,7 @@ public class SAML2ActionTestingSupport {
      * 
      * @return the object
      * 
-     * @aince 5.2.0
+     * @since 5.2.0
      */
     @Nonnull public static Status buildStatus(@Nonnull final String codeString, @Nullable final String subcodeString) {
         final SAMLObjectBuilder<StatusCode> codeBuilder = (SAMLObjectBuilder<StatusCode>)

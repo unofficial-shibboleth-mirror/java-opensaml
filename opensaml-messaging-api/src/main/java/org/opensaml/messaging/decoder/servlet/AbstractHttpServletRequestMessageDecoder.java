@@ -58,7 +58,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      * 
      * <p>Defaults to true.</p>
      * 
-     * @param flag
+     * @param flag flag to set
      * 
      * @since 5.2.0
      */
