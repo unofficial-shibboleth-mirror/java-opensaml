@@ -37,9 +37,17 @@ public class ValidateHttpServletRequest extends AbstractConditionalProfileAction
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(ValidateHttpServletRequest.class);
     
+    /** Flag for whether to check for servlet request during init. */
+    private boolean checkDuringInit;
+        
     /** Request validator. */
     @NonnullAfterInit private HttpServletRequestValidator validator;
 
+    /** Constructor. */
+    public ValidateHttpServletRequest() {
+        checkDuringInit = true;
+    }
+    
     /**
      * Get the request validator. 
      * 
@@ -59,12 +67,27 @@ public class ValidateHttpServletRequest extends AbstractConditionalProfileAction
         validator = newValidator;
     }
 
+    /**
+     * Set whether {{@link #initialize()} should throw an exception if {@link #getHttpServletRequest()}
+     * returns null.
+     * 
+     * <p>Defaults to true.</p>
+     * 
+     * @param flag
+     * 
+     * @since 5.2.0
+     */
+    public void setCheckDuringInit(final boolean flag) {
+        checkSetterPreconditions();
+        checkDuringInit = flag;
+    }
+        
     /** {@inheritDoc} */
     @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (getHttpServletRequest() == null) {
+        if (checkDuringInit && getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest was null");
         }
         
@@ -81,7 +104,7 @@ public class ValidateHttpServletRequest extends AbstractConditionalProfileAction
             getValidator().validate(ensureHttpServletRequest());
             ActionSupport.buildProceedEvent(profileContext);
         } catch (final ServletException e) {
-            log.warn("HttpServletRequest failed validation", e);
+            log.warn("{} HttpServletRequest failed validation", getLogPrefix(), e);
             ActionSupport.buildEvent(profileContext, EventIds.INVALID_MESSAGE);
         }
     }
