@@ -124,7 +124,10 @@ public class DefaultAssertionValidationContextBuilder
     
     /** Function for determining the valid InResponseTo value. */
     @Nullable private Function<ProfileRequestContext, String> inResponseTo;
-    
+
+    /** Predicate for determining whether an Assertion SubjectConfirmationData InResponseTo is ignored. */
+    @Nonnull private Predicate<ProfileRequestContext> inResponseToIgnored;
+
     /** Predicate for determining whether an Assertion SubjectConfirmationData InResponseTo is required. */
     @Nonnull private Predicate<ProfileRequestContext> inResponseToRequired;
     
@@ -154,6 +157,7 @@ public class DefaultAssertionValidationContextBuilder
         includeSelfEntityIDAsRecipient = PredicateSupport.alwaysFalse();
         checkAddress = PredicateSupport.alwaysTrue();
         inResponseTo = new DefaultValidInResponseToLookupFunction();
+        inResponseToIgnored = PredicateSupport.alwaysFalse();
         inResponseToRequired = PredicateSupport.alwaysFalse();
         recipientRequired = PredicateSupport.alwaysFalse();
         notOnOrAfterRequired = PredicateSupport.alwaysFalse();
@@ -163,8 +167,9 @@ public class DefaultAssertionValidationContextBuilder
         validIssuers = new DefaultValidIssuersLookupFunction();
         requireEntityIssuer = PredicateSupport.alwaysFalse();
 
-        securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
-                .compose(new InboundMessageContextLookup());
+        securityParametersLookupStrategy =
+                new ChildContextLookup<>(SecurityParametersContext.class).compose(
+                        new InboundMessageContextLookup());
     }
     
     /**
@@ -379,6 +384,36 @@ public class DefaultAssertionValidationContextBuilder
      */
     public void setInResponseToRequired(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         inResponseToRequired = Constraint.isNotNull(predicate, "InResponseTo required predicate was null");
+    }
+
+    /**
+     * Get the predicate which determines whether an Assertion SubjectConfirmationData InResponseTo is ignored.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull public Predicate<ProfileRequestContext> getInResponseToIgnored() {
+        return inResponseToIgnored;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion SubjectConfirmationData InResponseTo is ignored.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     * 
+     * @since 5.2.0
+     */
+    public void setInResponseToIgnored(@Nonnull final Predicate<ProfileRequestContext> predicate) {
+        inResponseToIgnored = Constraint.isNotNull(predicate, "InResponseTo ignored predicate was null");
     }
 
     /**
@@ -774,7 +809,9 @@ public class DefaultAssertionValidationContextBuilder
                 Boolean.valueOf(getAddressRequired().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, validAddresses);
         staticParams.put(SAML2AssertionValidationParameters.SC_CHECK_ADDRESS, checkAddressEnabled);
-        
+
+        staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_IGNORED,
+                Boolean.valueOf(getInResponseToIgnored().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED,
                 Boolean.valueOf(getInResponseToRequired().test(input.getProfileRequestContext())));
         

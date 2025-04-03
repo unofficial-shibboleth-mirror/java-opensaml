@@ -53,7 +53,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -63,7 +63,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -73,7 +73,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -97,7 +97,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);        
+                ValidationResult.INDETERMINATE);
     }
     
     @Test
@@ -108,7 +108,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);        
+                ValidationResult.INDETERMINATE);
     }
     
     @Test
@@ -118,7 +118,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -130,7 +130,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -142,7 +142,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -152,7 +152,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -164,7 +164,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);        
+                ValidationResult.INDETERMINATE);
     }
     
     @Test
@@ -175,7 +175,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);        
+                ValidationResult.INDETERMINATE);
     }
     
     @Test
@@ -185,7 +185,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -221,7 +221,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -231,7 +231,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -243,7 +243,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -255,7 +255,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -267,7 +267,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -277,7 +277,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -289,7 +289,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -301,7 +301,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -311,9 +311,21 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
-    
+
+    @Test
+    public void testInvalidInResponseToButIgnored() throws AssertionValidationException {
+        getSubjectConfirmationData().setInResponseTo("invalid");
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_IGNORED, Boolean.valueOf(true));
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.VALID);
+    }
+
     @Test
     public void testInvalidInResponseToParamType() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
@@ -323,7 +335,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);        
+                ValidationResult.INDETERMINATE);
     }
     
     @Test
@@ -334,7 +346,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);        
+                ValidationResult.INDETERMINATE);
     }
     
     @Test
@@ -344,7 +356,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);        
+                ValidationResult.VALID);
     }
     
     @Test
@@ -356,7 +368,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Test
@@ -368,7 +380,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INVALID);        
+                ValidationResult.INVALID);
     }
     
     @Nonnull private SubjectConfirmationData getSubjectConfirmationData() {

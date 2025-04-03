@@ -145,14 +145,23 @@ public final class SAML2AssertionValidationParameters {
     
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether
-     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} InResponseTo is required.
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData#getInResponseTo()} should be ignored.
+     * 
+     * @since 5.2.0
+     */
+    @Nonnull @NotEmpty public static final String SC_IN_RESPONSE_TO_IGNORED =
+            STD_PREFIX + SC_INFIX + ".InResponseToIgnored";
+    
+    /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData#getInResponseTo()} is required to be non-null.
      */
     @Nonnull @NotEmpty public static final String SC_IN_RESPONSE_TO_REQUIRED =
             STD_PREFIX + SC_INFIX + ".InResponseToRequired";
     
     /**
-     * Carries a {@link java.lang.String} whose value is the acceptable 
-     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} InResponseTo.
+     * Carries a {@link java.lang.String} whose value is the acceptable point of comparison against
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData#getInResponseTo()}.
      */
     @Nonnull @NotEmpty public static final String SC_VALID_IN_RESPONSE_TO =
             STD_PREFIX + SC_INFIX + ".ValidInResponseTo";

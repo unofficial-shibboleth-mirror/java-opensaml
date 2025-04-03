@@ -107,6 +107,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             throws AssertionValidationException {
         
         final boolean addressRequired = isAddressRequired(context);
+        final boolean inResponseToIgnored = isInResponseToIgnored(context);
         final boolean inResponseToRequired = isInResponseToRequired(context);
         final boolean recipientRequired = isRecipientRequired(context);
         final boolean notOnOrAfterRequired = isNotOnOrAfterRequired(context);
@@ -133,14 +134,16 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             if (result != ValidationResult.VALID) {
                 return result;
             }
-            
-            result = validateInResponseTo(confirmationData, assertion, context, inResponseToRequired);
-            if (result != ValidationResult.VALID) {
-                return result;
+
+            if (!inResponseToIgnored) {
+                result = validateInResponseTo(confirmationData, assertion, context, inResponseToRequired);
+                if (result != ValidationResult.VALID) {
+                    return result;
+                }
             }
         } else {
-            if (inResponseToRequired || recipientRequired || notOnOrAfterRequired || notBeforeRequired 
-                    || addressRequired) {
+            if ((!inResponseToIgnored && inResponseToRequired) || recipientRequired || notOnOrAfterRequired
+                    || notBeforeRequired || addressRequired) {
                 context.getValidationFailureMessages().add(
                         "SubjectConfirmationData was null and one or more data elements were required");
                 return ValidationResult.INVALID;
@@ -212,6 +215,23 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /**
+     * Determine whether InResponseTo is ignored.
+     * 
+     * @param context current validation context
+     * 
+     * @return true if ignored, false if not
+     * 
+     * @since 5.2.0
+     */
+    protected boolean isInResponseToIgnored(final ValidationContext context) {
+        final Boolean flag = ObjectSupport.firstNonNull(
+                (Boolean) context.getStaticParameters().get(
+                        SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_IGNORED),
+                Boolean.FALSE);
+        return flag != null ? flag : false;
+    }
+    
+    /**
      * Determine whether InResponseTo is required.
      * 
      * @param context current validation context
@@ -227,7 +247,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /**
-     * Validates the <code>InResponseTo</code> condition of the {@link SubjectConfirmationData}, if any is present.
+     * Validates the <code>InResponseTo</code> value of the {@link SubjectConfirmationData}, if any is present.
      * 
      * @param confirmationData confirmation data being validated
      * @param assertion assertion bearing the confirmation method
@@ -265,8 +285,9 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             return ValidationResult.INDETERMINATE;
         }
         if (validInResponseTo == null) {
-            context.getValidationFailureMessages().add("Valid InResponseTo was not available from the validation context, " 
-                    + "unable to evaluate SubjectConfirmationData@InResponseTo");
+            context.getValidationFailureMessages().add(
+                    "Valid InResponseTo was not available from the validation context, " 
+                            + "unable to evaluate SubjectConfirmationData@InResponseTo");
             return ValidationResult.INDETERMINATE;
         }
 
