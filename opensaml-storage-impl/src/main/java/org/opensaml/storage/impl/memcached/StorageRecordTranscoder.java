@@ -46,6 +46,7 @@ public class StorageRecordTranscoder implements Transcoder<MemcachedStorageRecor
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("rawtypes")
     public MemcachedStorageRecord<?> decode(final CachedData d) {
         final byte[] bytes = d.getData();
         final String value = new String(bytes, 8, bytes.length - 8, StandardCharsets.UTF_8);
@@ -53,7 +54,8 @@ public class StorageRecordTranscoder implements Transcoder<MemcachedStorageRecor
                 (((long) bytes[2] & 0xff) << 40) | (((long) bytes[3] & 0xff) << 32) |
                 (((long) bytes[4] & 0xff) << 24) | (((long) bytes[5] & 0xff) << 16) |
                 (((long) bytes[6] & 0xff) << 8) | ((long) bytes[7] & 0xff);
-        return new MemcachedStorageRecord<>(value, exp == 0 ? null : exp);
+        // Eclipse in 2025 decided using <> doesn't compile, see OSJ-431.
+        return new MemcachedStorageRecord(value, exp == 0 ? null : exp);
     }
 
     /** {@inheritDoc} */
