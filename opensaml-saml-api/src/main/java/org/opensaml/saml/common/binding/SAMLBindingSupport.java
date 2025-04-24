@@ -113,38 +113,9 @@ public final class SAMLBindingSupport {
      * @since 5.2.0
      */
     @Nullable public static URI getEndpointURLOrNull(@Nonnull final MessageContext messageContext) {
-        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-        if (peerContext == null) {
-            return null;
-        }
-        
-        final SAMLEndpointContext endpointContext = peerContext.getSubcontext(SAMLEndpointContext.class);
-        if (endpointContext == null) {
-            return null;
-        }
-        
-        final Endpoint endpoint = endpointContext.getEndpoint();
-        if (endpoint == null) {
-            return null;
-        }
-
-        final Object message = messageContext.getMessage();
-        if ((message instanceof org.opensaml.saml.saml2.core.StatusResponseType 
-                || message instanceof org.opensaml.saml.saml1.core.Response) 
-                && !Strings.isNullOrEmpty(endpoint.getResponseLocation())) {
-            try {
-                return new URI(endpoint.getResponseLocation());
-            } catch (final URISyntaxException e) {
-                return null;
-            }
-        }
-        
-        if (Strings.isNullOrEmpty(endpoint.getLocation())) {
-            return null;
-        }
         try {
-            return new URI(endpoint.getLocation());
-        } catch (final URISyntaxException e) {
+            return getEndpointURL(messageContext);
+        } catch (final BindingException e) {
             return null;
         }
     }
