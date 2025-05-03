@@ -350,21 +350,33 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     }
     
     @Test
-    public void testNoInResponseTo() throws AssertionValidationException {
+    public void testNoInResponseToAndDefaultNotRequired() throws AssertionValidationException {
         getSubjectConfirmationData().setInResponseTo(null);
         
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.VALID);
+                ValidationResult.INVALID);
     }
     
     @Test
-    public void testNoInResponseToAndRequired() throws AssertionValidationException {
+    public void testNoInResponseToAndExplicitRequired() throws AssertionValidationException {
         getSubjectConfirmationData().setInResponseTo(null);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testNoInResponseToAndExplicitNotRequired() throws AssertionValidationException {
+        getSubjectConfirmationData().setInResponseTo(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED, Boolean.FALSE);
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 

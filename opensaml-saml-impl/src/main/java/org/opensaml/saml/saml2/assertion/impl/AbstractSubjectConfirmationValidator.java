@@ -264,15 +264,6 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         
         final String inResponseTo = 
                 StringSupport.trimOrNull(confirmationData.getInResponseTo());
-        if (inResponseTo == null) {
-            if (required) {
-                context.getValidationFailureMessages().add(
-                        "SubjectConfirmationData/@InResponseTo was missing and was required");
-                return ValidationResult.INVALID;
-            }
-            return ValidationResult.VALID;
-        }
-        
         log.debug("Evaluating SubjectConfirmationData@InResponseTo of: {}", inResponseTo);
 
         final String validInResponseTo;
@@ -289,6 +280,14 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                     "Valid InResponseTo was not available from the validation context, " 
                             + "unable to evaluate SubjectConfirmationData@InResponseTo");
             return ValidationResult.INDETERMINATE;
+        }
+
+        if (inResponseTo == null) {
+            if (required || validInResponseTo != null) {
+                context.getValidationFailureMessages().add(
+                        "SubjectConfirmationData/@InResponseTo was missing and was required");
+                return ValidationResult.INVALID;
+            }
         }
 
         if (Objects.equals(inResponseTo, validInResponseTo)) {
