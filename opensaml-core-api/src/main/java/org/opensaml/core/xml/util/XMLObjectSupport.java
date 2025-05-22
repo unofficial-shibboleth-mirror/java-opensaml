@@ -102,7 +102,7 @@ public final class XMLObjectSupport {
      * @throws MarshallingException if original object can not be marshalled
      * @throws UnmarshallingException if cloned object tree can not be unmarshalled
      */
-    public static <T extends XMLObject> T cloneXMLObject(@Nonnull final T originalXMLObject)
+    @Nonnull public static <T extends XMLObject> T cloneXMLObject(@Nonnull final T originalXMLObject)
             throws MarshallingException, UnmarshallingException {
         return cloneXMLObject(originalXMLObject, CloneOutputOption.DropDOM);
     }
