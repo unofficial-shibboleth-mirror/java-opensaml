@@ -31,6 +31,7 @@ import org.opensaml.saml.common.assertion.ValidationProcessingData;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
+import org.opensaml.saml.saml2.assertion.messaging.HttpServletRequestNetworkInformationSupplier;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.slf4j.Logger;
@@ -43,6 +44,8 @@ import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -73,8 +76,9 @@ public class ValidateAssertions extends AbstractProfileAction {
     private Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
     
     /** Function that builds a {@link ValidationContext} instance based on a 
-     * {@link AssertionValidationInput} instance. */
-    @Nonnull private Function<AssertionValidationInput, ValidationContext> validationContextBuilder;
+     * {@link org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput} instance. */
+    @Nonnull private Function<org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput, ValidationContext>
+        validationContextBuilder;
     
     /** The resolver for the list of assertions to be validated. */
     @Nonnull private Function<ProfileRequestContext, List<Assertion>> assertionResolver;
@@ -87,7 +91,8 @@ public class ValidateAssertions extends AbstractProfileAction {
         setInvalidFatal(true);
         setCheckDuringInit(true);
         assertionValidatorLookup = FunctionSupport.constant(null);
-        validationContextBuilder = new DefaultAssertionValidationContextBuilder();
+        validationContextBuilder = 
+                new org.opensaml.saml.saml2.assertion.messaging.impl.DefaultAssertionValidationContextBuilder();
         assertionResolver = new DefaultAssertionResolver();
     }
 
@@ -112,31 +117,34 @@ public class ValidateAssertions extends AbstractProfileAction {
 
     /**
      * Get the function that builds a {@link ValidationContext} instance based on a 
-     * {@link AssertionValidationInput} instance.
+     * {@link org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput} instance.
      * 
      * <p>
-     * Defaults to an instance of {@link DefaultAssertionValidationContextBuilder}.
+     * Defaults to an instance of 
+     * {@link org.opensaml.saml.saml2.assertion.messaging.impl.DefaultAssertionValidationContextBuilder}.
      * </p>
      * 
      * @return the builder function
      */
     @Nonnull
-    public Function<AssertionValidationInput, ValidationContext> getValidationContextBuilder() {
+    public Function<org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput, ValidationContext>
+        getValidationContextBuilder() {
         return validationContextBuilder;
     }
 
     /**
      * Set the function that builds a {@link ValidationContext} instance based on a 
-     * {@link AssertionValidationInput} instance.
+     * {@link org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput} instance.
      * 
      * <p>
-     * Defaults to an instance of {@link DefaultAssertionValidationContextBuilder}.
+     * Defaults to an instance of
+     * {@link org.opensaml.saml.saml2.assertion.messaging.impl.DefaultAssertionValidationContextBuilder}.
      * </p>
      * 
      * @param builder the builder function
      */
     public void setValidationContextBuilder(
-            @Nonnull final Function<AssertionValidationInput, ValidationContext> builder) {
+            @Nonnull final Function<org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput, ValidationContext> builder) {
         checkSetterPreconditions();
         validationContextBuilder = Constraint.isNotNull(builder, "ValidationContext builder cannot be null");
     }
@@ -325,7 +333,8 @@ public class ValidateAssertions extends AbstractProfileAction {
         final HttpServletRequest servletRequest = getHttpServletRequest();
         assert servletRequest != null;
         final ValidationContext validationContext = getValidationContextBuilder().apply(
-                new AssertionValidationInput(profileContext, servletRequest, assertion));
+                new org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput(assertion, profileContext,
+                        new HttpServletRequestNetworkInformationSupplier(servletRequest)));
         
         if (validationContext == null) {
             log.warn("{} ValidationContext produced was null", getLogPrefix());
@@ -356,7 +365,10 @@ public class ValidateAssertions extends AbstractProfileAction {
     
     /**
      * Class which holds data relevant to validating a SAML 2.0 Assertion.
+     * 
+     * @deprecated Use {@link org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput}.
      */
+    @Deprecated
     public static class AssertionValidationInput {
         
         /** The profile request context input. */
@@ -380,6 +392,9 @@ public class ValidateAssertions extends AbstractProfileAction {
             profileContext = Constraint.isNotNull(context, "ProfileRequestContext may not be null");
             httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
             assertion = Constraint.isNotNull(samlAssertion, "Assertion may not be null");
+            
+            DeprecationSupport.warn(ObjectType.CLASS, "AssertionValidationInput", null,
+                    "org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput");
         }
 
         /**

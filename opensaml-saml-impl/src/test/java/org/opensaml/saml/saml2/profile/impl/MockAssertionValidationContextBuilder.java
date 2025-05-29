@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.common.assertion.ValidationContext;
-import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
+import org.opensaml.saml.saml2.assertion.messaging.AssertionValidationInput;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;

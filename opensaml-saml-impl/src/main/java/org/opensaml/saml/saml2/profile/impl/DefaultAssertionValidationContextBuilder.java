@@ -77,6 +77,8 @@ import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.FunctionSupport;
 import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -85,7 +87,10 @@ import net.shibboleth.shared.servlet.HttpServletSupport;
 /**
  *  Function which implements default behavior for building an instance of {@link ValidationContext}
  *  from an instance of {@link AssertionValidationInput}.
+ *  
+ *  @deprecated use {@link org.opensaml.saml.saml2.assertion.messaging.impl.DefaultAssertionValidationContextBuilder}.
  */
+@Deprecated
 public class DefaultAssertionValidationContextBuilder 
         implements Function<AssertionValidationInput, ValidationContext> {
     
@@ -153,6 +158,9 @@ public class DefaultAssertionValidationContextBuilder
      * Constructor.
      */
     public DefaultAssertionValidationContextBuilder() {
+        DeprecationSupport.warn(ObjectType.CLASS, "DefaultAssertionValidationContextBuilder", null,
+                "org.opensaml.saml.saml2.assertion.messaging.impl.DefaultAssertionValidationContextBuilder}");
+
         signatureRequired = PredicateSupport.alwaysTrue();
         includeSelfEntityIDAsRecipient = PredicateSupport.alwaysFalse();
         checkAddress = PredicateSupport.alwaysTrue();
