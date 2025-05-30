@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile;
+package org.opensaml.saml.saml2.profile.impl;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +22,7 @@ import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.tests.MockBaseID;
+import org.opensaml.saml.saml2.profile.SAML2ObjectSupport;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
