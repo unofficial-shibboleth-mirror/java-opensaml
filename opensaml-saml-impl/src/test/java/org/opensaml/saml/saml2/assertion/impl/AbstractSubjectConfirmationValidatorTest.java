@@ -350,7 +350,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     }
     
     @Test
-    public void testMissingBothInResponseToParamAndValueValue() throws AssertionValidationException {
+    public void testMissingBothInResponseToParamAndValue() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.remove(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO);
         
