@@ -346,7 +346,20 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
-                ValidationResult.INDETERMINATE);
+                ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testMissingBothInResponseToParamAndValueValue() throws AssertionValidationException {
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.remove(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO);
+        
+        getSubjectConfirmationData().setInResponseTo(null);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.VALID);
     }
     
     @Test
