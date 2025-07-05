@@ -92,7 +92,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception 
      */
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testInactive() throws Exception {
         try {
             metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp);
@@ -116,7 +116,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * Tests the {@link HTTPMetadataResolver#lookupEntityID(String)} method.
      * @throws Exception 
      */
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testGetEntityDescriptor() throws Exception {
         try {
             metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp);
@@ -165,7 +165,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testNoFailFastBadURL() throws Exception {
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), badMDURL);
         
@@ -188,7 +188,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(descriptor);
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
         httpClientBuilder.setTLSSocketFactory(buildSocketFactory(true));
@@ -207,7 +207,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
         httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
@@ -230,7 +230,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSNoTrustEngine() throws Exception  {
         try {
             System.setProperty("javax.net.ssl.trustStore", getClass().getResource("repo.truststore.jks").getFile());
@@ -256,7 +256,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineExplicitKey() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
@@ -303,7 +303,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
@@ -326,7 +326,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         

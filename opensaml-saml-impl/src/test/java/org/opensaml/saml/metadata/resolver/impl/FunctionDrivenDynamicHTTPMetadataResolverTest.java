@@ -62,7 +62,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     }
     
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testInactive() throws Exception {
         // Repo should return 'text/xml', which is supported by default.
         String template = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml", false);
@@ -88,7 +88,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed);
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testTemplateFromRepoDefaultContentTypes() throws Exception {
         // Repo should return 'text/xml', which is supported by default.
         String template = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml", false);
@@ -295,7 +295,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed.getDOM());
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception {
         String template = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml", false);
         String entityID = "https://www.example.org/sp";
@@ -323,7 +323,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed.getDOM());
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
         String template = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml", false);
         String entityID = "https://www.example.org/sp";
@@ -356,7 +356,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed.getDOM());
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSNoTrustEngine() throws Exception  {
         try {
             System.setProperty("javax.net.ssl.trustStore", getClass().getResource("repo.truststore.jks").getFile());
@@ -392,7 +392,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         }
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineExplicitKey() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
@@ -456,7 +456,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed);
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
@@ -489,7 +489,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed.getDOM());
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
@@ -522,7 +522,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed.getDOM());
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
@@ -553,7 +553,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed);
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
@@ -584,7 +584,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed);
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testHTTPSTrustEngineWrongSocketFactory() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";

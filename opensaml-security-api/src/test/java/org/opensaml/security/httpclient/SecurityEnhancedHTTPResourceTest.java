@@ -59,14 +59,14 @@ public class SecurityEnhancedHTTPResourceTest {
         handler.initialize();
     }
 
-    @Test public void testNoSecurityAdded() throws IOException, ComponentInitializationException {
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS) public void testNoSecurityAdded() throws IOException, ComponentInitializationException {
         final HTTPResource existsResource = new HTTPResource(client, existsHttp);
         existsResource.setHttpClientContextHandler(handler);
         
         Assert.assertTrue(ResourceTestHelper.compare(existsResource, new ClassPathResource(path)));
     }
 
-    @Test public void testHostnameRejected() throws IOException, ComponentInitializationException {
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS) public void testHostnameRejected() throws IOException, ComponentInitializationException {
         final HTTPResource existsResource = new HTTPResource(client, existsHttps);
         existsResource.setHttpClientContextHandler(handler);
         

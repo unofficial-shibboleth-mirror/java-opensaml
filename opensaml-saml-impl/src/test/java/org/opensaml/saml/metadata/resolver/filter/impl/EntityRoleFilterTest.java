@@ -51,7 +51,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     /** URL to InCommon metadata. */
     private String inCommonMDURL;
     
-    @BeforeClass
+    @BeforeClass(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     protected void setUpClass() throws Exception {
         httpClientBuilder = new HttpClientBuilder();
         httpClientBuilder.setConnectionTimeout(Duration.ofSeconds(5));
@@ -64,13 +64,13 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         inCommonMDURL = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
     }
 
-    @BeforeMethod
+    @BeforeMethod(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     protected void setUpMethod() throws Exception {
         metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setHttpClientSecurityParameters(httpClientParams);
     }
 
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testWhiteListSPRole() throws Exception {
         final ArrayList<QName> retainedRoles = new ArrayList<>();
         retainedRoles.add(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -83,7 +83,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         metadataProvider.initialize();
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testWhiteListIdPRoles() throws Exception {
         final ArrayList<QName> retainedRoles = new ArrayList<>();
         retainedRoles.add(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -98,7 +98,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         metadataProvider.initialize();
     }
     
-    @Test
+    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
     public void testWhiteListNoRole() throws Exception {
         final ArrayList<QName> retainedRoles = new ArrayList<>();
         final EntityRoleFilter filter = new EntityRoleFilter(retainedRoles);
