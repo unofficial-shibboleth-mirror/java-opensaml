@@ -137,7 +137,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws SignatureException ...
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testExternalSignatureAndVerification() throws MarshallingException, SignatureException {
         // This is necessary as of Santuario 2.3.0, which removed the -DirectHTTP and -LocalFilesystem resolvers by default.
         // Unfortunately it's stored in static storage and no way to clear or reset after the test.

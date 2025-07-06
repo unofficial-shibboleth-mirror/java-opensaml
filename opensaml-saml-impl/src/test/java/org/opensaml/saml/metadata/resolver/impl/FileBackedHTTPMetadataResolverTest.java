@@ -68,7 +68,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     private String entityID;
     private CriteriaSet criteriaSet;
 
-    @BeforeMethod(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @BeforeMethod
     protected void setUp() throws Exception {
         httpClientBuilder = new HttpClientBuilder();
         
@@ -87,13 +87,13 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
-    @AfterMethod(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @AfterMethod
     protected void tearDown() throws IOException {
         Path nioBackupFilePath = backupFile.toPath();
         Files.deleteIfExists(nioBackupFilePath);
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testInactive() throws Exception {
         final boolean allowActivation = false;
 
@@ -121,7 +121,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception ...
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testGetEntityDescriptor() throws Exception {
         Assert.assertFalse(backupFile.exists());
         
@@ -147,7 +147,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testFailFastBadURL() throws Exception {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), badMDURL, backupFilePath);
         
@@ -171,7 +171,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testNoFailFastBadURL() throws Exception {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), badMDURL, backupFilePath);
         
@@ -199,7 +199,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      *  
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testFailFastBadBackupFile() throws Exception {
         try {
             // Use a known existing directory as backup file path, which is an invalid argument.
@@ -226,7 +226,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      *  
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testNoFailFastBadBackupFile() throws Exception {
         try {
             // Use a known existing directory as backup file path, which is an invalid argument.
@@ -259,7 +259,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testInitFromBackupFile() throws Exception {
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResource), backupFileOutputStream);
@@ -315,7 +315,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testInitFromExpiredBackupFile() throws Exception {
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResourceExpired), backupFileOutputStream);
@@ -368,7 +368,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testInitFromBadBackupFileNonFailFast() throws Exception {
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResourceBad), backupFileOutputStream);
@@ -418,7 +418,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testNoBackupFileLoadWhenMetadataCached() throws Exception {
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResource), backupFileOutputStream);
@@ -462,7 +462,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(metadataProvider.resolveSingle(criteriaSet), "Metadata retrieved from cached metadata was null");
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory(true));
@@ -481,7 +481,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
@@ -503,7 +503,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSNoTrustEngine() throws Exception  {
         try {
             System.setProperty("javax.net.ssl.trustStore", getClass().getResource("repo.truststore.jks").getFile());
@@ -530,7 +530,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineExplicitKey() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
@@ -552,7 +552,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     }
     
 
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineInvalidKey() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
@@ -574,7 +574,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
@@ -597,7 +597,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
@@ -619,7 +619,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
@@ -641,7 +641,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
         httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
@@ -664,7 +664,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
     }
     
-    @Test(enabled=RepositorySupport.ENABLE_GITWEB_TESTS)
+    @Test
     public void testHTTPSTrustEngineWrongSocketFactory() throws Exception  {
         // Trust engine set, but appropriate socket factory not set
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
