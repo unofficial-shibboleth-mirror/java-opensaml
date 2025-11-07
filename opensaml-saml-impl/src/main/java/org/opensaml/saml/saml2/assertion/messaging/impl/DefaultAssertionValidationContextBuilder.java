@@ -40,7 +40,6 @@ import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.messaging.context.navigate.MessageContextLookup;
 import org.opensaml.messaging.context.navigate.MessageContextLookup.Direction;
-import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
