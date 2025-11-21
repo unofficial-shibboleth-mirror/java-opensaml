@@ -12,23 +12,19 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml.config;
+package org.opensaml.core.xml.config.impl;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
-
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
+import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
 
 /**
  * XMLObject provider initializer for module "core".
- * 
- * @deprecated use instead org.opensaml.core.metrics.impl.XMLObjectProviderInitializer
  */
-@Deprecated 
 public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
@@ -47,9 +43,6 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
     @Override
     public void init() throws InitializationException {
         super.init();
-        
-        DeprecationSupport.warn(ObjectType.CLASS, "org.opensaml.core.xml.config.XMLObjectProviderInitializer",
-                null, "org.opensaml.core.xml.config.impl.XMLObjectProviderInitializer");
         
         final XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
         if (registry == null) {

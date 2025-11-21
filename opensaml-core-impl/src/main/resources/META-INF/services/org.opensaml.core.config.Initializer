@@ -1,3 +1,2 @@
-org.opensaml.core.xml.config.XMLObjectProviderInitializer
-org.opensaml.core.xml.config.GlobalParserPoolInitializer
+org.opensaml.core.xml.config.impl.XMLObjectProviderInitializer
 org.opensaml.core.metrics.impl.MetricRegistryInitializer
