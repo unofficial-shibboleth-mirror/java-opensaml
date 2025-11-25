@@ -158,9 +158,10 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<KeyInfoConfirmationDataType>ensureBuilder(
                         KeyInfoConfirmationDataType.TYPE_NAME);
         
-        if(builder == null){
+        if (builder == null) {
             Assert.fail("Unable to retrieve builder for object QName " + KeyInfoConfirmationDataType.TYPE_NAME);
         }
+        assert builder != null;
         return builder.buildObject();
     }
 
