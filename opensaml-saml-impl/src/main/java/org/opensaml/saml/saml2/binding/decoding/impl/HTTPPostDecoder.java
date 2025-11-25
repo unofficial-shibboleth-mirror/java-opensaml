@@ -76,7 +76,6 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
-        assert request != null;
 
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP POST method");

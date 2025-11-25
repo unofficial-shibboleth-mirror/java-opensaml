@@ -214,9 +214,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder implements HTML
     /** {@inheritDoc} */
     @Override
     protected void doEncode() throws MessageEncodingException {
-        final HttpServletResponse response = getHttpServletResponse();
-        assert response != null;
-        response.setCharacterEncoding("UTF-8");
+        getHttpServletResponse().setCharacterEncoding("UTF-8");
 
         if (postEncoding) {
             postEncode();
@@ -269,7 +267,6 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder implements HTML
         }
 
         final HttpServletResponse response = getHttpServletResponse();
-        assert response != null;
         context.put("response", response);
 
         try {
@@ -324,7 +321,6 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder implements HTML
         }
 
         final HttpServletResponse response = getHttpServletResponse();
-        assert response != null;
         try {
             response.sendRedirect(urlBuilder.buildURL());
         } catch (final IOException e) {

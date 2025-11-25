@@ -89,7 +89,6 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
-        assert request != null;
         
         if (!"GET".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP GET method");
@@ -170,9 +169,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
         // We have to construct a string containing the signature input by accessing the
         // request directly. We can't use the decoded parameters because we need the raw
         // data and URL-encoding isn't canonical.
-        final HttpServletRequest request = getHttpServletRequest();
-        assert request != null;
-        final String queryString = request.getQueryString();
+        final String queryString = getHttpServletRequest().getQueryString();
         log.debug("Constructing signed content string from URL query string {}", queryString);
 
         final String constructed = buildSignedContentString(queryString, samlMessageParamName, samlMessage);
@@ -309,14 +306,11 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
      * @param messageContext the current message context
      */
     protected void populateBindingContext(@Nonnull final MessageContext messageContext) {
-        final HttpServletRequest request = getHttpServletRequest();
-        assert request != null;
-        
         final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(bindingDescriptor);
         bindingContext.setHasBindingSignature(
-                !Strings.isNullOrEmpty(request.getParameter("Signature")));
+                !Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     

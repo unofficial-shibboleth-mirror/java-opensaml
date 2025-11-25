@@ -440,7 +440,7 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         for (String expectedKey : expectedKeys) {
             Assert.assertTrue(manager.exists(expectedKey));
             SimpleXMLObject sxo = manager.load(expectedKey);
-            assert sxo != null;
+            Assert.assertNotNull(sxo);
             Assert.assertEquals(sxo.getObjectMetadata().get(XMLObjectSource.class).size(), 1);
         }
         
