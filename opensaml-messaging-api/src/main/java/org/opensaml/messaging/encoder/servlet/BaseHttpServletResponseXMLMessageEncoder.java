@@ -33,9 +33,6 @@ import net.shibboleth.shared.xml.SerializeSupport;
  * Base class for message encoders which encode XML messages to HttpServletResponse.
  */
 public abstract class BaseHttpServletResponseXMLMessageEncoder  extends AbstractHttpServletResponseMessageEncoder {
-    
-    /** Used to log protocol messages. */
-    @Nonnull private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseHttpServletResponseXMLMessageEncoder.class);
@@ -67,7 +64,7 @@ public abstract class BaseHttpServletResponseXMLMessageEncoder  extends Abstract
         try {
             final Element dom = XMLObjectSupport.marshall(XMLObject.class.cast(message));
             return SerializeSupport.prettyPrintXML(dom);     
-        } catch (MarshallingException e) {
+        } catch (final MarshallingException e) {
             log.error("Unable to marshall message for logging purposes", e);
             return null;
         }

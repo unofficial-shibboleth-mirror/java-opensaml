@@ -70,6 +70,7 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -118,7 +119,7 @@ public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
         encConfig = new BasicEncryptionConfiguration();
         encConfig2 = new BasicEncryptionConfiguration();
         encCriteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig, encConfig2,
-                ConfigurationService.get(EncryptionConfiguration.class)));
+                Constraint.isNotNull(ConfigurationService.get(EncryptionConfiguration.class), "EncryptionConfiguration absent")));
         
         // Configure the middle slot explicitly so that we aren't relying on whichever DH variant the library wide config has.
         KeyAgreementEncryptionConfiguration kaConfig = new KeyAgreementEncryptionConfiguration();
@@ -136,7 +137,7 @@ public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
         decryptConfig.setKEKKeyInfoCredentialResolver(localKeyInfoResolver);
         
         decryptCriteria = new CriteriaSet(new DecryptionConfigurationCriterion(decryptConfig,
-                ConfigurationService.get(DecryptionConfiguration.class)));
+                Constraint.isNotNull(ConfigurationService.get(DecryptionConfiguration.class), "DecryptionConfiguration absent")));
     }
     
     @Test

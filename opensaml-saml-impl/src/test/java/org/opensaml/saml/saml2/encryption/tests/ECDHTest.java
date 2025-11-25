@@ -147,7 +147,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         
         encConfig = new BasicEncryptionConfiguration();
         EncryptionConfigurationCriterion encConfCrit = new EncryptionConfigurationCriterion(encConfig,
-                ConfigurationService.get(EncryptionConfiguration.class));
+                Constraint.isNotNull(ConfigurationService.get(EncryptionConfiguration.class), "EncryptionConfiguration absent"));
         encCriteria = new CriteriaSet(encConfCrit, roleDescCriterion);
         
         decryptConfig = new BasicDecryptionConfiguration();
@@ -155,7 +155,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         decryptConfig.setKEKKeyInfoCredentialResolver(localKeyInfoResolver);
         
         decryptCriteria = new CriteriaSet(new DecryptionConfigurationCriterion(decryptConfig,
-                ConfigurationService.get(DecryptionConfiguration.class)));
+                Constraint.isNotNull(ConfigurationService.get(DecryptionConfiguration.class), "DecryptionConfiguration absent")));
     }
     
     @Test

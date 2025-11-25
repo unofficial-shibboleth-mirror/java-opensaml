@@ -69,6 +69,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -116,14 +117,14 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     public void beforeMethod() throws Exception {
         encConfig = new BasicEncryptionConfiguration();
         encCriteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig,
-                ConfigurationService.get(EncryptionConfiguration.class)));
+                Constraint.isNotNull(ConfigurationService.get(EncryptionConfiguration.class), "EncryptionConfiguration absent")));
         
         decryptConfig = new BasicDecryptionConfiguration();
         decryptConfig.setDataKeyInfoCredentialResolver(localKeyInfoResolver);
         decryptConfig.setKEKKeyInfoCredentialResolver(localKeyInfoResolver);
         
         decryptCriteria = new CriteriaSet(new DecryptionConfigurationCriterion(decryptConfig,
-                ConfigurationService.get(DecryptionConfiguration.class)));
+                Constraint.isNotNull(ConfigurationService.get(DecryptionConfiguration.class), "DecryptionConfiguration absent")));
     }
     
     @Test

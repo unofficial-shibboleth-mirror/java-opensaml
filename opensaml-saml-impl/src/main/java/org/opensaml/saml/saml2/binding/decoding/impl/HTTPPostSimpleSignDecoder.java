@@ -51,11 +51,14 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
      * @param messageContext the current message context
      */
     protected void populateBindingContext(@Nonnull final MessageContext messageContext) {
+        final HttpServletRequest request = getHttpServletRequest();
+        assert request != null;
+
         final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(getBindingDescriptor());
         bindingContext.setHasBindingSignature(
-                !Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
+                !Strings.isNullOrEmpty(request.getParameter("Signature")));
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     
@@ -84,6 +87,7 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
      */
     @Nullable protected byte[] getSignedContent() throws MessageDecodingException {
         final HttpServletRequest request = getHttpServletRequest();
+        assert request != null;
         
         final StringBuilder builder = new StringBuilder();
         final String samlMsg;

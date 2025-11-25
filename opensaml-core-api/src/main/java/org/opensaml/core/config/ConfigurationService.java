@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import org.opensaml.core.config.provider.EmptyConfigurationProperties;
 import org.opensaml.core.config.provider.MapBasedConfiguration;
 import org.opensaml.core.config.provider.PropertiesAdapter;
-import org.opensaml.core.config.provider.SystemPropertyConfigurationPropertiesSource;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
@@ -280,7 +279,7 @@ public class ConfigurationService {
      */
     @Nonnull @NotEmpty protected static String getPartitionName() {
         final ConfigurationProperties configProperties = getConfigurationProperties();
-        String partitionName = configProperties.getProperty(PROPERTY_PARTITION_NAME, DEFAULT_PARTITION_NAME);
+        final String partitionName = configProperties.getProperty(PROPERTY_PARTITION_NAME, DEFAULT_PARTITION_NAME);
         LOG.trace("Resolved effective configuration partition name '{}'", partitionName);
         return partitionName;
     }

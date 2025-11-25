@@ -16,6 +16,7 @@ package org.opensaml.soap.client.soap11.encoder.http.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -114,8 +115,10 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
         }
         
         prepareHttpRequest();
-
-        getHttpRequest().setEntity(createRequestEntity(envelope, Charset.forName("UTF-8")));
+        
+        final HttpPost request = getHttpRequest();
+        assert request != null;
+        request.setEntity(createRequestEntity(envelope, StandardCharsets.UTF_8));
     }
     
     /**
@@ -200,12 +203,15 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * @throws MessageEncodingException thrown if there is a problem preprocessing the transport
      */
     protected void prepareHttpRequest() throws MessageEncodingException {
+        final HttpPost request = getHttpRequest();
+        assert request != null;
+
         //TODO - need to do more here?
         final String soapAction = getSOAPAction();
         if (soapAction != null) {
-            getHttpRequest().setHeader("SOAPAction", soapAction);
+            request.setHeader("SOAPAction", soapAction);
         } else {
-            getHttpRequest().setHeader("SOAPAction", "");
+            request.setHeader("SOAPAction", "");
         }
     }
     
