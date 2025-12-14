@@ -1097,10 +1097,10 @@ public class DefaultAssertionValidationContextBuilder
                 log.debug("Resolved valid subject confirmation InetAddress set: {}", validAddresses);
                 return validAddresses;
             }
-            log.warn("Could not determine attester IP address. Validation of Assertion may or may not succeed");
+            log.debug("Could not determine attester IP address. Validation of Assertion may or may not succeed");
             return CollectionSupport.emptySet();
         } catch (final UnknownHostException e) {
-            log.warn("Processing of attester IP address failed. Validation of Assertion may or may not succeed", e);
+            log.debug("Processing of attester IP address failed. Validation of Assertion may or may not succeed", e);
             return CollectionSupport.emptySet();
         }
     }
