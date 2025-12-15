@@ -1,1 +1,2 @@
+org.opensaml.security.config.BouncyCastleInitializer
 org.opensaml.security.config.GlobalNamedCurveRegistryInitializer
