@@ -38,6 +38,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST binding. */
@@ -87,8 +88,13 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
 
         // The default impl is a ByteArrayInputStream, which really doesn't need to be closed.  But this could
         // be overridden, so be safe and make sure it gets closed.  Also for style and consistency.
-        try (final InputStream base64DecodedMessage = getBase64DecodedMessage(request)) {
+        final Pair<InputStream,String> messageData = getBase64DecodedMessage(request);
+        try (final InputStream base64DecodedMessage = messageData.getFirst()) {
+            assert base64DecodedMessage != null;
             final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(base64DecodedMessage);
+            final String samlMessageParamName = messageData.getSecond();
+            assert samlMessageParamName != null;
+            SAMLBindingSupport.checkSAML2MessageType("SAMLRequest".equals(samlMessageParamName), inboundMessage);
             messageContext.setMessage(inboundMessage);
             log.debug("Decoded SAML message");
         } catch (final IOException e) {
@@ -110,12 +116,16 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
      * @throws MessageDecodingException thrown if the message does not contain a base64 encoded SAML message, 
      *                                      or the message can not be base64-decoded.
      */
-    @Nonnull protected InputStream getBase64DecodedMessage(@Nonnull final HttpServletRequest request)
+    @Nonnull protected Pair<InputStream,String> getBase64DecodedMessage(@Nonnull final HttpServletRequest request)
             throws MessageDecodingException {
         log.debug("Getting Base64 encoded message from request");
+        String samlMessageParamName = null;
         String encodedMessage = request.getParameter("SAMLRequest");
         if (Strings.isNullOrEmpty(encodedMessage)) {
             encodedMessage = request.getParameter("SAMLResponse");
+            samlMessageParamName = "SAMLResponse";
+        } else {
+            samlMessageParamName = "SAMLRequest";
         }
 
         if (Strings.isNullOrEmpty(encodedMessage)) {
@@ -129,7 +139,7 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
             log.trace("Base64 decoding SAML message:\n{}", encodedMessage);
             final byte[] decodedBytes = Base64Support.decode(encodedMessage);            
             log.trace("Decoded SAML message:\n{}", new String(decodedBytes));
-            return new ByteArrayInputStream(decodedBytes);
+            return new Pair<>(new ByteArrayInputStream(decodedBytes), samlMessageParamName);
             
         } catch (final DecodingException e) {        
             log.error("Unable to Base64 decode SAML message");

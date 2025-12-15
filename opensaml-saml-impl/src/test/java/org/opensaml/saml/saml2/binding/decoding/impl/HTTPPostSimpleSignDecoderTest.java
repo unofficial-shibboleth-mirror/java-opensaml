@@ -78,6 +78,21 @@ public class HTTPPostSimpleSignDecoderTest extends XMLObjectBaseTestCase {
         Assert.assertNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
     }
     
+    /**
+     * Test decoding a SAML Response message incorrectly supplied in a "SAMLRequest" param.
+     * 
+     * @throws MessageDecodingException ...
+     */
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSAMLRequestParamHoldsResponse() throws MessageDecodingException {
+        httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOlJlc3Bvbn"
+                + "NlIElEPSJmb28iIElzc3VlSW5zdGFudD0iMTk3MC0wMS0wMVQwMDowMDowMC4wMDBaIiBWZXJzaW9uPSIyLjAiIHhtbG5zOnN"
+                + "hbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiPjxzYW1scDpTdGF0dXM+PHNhbWxwOlN0YXR1c0Nv"
+                + "ZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjwvc"
+                + "2FtbHA6UmVzcG9uc2U+");
+        
+        decoder.decode();
+    }
  
     /**
      * Test decoding a SAML httpRequest.
@@ -155,6 +170,20 @@ public class HTTPPostSimpleSignDecoderTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
         Assert.assertNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
+    }
+    
+    /**
+     * Test decoding a SAML request message incorrectly supplied in a "SAMLResponse" param.
+     * 
+     * @throws MessageDecodingException ...
+     */
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSAMLResponseParamHoldsRequest() throws MessageDecodingException {
+        httpRequest.setParameter("SAMLResponse", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+
+        decoder.decode();
     }
     
 }

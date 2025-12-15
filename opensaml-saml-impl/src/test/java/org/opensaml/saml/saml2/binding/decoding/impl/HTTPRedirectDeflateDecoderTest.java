@@ -90,7 +90,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
         Assert.assertNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
     }    
-   
+    
     @Test
     public void testRequestDecoding() throws MessageDecodingException, MessageEncodingException, 
                                                             MarshallingException, EncodingException {
@@ -110,6 +110,32 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         Assert.assertNull(messageContext.ensureSubcontext(SimpleSignatureContext.class).getSignedContent());
     }
     
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSAMLRequestParamHoldsResponse() throws MessageDecodingException {
+        // Note, Spring's Mock objects don't do URL encoding/decoding, so this is the URL decoded form
+        httpRequest
+                .setParameter(
+                        "SAMLRequest",
+                        "fZAxa8NADIX3/opDe3yXLG2F7VASCoF2qdMM3Y6LkhrOp8PSlfz8uqYdvBTeIMHT08ert7chmi8apefUwLpyYCgFPvfp2sD78Xn1ANv2rhY/xIxvJJmTkNmTaJ+8zkefqhmtpZsfcqSKxyuYw76BC/M0iBQ6JFGfdMp/vHcrt550dA5nVc65DzCnP4TND8IElQTnpw2UMSF76QWTH0hQA3ZPry84OTGPrBw4QvuL2KnXIsttx2cyJx8L/R8msxu7EgKJgG1ruwy1yxrabw==");
+
+        populateRequestURL(httpRequest, "http://example.org");
+
+        decoder.decode();
+    }    
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSAMLResponseParamHoldsRequest() throws MessageDecodingException, MessageEncodingException, 
+                                                            MarshallingException, EncodingException {
+        final AuthnRequest samlRequest =
+                (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+        assert samlRequest != null;
+        samlRequest.setDestination(null);
+
+        httpRequest.setParameter("SAMLResponse", encodeMessage(samlRequest));
+
+        decoder.decode();
+    }
+   
     @Test
     public void testRequestDecodingWithSignature() throws MessageDecodingException, MessageEncodingException, 
                                                             MarshallingException, EncodingException, UnsupportedEncodingException {

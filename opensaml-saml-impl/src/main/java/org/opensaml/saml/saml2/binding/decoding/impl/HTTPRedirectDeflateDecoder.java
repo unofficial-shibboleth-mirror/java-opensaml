@@ -117,6 +117,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
         if (samlMessageEncoded != null) {
             try (final InputStream samlMessageIns = decodeMessage(samlMessageEncoded)) {
                 final SAMLObject samlMessage = (SAMLObject) unmarshallMessage(samlMessageIns);
+                SAMLBindingSupport.checkSAML2MessageType("SAMLRequest".equals(samlMessageParamName), samlMessage);
                 messageContext.setMessage(samlMessage);
                 log.debug("Decoded SAML message");
             } catch (final IOException e) {

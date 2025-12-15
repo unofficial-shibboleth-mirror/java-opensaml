@@ -20,10 +20,12 @@ import java.net.URL;
 import javax.annotation.Nonnull;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
@@ -84,6 +86,23 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
+    }
+    
+    /**
+     * Test decoding message when the SAMLResponse param incorrectly holds a non-response message.
+     * 
+     * @throws Exception if something goes wrong
+     */
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSAMLResponseParamHoldsRequest() throws Exception {
+        final Request samlRequest = (Request) XMLObjectSupport.buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        assert samlRequest != null;
+
+        httpRequest.setParameter("SAMLResponse", encodeMessage(samlRequest));
+
+        populateRequestURL(httpRequest, "https://sp.example.org/sso/acs");
+
+        decoder.decode();
     }
     
     /**

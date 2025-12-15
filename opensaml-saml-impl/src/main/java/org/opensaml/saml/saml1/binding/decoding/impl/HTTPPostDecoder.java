@@ -93,6 +93,7 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
             final byte[] decodedBytes = Base64Support.decode(base64Message);
             
             final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(new ByteArrayInputStream(decodedBytes));
+            SAMLBindingSupport.checkSAML1MessageType(false, inboundMessage);
             messageContext.setMessage(inboundMessage);
             log.debug("Decoded SAML message");
     

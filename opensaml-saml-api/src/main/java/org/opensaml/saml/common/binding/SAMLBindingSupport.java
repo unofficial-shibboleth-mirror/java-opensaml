@@ -25,12 +25,15 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLMessageReceivedEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.saml1.core.ResponseAbstractType;
+import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
 
@@ -409,6 +412,62 @@ public final class SAMLBindingSupport {
         final short value = ByteBuffer.wrap(artifactEndpointIndex).order(ByteOrder.BIG_ENDIAN).getShort();
         return Constraint.isGreaterThanOrEqual(0, value, 
                 "Input value was too large, resulting in a negative 16-bit short");
+    }
+    
+    /**
+     * Evaluate a SAML 1 message {@link SAMLObject} as to whether it is the expected message type (request vs response).
+     * 
+     * @param expectRequest true if a SAML 1 request is expected (an instance of
+     *                      {@link org.opensaml.saml.saml1.core.RequestAbstractType},
+     *                      false if a SAML 1 response is expected (an instance of
+     *                      {@link org.opensaml.saml.saml1.core.ResponseAbstractType}
+     * @param message the message to evaluate
+     * 
+     * @throws MessageDecodingException  if the message being evaluated is not the expected type
+     */
+    public static void checkSAML1MessageType(final boolean expectRequest, @Nonnull final SAMLObject message)
+            throws MessageDecodingException {
+        Constraint.isNotNull(message, "SAML 1 message cannot be null");
+
+        if (expectRequest) {
+            if (! org.opensaml.saml.saml1.core.RequestAbstractType.class.isInstance(message)) {
+                throw new MessageDecodingException("Expected a SAML 1 request message, but saw: " 
+                        + message.getClass().getName());
+            }
+        } else { 
+            if (! ResponseAbstractType.class.isInstance(message)){ 
+                throw new MessageDecodingException("Expected a SAML 1 response message, but saw: " 
+                        + message.getClass().getName());
+            }
+        }
+    }
+
+    /**
+     * Evaluate a SAML 2 message {@link SAMLObject} as to whether it is the expected message type (request vs response).
+     * 
+     * @param expectRequest true if a SAML 2 request is expected (an instance of
+     *                      {@link org.opensaml.saml.saml2.core.RequestAbstractType},
+     *                      false if a SAML 2 response is expected (an instance of
+     *                      {@link org.opensaml.saml.saml1.core.ResponseAbstractType}
+     * @param message the message to evaluate
+     * 
+     * @throws MessageDecodingException  if the message being evaluated is not the expected type
+     */
+    public static void checkSAML2MessageType(final boolean expectRequest, @Nonnull final SAMLObject message)
+            throws MessageDecodingException {
+        Constraint.isNotNull(message, "SAML 2 message cannot be null");
+
+        if (expectRequest) {
+            if (! org.opensaml.saml.saml2.core.RequestAbstractType.class.isInstance(message)) {
+                throw new MessageDecodingException("Expected a SAML 2 request message, but saw: " 
+                        + message.getClass().getName());
+            }
+        } else { 
+            if (! StatusResponseType.class.isInstance(message)){ 
+                throw new MessageDecodingException("Expected a SAML 2 response message, but saw: " 
+                        + message.getClass().getName());
+            }
+        }
     }
 
 }
