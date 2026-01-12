@@ -645,6 +645,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
             key = parts[0];
         }
         if (key.length() > MAX_KEY_LENGTH) {
+            // TODO: convert to our StringDigester
             return CodecUtil.hex(HashUtil.sha512(key));
         }
         return key;
