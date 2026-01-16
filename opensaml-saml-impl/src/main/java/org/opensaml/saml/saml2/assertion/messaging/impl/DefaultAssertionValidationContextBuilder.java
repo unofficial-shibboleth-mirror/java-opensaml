@@ -115,6 +115,9 @@ public class DefaultAssertionValidationContextBuilder
     /** Function for determining additional valid Issuer values. */
     @Nonnull private Function<InOutOperationContext, Set<String>> validIssuers;
     
+    /** Function for determining the self entityID. */
+    @Nonnull private Function<InOutOperationContext, String> selfEntityID;
+    
     /** Predicate for determining whether to require issuer be of the {@link NameIDType#ENTITY} format. */
     @Nonnull private Predicate<InOutOperationContext> requireEntityIssuer;
     
@@ -161,6 +164,7 @@ public class DefaultAssertionValidationContextBuilder
         addressRequired = PredicateSupport.alwaysFalse();
         requiredConditions = CollectionSupport.emptySet();
         validIssuers = new DefaultValidIssuersLookupFunction();
+        selfEntityID = new DefaultSelfEntityIDLookupFunction();
         requireEntityIssuer = PredicateSupport.alwaysFalse();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
@@ -571,6 +575,32 @@ public class DefaultAssertionValidationContextBuilder
         additionalAudiences = function;
     }
 
+    /**
+     * Get the function for determining the self entityID. 
+     *
+     * <p>
+     * Defaults to an implementation which resolves from the inbound {@link SAMLSelfEntityContext}.
+     * </p>
+     *
+     * @return the function
+     */
+    @Nonnull public Function<InOutOperationContext,String> getSelfEntityID() {
+        return selfEntityID;
+    }
+
+    /**
+     * Set the function for determining the self entityID. 
+     *
+     * <p>
+     * Defaults to an implementation which resolves from the inbound {@link SAMLSelfEntityContext}.
+     * </p>
+     *
+     * @param function the function, may be null
+     */
+    public void setSelfEntityID(@Nonnull final Function<InOutOperationContext,String> function) {
+        selfEntityID = Constraint.isNotNull(function, "Self entity ID function was null");
+    }
+    
     /**
      * Get the function for determining the valid Issuer values
      *
@@ -1035,7 +1065,7 @@ public class DefaultAssertionValidationContextBuilder
      * </li>
      * <li>
      * if enabled via the eval of {@link #getIncludeSelfEntityIDAsRecipient()}, the value from evaluating
-     * {@link #getSelfEntityID(AssertionValidationInput)} if non-null
+     * {@link #getSelfEntityID()} if non-null
      * 
      * </li>
      * </ol>
@@ -1061,7 +1091,7 @@ public class DefaultAssertionValidationContextBuilder
         }
         
         if (getIncludeSelfEntityIDAsRecipient().test(input.getOperationContext())) {
-            final String selfEntityID = getSelfEntityID(input);
+            final String selfEntityID = getSelfEntityID().apply(input.getOperationContext());
             if (selfEntityID != null) {
                 validRecipients.add(selfEntityID);
             }
@@ -1139,7 +1169,7 @@ public class DefaultAssertionValidationContextBuilder
             @Nonnull final AssertionValidationInput input) {
         final LazySet<String> validAudiences = new LazySet<>();
         
-        final String selfEntityID = getSelfEntityID(input);
+        final String selfEntityID = getSelfEntityID().apply(input.getOperationContext());
         if (selfEntityID != null) {
             validAudiences.add(selfEntityID);
         }
@@ -1154,25 +1184,6 @@ public class DefaultAssertionValidationContextBuilder
         
         log.debug("Resolved valid audiences set: {}", validAudiences);
         return validAudiences;
-    }
-    
-    /**
-     * Get the self entityID.
-     * 
-     * @param input the assertion validation input
-     * 
-     * @return the self entityID, or null if could not be resolved
-     */
-    @Nullable protected String getSelfEntityID(@Nonnull final AssertionValidationInput input) {
-        final SAMLSelfEntityContext selfContext = input.getOperationContext()
-                .ensureInboundMessageContext()
-                .getSubcontext(SAMLSelfEntityContext.class);
-        
-        if (selfContext != null) {
-            return selfContext.getEntityId();
-        }
-        
-        return null;
     }
     
     /** Default strategy for resolving the valid InResponseTo value. */
@@ -1231,6 +1242,36 @@ public class DefaultAssertionValidationContextBuilder
                 return CollectionSupport.singleton(entityID);
             }
             return CollectionSupport.emptySet();
+        }
+        
+    }
+    /** 
+     * Default strategy for resolving the self entityID.
+     * 
+     * <p>
+     * Resolves the entityID from the {@link SAMLSelfEntityContext} child of the inbound {@link MessageContext}.
+     * </p>
+     * */
+    public static class DefaultSelfEntityIDLookupFunction implements Function<InOutOperationContext, String> {
+        
+        /** The lookup delegate. */
+        @Nonnull private Function<MessageContext, String> delegate;
+
+        /** Constructor. */
+        public DefaultSelfEntityIDLookupFunction() {
+            delegate = new SAMLEntityIDFunction().compose(
+                    new ChildContextLookup<>(SAMLSelfEntityContext.class).compose(
+                            new MessageContextLookup<>(Direction.INBOUND)));
+        }
+
+        /** {@inheritDoc} */
+        @Nullable @Unmodifiable @NotLive public String apply(@Nullable final InOutOperationContext prc) {
+            if (prc == null || prc.getInboundMessageContext() == null) {
+                return null;
+            }
+            
+            // Note: Doesn't matter whether we apply to inbound or outbound
+            return delegate.apply(prc.getInboundMessageContext());
         }
         
     }
