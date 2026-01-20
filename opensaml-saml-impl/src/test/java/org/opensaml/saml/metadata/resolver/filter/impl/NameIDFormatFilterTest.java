@@ -94,6 +94,26 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
     }
 
     @Test
+    public void testRemovalOnly() throws ComponentInitializationException, ResolverException {
+        
+        metadataFilter.setRules(CollectionSupport.singletonMap(this, CollectionSupport.emptyList()));
+        metadataFilter.setRemoveExistingFormats(true);
+        metadataFilter.initialize();
+        
+        metadataProvider.setMetadataFilter(metadataFilter);
+        metadataProvider.setId("test");
+        metadataProvider.initialize();
+
+        EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
+        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
+        assert entity != null;
+        
+        SPSSODescriptor role = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS);
+        assert role != null;
+        Assert.assertTrue(role.getNameIDFormats().isEmpty());
+    }
+
+    @Test
     public void testWithRemoval() throws ComponentInitializationException, ResolverException {
         
         metadataFilter.setRules(CollectionSupport.singletonMap(this, formats));

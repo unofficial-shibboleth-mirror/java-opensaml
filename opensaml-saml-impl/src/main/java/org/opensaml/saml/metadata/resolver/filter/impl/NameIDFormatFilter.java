@@ -41,6 +41,8 @@ import org.slf4j.Logger;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -54,6 +56,9 @@ import net.shibboleth.shared.primitive.StringSupport;
  */
 public class NameIDFormatFilter extends AbstractMetadataFilter {
 
+    /** Used as a value in place of an empty collection when removing only. */
+    @Nonnull @NotEmpty private static String GUARD_VALUE = "_EMPTY";
+    
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(NameIDFormatFilter.class);
 
@@ -99,7 +104,9 @@ public class NameIDFormatFilter extends AbstractMetadataFilter {
         applyMap = ArrayListMultimap.create(rules.size(), 1);
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<String>> entry : rules.entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
-                applyMap.putAll(entry.getKey(), StringSupport.normalizeStringCollection(entry.getValue()));
+                final Collection<String> normalized = StringSupport.normalizeStringCollection(entry.getValue());
+                applyMap.putAll(entry.getKey(),
+                        normalized.isEmpty() ? CollectionSupport.singletonList(GUARD_VALUE) : normalized);
             }
         }
     }
@@ -128,7 +135,7 @@ public class NameIDFormatFilter extends AbstractMetadataFilter {
      */
     protected void filterEntityDescriptor(@Nonnull final EntityDescriptor descriptor) {
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<String>> entry : applyMap.asMap().entrySet()) {
-            if (!entry.getValue().isEmpty() && entry.getKey().test(descriptor)) {
+            if ((removeExistingFormats || !entry.getValue().isEmpty()) && entry.getKey().test(descriptor)) {
                 for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
                     assert role != null;
                     filterRoleDescriptor(role, entry.getValue());
@@ -175,7 +182,10 @@ public class NameIDFormatFilter extends AbstractMetadataFilter {
                 roleFormats.stream().map(NameIDFormat::getURI).collect(Collectors.toUnmodifiableSet());
         
         for (final String format : formats) {
-            if (existingFormats.contains(format)) {
+            if (GUARD_VALUE.equals(format)) {
+                // Skip guard value, only used to implement possibly empty mapping for removal.
+                continue;
+            } else if (existingFormats.contains(format)) {
                 log.debug("Ignoring add of existing NameIDFormat '{}' on EntityDescriptor '{}'", format, entityID);
             } else {
                 final NameIDFormat nif = formatBuilder.buildObject();
