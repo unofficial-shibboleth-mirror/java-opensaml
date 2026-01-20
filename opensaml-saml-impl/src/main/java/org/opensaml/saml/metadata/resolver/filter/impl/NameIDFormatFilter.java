@@ -57,7 +57,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class NameIDFormatFilter extends AbstractMetadataFilter {
 
     /** Used as a value in place of an empty collection when removing only. */
-    @Nonnull @NotEmpty private static String GUARD_VALUE = "_EMPTY";
+    @Nonnull @NotEmpty private static final String GUARD_VALUE = "_EMPTY";
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(NameIDFormatFilter.class);
