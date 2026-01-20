@@ -135,7 +135,7 @@ public class NameIDFormatFilter extends AbstractMetadataFilter {
      */
     protected void filterEntityDescriptor(@Nonnull final EntityDescriptor descriptor) {
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<String>> entry : applyMap.asMap().entrySet()) {
-            if ((removeExistingFormats || !entry.getValue().isEmpty()) && entry.getKey().test(descriptor)) {
+            if (entry.getKey().test(descriptor)) {
                 for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
                     assert role != null;
                     filterRoleDescriptor(role, entry.getValue());
