@@ -184,7 +184,7 @@ public class NameIDFormatFilter extends AbstractMetadataFilter {
         for (final String format : formats) {
             if (GUARD_VALUE.equals(format)) {
                 // Skip guard value, only used to implement possibly empty mapping for removal.
-                continue;
+                break;
             } else if (existingFormats.contains(format)) {
                 log.debug("Ignoring add of existing NameIDFormat '{}' on EntityDescriptor '{}'", format, entityID);
             } else {
