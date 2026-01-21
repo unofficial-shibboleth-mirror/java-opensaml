@@ -29,6 +29,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2alg.DigestMethod;
@@ -64,26 +65,73 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  */
 public class AlgorithmFilter extends AbstractMetadataFilter {
 
+    /** Used as a value in place of an empty collection when removing only. */
+    @Nonnull @NotEmpty private static final String GUARD_VALUE = "_EMPTY";
+    
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AlgorithmFilter.class);
 
     /** Registry for sanity checking algorithms. */
     @Nullable private AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
     
+    /** Flag controlling removal of existing DigestMethod extensions. */
+    private boolean removeExistingDigestMethods;
+
+    /** Flag controlling removal of existing SigningMethod extensions. */
+    private boolean removeExistingSigningMethods;
+
+    /** Flag controlling removal of existing EncryptionMethod extensions. */
+    private boolean removeExistingEncryptionMethods;
+    
     /** Rules for adding algorithms. */
     @Nonnull private Multimap<Predicate<EntityDescriptor>,XMLObject> applyMap;
     
     /** Builder for {@link Extensions}. */
     @Nonnull private final SAMLObjectBuilder<Extensions> extBuilder;
+    
+    /** Stands in for an empty collection when removing only. */
+    @Nonnull private final XSString guardObject;
 
     /** Constructor. */
     public AlgorithmFilter() {
+        guardObject = XMLObjectProviderRegistrySupport.getBuilderFactory().<XSString>ensureBuilder(
+                XSString.TYPE_NAME).buildObject(null, GUARD_VALUE, null);
+        guardObject.setValue(GUARD_VALUE);
         extBuilder = (SAMLObjectBuilder<Extensions>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>ensureBuilder(
                         Extensions.DEFAULT_ELEMENT_NAME);
         applyMap = ArrayListMultimap.create();
     }
     
+    /**
+     * Sets whether to remove existing DigestMethod extensions.
+     * 
+     * @param flag flag to set
+     */
+    public void setRemoveExistingDigestMethods(final boolean flag) {
+        checkSetterPreconditions();
+        removeExistingDigestMethods = flag;
+    }
+
+    /**
+     * Sets whether to remove existing SigningMethod extensions.
+     * 
+     * @param flag flag to set
+     */
+    public void setRemoveExistingSigningMethods(final boolean flag) {
+        checkSetterPreconditions();
+        removeExistingSigningMethods = flag;
+    }
+
+    /**
+     * Sets whether to remove existing EncryptionMethod extensions.
+     * 
+     * @param flag flag to set
+     */
+    public void setRemoveExistingEncryptionMethods(final boolean flag) {
+        checkSetterPreconditions();
+        removeExistingEncryptionMethods = flag;
+    }
     
 // Checkstyle: CyclomaticComplexity OFF
     /**
@@ -101,7 +149,7 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
             .map(DigestMethod.class::cast)
             .map(DigestMethod::getAlgorithm)
             .distinct()
-            .forEach(uri -> checkDigestMethod(uri));
+            .forEach(this::checkDigestMethod);
 
         rules.values().stream()
             .flatMap(Collection::stream)
@@ -109,7 +157,7 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
             .map(SigningMethod.class::cast)
             .map(SigningMethod::getAlgorithm)
             .distinct()
-            .forEach(uri -> checkSigningMethod(uri));
+            .forEach(this::checkSigningMethod);
 
         rules.values().stream()
             .flatMap(Collection::stream)
@@ -117,12 +165,14 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
             .map(EncryptionMethod.class::cast)
             .map(EncryptionMethod::getAlgorithm)
             .distinct()
-            .forEach(uri -> checkEncryptionMethod(uri));
+            .forEach(this::checkEncryptionMethod);
 
         applyMap = ArrayListMultimap.create(rules.size(), 1);
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<XMLObject>> entry : rules.entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
-                applyMap.putAll(entry.getKey(), List.copyOf(entry.getValue()));
+                applyMap.putAll(entry.getKey(),
+                        entry.getValue().isEmpty() ? CollectionSupport.singletonList(guardObject)
+                                : CollectionSupport.copyToList(entry.getValue()));
             }
         }
     }
@@ -153,31 +203,43 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
      * @param descriptor entity descriptor to filter
      */
     protected void filterEntityDescriptor(@Nonnull final EntityDescriptor descriptor) {
-        
+
         Set<String> existingDigests = CollectionSupport.emptySet();
         Set<String> existingSignings = CollectionSupport.emptySet();
         final Extensions exts = descriptor.getExtensions();
         if (exts != null) {
-            existingDigests = exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME)
-                    .stream()
-                    .filter(DigestMethod.class::isInstance)
-                    .map(DigestMethod.class::cast)
-                    .map(DigestMethod::getAlgorithm)
-                    .distinct()
-                    .collect(Collectors.toUnmodifiableSet());
-            existingSignings = exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME)
-                    .stream()
-                    .filter(SigningMethod.class::isInstance)
-                    .map(SigningMethod.class::cast)
-                    .map(SigningMethod::getAlgorithm)
-                    .distinct()
-                    .collect(Collectors.toUnmodifiableSet());
+            if (!removeExistingDigestMethods) {
+                existingDigests = exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME)
+                        .stream()
+                        .filter(DigestMethod.class::isInstance)
+                        .map(DigestMethod.class::cast)
+                        .map(DigestMethod::getAlgorithm)
+                        .distinct()
+                        .collect(Collectors.toUnmodifiableSet());
+            }
+            if (!removeExistingSigningMethods) {
+                existingSignings = exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME)
+                        .stream()
+                        .filter(SigningMethod.class::isInstance)
+                        .map(SigningMethod.class::cast)
+                        .map(SigningMethod::getAlgorithm)
+                        .distinct()
+                        .collect(Collectors.toUnmodifiableSet());
+            }
         }
         
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<XMLObject>> entry : applyMap.asMap().entrySet()) {
-            if (!entry.getValue().isEmpty() && entry.getKey().test(descriptor)) {
+            if (entry.getKey().test(descriptor)) {
+                
+                // Only acts if needed.
+                removeExistingMethods(descriptor);
                 
                 for (final XMLObject xmlObject : entry.getValue()) {
+                    // Check for guard object to break loop since we were only removing. 
+                    if (xmlObject instanceof XSString) {
+                        break;
+                    }
+                    
                     try {
                         if (xmlObject instanceof DigestMethod) {
                             if (existingDigests.contains(((DigestMethod) xmlObject).getAlgorithm())) {
@@ -251,6 +313,58 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
         return extensions;
     }
     
+// Checkstyle: CyclomaticComplexity OFF
+    /**
+     * Performs removal of existing methods if directed.
+     * 
+     * @param descriptor descriptor to filter
+     */
+    protected void removeExistingMethods(@Nonnull final EntityDescriptor descriptor) {
+        Extensions exts = descriptor.getExtensions();
+        // Remove existing objects first (if directed).
+        if (exts != null) {
+            if (removeExistingDigestMethods) {
+                log.debug("Clearing existing entity-level DigestMethod extensions on EntityDescriptor '{}'",
+                        descriptor.getEntityID());
+                exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).clear();
+            }
+            if (removeExistingSigningMethods) {
+                log.debug("Clearing existing entity-level SigningMethod extensions on EntityDescriptor '{}'",
+                        descriptor.getEntityID());
+                exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME).clear();
+            }
+        }
+        
+        if (removeExistingDigestMethods || removeExistingSigningMethods || removeExistingEncryptionMethods) {
+            for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
+                exts = role.getExtensions();
+                if (exts != null) {
+                    if (removeExistingDigestMethods) {
+                        log.debug("Clearing existing role-level DigestMethod extensions on EntityDescriptor '{}'",
+                                descriptor.getEntityID());
+                        exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).clear();
+                    }
+                    if (removeExistingSigningMethods) {
+                        log.debug("Clearing existing role-level SigningMethod extensions on EntityDescriptor '{}'",
+                                descriptor.getEntityID());
+                        exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME).clear();
+                    }
+                }
+                if (removeExistingEncryptionMethods) {
+                    for (final KeyDescriptor key : role.getKeyDescriptors()) {
+                        if (key.getUse() == null || key.getUse() != UsageType.SIGNING) {
+                            log.debug(
+                                    "Clearing existing key-level EncryptionMethod extensions on EntityDescriptor '{}'",
+                                    descriptor.getEntityID());
+                            key.getEncryptionMethods().clear();
+                        }
+                    }
+                }
+            }
+        }
+    }
+ // Checkstyle: CyclomaticComplexity ON
+
     /**
      * Add {@link EncryptionMethod} extension to every {@link KeyDescriptor} found in
      * an entity.
@@ -280,7 +394,7 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
                                 encryptionMethod.getAlgorithm(), descriptor.getEntityID());
                         existingMethods.add(XMLObjectSupport.cloneXMLObject(encryptionMethod));
                     } catch (final MarshallingException|UnmarshallingException e) {
-                        log.error("Error cloning XMLObject", e);
+                        log.error("Error cloning EncryptionMethod", e);
                     }
                 }
             }
