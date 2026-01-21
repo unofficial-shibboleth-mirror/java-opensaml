@@ -19,6 +19,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.BaseID;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NameID;
@@ -136,12 +137,37 @@ public final class SAML2ObjectSupport {
      * @throws IllegalArgumentException if EncryptedID or BaseID is present in either Subject instance
      */
     public static boolean matchSubject(@Nonnull final Subject target, @Nonnull final Subject control) {
+        return matchSubject(target, control, true);
+    }
+
+    /**
+     * Match a target {@link Subject} against a control instance according to the requirements specified
+     * in SAML Core 3.3.4.
+     * 
+     * <p>
+     * Any {@link EncryptedID} instances which were originally present must have already been decrypted
+     * and stored in-place on the Subject. {@link BaseID} is currently unsupported. Presence of either
+     * in either target or control subject will throw {@link IllegalArgumentException}.
+     * </p>
+     * 
+     * @param target the target subject to evaluate
+     * @param control the control subject against which to evaluate the target
+     * @param processConfirmation flag controlling whether to process matching of {@link SubjectConfirmation}
+     * 
+     * @return true if target matches the control, otherwise false
+     * 
+     * @throws IllegalArgumentException if EncryptedID or BaseID is present in either Subject instance
+     */
+    public static boolean matchSubject(@Nonnull final Subject target, @Nonnull final Subject control,
+            final boolean processConfirmation) {
         Constraint.isNotNull(target, "Target Subject was null");
         Constraint.isNotNull(control, "Control Subject was null");
         
-        //TODO implement SubjectConfirmation support. Need registry of method URI -> SC matchers
-        if (!target.getSubjectConfirmations().isEmpty()) {
-            LOG.warn("Target Subject contains SubjectConfirmation, currently not supported and eval is skipped");
+        if (processConfirmation) {
+            //TODO implement SubjectConfirmation support. Need registry of method URI -> SC matchers or similar.
+            if (!target.getSubjectConfirmations().isEmpty()) {
+                LOG.warn("Target Subject contains SubjectConfirmation, currently not supported and eval is skipped");
+            }
         }
         
         if (target.getEncryptedID() != null || control.getEncryptedID() != null) {
