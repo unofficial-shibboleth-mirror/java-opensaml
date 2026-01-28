@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.shibboleth</groupId>
         <artifactId>parent</artifactId>
-        <version>17.2.0-SNAPSHOT</version>
+        <version>17.2.0</version>
     </parent>
 
     <name>OpenSAML</name>
@@ -19,7 +19,7 @@
 
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
-    <version>5.2.0-SNAPSHOT</version>
+    <version>5.2.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -55,7 +55,7 @@
     <properties>
         <shibboleth.projectName>java-opensaml</shibboleth.projectName>
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
-        <shib-shared.version>9.2.0-SNAPSHOT</shib-shared.version>
+        <shib-shared.version>9.2.0</shib-shared.version>
         <checkstyle.configLocation>${project.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
