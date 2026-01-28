@@ -1157,7 +1157,7 @@ public class DefaultAssertionValidationContextBuilder
      * This implementation returns a set containing the union of:
      * </p>
      * <ol>
-     * <li>the result of {@link #getSelfEntityID(AssertionValidationInput)}, if non-null</li>
+     * <li>the result of {@link #getSelfEntityID()}, if non-null</li>
      * <li>the result of evaluating {@link #getAdditionalAudiences()}, if non-null</li>
      * </ol>
      * 
