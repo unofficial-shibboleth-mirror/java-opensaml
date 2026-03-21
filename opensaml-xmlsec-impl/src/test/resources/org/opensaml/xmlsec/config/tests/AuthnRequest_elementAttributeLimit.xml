@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+                    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+                    ID="_id-e5dc729a-bf3e-4274-b08a-81433d7f3532" Version="2.0" IssueInstant="2026-05-11T01:12:17Z"
+                    Destination="https://www.example.edu/saml/receiver"
+                    ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST">
+  <saml:Issuer>https://attacker.example.com</saml:Issuer>
+  <samlp:Extensions>
+    <a0:e xmlns:a0="u:0:0" xmlns:a1="u:0:1" xmlns:a2="u:0:2" xmlns:a3="u:0:3" xmlns:a4="u:0:4" xmlns:a5="u:0:5" xmlns:a6="u:0:6" xmlns:a7="u:0:7" xmlns:a8="u:0:8" xmlns:a9="u:0:9" xmlns:aa="u:0:10" xmlns:ab="u:0:11" xmlns:ac="u:0:12" xmlns:ad="u:0:13" xmlns:ae="u:0:14" xmlns:af="u:0:15" xmlns:ag="u:0:16" xmlns:ah="u:0:17" xmlns:ai="u:0:18" xmlns:aj="u:0:19" xmlns:ak="u:0:20" xmlns:al="u:0:21" xmlns:am="u:0:22" xmlns:an="u:0:23" xmlns:ao="u:0:24" xmlns:ap="u:0:25" xmlns:aq="u:0:26" xmlns:ar="u:0:27" xmlns:as="u:0:28" xmlns:at="u:0:29" xmlns:au="u:0:30" xmlns:av="u:0:31" xmlns:aw="u:0:32" xmlns:ax="u:0:33" xmlns:ay="u:0:34" xmlns:az="u:0:35" xmlns:b0="u:0:36" xmlns:b1="u:0:37" xmlns:b2="u:0:38" xmlns:b3="u:0:39" xmlns:b4="u:0:40" xmlns:b5="u:0:41" xmlns:b6="u:0:42" xmlns:b7="u:0:43" xmlns:b8="u:0:44" xmlns:b9="u:0:45" xmlns:ba="u:0:46" xmlns:bb="u:0:47" xmlns:bc="u:0:48" xmlns:bd="u:0:49">X</a0:e>
+  </samlp:Extensions>
+</samlp:AuthnRequest>

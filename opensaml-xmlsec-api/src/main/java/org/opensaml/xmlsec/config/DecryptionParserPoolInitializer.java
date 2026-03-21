@@ -15,7 +15,9 @@
 package org.opensaml.xmlsec.config;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import org.opensaml.core.config.ConfigurationProperties;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
@@ -26,21 +28,53 @@ import net.shibboleth.shared.xml.impl.BasicParserPool;
 /**
  * An initializer for the global parser pool for XML decryption use, wrapped by {@link DecryptionParserPool}.
  * 
- * <p>
+ *  * <p>
  * The ParserPool configured by default here is an instance of
- * {@link BasicParserPool}, with a maxPoolSize property of 50, 
- * an additional feature added specifically for decryption usage 
- * (http://apache.org/xml/features/dom/defer-node-expansion = False)
- * and all other properties with default values.
+ * {@link BasicParserPool}, with the following non-default property values:
  * </p>
+ * <ul>
+ * <li>maxPoolSize = 50</li>
+ * <li>builder feature http://apache.org/xml/features/dom/defer-node-expansion = False</li>
+ * <li>builder attribute jdk.xml.elementAttributeLimit = 30</li>
+ * <li>builder attribute jdk.xml.maxElementDepth = 25</li>
+ * </ul>
  * 
  */
 public class DecryptionParserPoolInitializer implements Initializer {
+    
+    /** Config property prefix for XML processing. */
+    public static final String CONFIG_PROP_PREFIX_XML = "opensaml.config.xml.decrypter";
+    
+    /** Config property name: XML element attribute limit. */
+    public static final String CONFIG_PROPERTY_XML_ELEMENT_ATTRIBUTE_LIMIT =
+            CONFIG_PROP_PREFIX_XML + ".elementAttributeLimit";
+
+    /** Config property default: XML element attribute limit: 30. */
+    public static final String ELEMENT_ATTRIBUTE_LIMIT_DEFAULT = "30";
+    
+    /** Config property name: XML max element depth. */
+    public static final String CONFIG_PROPERTY_XML_MAX_ELEMENT_DEPTH =
+            CONFIG_PROP_PREFIX_XML + ".maxElementDepth";
+
+    /** Config property default: XML max element depth: 25. */
+    public static final String MAX_ELEMENT_DEPTH_DEFAULT = "25";
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
         final BasicParserPool pp = new BasicParserPool();
         pp.setMaxPoolSize(50);
+
+        // Start with a clone of the default pool attributes and then add the custom properties
+        final ConfigurationProperties props = ConfigurationService.getConfigurationProperties(); 
+        
+        final Map<String,Object> builderAttributes = new HashMap<>(pp.getBuilderAttributes());
+        builderAttributes.put("jdk.xml.elementAttributeLimit",
+                Integer.valueOf(props.getProperty(CONFIG_PROPERTY_XML_ELEMENT_ATTRIBUTE_LIMIT,
+                        ELEMENT_ATTRIBUTE_LIMIT_DEFAULT)));
+        builderAttributes.put("jdk.xml.maxElementDepth",
+                Integer.valueOf(props.getProperty(CONFIG_PROPERTY_XML_MAX_ELEMENT_DEPTH,
+                        MAX_ELEMENT_DEPTH_DEFAULT)));
+        pp.setBuilderAttributes(builderAttributes);
         
         // Start with a clone of the default pool features
         // Mostly importantly this includes the existing features for hardening against known
