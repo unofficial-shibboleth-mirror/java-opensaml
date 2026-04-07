@@ -132,7 +132,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * 
      * @return the held instance of the class, or null
-     * @deprecated use {@link #ensureSubcontext(Class)} or {#link {@link #getSubcontext(Class)}.
+     * @deprecated use {@link #ensureSubcontext(Class)} or {@link #getSubcontext(Class)}.
      */ 
     @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, final boolean autocreate) {
@@ -175,7 +175,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @return the held instance of the class, or null
      */ 
-    @Nullable public BaseContext ensureSubcontext(@Nonnull @NotEmpty final String className) {
+    @Nonnull public BaseContext ensureSubcontext(@Nonnull @NotEmpty final String className) {
         final BaseContext newContext = getSubcontext(className, true);
         if (newContext == null) {
             throw new IllegalStateException("Context of type '" + className + "' did not exist or was not created");
@@ -195,7 +195,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * 
      * @return the held instance of the class, or null
-     * @deprecated use {@link #ensureSubcontext(String)} or {#link {@link #getSubcontext(String)}.
+     * @deprecated use {@link #ensureSubcontext(String)} or {@link #getSubcontext(String)}.
      */ 
     @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate) {
