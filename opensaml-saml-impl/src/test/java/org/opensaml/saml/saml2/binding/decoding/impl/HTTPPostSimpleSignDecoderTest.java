@@ -17,11 +17,15 @@ package org.opensaml.saml.saml2.binding.decoding.impl;
 import java.io.UnsupportedEncodingException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -30,9 +34,10 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.testing.ConstantSupplier;
+import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
- * Test case for HTTP POST decoders.
+ * Test case for HTTP POST SimpleSign decoders.
  */
 public class HTTPPostSimpleSignDecoderTest extends XMLObjectBaseTestCase {
     
@@ -184,6 +189,132 @@ public class HTTPPostSimpleSignDecoderTest extends XMLObjectBaseTestCase {
                 + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
 
         decoder.decode();
+    }
+    
+    @Test
+    public void testRequestSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderRequestSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(true);
+
+            httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                    + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                    + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+
+            decoder.decode();
+            final MessageContext messageContext = decoder.getMessageContext();
+            assert messageContext != null;
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testRequestSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderRequestSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderRequestSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderRequestSizeLimit(10);
+
+            httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                    + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                    + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderRequestSizeLimit(origLimit);
+        }
+    }
+
+    @Test
+    public void testResponseSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+
+            httpRequest.setParameter("SAMLResponse", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOlJlc3Bvbn"
+                    + "NlIElEPSJmb28iIElzc3VlSW5zdGFudD0iMTk3MC0wMS0wMVQwMDowMDowMC4wMDBaIiBWZXJzaW9uPSIyLjAiIHhtbG5zOnN"
+                    + "hbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiPjxzYW1scDpTdGF0dXM+PHNhbWxwOlN0YXR1c0Nv"
+                    + "ZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjwvc"
+                    + "2FtbHA6UmVzcG9uc2U+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testResponseSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(10);
+
+            httpRequest.setParameter("SAMLResponse", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOlJlc3Bvbn"
+                    + "NlIElEPSJmb28iIElzc3VlSW5zdGFudD0iMTk3MC0wMS0wMVQwMDowMDowMC4wMDBaIiBWZXJzaW9uPSIyLjAiIHhtbG5zOnN"
+                    + "hbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiPjxzYW1scDpTdGF0dXM+PHNhbWxwOlN0YXR1c0Nv"
+                    + "ZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjwvc"
+                    + "2FtbHA6UmVzcG9uc2U+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(origLimit);
+        }
+    }
+    
+    @Test
+    public void testKeyInfoSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderKeyInfoSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderKeyInfoSizeLimit(true);
+
+            httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                    + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                    + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+            httpRequest.setParameter("KeyInfo", buildKeyInfo());
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderKeyInfoSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testKeyInfoSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderKeyInfoSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderKeyInfoSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderKeyInfoSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderKeyInfoSizeLimit(10);
+
+            httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                    + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                    + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+            httpRequest.setParameter("KeyInfo", buildKeyInfo());
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderKeyInfoSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderKeyInfoSizeLimit(origLimit);
+        }
+    }
+    
+    //
+    // Helpers
+    //
+
+    private String buildKeyInfo() throws Exception {
+        final KeyInfo keyInfo = (KeyInfo) XMLObjectSupport.buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        KeyInfoSupport.addKeyName(keyInfo, "TestKey");
+
+        final String kiXML = SerializeSupport.nodeToString(XMLObjectSupport.marshall(keyInfo));
+        final String kiBase64 = Base64Support.encode(kiXML.getBytes(), Base64Support.UNCHUNKED);
+        return kiBase64;
     }
     
 }

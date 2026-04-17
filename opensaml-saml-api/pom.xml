@@ -59,6 +59,10 @@
 
         <dependency>
             <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-security</artifactId>
         </dependency>
 
@@ -86,6 +90,11 @@
         <!-- Runtime Dependencies -->
 
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

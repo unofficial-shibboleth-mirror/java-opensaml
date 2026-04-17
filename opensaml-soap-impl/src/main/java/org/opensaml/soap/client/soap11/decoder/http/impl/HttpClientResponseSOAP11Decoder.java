@@ -15,6 +15,7 @@
 package org.opensaml.soap.client.soap11.decoder.http.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,16 +32,19 @@ import org.opensaml.messaging.decoder.httpclient.BaseHttpClientResponseXMLMessag
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.common.SOAP11FaultDecodingException;
+import org.opensaml.soap.config.SOAPConfigurationSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
+import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.io.SizeLimitedInputStream;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -162,8 +166,18 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             if (entity == null) {
                 throw new MessageDecodingException("No response body from server");
             }
+            
+            final InputStream responseIn = entity.getContent();
+            assert responseIn != null;
+            final InputStream in = wrapInputStreamForSizeLimitEnforcement(responseIn);
 
-            final Envelope soapMessage = (Envelope) unmarshallMessage(entity.getContent());
+            final Envelope soapMessage;
+            try {
+                soapMessage = (Envelope) unmarshallMessage(in);
+            } catch (final Exception e) {
+                SOAPSupport.checkExceptionStackAndLogSizeExceeded(e);
+                throw e;
+            }
 
             // Defensive sanity check, otherwise body handler could later fail non-gracefully with runtime exception
             final Fault fault = getFault(soapMessage);
@@ -193,7 +207,17 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
                 throw new MessageDecodingException("No response body from server");
             }
 
-            final Envelope soapMessage = (Envelope) unmarshallMessage(entity.getContent());
+            final InputStream responseIn = entity.getContent();
+            assert responseIn != null;
+            final InputStream in = wrapInputStreamForSizeLimitEnforcement(responseIn);
+
+            final Envelope soapMessage;
+            try {
+                soapMessage = (Envelope) unmarshallMessage(in);
+            } catch (final Exception e) {
+                SOAPSupport.checkExceptionStackAndLogSizeExceeded(e);
+                throw e;
+            }
 
             final Fault fault = getFault(soapMessage);
             if (fault == null) {
@@ -209,6 +233,34 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
 
             return new SOAP11FaultDecodingException(fault);
         }
+    }
+    
+    /**
+     * Check whether message size limit enforcement is enabled and wrap the passed input stream appropriately.
+     * 
+     * @param responseIn the response input stream being process
+     * 
+     * @return the effective input stream to use in message processing
+     * 
+     * @throws MessageDecodingException if size limit enforcement is enabled, but the size limit is not available
+     */
+    @Nonnull protected InputStream wrapInputStreamForSizeLimitEnforcement(
+            @Nonnull final InputStream responseIn) throws MessageDecodingException {
+
+        final InputStream in;
+        if (SOAPConfigurationSupport.isEnforceDecoderSizeLimit()) {
+            final Integer sizeLimit = SOAPConfigurationSupport.getDecoderSizeLimit();
+            if (sizeLimit == null) {
+                throw new MessageDecodingException("Enforcement of SOAP message size limit enabled "
+                        + "but size limit was undetermined");
+            }
+            log.debug("Wrapping response input stream for size limit enforcement with limit: {}", sizeLimit);
+            in = new SizeLimitedInputStream(responseIn, sizeLimit);
+        } else {
+            log.debug("Size limiit enforcement was disabled");
+            in = responseIn; 
+        }
+        return in;
     }
     
     /**

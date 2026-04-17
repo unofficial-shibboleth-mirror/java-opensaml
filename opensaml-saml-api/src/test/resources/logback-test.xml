@@ -8,9 +8,8 @@
         </encoder>
     </appender>
     
-    <logger name="PROTOCOL_MESSAGE" level="DEBUG" />
-    
-    <logger name="org.opensaml.saml.common.binding.SAMLBindingSupport" level="DEBUG" />
+    <logger name="org.opensaml.saml.common.binding.SAMLBindingSupport" level="TRACE" />
+    <logger name="org.opensaml.saml.common.binding.SAMLBindingSupportTest" level="TRACE" />
 
     <root level="WARN">
         <appender-ref ref="STDOUT"/>

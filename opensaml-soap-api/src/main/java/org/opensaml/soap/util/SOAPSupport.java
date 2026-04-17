@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.io.SizeLimitExceededException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.XMLConstants;
 
@@ -42,11 +44,15 @@ import org.opensaml.soap.soap11.FaultActor;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
+import org.slf4j.Logger;
 
 /**
  * Helper methods for working with SOAP.
  */
 public final class SOAPSupport {
+    
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(SOAPSupport.class);
 
     /**
      * Private constructor.
@@ -462,5 +468,26 @@ public final class SOAPSupport {
         return faultObj;
     }
 // Checkstyle: CyclomaticComplexity ON
+    
+    /**
+     * Check the specified Throwable and its children to see if a cause of the error was
+     * {@link SizeLimitExceededException}, and log it if so.
+     * 
+     * @param original the originally thrown error
+     */
+    public static void checkExceptionStackAndLogSizeExceeded(@Nullable final Throwable original) {
+        if (original == null) {
+            return;
+        }
+        Throwable cause = original;
+        while (cause != null) {
+           if (SizeLimitExceededException.class.isInstance(cause)) {
+               LOG.warn("SOAP message size exceeded configured size limit: {}", cause.getMessage());
+               break;
+           }
+           cause = cause.getCause();
+        }
+        
+    }
     
 }

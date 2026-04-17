@@ -44,5 +44,49 @@ public class SAMLConfigurationTest {
         Assert.assertTrue(schemes.contains("foobar"));
     }
     
+    @Test
+    public void testDecoderLimits() {
+        SAMLConfiguration config = new SAMLConfiguration();
+
+        // Test default values
+        Assert.assertFalse(config.isEnforceDecoderRequestSizeLimit());
+        Assert.assertNull(config.getDecoderRequestSizeLimit());
+
+        Assert.assertFalse(config.isEnforceDecoderResponseSizeLimit());
+        Assert.assertNull(config.getDecoderResponseSizeLimit());
+
+        Assert.assertFalse(config.isEnforceDecoderKeyInfoSizeLimit());
+        Assert.assertNull(config.getDecoderKeyInfoSizeLimit());
+
+        Assert.assertFalse(config.isDecoderEstimateInflatedSize());
+        Assert.assertNull(config.getDecoderInflationFactor());
+        
+
+        // Test setters 
+        config.setEnforceDecoderRequestSizeLimit(true);
+        config.setDecoderRequestSizeLimit(100);
+
+        config.setEnforceDecoderResponseSizeLimit(true);
+        config.setDecoderResponseSizeLimit(200);
+
+        config.setEnforceDecoderKeyInfoSizeLimit(true);
+        config.setDecoderKeyInfoSizeLimit(300);
+
+        config.setDecoderEstimateInflatedSize(true);
+        config.setDecoderInflationFactor(1.75f);
+
+        Assert.assertTrue(config.isEnforceDecoderRequestSizeLimit());
+        Assert.assertEquals(config.getDecoderRequestSizeLimit(), 100);
+
+        Assert.assertTrue(config.isEnforceDecoderResponseSizeLimit());
+        Assert.assertEquals(config.getDecoderResponseSizeLimit(), 200);
+
+        Assert.assertTrue(config.isEnforceDecoderKeyInfoSizeLimit());
+        Assert.assertEquals(config.getDecoderKeyInfoSizeLimit(), 300);
+
+        Assert.assertTrue(config.isDecoderEstimateInflatedSize());
+        Assert.assertEquals(config.getDecoderInflationFactor(), 1.75f);
+    }
+    
 
 }

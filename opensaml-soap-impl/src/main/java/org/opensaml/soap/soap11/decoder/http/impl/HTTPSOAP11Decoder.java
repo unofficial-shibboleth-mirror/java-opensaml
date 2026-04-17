@@ -27,8 +27,10 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.soap.config.SOAPConfigurationSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 
 import com.google.common.net.MediaType;
@@ -36,6 +38,7 @@ import com.google.common.net.MediaType;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.io.SizeLimitedInputStream;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.servlet.HttpServletSupport;
@@ -107,13 +110,29 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
 
         log.debug("Unmarshalling SOAP message");
         final Envelope soapMessage;
-        try (final InputStream in = request.getInputStream()) {
-            assert in != null;
+        try (final InputStream requestIn = request.getInputStream()) {
+            assert requestIn != null;
+            final InputStream in;
+            if (SOAPConfigurationSupport.isEnforceDecoderSizeLimit()) {
+                final Integer sizeLimit = SOAPConfigurationSupport.getDecoderSizeLimit();
+                if (sizeLimit == null) {
+                    throw new MessageDecodingException("Enforcement of SOAP message size limit enabled "
+                            + "but size limit was undetermined");
+                }
+                log.debug("Wrapping body input stream for size limit enforcement with limit: {}", sizeLimit);
+                in = new SizeLimitedInputStream(requestIn, sizeLimit);
+            } else {
+                log.debug("Size limiit enforcement was disabled");
+                in = requestIn; 
+            }
             soapMessage = (Envelope) unmarshallMessage(in);
             messageContext.ensureSubcontext(SOAP11Context.class).setEnvelope(soapMessage);
         } catch (final IOException e) {
+            SOAPSupport.checkExceptionStackAndLogSizeExceeded(e);
             log.error("Unable to obtain input stream from HttpServletRequest: {}", e.getMessage());
             throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
+        } catch (final Exception e) {
+            SOAPSupport.checkExceptionStackAndLogSizeExceeded(e);
         }
         
         try {

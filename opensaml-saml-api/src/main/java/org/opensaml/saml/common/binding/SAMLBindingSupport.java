@@ -14,10 +14,14 @@
 
 package org.opensaml.saml.common.binding;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,6 +45,10 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.io.NoWrapAutoEndInflaterInputStream;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -469,5 +477,211 @@ public final class SAMLBindingSupport {
             }
         }
     }
+    
+    /**
+     * Get the type of message being processed.
+     * 
+     * @param httpRequest the HTTP request
+     * 
+     * @return the message type, or null if the HTTP request is malformed with respect
+     *         to SAML message parameters
+     */
+    @Nullable public static MessageType getMessageType(@Nonnull final HttpServletRequest httpRequest) {
+        Constraint.isNotNull(httpRequest, "HttpServletRequest was null");
+        
+        final Set<String> messageTypeParamNames = MessageType.getAllParameterNames();
+        final Set<String> requestParamNames = httpRequest.getParameterMap().keySet();
+        
+        final Set<String> messageParamNames = requestParamNames.stream()
+                .filter(paramName -> messageTypeParamNames.contains(paramName))
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableSet())).get();
+        LOG.debug("HttpServletRequest carried SAML message parameters: {}", messageParamNames);
 
+        if (messageParamNames.isEmpty()) {
+            LOG.warn("HttpServletRequest carried no SAML message parameters");
+            return null;
+        }
+        if (messageParamNames.size() > 1) {
+            LOG.warn("HttpServletRequest carried multiple SAML message type parameters: {}", messageParamNames);
+            return null;
+        }
+        
+        final String messageParamName = messageParamNames.iterator().next();
+
+        return MessageType.fromParameterName(messageParamName);
+    }
+    
+    /**
+     * Validate that an HTTP request has a valid number of values for the specified message type.
+     * 
+     * @param httpRequest the HTTP request
+     * @param messageType the message type
+     * 
+     * @throws MessageDecodingException if the HTTP request has an invalid number of values
+     *         for the specified message type
+     */
+    public static void validateMessageTypeValues(@Nonnull final HttpServletRequest httpRequest,
+            @Nonnull final MessageType messageType) throws MessageDecodingException {
+        Constraint.isNotNull(httpRequest, "HttpServletRequest was null");
+        Constraint.isNotNull(messageType, "MessageType was null");
+        
+        // Validate that the parameter does not have multiple values
+        final String paramName = messageType.getParameterName();
+        if (httpRequest.getParameterValues(paramName) != null
+                && httpRequest.getParameterValues(paramName).length > 1) {
+            throw new MessageDecodingException("HttpServletRequest had multiple values for parameter: "
+                    + messageType.getParameterName());
+        }
+    }
+    
+    /**
+     * Evaluate message size limit using the supplied parameters.
+     * 
+     * @param enforcementEnabled whether enforcement of message size limit is enabled
+     * @param messageSizeLimit the message size limit
+     * @param messageSize the received message size
+     * 
+     * @throws MessageDecodingException if evaluation is enabled and either 1) message size exceeds the limit
+     *         or 2) the message size or limit is null
+     */
+    public static void evaluateMessageSizeLimit(final boolean enforcementEnabled,
+            @Nullable final Integer messageSizeLimit, @Nullable final Integer messageSize)
+                    throws MessageDecodingException {
+        evaluateMessageSizeLimit(enforcementEnabled, messageSizeLimit, messageSize, "message");
+    }
+
+    /**
+     * Evaluate message size limit using the supplied parameters.
+     * 
+     * @param enforcementEnabled whether enforcement of message size limit is enabled
+     * @param messageSizeLimit the message size limit
+     * @param messageSize the received message size
+     * @param description description of what is being evaluated
+     * 
+     * @throws MessageDecodingException if evaluation is enabled and either 1) message size exceeds the limit
+     *         or 2) the message size or limit is null
+     */
+    public static void evaluateMessageSizeLimit(final boolean enforcementEnabled,
+            @Nullable final Integer messageSizeLimit, @Nullable final Integer messageSize,
+            @Nullable final String description) throws MessageDecodingException {
+        
+        final String descriptionNormalized = description != null ? description : "message";
+        
+        if (enforcementEnabled)  {
+            if (messageSize == null) {
+                throw new MessageDecodingException(String.format("Enforcement of %s size limit enabled "
+                        + "but size was undetermined", descriptionNormalized));
+            }
+            
+            if (messageSizeLimit == null) {
+                throw new MessageDecodingException(String.format("Enforcement of %s size limit enabled "
+                        + "but size limit was undetermined", descriptionNormalized));
+            }
+            
+            if (messageSize > messageSizeLimit) {
+                LOG.warn("Size of {} was {} which exceeded configured size limit {}",
+                        descriptionNormalized, messageSize, messageSizeLimit);
+                throw new MessageDecodingException(String.format("Size of %s exceeded configured size limit",
+                        descriptionNormalized));
+            } else {
+                LOG.debug("Size of {} was {} which was within configured size limit {}",
+                        descriptionNormalized, messageSize, messageSizeLimit);
+            }
+        } else {
+            LOG.debug("Enforcement of {} size limit is disabled, skipping check", descriptionNormalized);
+        }
+        
+    }
+    
+    /**
+     * Efficiently get the size of Base64-encoded data if it were decoded.
+     * 
+     * @param encoded the Base64-encoded data
+     * @return the size of the data when decoded, in bytes
+     */
+    @Nonnull public static Integer getBase64Size(@Nullable final String encoded) {
+        final String trimmed = StringSupport.trimOrNull(encoded);
+        if (trimmed == null) {
+            return 0;
+        }
+        LOG.trace("Trimmed Base64-encoded string was '{}'", trimmed);
+
+        // Normalize the string by stripping the '=' padding
+        final String noPadding = trimmed.split("=")[0];
+        LOG.trace("Unpadded Base64-encoded string was '{}'", noPadding);
+        LOG.trace("Length of the unpadded Base64-encoded string is {} characters", noPadding.length());
+
+        final float floatSize = (float) (noPadding.length() * 0.75);
+        LOG.trace("Raw float size of Base64-encoded data was {} bytes", floatSize);
+
+        final Integer integerSize = (int)Math.floor(floatSize);
+        LOG.trace("Integer size of Base64-encoded data was {} bytes", integerSize);
+
+        return integerSize;
+    }
+
+    /**
+     * Get the size of deflated and Base64-encoded data if it were decoded then inflated.
+     * 
+     * <p>
+     * If <code>estimated</code> is true, then the size is estimated efficiently by simply applying
+     * the specified <code>inflationFactor</code> against the result of {@link #getBase64Size(String)}.
+     * This is very fast but the accuracy will depend entirely on the <code>inflationFactor</code>
+     * that is used, so it must be chosen based on knowledge of the compressibility of the data.
+     * </p>
+     * 
+     * <p>
+     * If <code>estimated</code> is false, then the encoded data is actually Base64-decoded and then
+     * inflated and the size is the length of the resulting <code>byte[]</code>. This is computationally
+     * more expensive, but will give an exact size.
+     * </p>
+     * 
+     * @param deflatedAndEncoded the deflated and Base64-encoded data
+     * @param estimated flag indicating whether an exact or an estimated value should be determined
+     * @param inflationFactor for estimated mode the multiplier applied against the Base64-decoded size. Should be
+     *        greater than 1.0
+     * @return the size of the data when Base64-decoded and inflated, in bytes
+     * 
+     * @throws MessageDecodingException if estimated was true and inflationFactor is null, or if there was
+     *         a fatal error during Base64-decoding or inflation
+     */
+    @Nonnull public static Integer getDeflatedSize(@Nullable final String deflatedAndEncoded,
+            final boolean estimated, @Nullable final Float inflationFactor) throws MessageDecodingException {
+
+        final String trimmed = StringSupport.trimOrNull(deflatedAndEncoded);
+        if (trimmed == null) {
+            return 0;
+        }
+        LOG.trace("Trimmed deflated and Base64-encoded string was '{}'", trimmed);
+        
+        Integer size = null;
+        if (estimated) {
+            LOG.trace("Calculated deflated data size will be estimated");
+            if (inflationFactor == null) {
+                throw new MessageDecodingException("Estimate was specified by inflationFactor was null");
+            }
+
+            size = (int) Math.ceil(getBase64Size(trimmed) * inflationFactor);
+        } else {
+            LOG.trace("Calculated deflated data size will be exact");
+            try {
+                final byte[] decodedBytes = Base64Support.decode(trimmed);
+                try (final NoWrapAutoEndInflaterInputStream is =
+                        new NoWrapAutoEndInflaterInputStream(new ByteArrayInputStream(decodedBytes))) {
+
+                    size = is.readAllBytes().length;
+                    
+                } catch (final IOException e) {
+                    throw new MessageDecodingException("Fatal error during inflation", e);
+                }
+
+            } catch (final DecodingException e) {
+                throw new MessageDecodingException("Fatal error during Base64-decoding", e);
+            }
+        }
+
+        LOG.trace("Calculated deflated data size result is {} bytes", size);
+        return size;
+    }
+    
 }

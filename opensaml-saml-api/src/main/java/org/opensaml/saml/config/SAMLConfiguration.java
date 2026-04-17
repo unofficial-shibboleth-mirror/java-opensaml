@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
@@ -50,6 +51,29 @@ public class SAMLConfiguration {
      * Defaults to 'http' and 'https'. */
     @Nonnull @Unmodifiable @NotLive private List<String> allowedBindingURLSchemes;
     
+    /** Flag indicating whether to enforce SAMLRequest message size limits in the decoders. */
+    private boolean enforceDecoderRequestSizeLimit;
+    
+    /** SAMLRequest message size limit. */
+    @Nullable private Integer decoderRequestSizeLimit;
+    
+    /** Flag indicating whether to enforce SAMLResponse message size limits in the decoders. */
+    private boolean enforceDecoderResponseSizeLimit;
+
+    /** SAMLResponse message size limit. */
+    @Nullable private Integer decoderResponseSizeLimit;
+
+    /** Flag indicating whether to enforce KeyInfo size limits in the decoders (currently POST SimpleSign only). */
+    private boolean enforceDecoderKeyInfoSizeLimit;
+
+    /** KeyInfo size limit (currently POST SimpleSign only). */
+    @Nullable private Integer decoderKeyInfoSizeLimit;
+
+    /** Flag indicating whether to estimate the inflated size of deflated data, or to do an exact computation. */
+    private boolean decoderEstimateInflatedSize;
+
+    /** The inflation factor to use when {@link #isDecoderEstimateInflatedSize()} is enabled. */
+    @Nullable private Float decoderInflationFactor;
 
     /**
      * Constructor.
@@ -136,6 +160,170 @@ public class SAMLConfiguration {
                     .map(String::toLowerCase)
                     .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
         }
+    }
+
+    /**
+     * Get the flag indicating whether to enforce SAMLRequest message size limits in the decoders.
+     * 
+     * @return true if enforcement enabled, false if not
+     */
+    public boolean isEnforceDecoderRequestSizeLimit() {
+        return enforceDecoderRequestSizeLimit;
+    }
+
+    /**
+     * Set the flag indicating whether to enforce SAMLRequest message size limits in the decoders.
+     * 
+     * @param flag true if enforcement enabled, false if not
+     */
+    public void setEnforceDecoderRequestSizeLimit(final boolean flag) {
+        enforceDecoderRequestSizeLimit = flag;
+    }
+
+    /**
+     * Get the SAMLRequest message size limit.
+     * 
+     * @return the limit in bytes
+     */
+    @Nullable public Integer getDecoderRequestSizeLimit() {
+        return decoderRequestSizeLimit;
+    }
+
+    /**
+     * Set the SAMLRequest message size limit.
+     * 
+     * @param limit the limit in bytes
+     */
+    public void setDecoderRequestSizeLimit(@Nullable final Integer limit) {
+        decoderRequestSizeLimit = limit;
+    }
+
+    /**
+     * Get the flag indicating whether to enforce SAMLResponse message size limits in the decoders.
+     * 
+     * @return true if enforcement enabled, false if not
+     */
+    public boolean isEnforceDecoderResponseSizeLimit() {
+        return enforceDecoderResponseSizeLimit;
+    }
+
+    /**
+     * Set the flag indicating whether to enforce SAMLResponse message size limits in the decoders.
+     * 
+     * @param flag true if enforcement enabled, false if not
+     */
+    public void setEnforceDecoderResponseSizeLimit(final boolean flag) {
+        enforceDecoderResponseSizeLimit = flag;
+    }
+
+    /**
+     * Get the SAMLResponse message size limit.
+     * 
+     * @return the limit in bytes
+     */
+    @Nullable public Integer getDecoderResponseSizeLimit() {
+        return decoderResponseSizeLimit;
+    }
+
+    /**
+     * Set the SAMLResponse message size limit.
+     * 
+     * @param limit the limit in bytes
+     */
+    public void setDecoderResponseSizeLimit(@Nullable final Integer limit) {
+        decoderResponseSizeLimit = limit;
+    }
+
+    /**
+     * Get the flag indicating whether to enforce KeyInfo size limits in the decoders (currently POST SimpleSign only).
+     * 
+     * @return true if enforcement enabled, false if not
+     */
+    public boolean isEnforceDecoderKeyInfoSizeLimit() {
+        return enforceDecoderKeyInfoSizeLimit;
+    }
+
+    /**
+     * Set the flag indicating whether to enforce KeyInfo size limits in the decoders (currently POST SimpleSign only).
+     * 
+     * @param flag true if enforcement enabled, false if not
+     */
+    public void setEnforceDecoderKeyInfoSizeLimit(final boolean flag) {
+        enforceDecoderKeyInfoSizeLimit = flag;
+    }
+
+    /**
+     * Get the KeyInfo size limit (currently POST SimpleSign only). 
+     * 
+     * @return the limit in bytes
+     */
+    @Nullable public Integer getDecoderKeyInfoSizeLimit() {
+        return decoderKeyInfoSizeLimit;
+    }
+
+    /**
+     * Set the KeyInfo size limit (currently POST SimpleSign only). 
+     * 
+     * @param limit the limit in bytes
+     */
+    public void setDecoderKeyInfoSizeLimit(@Nullable final Integer limit) {
+        decoderKeyInfoSizeLimit = limit;
+    }
+
+    /**
+     * Get the flag indicating whether to estimate the inflated size of deflated data, or to do an exact computation.
+     * 
+     * <p>
+     * For more details on usage see the documentation for
+     * {@link SAMLBindingSupport#getDeflatedSize(String, boolean, Float)}.
+     * </p>
+     * 
+     * @return true if estimation is enabled, false if not
+     */
+    public boolean isDecoderEstimateInflatedSize() {
+        return decoderEstimateInflatedSize;
+    }
+
+    /**
+     * Set the flag indicating whether to estimate the inflated size of deflated data, or to do an exact computation.
+     * 
+     * <p>
+     * For more details on usage see the documentation for
+     * {@link SAMLBindingSupport#getDeflatedSize(String, boolean, Float)}.
+     * </p>
+     * 
+     * @param flag true if estimate is enabled, false if not
+     */
+    public void setDecoderEstimateInflatedSize(final boolean flag) {
+        decoderEstimateInflatedSize = flag;
+    }
+
+    /**
+     * Get the inflation factor to use when {@link #isDecoderEstimateInflatedSize()} is enabled.
+     * 
+     * <p>
+     * For more details on usage see the documentation for
+     * {@link SAMLBindingSupport#getDeflatedSize(String, boolean, Float)}.
+     * </p>
+     * 
+     * @return the inflation factor
+     */
+    @Nullable public Float getDecoderInflationFactor() {
+        return decoderInflationFactor;
+    }
+
+    /**
+     * Set the inflation factor to use when {@link #isDecoderEstimateInflatedSize()} is enabled.
+     * 
+     * <p>
+     * For more details on usage see the documentation for
+     * {@link SAMLBindingSupport#getDeflatedSize(String, boolean, Float)}.
+     * </p>
+     * 
+     * @param inflationFactor the inflation factor
+     */
+    public void setDecoderInflationFactor(@Nullable final Float inflationFactor) {
+        decoderInflationFactor = inflationFactor;
     }
 
 }

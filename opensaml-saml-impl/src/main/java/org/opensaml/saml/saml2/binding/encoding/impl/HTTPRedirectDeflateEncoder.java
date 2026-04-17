@@ -16,7 +16,6 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.io.NoWrapAutoEndDeflaterOutputStream;
 import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -294,35 +294,6 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             log.error("Error during URL signing process: {}", e.getMessage());
             throw new MessageEncodingException("Unable to base64 encode signature of URL query string", e);
         }
-    }
-
-    /** A subclass of {@link DeflaterOutputStream} which defaults in a no-wrap {@link Deflater} instance and
-     * closes it when the stream is closed.
-     * 
-     * @deprecated use instead net.shibboleth.shared.io.NoWrapAutoEndDeflaterOutputStream
-     */
-    @Deprecated(forRemoval = true, since = "5.2.2")
-    private class NoWrapAutoEndDeflaterOutputStream extends DeflaterOutputStream {
-
-        /**
-         * Creates a new output stream with a default no-wrap compressor and buffer size,
-         * and the specified compression level.
-         *
-         * @param os the output stream
-         * @param level the compression level (0-9)
-         */
-        public NoWrapAutoEndDeflaterOutputStream(@Nonnull final OutputStream os, final int level) {
-            super(os, new Deflater(level, true));
-        }
-
-        /** {@inheritDoc} */
-        public void close() throws IOException {
-            if (def != null) {
-                def.end();
-            }
-            super.close();
-        }
-
     }
 
 }

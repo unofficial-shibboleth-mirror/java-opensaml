@@ -18,6 +18,7 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -140,6 +141,80 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
                 + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
 
         decoder.decode();
+    }
+    
+    @Test
+    public void testRequestSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderRequestSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(true);
+
+            httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                    + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                    + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testRequestSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderRequestSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderRequestSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderRequestSizeLimit(10);
+
+            httpRequest.setParameter("SAMLRequest", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOkF1dGhuUm"
+                    + "VxdWVzdCBJRD0iZm9vIiBJc3N1ZUluc3RhbnQ9IjE5NzAtMDEtMDFUMDA6MDA6MDAuMDAwWiIgVmVyc2lvbj0iMi4wIiB4bW"
+                    + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderRequestSizeLimit(origLimit);
+        }
+    }
+
+    @Test
+    public void testResponseSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+
+            httpRequest.setParameter("SAMLResponse", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOlJlc3Bvbn"
+                    + "NlIElEPSJmb28iIElzc3VlSW5zdGFudD0iMTk3MC0wMS0wMVQwMDowMDowMC4wMDBaIiBWZXJzaW9uPSIyLjAiIHhtbG5zOnN"
+                    + "hbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiPjxzYW1scDpTdGF0dXM+PHNhbWxwOlN0YXR1c0Nv"
+                    + "ZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjwvc"
+                    + "2FtbHA6UmVzcG9uc2U+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testResponseSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(10);
+
+            httpRequest.setParameter("SAMLResponse", "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNhbWxwOlJlc3Bvbn"
+                    + "NlIElEPSJmb28iIElzc3VlSW5zdGFudD0iMTk3MC0wMS0wMVQwMDowMDowMC4wMDBaIiBWZXJzaW9uPSIyLjAiIHhtbG5zOnN"
+                    + "hbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiPjxzYW1scDpTdGF0dXM+PHNhbWxwOlN0YXR1c0Nv"
+                    + "ZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjwvc"
+                    + "2FtbHA6UmVzcG9uc2U+");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(origLimit);
+        }
     }
     
 }

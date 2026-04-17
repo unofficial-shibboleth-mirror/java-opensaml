@@ -165,4 +165,12 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     
+    /** {@inheritDoc} */
+    @Override
+    @Nullable
+    protected Integer getMessageSize() throws MessageDecodingException {
+        return SAMLBindingSupport.getBase64Size(
+                getHttpServletRequest().getParameter(getMessageType().getParameterName()));
+    }
+    
 }

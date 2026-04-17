@@ -23,8 +23,6 @@ import javax.annotation.Nullable;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.opensaml.core.config.ConfigurationProperties;
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.HTMLMessageEncoder;

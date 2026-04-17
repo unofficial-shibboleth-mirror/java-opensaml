@@ -38,11 +38,11 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.common.SOAP11FaultDecodingException;
+import org.opensaml.soap.config.SOAPConfigurationSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
-import org.opensaml.soap.soap11.decoder.http.impl.HTTPSOAP11DecoderTest.TestEnvelopeBodyHandler;
 import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -132,6 +132,61 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder.decode();
     }
+    
+    @Test
+    public void testSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SOAPConfigurationSupport.isEnforceDecoderSizeLimit();
+        try {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(true);
+            
+            final Envelope envelope = buildMessageSkeleton();
+            final Body body = envelope.getBody();
+            assert body != null;
+            body.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+            final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
+            
+            final MessageHandler handler = new TestEnvelopeBodyHandler();
+            handler.initialize();
+            decoder.setBodyHandler(handler);
+            decoder.setHttpResponse(httpResponse);
+            decoder.initialize();
+            
+            decoder.decode();
+        } finally {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SOAPConfigurationSupport.isEnforceDecoderSizeLimit();
+        Integer origLimit = SOAPConfigurationSupport.getDecoderSizeLimit();
+        try {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(true);
+            SOAPConfigurationSupport.setDecoderSizeLimit(10);
+            
+            final Envelope envelope = buildMessageSkeleton();
+            final Body body = envelope.getBody();
+            assert body != null;
+            body.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+            final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
+            
+            final MessageHandler handler = new TestEnvelopeBodyHandler();
+            handler.initialize();
+            decoder.setBodyHandler(handler);
+            decoder.setHttpResponse(httpResponse);
+            decoder.initialize();
+            
+            decoder.decode();
+        } finally {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(origEnforceLimit);
+            SOAPConfigurationSupport.setDecoderSizeLimit(origLimit);
+        }
+    }
+    
+    //
+    // Helpers
+    //
     
     @Nonnull private ClassicHttpResponse buildResponse(int statusResponseCode, @Nonnull final Envelope envelope)
             throws MarshallingException, IOException {

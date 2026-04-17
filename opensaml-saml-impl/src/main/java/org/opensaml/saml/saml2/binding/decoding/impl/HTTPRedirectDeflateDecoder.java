@@ -21,8 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,6 +34,7 @@ import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.binding.impl.BaseSAMLHttpServletRequestDecoder;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
@@ -45,6 +44,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.io.NoWrapAutoEndInflaterInputStream;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -330,31 +330,14 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     
-    /** A subclass of {@link InflaterInputStream} which defaults in a no-wrap {@link Inflater} instance and
-     * closes it when the stream is closed.
-     * 
-     * @deprecated use instead net.shibboleth.shared.io.NoWrapAutoEndInflaterInputStream
-     */
-    @Deprecated(forRemoval = true, since = "5.2.2")
-    private class NoWrapAutoEndInflaterInputStream extends InflaterInputStream {
-
-        /**
-         * Creates a new input stream with a default no-wrap decompressor and buffer size.
-         *
-         * @param is the input stream
-         */
-        public NoWrapAutoEndInflaterInputStream(@Nonnull final InputStream is) {
-            super(is, new Inflater(true));
-        }
-
-        /** {@inheritDoc} */
-        public void close() throws IOException {
-            if (inf != null) {
-                inf.end();
-            }
-            super.close();
-        }
-
+    /** {@inheritDoc} */
+    @Override
+    @Nullable
+    protected Integer getMessageSize() throws MessageDecodingException {
+        return SAMLBindingSupport.getDeflatedSize(
+                getHttpServletRequest().getParameter(getMessageType().getParameterName()),
+                SAMLConfigurationSupport.isDecoderEstimateInflatedSize(),
+                SAMLConfigurationSupport.getDecoderInflationFactor());
     }
 
 }

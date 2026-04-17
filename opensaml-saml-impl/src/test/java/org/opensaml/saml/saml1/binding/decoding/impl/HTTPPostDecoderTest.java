@@ -25,6 +25,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -123,7 +124,57 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
             }
         }
     }
+    
+    @Test
+    public void testResponseSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+            
+            final Response samlResponse = (Response) unmarshallElement("/org/opensaml/saml/saml1/binding/Response.xml");
+            assert samlResponse != null;
+            
+            String deliveredEndpointURL = samlResponse.getRecipient();
 
+            httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
+
+            populateRequestURL(httpRequest, deliveredEndpointURL);
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit); 
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testResponseSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(10);
+            
+            final Response samlResponse = (Response) unmarshallElement("/org/opensaml/saml/saml1/binding/Response.xml");
+            assert samlResponse != null;
+            
+            String deliveredEndpointURL = samlResponse.getRecipient();
+
+            httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
+
+            populateRequestURL(httpRequest, deliveredEndpointURL);
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit); 
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(origLimit);
+        }
+    }
+    
+
+    //
+    // Helpers
+    //
+    
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {
         URL url = null;
         try {

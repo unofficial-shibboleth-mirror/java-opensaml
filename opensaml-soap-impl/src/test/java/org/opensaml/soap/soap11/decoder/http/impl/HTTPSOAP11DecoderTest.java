@@ -25,6 +25,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.soap.config.SOAPConfigurationSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
@@ -147,6 +148,47 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         decoder.initialize();
         
         decoder.decode();
+    }
+    
+    @Test
+    public void testSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SOAPConfigurationSupport.isEnforceDecoderSizeLimit();
+        try {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(true);
+
+            httpRequest.setContent(getServletRequestContent("/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
+
+            final MessageHandler handler = new TestEnvelopeBodyHandler();
+            handler.initialize();
+            decoder.setBodyHandler(handler);
+            decoder.initialize();
+
+            decoder.decode();
+        } finally {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(origEnforceLimit);
+        }
+    }
+    
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SOAPConfigurationSupport.isEnforceDecoderSizeLimit();
+        Integer origLimit = SOAPConfigurationSupport.getDecoderSizeLimit();
+        try {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(true);
+            SOAPConfigurationSupport.setDecoderSizeLimit(10);
+
+            httpRequest.setContent(getServletRequestContent("/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
+
+            final MessageHandler handler = new TestEnvelopeBodyHandler();
+            handler.initialize();
+            decoder.setBodyHandler(handler);
+            decoder.initialize();
+
+            decoder.decode();
+        } finally {
+            SOAPConfigurationSupport.setEnforceDecoderSizeLimit(origEnforceLimit);
+            SOAPConfigurationSupport.setDecoderSizeLimit(origLimit);
+        }
     }
     
     //

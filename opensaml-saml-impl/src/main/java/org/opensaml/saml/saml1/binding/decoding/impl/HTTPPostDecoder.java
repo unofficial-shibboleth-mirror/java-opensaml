@@ -119,4 +119,12 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
                 messageContext.getMessage() instanceof ResponseAbstractType);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    @Nullable
+    protected Integer getMessageSize() throws MessageDecodingException {
+        return SAMLBindingSupport.getBase64Size(
+                getHttpServletRequest().getParameter(getMessageType().getParameterName()));
+    }
+
 }

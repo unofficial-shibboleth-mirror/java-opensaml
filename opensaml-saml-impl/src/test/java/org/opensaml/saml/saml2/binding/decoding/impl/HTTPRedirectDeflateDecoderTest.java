@@ -31,6 +31,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
@@ -221,6 +222,96 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         decoder.decode();
     }
+    
+    @Test
+    public void testRequestSizeLimitEnabledSucceeds() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderRequestSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(true);
+            
+            final AuthnRequest samlRequest =
+                    (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+            assert samlRequest != null;
+            samlRequest.setDestination(null);
+
+            httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(origEnforceLimit);
+        }
+    }    
+
+
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testRequestSizeLimitEnabledFails() throws Exception {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderRequestSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderRequestSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderRequestSizeLimit(10);
+            
+            final AuthnRequest samlRequest =
+                    (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+            assert samlRequest != null;
+            samlRequest.setDestination(null);
+
+            httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderRequestSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderRequestSizeLimit(origLimit);
+        }
+    }    
+    
+    @Test
+    public void testResponseSizeLimitEnabledSucceeds() throws MessageDecodingException {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+
+            // Note, Spring's Mock objects don't do URL encoding/decoding, so this is the URL decoded form
+            httpRequest
+            .setParameter(
+                    "SAMLResponse",
+                    "fZAxa8NADIX3/opDe3yXLG2F7VASCoF2qdMM3Y6LkhrOp8PSlfz8uqYdvBTeIMHT08ert7chmi8apefUwLpyYCgFPvfp2sD78Xn1ANv2rhY/xIxvJJmTkNmTaJ+8zkefqhmtpZsfcqSKxyuYw76BC/M0iBQ6JFGfdMp/vHcrt550dA5nVc65DzCnP4TND8IElQTnpw2UMSF76QWTH0hQA3ZPry84OTGPrBw4QvuL2KnXIsttx2cyJx8L/R8msxu7EgKJgG1ruwy1yxrabw==");
+
+            populateRequestURL(httpRequest, "http://example.org");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit);
+        }
+    }    
+
+
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testResponseSizeLimitEnabledFails() throws MessageDecodingException {
+        boolean origEnforceLimit = SAMLConfigurationSupport.isEnforceDecoderResponseSizeLimit();
+        Integer origLimit = SAMLConfigurationSupport.getDecoderResponseSizeLimit();
+        try {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(true);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(10);
+
+            // Note, Spring's Mock objects don't do URL encoding/decoding, so this is the URL decoded form
+            httpRequest
+            .setParameter(
+                    "SAMLResponse",
+                    "fZAxa8NADIX3/opDe3yXLG2F7VASCoF2qdMM3Y6LkhrOp8PSlfz8uqYdvBTeIMHT08ert7chmi8apefUwLpyYCgFPvfp2sD78Xn1ANv2rhY/xIxvJJmTkNmTaJ+8zkefqhmtpZsfcqSKxyuYw76BC/M0iBQ6JFGfdMp/vHcrt550dA5nVc65DzCnP4TND8IElQTnpw2UMSF76QWTH0hQA3ZPry84OTGPrBw4QvuL2KnXIsttx2cyJx8L/R8msxu7EgKJgG1ruwy1yxrabw==");
+
+            populateRequestURL(httpRequest, "http://example.org");
+
+            decoder.decode();
+        } finally {
+            SAMLConfigurationSupport.setEnforceDecoderResponseSizeLimit(origEnforceLimit);
+            SAMLConfigurationSupport.setDecoderResponseSizeLimit(origLimit);
+        }
+    }    
+    
+    //
+    // Helpers
+    //
 
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {
         URL url = null;
@@ -261,5 +352,5 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
             throw new MessageEncodingException("Unable to DEFLATE and Base64 encode SAML message", e);
         }
     }
-    
+
 }

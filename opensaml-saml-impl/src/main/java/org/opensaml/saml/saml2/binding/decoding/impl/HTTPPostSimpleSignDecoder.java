@@ -24,6 +24,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
@@ -138,6 +139,21 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
         log.debug("Constructed signed content string for HTTP-Post-SimpleSign {}", constructed);
 
         return constructed.getBytes(StandardCharsets.UTF_8);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void evaluateMessageSizeLimit() throws MessageDecodingException {
+        super.evaluateMessageSizeLimit();
+        
+        // Handle KeyInfo parameter, if present.
+        // The support method will return size 0 if param doesn't exist or has a null or empty value.
+        final Integer keyInfoSize = SAMLBindingSupport.getBase64Size(getHttpServletRequest().getParameter("KeyInfo"));
+        if (keyInfoSize > 0) {
+            final boolean keyInfoEnabled = SAMLConfigurationSupport.isEnforceDecoderKeyInfoSizeLimit();
+            final Integer keyInfoSizeLimit = SAMLConfigurationSupport.getDecoderKeyInfoSizeLimit();
+            SAMLBindingSupport.evaluateMessageSizeLimit(keyInfoEnabled, keyInfoSizeLimit, keyInfoSize, "KeyInfo");
+        }
     }
     
 }
