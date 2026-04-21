@@ -8,40 +8,22 @@
         </encoder>
     </appender>
     
-    <logger name="org.opensaml.xmlsec.derivation.impl.DHLegacyKDF">
-        <level value="TRACE"/>
-    </logger>
+    <logger name="org.opensaml.xmlsec.derivation.impl.DHLegacyKDF" level="TRACE" />
     
-    <logger name="org.apache.xml.security.encryption.XMLCipher">
-        <level value="TRACE"/>
-    </logger>
-    <logger name="org.apache.xml.security.encryption.XMLCipherUtil">
-        <level value="TRACE"/>
-    </logger>
+    <logger name="org.apache.xml.security.encryption.XMLCipher" level="TRACE" />
+
+    <logger name="org.apache.xml.security.encryption.XMLCipherUtil" level="TRACE" />
     
-    <logger name="org.opensaml.core.testing">
-        <level value="TRACE"/>
-    </logger>
+    <logger name="org.opensaml.core.testing" level="TRACE" />
     
-    <logger name="org.opensaml.xmlsec.encryption.support">
-        <level value="TRACE"/>
-    </logger>
+    <logger name="org.opensaml.xmlsec.encryption.support" level="TRACE" />
     
-    <logger name="org.opensaml.xmlsec.keyinfo">
-        <level value="WARN"/>
-    </logger>
+    <logger name="org.opensaml.xmlsec.keyinfo" level="WARN" />
     
-    <logger name="org.opensaml.xmlsec.impl">
-        <level value="TRACE"/>
-    </logger>
+    <logger name="org.opensaml.xmlsec.impl" level="TRACE" />
     
-    <logger name="org.opensaml">
-        <level value="WARN"/>
-    </logger>
-    
-    <root>
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
-        <level value="WARN"/>
     </root>
     
 </configuration>

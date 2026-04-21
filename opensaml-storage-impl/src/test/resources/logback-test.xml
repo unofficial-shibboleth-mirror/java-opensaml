@@ -9,8 +9,7 @@
         </encoder>
     </appender>
 
-    <root>
-        <level value="warn" />
+    <root level="WARN">
         <appender-ref ref="STDOUT" />
     </root>
     

@@ -8,17 +8,10 @@
         </encoder>
     </appender>
     
-    <logger name="org.opensaml">
-        <level value="WARN"/>
-    </logger>
+    <logger name="PROTOCOL_MESSAGE" level="DEBUG" />
     
-    <logger name="PROTOCOL_MESSAGE">
-        <level value="DEBUG"/>
-    </logger>
-    
-    <root>
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
-        <level value="WARN"/>
     </root>
     
 </configuration>
