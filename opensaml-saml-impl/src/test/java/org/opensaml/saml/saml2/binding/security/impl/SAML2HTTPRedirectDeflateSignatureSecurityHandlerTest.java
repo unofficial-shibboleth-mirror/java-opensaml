@@ -379,7 +379,9 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
             Assert.fail("Could not parse redirect url: " + response.getRedirectedUrl());
         }
         assert urlBuilder != null;
-        request.setQueryString(urlBuilder.buildQueryString());
+        final String query = urlBuilder.buildQueryString();
+        assert query != null;
+        request.setQueryString(query);
         for (final Pair<String, String> param : urlBuilder.getQueryParams()) {
             final String one = param.getFirst();
             final String two = param.getSecond();

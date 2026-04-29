@@ -75,8 +75,13 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
 
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
+        // We should do this but probably not until V6 and the destroy changes.
+        //checkComponentActive();
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
 
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP POST method");

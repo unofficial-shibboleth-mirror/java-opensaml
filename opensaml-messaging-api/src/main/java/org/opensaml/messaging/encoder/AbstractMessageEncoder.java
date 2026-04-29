@@ -84,7 +84,12 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     public void encode() throws MessageEncodingException {
         checkComponentActive();
-        doEncode();
+        try {
+            doEncode();
+        } catch (final RuntimeException e) {
+            // Trap and wrap any runtime issues, generally from a web container doing odd things.
+            throw new MessageEncodingException(e);
+        }
         logEncodedMessage();
     }
     

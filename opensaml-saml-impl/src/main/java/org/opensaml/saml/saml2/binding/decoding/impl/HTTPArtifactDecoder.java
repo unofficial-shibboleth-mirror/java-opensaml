@@ -356,8 +356,13 @@ public class HTTPArtifactDecoder extends BaseSAMLHttpServletRequestDecoder imple
     
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
+        // We should do this but probably not until V6 and the destroy changes.
+        //checkComponentActive();
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
 
         final String relayState = StringSupport.trim(request.getParameter("RelayState"));
         log.debug("Decoded SAML relay state of: {}", relayState);

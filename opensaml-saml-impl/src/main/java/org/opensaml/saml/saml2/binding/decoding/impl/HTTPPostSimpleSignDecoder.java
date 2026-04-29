@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign binding. */
@@ -51,11 +52,15 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
      * @param messageContext the current message context
      */
     protected void populateBindingContext(@Nonnull final MessageContext messageContext) {
+        
+        // TODO: make this throw MessageDecoderException so we can throw out here.
+        final HttpServletRequest request = Constraint.isNotNull(getHttpServletRequest(), "HttpServletRequest was null");
+        
         final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(getBindingDescriptor());
         bindingContext.setHasBindingSignature(
-                !Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
+                !Strings.isNullOrEmpty(request.getParameter("Signature")));
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     
@@ -83,7 +88,12 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
      * @throws MessageDecodingException if there is a fatal issue building the signed content
      */
     @Nullable protected byte[] getSignedContent() throws MessageDecodingException {
+        // We should do this but probably not until V6 and the destroy changes.
+        //checkComponentActive();
         final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
         
         final StringBuilder builder = new StringBuilder();
         final String samlMsg;

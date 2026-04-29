@@ -155,6 +155,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
                 new Pair<>("Signature", httpRequest.getParameter("Signature")),
                 new Pair<>("RelayState", httpRequest.getParameter("RelayState"))
                 ));
+        assert query != null;
         httpRequest.setQueryString(query);
 
         decoder.decode();

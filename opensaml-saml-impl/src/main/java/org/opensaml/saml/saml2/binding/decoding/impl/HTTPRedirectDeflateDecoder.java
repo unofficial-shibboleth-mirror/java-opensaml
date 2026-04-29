@@ -45,6 +45,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -87,8 +88,13 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
 
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
+        // We should do this but probably not until V6 and the destroy changes.
+        //checkComponentActive();
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
         
         if (!"GET".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP GET method");
@@ -165,12 +171,17 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
     @Nullable private byte[] getSignedContent(@Nonnull final String samlMessageParamName,
             @Nonnull final String samlMessage) throws MessageDecodingException {
 
+        final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
+        
         // We need the raw non-URL-decoded query string param values for HTTP-Redirect DEFLATE simple signature
         // validation.
         // We have to construct a string containing the signature input by accessing the
         // request directly. We can't use the decoded parameters because we need the raw
         // data and URL-encoding isn't canonical.
-        final String queryString = getHttpServletRequest().getQueryString();
+        final String queryString = request.getQueryString();
         log.debug("Constructing signed content string from URL query string {}", queryString);
 
         final String constructed = buildSignedContentString(queryString, samlMessageParamName, samlMessage);
@@ -307,11 +318,15 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
      * @param messageContext the current message context
      */
     protected void populateBindingContext(@Nonnull final MessageContext messageContext) {
+
+        // TODO: make this throw MessageDecoderException so we can throw out here.
+        final HttpServletRequest request = Constraint.isNotNull(getHttpServletRequest(), "HttpServletRequest was null");
+        
         final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(bindingDescriptor);
         bindingContext.setHasBindingSignature(
-                !Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
+                !Strings.isNullOrEmpty(request.getParameter("Signature")));
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     

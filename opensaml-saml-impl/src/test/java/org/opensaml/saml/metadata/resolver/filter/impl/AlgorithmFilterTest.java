@@ -138,6 +138,7 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
 
         for (final RoleDescriptor role : entity.getRoleDescriptors()) {
             exts = role.getExtensions();
+            assert exts != null;
             Assert.assertEquals(exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).size(), 1);
             Assert.assertEquals(exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME).size(), 1);
             
