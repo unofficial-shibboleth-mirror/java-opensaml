@@ -15,6 +15,7 @@
 package org.opensaml.saml.saml2.binding.encoding.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.zip.InflaterInputStream;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -53,6 +55,49 @@ import net.shibboleth.shared.testing.ConstantSupplier;
  * Unit test for redirect encoding.
  */
 public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
+    
+    /**
+     * Tests that the encoder catches a runtime exception.
+     * 
+     * @throws Exception if something goes wrong
+     */
+    @Test(expectedExceptions=MessageEncodingException.class)
+    public void testRuntimeException() throws Exception {
+        SAMLObjectBuilder<Response> responseBuilder =
+                (SAMLObjectBuilder<Response>) builderFactory.<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
+        Response samlMessage = responseBuilder.buildObject();
+        samlMessage.setID("foo");
+        samlMessage.setVersion(SAMLVersion.VERSION_20);
+        samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
+
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final Endpoint samlEndpoint = endpointBuilder.buildObject();
+        samlEndpoint.setLocation("http://example.org");
+        samlEndpoint.setResponseLocation("http://example.org/response");
+        
+        final MessageContext messageContext = new MessageContext();
+        messageContext.setMessage(samlMessage);
+        SAMLBindingSupport.setRelayState(messageContext, "relay");
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
+        
+        MockHttpServletResponse response = new MockHttpServletResponse() {
+            /** {@inheritDoc} */
+            @Override
+            public void sendRedirect(String url) throws IOException {
+                throw new IllegalArgumentException("Sanity check");
+            }
+        };
+        
+        final HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
+                        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
+    }
     
     /**
      * Tests encoding a SAML message to an servlet response.
