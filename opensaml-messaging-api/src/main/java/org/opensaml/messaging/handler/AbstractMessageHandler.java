@@ -219,7 +219,7 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
      * @return a string for insertion at the beginning of any log messages
      */
     @Nonnull @NotEmpty protected String getLogPrefix() {
-        return "Message Handler: ";
+        return "Message Handler:";
     }
 
 }
