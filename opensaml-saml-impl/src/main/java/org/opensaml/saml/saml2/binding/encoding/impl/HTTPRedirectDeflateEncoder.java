@@ -298,7 +298,10 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
     /** A subclass of {@link DeflaterOutputStream} which defaults in a no-wrap {@link Deflater} instance and
      * closes it when the stream is closed.
+     * 
+     * @deprecated use instead net.shibboleth.shared.io.NoWrapAutoEndDeflaterOutputStream
      */
+    @Deprecated(forRemoval = true, since = "5.2.2")
     private class NoWrapAutoEndDeflaterOutputStream extends DeflaterOutputStream {
 
         /**
