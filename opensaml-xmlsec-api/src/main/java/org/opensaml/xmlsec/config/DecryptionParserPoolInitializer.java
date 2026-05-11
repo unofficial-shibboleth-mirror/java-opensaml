@@ -43,7 +43,7 @@ import net.shibboleth.shared.xml.impl.BasicParserPool;
 public class DecryptionParserPoolInitializer implements Initializer {
     
     /** Config property prefix for XML processing. */
-    public static final String CONFIG_PROP_PREFIX_XML = "opensaml.config.xml.decrypter";
+    public static final String CONFIG_PROP_PREFIX_XML = "opensaml.config.xml.decryption";
     
     /** Config property name: XML element attribute limit. */
     public static final String CONFIG_PROPERTY_XML_ELEMENT_ATTRIBUTE_LIMIT =
