@@ -334,8 +334,11 @@ public class HTTPRedirectDeflateDecoder extends BaseSAMLHttpServletRequestDecode
     @Override
     @Nullable
     protected Integer getMessageSize() throws MessageDecodingException {
+        final HttpServletRequest request = getHttpServletRequest();
+        assert request != null;
+
         return SAMLBindingSupport.getDeflatedSize(
-                getHttpServletRequest().getParameter(getMessageType().getParameterName()),
+                request.getParameter(getMessageType().getParameterName()),
                 SAMLConfigurationSupport.isDecoderEstimateInflatedSize(),
                 SAMLConfigurationSupport.getDecoderInflationFactor());
     }

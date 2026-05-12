@@ -123,8 +123,10 @@ public class HTTPPostDecoder extends BaseSAMLHttpServletRequestDecoder implement
     @Override
     @Nullable
     protected Integer getMessageSize() throws MessageDecodingException {
+        final HttpServletRequest request = getHttpServletRequest();
+        assert request != null;
         return SAMLBindingSupport.getBase64Size(
-                getHttpServletRequest().getParameter(getMessageType().getParameterName()));
+                request.getParameter(getMessageType().getParameterName()));
     }
 
 }

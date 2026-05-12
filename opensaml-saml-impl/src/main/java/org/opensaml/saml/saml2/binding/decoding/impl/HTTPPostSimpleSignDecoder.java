@@ -145,10 +145,13 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
     @Override
     protected void evaluateMessageSizeLimit() throws MessageDecodingException {
         super.evaluateMessageSizeLimit();
+
+        final HttpServletRequest request = getHttpServletRequest();
+        assert request != null;
         
         // Handle KeyInfo parameter, if present.
         // The support method will return size 0 if param doesn't exist or has a null or empty value.
-        final Integer keyInfoSize = SAMLBindingSupport.getBase64Size(getHttpServletRequest().getParameter("KeyInfo"));
+        final Integer keyInfoSize = SAMLBindingSupport.getBase64Size(request.getParameter("KeyInfo"));
         if (keyInfoSize > 0) {
             final boolean keyInfoEnabled = SAMLConfigurationSupport.isEnforceDecoderKeyInfoSizeLimit();
             final Integer keyInfoSizeLimit = SAMLConfigurationSupport.getDecoderKeyInfoSizeLimit();
