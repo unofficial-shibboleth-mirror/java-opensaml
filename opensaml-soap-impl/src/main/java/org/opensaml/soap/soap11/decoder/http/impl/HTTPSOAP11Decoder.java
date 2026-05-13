@@ -133,6 +133,7 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
             throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
         } catch (final Exception e) {
             SOAPSupport.checkExceptionStackAndLogSizeExceeded(e);
+            throw new MessageDecodingException("Fatal error processing SOAP message", e);
         }
         
         try {
