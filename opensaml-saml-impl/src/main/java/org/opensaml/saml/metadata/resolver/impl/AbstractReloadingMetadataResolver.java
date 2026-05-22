@@ -41,6 +41,7 @@ import org.w3c.dom.Element;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer.Context;
 
+import jakarta.annotation.PreDestroy;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
@@ -298,9 +299,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         minRefreshDelay = delay;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
+    /** Bean-specific function to handle tear down. */
+    @PreDestroy synchronized public void teardown() {
         if (refreshMetadataTask != null) {
             refreshMetadataTask.cancel();
         }
@@ -309,7 +309,6 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             taskTimer.cancel();
         }
 
-        super.doDestroy();
     }
 
     /** {@inheritDoc} */

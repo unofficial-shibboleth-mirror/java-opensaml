@@ -28,6 +28,11 @@
         </dependency>
 
         <!-- Provided Dependencies -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Runtime Dependencies -->
 

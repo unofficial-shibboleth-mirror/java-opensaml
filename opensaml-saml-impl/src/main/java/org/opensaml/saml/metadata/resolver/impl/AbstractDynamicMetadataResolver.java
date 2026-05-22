@@ -37,6 +37,8 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import jakarta.annotation.PreDestroy;
+
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.metrics.MetricsSupport;
 import org.opensaml.core.xml.XMLObject;
@@ -54,6 +56,7 @@ import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.crypto.JCAConstants;
+
 import org.slf4j.Logger;
 
 import com.codahale.metrics.Gauge;
@@ -1488,9 +1491,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         super.removeByEntityID(entityID, backingStore);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
+    /** Bean-specific function to handle tear down. */
+    @PreDestroy synchronized public void teardown() {
         if (cleanupTask != null) {
             cleanupTask.cancel();
         }
@@ -1517,8 +1519,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         gaugePersistentCacheInit = null;
         timerFetchFromOriginSource = null;
         timerResolve = null;
-        
-        super.doDestroy();
     }
     
     /** {@inheritDoc} */

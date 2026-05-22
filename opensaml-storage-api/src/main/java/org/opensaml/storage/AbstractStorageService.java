@@ -24,6 +24,8 @@ import javax.annotation.Nullable;
 
 import org.opensaml.storage.annotation.AnnotationSupport;
 
+import jakarta.annotation.PreDestroy;
+
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
@@ -180,8 +182,8 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
         }
     }
 
-    /** {@inheritDoc} */
-    @Override protected void doDestroy() {
+    /** Bean-specific function to handle tear down. */
+    @PreDestroy synchronized public void teardown() {
         if (cleanupTask != null) {
             cleanupTask.cancel();
             cleanupTask = null;
@@ -191,7 +193,6 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
             }
             internalTaskTimer = null;
         }
-        super.doDestroy();
     }
 
     /** {@inheritDoc} */

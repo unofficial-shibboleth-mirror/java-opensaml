@@ -14,6 +14,31 @@
 
 package org.opensaml.storage.impl.memcached;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.cryptacular.util.ByteUtil;
+import org.cryptacular.util.CodecUtil;
+import org.cryptacular.util.HashUtil;
+import org.opensaml.storage.StorageCapabilities;
+import org.opensaml.storage.StorageRecord;
+import org.opensaml.storage.StorageSerializer;
+import org.opensaml.storage.StorageService;
+import org.opensaml.storage.VersionMismatchException;
+import org.opensaml.storage.annotation.AnnotationSupport;
+import org.slf4j.Logger;
+
+import jakarta.annotation.PreDestroy;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.collection.Pair;
@@ -26,28 +51,6 @@ import net.spy.memcached.CASValue;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.internal.OperationFuture;
 import net.spy.memcached.transcoders.Transcoder;
-import org.cryptacular.util.ByteUtil;
-import org.cryptacular.util.CodecUtil;
-import org.cryptacular.util.HashUtil;
-import org.opensaml.storage.StorageCapabilities;
-import org.opensaml.storage.StorageRecord;
-import org.opensaml.storage.StorageSerializer;
-import org.opensaml.storage.StorageService;
-import org.opensaml.storage.VersionMismatchException;
-import org.opensaml.storage.annotation.AnnotationSupport;
-import org.slf4j.Logger;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Memcached storage service. The implementation of context names is based on the implementation of
@@ -569,9 +572,8 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
         handleAsyncResult(nsResult);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
+    /** Bean-specific function to handle tear down. */
+    @PreDestroy synchronized public void teardown() {
         memcacheClient.shutdown();
     }
 
