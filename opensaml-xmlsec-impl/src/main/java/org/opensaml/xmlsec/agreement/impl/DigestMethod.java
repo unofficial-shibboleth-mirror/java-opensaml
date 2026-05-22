@@ -66,7 +66,6 @@ public class DigestMethod extends AbstractInitializableComponent
 
     /** {@inheritDoc} */
     public DigestMethod clone() {
-        ifDestroyedThrowDestroyedComponentException();
         try {
             return (DigestMethod ) super.clone();
         } catch (final CloneNotSupportedException e) {

@@ -159,7 +159,6 @@ public class KANonce extends AbstractInitializableComponent
 
     /** {@inheritDoc} */
     public KANonce clone() {
-        ifDestroyedThrowDestroyedComponentException();
         try {
             return (KANonce ) super.clone();
         } catch (final CloneNotSupportedException e) {
