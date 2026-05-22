@@ -382,19 +382,6 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         }
     }
 
-    /** {@inheritDoc} */
-    @Override protected void doDestroy() {
-        // TODO: if we pull this, unmarshallerFactory should be Nonnull.
-        unmarshallerFactory = null;
-        mdFilter = null;
-        entityBackingStore = null;
-        parser = null;
-        criterionPredicateRegistry = null;
-        activationCondition = null;
-
-        super.doDestroy();
-    }
-
     /**
      * Subclasses should override this method to perform any initialization logic necessary. Default implementation is a
      * no-op.
