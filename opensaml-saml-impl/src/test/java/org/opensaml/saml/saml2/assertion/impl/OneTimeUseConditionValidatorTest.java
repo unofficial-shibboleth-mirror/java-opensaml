@@ -14,10 +14,13 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
+import static org.testng.Assert.assertFalse;
+
 import java.time.Duration;
 import java.util.Map;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
@@ -67,8 +70,8 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
     
     @AfterMethod
     public void tearDown() {
-        replayCache.destroy();
-        storageService.destroy();
+        assertFalse(AnnotationsSupport.hasPreDestroyAnnotation(replayCache));
+        AnnotationsSupport.callPreDestroyAnnotation(storageService);
     }
     
     @Test

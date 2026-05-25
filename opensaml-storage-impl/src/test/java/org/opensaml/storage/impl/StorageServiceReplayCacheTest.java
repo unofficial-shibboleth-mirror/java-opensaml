@@ -14,11 +14,16 @@
 
 package org.opensaml.storage.impl;
 
+import static org.testng.Assert.assertFalse;
+
 import java.time.Instant;
 
 import org.opensaml.storage.impl.client.ClientStorageService;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.primitive.AnnotationsSupport;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 
@@ -54,11 +59,9 @@ public class StorageServiceReplayCacheTest {
     
     @AfterMethod
     protected void tearDown() {
-        replayCache.destroy();
-        replayCache = null;
         
-        storageService.destroy();
-        storageService = null;
+        assertFalse(AnnotationsSupport.hasPreDestroyAnnotation(replayCache));
+        AnnotationsSupport.callPreDestroyAnnotation(storageService);
     }
     
     /**

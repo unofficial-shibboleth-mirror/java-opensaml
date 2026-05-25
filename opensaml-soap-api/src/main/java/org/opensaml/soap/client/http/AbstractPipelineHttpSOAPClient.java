@@ -59,6 +59,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -233,10 +234,8 @@ public abstract class AbstractPipelineHttpSOAPClient
         } catch (final IOException e) {
             throw new SOAPException("I/O problem with SOAP message exchange with: " + endpoint, e);
         } finally {
-            if (pipeline != null) {
-                pipeline.getEncoder().destroy();
-                pipeline.getDecoder().destroy();
-            }
+            assert !AnnotationsSupport.hasPreDestroyAnnotation(pipeline.getDecoder());
+            assert !AnnotationsSupport.hasPreDestroyAnnotation(pipeline.getEncoder());
         }
     }
     // Checkstyle: CyclomaticComplexity|MethodLength ON

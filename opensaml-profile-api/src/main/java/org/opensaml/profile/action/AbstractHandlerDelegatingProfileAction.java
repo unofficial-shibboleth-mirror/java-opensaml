@@ -31,6 +31,7 @@ import org.opensaml.profile.context.navigate.ParentProfileRequestContextLookup;
 import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -72,6 +73,7 @@ public abstract class AbstractHandlerDelegatingProfileAction<DelegateType extend
                 InvocationTargetException | NoSuchMethodException | SecurityException e) {
             throw new RuntimeException(e);
         }
+        assert !AnnotationsSupport.hasPreDestroyAnnotation(delegate);
         
         messageContextLookup = Constraint.isNotNull(lookup, "MessageContext lookup function may not be null");
     }
@@ -87,6 +89,7 @@ public abstract class AbstractHandlerDelegatingProfileAction<DelegateType extend
             @Nonnull final ContextDataLookupFunction<ProfileRequestContext, MessageContext> lookup) {
         delegate = Constraint.isNotNull(delegateInstance, "Delegate instance may not be null");
         messageContextLookup = Constraint.isNotNull(lookup, "MessageContext lookup function may not be null");
+        assert !AnnotationsSupport.hasPreDestroyAnnotation(delegate);
     }
 
     /**

@@ -168,8 +168,6 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     }
 
     /**
-     * Performs the encoding logic. By the time this is called, this encoder has already been initialized and checked to
-     * ensure that it has not been destroyed.
      * 
      * @throws MessageEncodingException thrown if there is a problem encoding the message
      */

@@ -60,7 +60,11 @@
         <dependency>
             <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-security</artifactId>
-        </dependency>       
+        </dependency>
+        <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-support</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>

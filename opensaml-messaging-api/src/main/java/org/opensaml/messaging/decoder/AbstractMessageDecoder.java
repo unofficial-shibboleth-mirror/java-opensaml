@@ -142,8 +142,7 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     }
 
     /**
-     * Performs the decoding logic. By the time this is called, this decoder has already been initialized and checked to
-     * ensure that it has not been destroyed.
+     * Performs the decoding logic. By the time this is called, this decoder has already been initialized.
      * 
      * @throws MessageDecodingException thrown if there is a problem decoding the message
      */

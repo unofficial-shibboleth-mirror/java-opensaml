@@ -17,6 +17,7 @@ package org.opensaml.storage.impl.memcached;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 import net.spy.memcached.BinaryConnectionFactory;
 import net.spy.memcached.MemcachedClient;
 import org.cryptacular.generator.IdGenerator;
@@ -217,8 +218,8 @@ public class MemcachedStorageServiceTest {
 
     @AfterClass
     public void tearDown() {
-        service.destroy();
-        keyTrackingService.destroy();
+        assertFalse(!AnnotationsSupport.hasPreDestroyAnnotation(service));
+        assertFalse(!AnnotationsSupport.hasPreDestroyAnnotation(keyTrackingService));
     }
 
     private Set<String> createContextKeys(final String context, final IdGenerator generator, final int count)

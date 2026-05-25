@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -39,7 +40,7 @@ import org.slf4j.Logger;
  * Action that encodes an outbound response from the outbound {@link MessageContext}. 
  * 
  * <p>The input to {@link #setMessageEncoderFactory(Function)} is used to obtain a new
- * {@link MessageEncoder} to use, and the encoder is destroyed upon completion.</p>
+ * {@link MessageEncoder} to use.</p>
  *
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
@@ -166,8 +167,7 @@ public class EncodeMessage extends AbstractProfileAction {
             log.error("{} Unable to encode outbound response", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCODE);
         } finally {
-            // TODO: do we want to destroy the encoder here?
-            encoder.destroy();
+            assert !AnnotationsSupport.hasPreDestroyAnnotation(encoder);
         }
     }
     

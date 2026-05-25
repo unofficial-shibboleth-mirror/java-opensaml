@@ -18,19 +18,17 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 
-import net.shibboleth.shared.component.DestructableComponent;
 import net.shibboleth.shared.component.InitializableComponent;
 
 /**
  * Interface for component that encodes message data from a {@link MessageContext} to a sink. Before the encoder can be
- * used the {@link #initialize()} method must be called. After the encoder has been used the {@link #destroy()} should
- * be invoked in order to clean up any resources.
+ * used the {@link #initialize()} method must be called.
  * 
  * <p>
  * The sink data or structure on which the encoder operates is supplied in an implementation-specific manner.
  * </p>
  */
-public interface MessageEncoder extends InitializableComponent, DestructableComponent {
+public interface MessageEncoder extends InitializableComponent {
 
     /**
      * This method should prepare the message context by creating and populating any binding-specific data structures

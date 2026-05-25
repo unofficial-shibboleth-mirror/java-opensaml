@@ -27,6 +27,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -37,7 +38,6 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * @event {@link EventIds#INVALID_MESSAGE}
  * 
  * @post If decode succeeds, ProfileRequestContext.getInboundMessageContext() != null
- * @post The injected {@link MessageDecoder} is destroyed.
  */
 public class DecodeMessage extends AbstractProfileAction {
 
@@ -97,8 +97,7 @@ public class DecodeMessage extends AbstractProfileAction {
             log.error("{} Unable to decode incoming request", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_DECODE);
         } finally {
-            // TODO: should we actually destroy the MessageDecoder here?
-            decoder.destroy();
+            assert !AnnotationsSupport.hasPreDestroyAnnotation(decoder);
         }
     }
     

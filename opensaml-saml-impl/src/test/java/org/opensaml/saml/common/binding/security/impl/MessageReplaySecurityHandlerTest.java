@@ -14,6 +14,8 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
+import static org.testng.Assert.assertFalse;
+
 import java.time.Duration;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -28,6 +30,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.AnnotationsSupport;
 
 /**
  * Testing SAML message replay security policy rule.
@@ -71,11 +74,8 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     protected void tearDown() {
         handler = null;
         
-        replayCache.destroy();
-        replayCache = null;
-        
-        storageService.destroy();
-        storageService = null;
+        assertFalse(AnnotationsSupport.hasPreDestroyAnnotation(replayCache));
+        AnnotationsSupport.callPreDestroyAnnotation(storageService);
     }
     
     /**

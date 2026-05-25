@@ -37,8 +37,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import jakarta.annotation.PreDestroy;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.metrics.MetricsSupport;
 import org.opensaml.core.xml.XMLObject;
@@ -56,7 +54,6 @@ import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.crypto.JCAConstants;
-
 import org.slf4j.Logger;
 
 import com.codahale.metrics.Gauge;
@@ -65,6 +62,7 @@ import com.codahale.metrics.RatioGauge;
 import com.codahale.metrics.Timer.Context;
 import com.google.common.base.MoreObjects;
 
+import jakarta.annotation.PreDestroy;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
@@ -1316,7 +1314,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             assert timerFetchFromOriginSource2 != null;
 
             // Note that these gauges must use the support method to register in a synchronized fashion,
-            // and also must store off the instances for later use in destroy.
+            // and also must store off the instances for later use in teardown.
             ratioGaugeFetchToResolve = MetricsSupport.register(
                     MetricRegistry.name(getMetricsBaseName(), METRIC_RATIOGAUGE_FETCH_TO_RESOLVE), 
                     new RatioGauge() {
